@@ -6,7 +6,7 @@ using Zenject;
 
 namespace _Source.Installation
 {
-    public class GameInitializer : IInitializable
+    public class GameSceneInitializer : IInitializable
     {
         [Inject] private DiContainer _container;
 

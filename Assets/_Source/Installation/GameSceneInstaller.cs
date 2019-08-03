@@ -26,7 +26,7 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<GameRoundModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<GameRoundController>().AsSingleNonLazy();
 
-            Container.BindInterfacesAndSelfTo<GameInitializer>().AsSingleNonLazy();
+            Container.BindInterfacesAndSelfTo<GameSceneInitializer>().AsSingleNonLazy();
         }
     }
 }
