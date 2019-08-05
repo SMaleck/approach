@@ -1,5 +1,7 @@
 ﻿using _Source.Entities;
+using _Source.Entities.NovatarEntity.BehaviourStrategies;
 using _Source.Features.GameRound;
+using _Source.Features.GameWorld;
 using _Source.Features.SurvivalStats;
 using _Source.Features.UserInput;
 using _Source.Util;
@@ -25,6 +27,13 @@ namespace _Source.Installation
 
             Container.BindInterfacesAndSelfTo<GameRoundModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<GameRoundController>().AsSingleNonLazy();
+
+            Container.BindInterfacesAndSelfTo<ScreenSizeModel>().AsSingleNonLazy();
+
+            Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
+            Container.BindFactory<Novatar, StrategySelector, StrategySelector.Factory>();
+            Container.BindFactory<Novatar, DefaultBehaviourStrategy, DefaultBehaviourStrategy.Factory>();
+            Container.BindFactory<Novatar, FriendBehaviourStrategy, FriendBehaviourStrategy.Factory>();
 
             Container.BindInterfacesAndSelfTo<GameSceneInitializer>().AsSingleNonLazy();
         }

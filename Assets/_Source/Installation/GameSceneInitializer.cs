@@ -13,9 +13,6 @@ namespace _Source.Installation
         [Inject] private Avatar.Factory _avatarFactory;
         [Inject] private AvatarConfig _avatarConfig;
 
-        [Inject] private Novatar.Factory _novatarFactory;
-        [Inject] private NovatarConfig _novatarConfig;
-
         [Inject] private ViewPrefabsConfig _viewPrefabsConfig;
         [Inject] private SurvivalStatsView.Factory _survivalStatsViewFactory;
         [Inject] private RoundEndedView.Factory _roundEndedViewFactory;
@@ -26,10 +23,6 @@ namespace _Source.Installation
             avatar.Initialize();
 
             _container.BindInstance(avatar);
-
-            _novatarFactory
-                .Create(_novatarConfig.NovatarPrefab)
-                .Initialize();
             
             _survivalStatsViewFactory
                 .Create(_viewPrefabsConfig.SurvivalStatsViewPrefab)

@@ -18,5 +18,9 @@ namespace _Source.Entities
 
         [SerializeField] private float _speed;
         public float Speed => _speed;
+
+        [Header("Spawning")]
+        [SerializeField] private float _spawnIntervalSeconds;
+        public float SpawnIntervalSeconds => _spawnIntervalSeconds;
     }
 }

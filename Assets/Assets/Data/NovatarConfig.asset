@@ -17,3 +17,4 @@ MonoBehaviour:
   _range: 5
   _targetReachedThreshold: 0.1
   _speed: 2
+  _spawnIntervalSeconds: 5
