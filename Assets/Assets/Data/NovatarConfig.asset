@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b35eb3305ad57e4d9c77e070e4d24e1, type: 3}
   m_Name: NovatarConfig
   m_EditorClassIdentifier: 
-  _novatarPrefab: {fileID: 7616588745787026386, guid: c38a4f0c0cb021c43aeea0e8708a954e,
+  _novatarPrefab: {fileID: 7616588745787026386, guid: 27d4c0653fa67104687754e9db8d0d26,
     type: 3}
   _range: 5
   _targetReachedThreshold: 0.1
-  _speed: 2
+  _movementSpeed: 2
+  _turnSpeed: 5
+  _turnAngleThreshold: 5
   _spawnIntervalSeconds: 5

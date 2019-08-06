@@ -1,6 +1,8 @@
 ﻿using _Source.Entities;
+using _Source.Features.GameWorld.Data;
 using _Source.Util;
 using System;
+using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
@@ -8,26 +10,38 @@ namespace _Source.Features.GameWorld
 {
     public class NovatarSpawner : AbstractDisposable
     {
+        private readonly NovatarSpawnerConfig _novatarSpawnerConfig;
         private readonly Novatar.Factory _novatarFactory;
         private readonly NovatarConfig _novatarConfig;
         private readonly ScreenSizeModel _screenSizeModel;
 
+        private readonly List<Novatar> _novatarPool;
+
         public NovatarSpawner(
+            NovatarSpawnerConfig novatarSpawnerConfig,
             Novatar.Factory novatarFactory,
             NovatarConfig novatarConfig,
             ScreenSizeModel screenSizeModel)
         {
+            _novatarSpawnerConfig = novatarSpawnerConfig;
             _novatarFactory = novatarFactory;
             _novatarConfig = novatarConfig;
             _screenSizeModel = screenSizeModel;
 
-            Observable.Interval(TimeSpan.FromSeconds(_novatarConfig.SpawnIntervalSeconds))
+            _novatarPool = new List<Novatar>();
+
+            Observable.Interval(TimeSpan.FromSeconds(_novatarSpawnerConfig.SpawnIntervalSeconds))
                 .Subscribe(_ => OnInterval())
                 .AddTo(Disposer);
         }
 
         private void OnInterval()
         {
+            if (_novatarPool.Count >= _novatarSpawnerConfig.MaxActiveSpawns)
+            {
+                return;
+            }
+
             var novatar = _novatarFactory.Create(
                 _novatarConfig.NovatarPrefab);
 
@@ -35,6 +49,8 @@ namespace _Source.Features.GameWorld
             novatar.SetPosition(spawnPosition);
 
             novatar.Initialize();
+
+            _novatarPool.Add(novatar);
         }
 
         private Vector3 GetSpawnPosition(Novatar novatar)
@@ -44,9 +60,6 @@ namespace _Source.Features.GameWorld
 
             var novatarHalfSize = GetHalfSizeFor(spawnSide, novatar.Size);
             var randomComponent = GetRandomComponentFor(spawnSide, novatar.Size);
-
-            App.Logger.Warn($"{spawnSideInt} -> {spawnSide}");
-            App.Logger.Warn($"{_screenSizeModel.WidthExtendUnits} / {_screenSizeModel.HeightExtendUnits}");
 
             switch (spawnSide)
             {

@@ -13,14 +13,19 @@ namespace _Source.Entities
         [SerializeField] private float _range;
         public float Range => _range;
 
+        [Range(0.001f, 5)]
         [SerializeField] private float _targetReachedThreshold;
         public float TargetReachedThreshold => _targetReachedThreshold;
 
-        [SerializeField] private float _speed;
-        public float Speed => _speed;
+        [Range(0.1f, 20)]
+        [SerializeField] private float _movementSpeed;
+        public float MovementSpeed => _movementSpeed;
 
-        [Header("Spawning")]
-        [SerializeField] private float _spawnIntervalSeconds;
-        public float SpawnIntervalSeconds => _spawnIntervalSeconds;
+        [Range(0.1f, 60)]
+        [SerializeField] private float _turnSpeed;
+        public float TurnSpeed => _turnSpeed;
+
+        [SerializeField] private float _turnAngleThreshold;
+        public float TurnAngleThreshold => _turnAngleThreshold;
     }
 }

@@ -29,12 +29,12 @@ namespace _Source.Entities
 
         public void Initialize()
         {
-            Observable.EveryUpdate()
-                .Subscribe(_ => OnUpdate())
+            Observable.EveryLateUpdate()
+                .Subscribe(_ => OnLateUpdate())
                 .AddTo(Disposer);
         }
 
-        private void OnUpdate()
+        private void OnLateUpdate()
         {
             var heading = _avatar.HeadingTo(this);
             var sqrDistance = heading.sqrMagnitude;
@@ -42,19 +42,38 @@ namespace _Source.Entities
             var isInRange = sqrDistance <= sqrRange;
             var isTouching = sqrDistance <= sqrTargetReachedThreshold;
 
-
             if (!isInRange || isTouching)
             {
                 return;
             }
 
-            Follow(heading);
+            Follow();
         }
 
-        private void Follow(Vector3 heading)
+        private void Follow()
         {
-            var translateTarget = heading.normalized * _novatarConfig.Speed.AsTimeAdjusted();
-            transform.Translate(translateTarget);
+            FaceTarget();
+            MoveForward();
+        }
+
+        private void FaceTarget()
+        {
+            var headingToTarget = _avatar.Position - Position;
+
+            if (Vector3.Angle(Position, headingToTarget) < _novatarConfig.TurnAngleThreshold)
+            {
+                return;
+            }
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(Vector3.forward, headingToTarget),
+                _novatarConfig.TurnSpeed.AsTimeAdjusted());
+        }
+
+        private void MoveForward()
+        {
+            transform.Translate(0, _novatarConfig.MovementSpeed.AsTimeAdjusted(), 0);
         }
     }
 }
