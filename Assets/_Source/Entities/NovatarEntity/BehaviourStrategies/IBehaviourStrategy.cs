@@ -4,7 +4,6 @@
     {
         BehaviourStrategyType StrategyType { get; }
 
-        void Activate();
-        void Deactivate();
+        void ExecuteLateUpdate();
     }
 }

@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UniRx;
 using Zenject;
 
 namespace _Source.Entities.NovatarEntity.BehaviourStrategies
 {
-    public class StrategySelector
+    public class StrategySelector : AbstractDisposable
     {
         public class Factory : PlaceholderFactory<Novatar, StrategySelector> { }
 
@@ -15,6 +16,7 @@ namespace _Source.Entities.NovatarEntity.BehaviourStrategies
         private readonly FriendBehaviourStrategy.Factory _friendStrategyFactory;
 
         private readonly List<IBehaviourStrategy> _behaviourStrategies;
+        private IBehaviourStrategy _currentStrategy;
 
         public StrategySelector(
             Novatar novatar,
@@ -26,6 +28,11 @@ namespace _Source.Entities.NovatarEntity.BehaviourStrategies
             _friendStrategyFactory = friendStrategyFactory;
 
             _behaviourStrategies = CreateStrategies();
+            SwitchTo(BehaviourStrategyType.Default);
+
+            Observable.EveryLateUpdate()
+                .Subscribe(_ => _currentStrategy?.ExecuteLateUpdate())
+                .AddTo(Disposer);
         }
 
         private List<IBehaviourStrategy> CreateStrategies()
@@ -52,16 +59,8 @@ namespace _Source.Entities.NovatarEntity.BehaviourStrategies
 
         public void SwitchTo(BehaviourStrategyType strategyTypeToActivate)
         {
-            _behaviourStrategies.ForEach(strategy =>
-            {
-                if (strategy.StrategyType != strategyTypeToActivate)
-                {
-                    strategy.Deactivate();
-                    return;
-                }
-
-                strategy.Activate();
-            });
+            _currentStrategy = _behaviourStrategies
+                .First(strategy => strategy.StrategyType == strategyTypeToActivate);
         }
     }
 }

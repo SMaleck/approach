@@ -1,5 +1,4 @@
 ﻿using _Source.Util;
-using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -12,8 +11,8 @@ namespace _Source.Entities
         private NovatarConfig _novatarConfig;
         private Avatar _avatar;
 
-        private float sqrRange;
-        private float sqrTargetReachedThreshold;
+        public float SqrRange => Mathf.Pow(_novatarConfig.Range, 2);
+        public float SqrTargetReachedThreshold => Mathf.Pow(_novatarConfig.TargetReachedThreshold, 2);
 
         [Inject]
         private void Inject(
@@ -22,35 +21,13 @@ namespace _Source.Entities
         {
             _novatarConfig = novatarConfig;
             _avatar = avatar;
-
-            sqrRange = Mathf.Pow(_novatarConfig.Range, 2);
-            sqrTargetReachedThreshold = Mathf.Pow(_novatarConfig.TargetReachedThreshold, 2);
         }
 
         public void Initialize()
         {
-            Observable.EveryLateUpdate()
-                .Subscribe(_ => OnLateUpdate())
-                .AddTo(Disposer);
         }
 
-        private void OnLateUpdate()
-        {
-            var heading = _avatar.HeadingTo(this);
-            var sqrDistance = heading.sqrMagnitude;
-
-            var isInRange = sqrDistance <= sqrRange;
-            var isTouching = sqrDistance <= sqrTargetReachedThreshold;
-
-            if (!isInRange || isTouching)
-            {
-                return;
-            }
-
-            Follow();
-        }
-
-        private void Follow()
+        public void FollowAvatar()
         {
             FaceTarget();
             MoveForward();

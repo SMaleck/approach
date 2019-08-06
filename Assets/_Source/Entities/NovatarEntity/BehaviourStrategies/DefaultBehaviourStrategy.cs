@@ -9,26 +9,35 @@ namespace _Source.Entities.NovatarEntity.BehaviourStrategies
 
 
         private readonly Novatar _novatar;
+        private readonly Avatar _avatar;
         private readonly DefaultBehaviourStrategyConfig _defaultStrategyConfig;
-        
+
         public DefaultBehaviourStrategy(
             Novatar novatar,
+            Avatar avatar,
             DefaultBehaviourStrategyConfig defaultStrategyConfig)
         {
             _novatar = novatar;
+            _avatar = avatar;
             _defaultStrategyConfig = defaultStrategyConfig;
         }
 
         public BehaviourStrategyType StrategyType => BehaviourStrategyType.Default;
 
-        public void Activate()
+        public void ExecuteLateUpdate()
         {
+            var heading = _avatar.HeadingTo(_novatar);
+            var sqrDistance = heading.sqrMagnitude;
 
-        }
+            var isInRange = sqrDistance <= _novatar.SqrRange;
+            var isTouching = sqrDistance <= _novatar.SqrTargetReachedThreshold;
 
-        public void Deactivate()
-        {
-            
+            if (!isInRange || isTouching)
+            {
+                return;
+            }
+
+            _novatar.FollowAvatar();
         }
     }
 }

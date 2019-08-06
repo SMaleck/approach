@@ -20,13 +20,7 @@ namespace _Source.Entities.NovatarEntity.BehaviourStrategies
         }
 
         public BehaviourStrategyType StrategyType => BehaviourStrategyType.Friend;
-
-        public void Activate()
-        {
-
-        }
-
-        public void Deactivate()
+        public void ExecuteLateUpdate()
         {
             
         }

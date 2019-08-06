@@ -1,4 +1,5 @@
 ﻿using _Source.Entities;
+using _Source.Entities.NovatarEntity.BehaviourStrategies;
 using _Source.Features.GameWorld.Data;
 using _Source.Util;
 using System;
@@ -13,6 +14,7 @@ namespace _Source.Features.GameWorld
         private readonly NovatarSpawnerConfig _novatarSpawnerConfig;
         private readonly Novatar.Factory _novatarFactory;
         private readonly NovatarConfig _novatarConfig;
+        private readonly StrategySelector.Factory _strategySelectorFactory;
         private readonly ScreenSizeModel _screenSizeModel;
 
         private readonly List<Novatar> _novatarPool;
@@ -21,11 +23,13 @@ namespace _Source.Features.GameWorld
             NovatarSpawnerConfig novatarSpawnerConfig,
             Novatar.Factory novatarFactory,
             NovatarConfig novatarConfig,
+            StrategySelector.Factory strategySelectorFactory,
             ScreenSizeModel screenSizeModel)
         {
             _novatarSpawnerConfig = novatarSpawnerConfig;
             _novatarFactory = novatarFactory;
             _novatarConfig = novatarConfig;
+            _strategySelectorFactory = strategySelectorFactory;
             _screenSizeModel = screenSizeModel;
 
             _novatarPool = new List<Novatar>();
@@ -47,8 +51,9 @@ namespace _Source.Features.GameWorld
 
             var spawnPosition = GetSpawnPosition(novatar);
             novatar.SetPosition(spawnPosition);
-
             novatar.Initialize();
+
+            _strategySelectorFactory.Create(novatar);
 
             _novatarPool.Add(novatar);
         }
