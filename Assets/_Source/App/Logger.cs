@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -17,8 +18,7 @@ namespace _Source.App
             return $"[{className}] {message}";
         }
 
-#if UNITY_EDITOR       
-
+        [Conditional("UNITY_EDITOR")]
         public static void Log(
             object payload = null,
             [CallerFilePath] string sourceFilePath = "")
@@ -26,29 +26,20 @@ namespace _Source.App
             UnityEngine.Debug.Log(BuildMessage(payload, sourceFilePath));
         }
 
+        [Conditional("UNITY_EDITOR")]
         public static void Warn(
             object payload = null,
             [CallerFilePath] string sourceFilePath = "")
         {
             UnityEngine.Debug.LogWarning(BuildMessage(payload, sourceFilePath));
         }
-        
+
+        [Conditional("UNITY_EDITOR")]
         public static void Error(
             object payload = null,
             [CallerFilePath] string sourceFilePath = "")
         {
             UnityEngine.Debug.LogError(BuildMessage(payload, sourceFilePath));
         }
-
-#endif
-
-
-#if !UNITY_EDITOR
-        
-        public static void Log(object payload = null, [CallerFilePath] string sourceFilePath = "") { }
-        public static void Warn(object payload = null, [CallerFilePath] string sourceFilePath = "") { }
-        public static void Error(object payload = null, [CallerFilePath] string sourceFilePath = "") { }
-
-#endif
     }
 }

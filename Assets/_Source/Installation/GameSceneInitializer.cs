@@ -23,7 +23,7 @@ namespace _Source.Installation
             avatar.Initialize();
 
             _container.BindInstance(avatar);
-            
+
             _survivalStatsViewFactory
                 .Create(_viewPrefabsConfig.SurvivalStatsViewPrefab)
                 .Initialize();
