@@ -5,6 +5,7 @@ namespace _Source.Entities
 {
     public class AbstractMonoEntity : AbstractDisposableMonoBehaviour
     {
+        public bool IsActive => isActiveAndEnabled;
         public Vector3 Position => transform.position;
         public Vector3 LocalPosition => transform.localPosition;
 
@@ -28,5 +29,9 @@ namespace _Source.Entities
             return distance.sqrMagnitude;
         }
 
+        public void SetActive(bool value)
+        {
+            gameObject.SetActive(value);
+        }
     }
 }

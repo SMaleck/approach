@@ -12,35 +12,38 @@ namespace _Source.Entities.Novatar
 
         private NovatarStateModel _novatarStateModel;
         private NovatarConfig _novatarConfig;
-        private AvatarEntity _avatar;
 
+        public Vector3 SpawnedAtPosition { get; private set; }
         public float SqrRange => Mathf.Pow(_novatarConfig.Range, 2);
         public float SqrTargetReachedThreshold => Mathf.Pow(_novatarConfig.TargetReachedThreshold, 2);
-
+        
         [Inject]
         private void Inject(
-            NovatarConfig novatarConfig,
-            AvatarEntity avatar)
+            NovatarConfig novatarConfig)
         {
             _novatarConfig = novatarConfig;
-            _avatar = avatar;
         }
 
         // ToDo Quick Hack Zenjectify this properly
-        public void SetupWithModel(NovatarStateModel novatarStateModel)
+        public void Setup(
+            NovatarStateModel novatarStateModel,
+            Vector3 spawnPosition)
         {
             _novatarStateModel = novatarStateModel;
+
+            SpawnedAtPosition = spawnPosition;
+            SetPosition(spawnPosition);
         }
 
-        public void FollowAvatar()
+        public void MoveTowards(Vector3 targetPosition)
         {
-            FaceTarget();
+            FaceTarget(targetPosition);
             MoveForward();
         }
 
-        private void FaceTarget()
+        private void FaceTarget(Vector3 targetPosition)
         {
-            var headingToTarget = _avatar.Position - Position;
+            var headingToTarget = targetPosition - Position;
 
             if (Vector3.Angle(Position, headingToTarget) < _novatarConfig.TurnAngleThreshold)
             {

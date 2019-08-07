@@ -8,6 +8,9 @@ namespace _Source.Features.NovatarBehaviour
     {
         public class Factory : PlaceholderFactory<NovatarStateModel> { }
 
+        private readonly ReactiveProperty<bool> _isAlive;
+        public IReadOnlyReactiveProperty<bool> IsAlive => _isAlive;
+
         private readonly ReactiveProperty<RelationshipStatus> _currentRelationshipStatus;
         public IReadOnlyReactiveProperty<RelationshipStatus> CurrentRelationshipStatus => _currentRelationshipStatus;
 
@@ -16,11 +19,17 @@ namespace _Source.Features.NovatarBehaviour
 
         public NovatarStateModel()
         {
+            _isAlive = new ReactiveProperty<bool>().AddTo(Disposer);
             _currentRelationshipStatus = new ReactiveProperty<RelationshipStatus>().AddTo(Disposer);
             _currentDistanceToAvatar = new ReactiveProperty<float>().AddTo(Disposer);
         }
 
-        public void SetCurrentStatus(RelationshipStatus value)
+        public void SetIsAlive(bool value)
+        {
+            _isAlive.Value = value;
+        }
+
+        public void SetCurrentRelationshipStatus(RelationshipStatus value)
         {
             _currentRelationshipStatus.Value = value;
         }

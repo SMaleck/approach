@@ -30,6 +30,7 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<GameRoundController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<ScreenSizeModel>().AsSingleNonLazy();
+            Container.BindInterfacesAndSelfTo<ScreenSizeController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
