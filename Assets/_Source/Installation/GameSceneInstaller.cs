@@ -1,8 +1,8 @@
-﻿using _Source.Entities;
-using _Source.Entities.Avatar;
+﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.GameRound;
 using _Source.Features.GameWorld;
+using _Source.Features.NovatarBehaviour;
 using _Source.Features.SurvivalStats;
 using _Source.Features.UserInput;
 using _Source.Util;
@@ -32,7 +32,8 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<ScreenSizeModel>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
-            Container.BindFactory<NovatarEntity, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+            Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
+            Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
 
             Container.BindInterfacesAndSelfTo<GameSceneInitializer>().AsSingleNonLazy();
         }

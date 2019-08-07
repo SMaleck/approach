@@ -1,14 +1,16 @@
 ﻿using _Source.Entities.Avatar;
+using _Source.Features.NovatarBehaviour;
 using _Source.Util;
 using UnityEngine;
 using Zenject;
 
 namespace _Source.Entities.Novatar
 {
-    public class NovatarEntity : AbstractMonoEntity, IInitializable
+    public class NovatarEntity : AbstractMonoEntity
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, NovatarEntity> { }
 
+        private NovatarStateModel _novatarStateModel;
         private NovatarConfig _novatarConfig;
         private AvatarEntity _avatar;
 
@@ -24,8 +26,10 @@ namespace _Source.Entities.Novatar
             _avatar = avatar;
         }
 
-        public void Initialize()
+        // ToDo Quick Hack Zenjectify this properly
+        public void SetupWithModel(NovatarStateModel novatarStateModel)
         {
+            _novatarStateModel = novatarStateModel;
         }
 
         public void FollowAvatar()

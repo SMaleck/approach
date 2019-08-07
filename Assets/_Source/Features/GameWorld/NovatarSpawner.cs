@@ -1,5 +1,6 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.GameWorld.Data;
+using _Source.Features.NovatarBehaviour;
 using _Source.Util;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace _Source.Features.GameWorld
     {
         private readonly NovatarSpawnerConfig _novatarSpawnerConfig;
         private readonly NovatarEntity.Factory _novatarFactory;
+        private readonly NovatarStateModel.Factory _novatarStateModelFactory;
         private readonly NovatarConfig _novatarConfig;
         private readonly NovatarBehaviourTree.Factory _novatarBehaviourTreeFactory;
         private readonly ScreenSizeModel _screenSizeModel;
@@ -20,14 +22,16 @@ namespace _Source.Features.GameWorld
 
         public NovatarSpawner(
             NovatarSpawnerConfig novatarSpawnerConfig,
-            NovatarEntity.Factory novatarFactory,
             NovatarConfig novatarConfig,
+            NovatarEntity.Factory novatarFactory,
+            NovatarStateModel.Factory novatarStateModelFactory,
             NovatarBehaviourTree.Factory novatarBehaviourTreeFactory,
             ScreenSizeModel screenSizeModel)
         {
             _novatarSpawnerConfig = novatarSpawnerConfig;
-            _novatarFactory = novatarFactory;
             _novatarConfig = novatarConfig;
+            _novatarFactory = novatarFactory;
+            _novatarStateModelFactory = novatarStateModelFactory;
             _novatarBehaviourTreeFactory = novatarBehaviourTreeFactory;
             _screenSizeModel = screenSizeModel;
 
@@ -45,15 +49,21 @@ namespace _Source.Features.GameWorld
                 return;
             }
 
+            var novatarStateModel = _novatarStateModelFactory
+                .Create()
+                .AddTo(Disposer);
+
             var novatar = _novatarFactory.Create(
                 _novatarConfig.NovatarPrefab);
 
+            novatar.SetupWithModel(novatarStateModel);
+
             var spawnPosition = GetSpawnPosition(novatar);
             novatar.SetPosition(spawnPosition);
-            novatar.Initialize();
 
             _novatarBehaviourTreeFactory
-                .Create(novatar)
+                .Create(novatar, novatarStateModel)
+                .AddTo(Disposer)
                 .Initialize();
 
             _novatarPool.Add(novatar);

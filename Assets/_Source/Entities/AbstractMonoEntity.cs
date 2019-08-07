@@ -21,9 +21,11 @@ namespace _Source.Entities
             transform.localPosition = position;
         }
 
-        public Vector3 HeadingTo(AbstractMonoEntity otherEntity)
+        public float GetSquaredDistanceTo(AbstractMonoEntity otherEntity)
         {
-            return Position - otherEntity.Position;
+            var distance = Position - otherEntity.Position;
+
+            return distance.sqrMagnitude;
         }
 
     }
