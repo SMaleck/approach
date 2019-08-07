@@ -1,15 +1,16 @@
-﻿using _Source.Util;
+﻿using _Source.Entities.Avatar;
+using _Source.Util;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Entities
+namespace _Source.Entities.Novatar
 {
-    public class Novatar : AbstractMonoEntity, IInitializable
+    public class NovatarEntity : AbstractMonoEntity, IInitializable
     {
-        public class Factory : PlaceholderFactory<UnityEngine.Object, Novatar> { }
+        public class Factory : PlaceholderFactory<UnityEngine.Object, NovatarEntity> { }
 
         private NovatarConfig _novatarConfig;
-        private Avatar _avatar;
+        private AvatarEntity _avatar;
 
         public float SqrRange => Mathf.Pow(_novatarConfig.Range, 2);
         public float SqrTargetReachedThreshold => Mathf.Pow(_novatarConfig.TargetReachedThreshold, 2);
@@ -17,7 +18,7 @@ namespace _Source.Entities
         [Inject]
         private void Inject(
             NovatarConfig novatarConfig,
-            Avatar avatar)
+            AvatarEntity avatar)
         {
             _novatarConfig = novatarConfig;
             _avatar = avatar;

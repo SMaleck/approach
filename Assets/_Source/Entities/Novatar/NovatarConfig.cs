@@ -1,13 +1,13 @@
 ﻿using _Source.App;
 using UnityEngine;
 
-namespace _Source.Entities
+namespace _Source.Entities.Novatar
 {
     [CreateAssetMenu(fileName = nameof(NovatarConfig), menuName = Constants.ConfigRootPath + "/" + nameof(NovatarConfig))]
     public class NovatarConfig : ScriptableObject
     {
-        [SerializeField] private Novatar _novatarPrefab;
-        public Novatar NovatarPrefab => _novatarPrefab;
+        [SerializeField] private NovatarEntity _novatarPrefab;
+        public NovatarEntity NovatarPrefab => _novatarPrefab;
 
         [Header("Movement")]
         [SerializeField] private float _range;

@@ -1,5 +1,4 @@
-﻿using _Source.Entities;
-using _Source.Entities.NovatarEntity.BehaviourStrategies;
+﻿using _Source.Entities.Novatar;
 using _Source.Features.GameWorld.Data;
 using _Source.Util;
 using System;
@@ -12,27 +11,27 @@ namespace _Source.Features.GameWorld
     public class NovatarSpawner : AbstractDisposable
     {
         private readonly NovatarSpawnerConfig _novatarSpawnerConfig;
-        private readonly Novatar.Factory _novatarFactory;
+        private readonly NovatarEntity.Factory _novatarFactory;
         private readonly NovatarConfig _novatarConfig;
-        private readonly StrategySelector.Factory _strategySelectorFactory;
+        private readonly NovatarBehaviourTree.Factory _novatarBehaviourTreeFactory;
         private readonly ScreenSizeModel _screenSizeModel;
 
-        private readonly List<Novatar> _novatarPool;
+        private readonly List<NovatarEntity> _novatarPool;
 
         public NovatarSpawner(
             NovatarSpawnerConfig novatarSpawnerConfig,
-            Novatar.Factory novatarFactory,
+            NovatarEntity.Factory novatarFactory,
             NovatarConfig novatarConfig,
-            StrategySelector.Factory strategySelectorFactory,
+            NovatarBehaviourTree.Factory novatarBehaviourTreeFactory,
             ScreenSizeModel screenSizeModel)
         {
             _novatarSpawnerConfig = novatarSpawnerConfig;
             _novatarFactory = novatarFactory;
             _novatarConfig = novatarConfig;
-            _strategySelectorFactory = strategySelectorFactory;
+            _novatarBehaviourTreeFactory = novatarBehaviourTreeFactory;
             _screenSizeModel = screenSizeModel;
 
-            _novatarPool = new List<Novatar>();
+            _novatarPool = new List<NovatarEntity>();
 
             Observable.Interval(TimeSpan.FromSeconds(_novatarSpawnerConfig.SpawnIntervalSeconds))
                 .Subscribe(_ => OnInterval())
@@ -53,12 +52,14 @@ namespace _Source.Features.GameWorld
             novatar.SetPosition(spawnPosition);
             novatar.Initialize();
 
-            _strategySelectorFactory.Create(novatar);
+            _novatarBehaviourTreeFactory
+                .Create(novatar)
+                .Initialize();
 
             _novatarPool.Add(novatar);
         }
 
-        private Vector3 GetSpawnPosition(Novatar novatar)
+        private Vector3 GetSpawnPosition(NovatarEntity novatar)
         {
             var spawnSideInt = UnityEngine.Random.Range(0, 4);
             var spawnSide = (ScreenSide)spawnSideInt;

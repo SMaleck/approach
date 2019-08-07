@@ -1,5 +1,6 @@
 ﻿using _Source.Entities;
-using _Source.Entities.NovatarEntity.BehaviourStrategies;
+using _Source.Entities.Avatar;
+using _Source.Entities.Novatar;
 using _Source.Features.GameRound;
 using _Source.Features.GameWorld;
 using _Source.Features.SurvivalStats;
@@ -13,8 +14,8 @@ namespace _Source.Installation
     {
         public override void InstallBindings()
         {
-            Container.BindPrefabFactory<Avatar, Avatar.Factory>();
-            Container.BindPrefabFactory<Novatar, Novatar.Factory>();
+            Container.BindPrefabFactory<AvatarEntity, AvatarEntity.Factory>();
+            Container.BindPrefabFactory<NovatarEntity, NovatarEntity.Factory>();
 
             Container.BindPrefabFactory<SurvivalStatsView, SurvivalStatsView.Factory>();
             Container.BindPrefabFactory<RoundEndedView, RoundEndedView.Factory>();
@@ -31,9 +32,7 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<ScreenSizeModel>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
-            Container.BindFactory<Novatar, StrategySelector, StrategySelector.Factory>();
-            Container.BindFactory<Novatar, DefaultBehaviourStrategy, DefaultBehaviourStrategy.Factory>();
-            Container.BindFactory<Novatar, FriendBehaviourStrategy, FriendBehaviourStrategy.Factory>();
+            Container.BindFactory<NovatarEntity, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
 
             Container.BindInterfacesAndSelfTo<GameSceneInitializer>().AsSingleNonLazy();
         }

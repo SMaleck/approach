@@ -1,6 +1,6 @@
 ﻿using _Source.App;
-using _Source.Entities;
-using _Source.Entities.NovatarEntity.BehaviourStrategies;
+using _Source.Entities.Avatar;
+using _Source.Entities.Novatar;
 using _Source.Features.GameWorld.Data;
 using _Source.Installation.Data;
 using UnityEngine;
@@ -15,8 +15,6 @@ namespace _Source.Installation
         [SerializeField] private NovatarConfig _novatarConfig;
         [SerializeField] private ViewPrefabsConfig _viewPrefabsConfig;
         [SerializeField] private NovatarSpawnerConfig _novatarSpawnerConfig;
-        [SerializeField] private DefaultBehaviourStrategyConfig _defaultBehaviourStrategyConfig;
-        [SerializeField] private FriendBehaviourStrategyConfig _friendBehaviourStrategyConfig;
 
         public override void InstallBindings()
         {
@@ -24,8 +22,6 @@ namespace _Source.Installation
             Container.BindInstance(_novatarConfig);
             Container.BindInstances(_viewPrefabsConfig);
             Container.BindInstances(_novatarSpawnerConfig);
-            Container.BindInstances(_defaultBehaviourStrategyConfig);
-            Container.BindInstances(_friendBehaviourStrategyConfig);
         }
     }
 }

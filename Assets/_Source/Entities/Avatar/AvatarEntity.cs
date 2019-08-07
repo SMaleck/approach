@@ -3,11 +3,11 @@ using _Source.Util;
 using UniRx;
 using Zenject;
 
-namespace _Source.Entities
+namespace _Source.Entities.Avatar
 {
-    public class Avatar : AbstractMonoEntity, IInitializable
+    public class AvatarEntity : AbstractMonoEntity, IInitializable
     {
-        public class Factory : PlaceholderFactory<UnityEngine.Object, Avatar> { }
+        public class Factory : PlaceholderFactory<UnityEngine.Object, AvatarEntity> { }
 
         private AvatarConfig _avatarConfig;
         private IReadOnlyUserInputModel _userInputModel;
