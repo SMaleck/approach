@@ -2,6 +2,7 @@
 using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.GameWorld.Data;
+using _Source.Features.NovatarBehaviour.Data;
 using _Source.Installation.Data;
 using UnityEngine;
 using Zenject;
@@ -15,13 +16,15 @@ namespace _Source.Installation
         [SerializeField] private NovatarConfig _novatarConfig;
         [SerializeField] private ViewPrefabsConfig _viewPrefabsConfig;
         [SerializeField] private NovatarSpawnerConfig _novatarSpawnerConfig;
-
+        [SerializeField] private BehaviourTreeConfig _behaviourTreeConfig;
+        
         public override void InstallBindings()
         {
             Container.BindInstances(_avatarConfig);
             Container.BindInstance(_novatarConfig);
             Container.BindInstances(_viewPrefabsConfig);
             Container.BindInstances(_novatarSpawnerConfig);
+            Container.BindInstances(_behaviourTreeConfig);
         }
     }
 }

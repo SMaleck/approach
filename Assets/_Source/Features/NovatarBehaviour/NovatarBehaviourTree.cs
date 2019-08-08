@@ -1,9 +1,10 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.GameWorld;
+using _Source.Features.NovatarBehaviour.Data;
 using _Source.Util;
 using FluentBehaviourTree;
-using System;
+using System.Linq;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -16,7 +17,7 @@ namespace _Source.Features.NovatarBehaviour
 
         private readonly NovatarEntity _novatar;
         private readonly NovatarStateModel _novatarStateModel;
-        private readonly NovatarConfig _novatarConfig;
+        private readonly BehaviourTreeConfig _behaviourTreeConfig;
         private readonly AvatarEntity _avatar;
         private readonly ScreenSizeController _screenSizeController;
 
@@ -25,13 +26,13 @@ namespace _Source.Features.NovatarBehaviour
         public NovatarBehaviourTree(
             NovatarEntity novatar,
             NovatarStateModel novatarStateModel,
-            NovatarConfig novatarConfig,
+            BehaviourTreeConfig behaviourTreeConfig,
             AvatarEntity avatar,
             ScreenSizeController screenSizeController)
         {
             _novatar = novatar;
             _novatarStateModel = novatarStateModel;
-            _novatarConfig = novatarConfig;
+            _behaviourTreeConfig = behaviourTreeConfig;
             _avatar = avatar;
             _screenSizeController = screenSizeController;
         }
@@ -51,18 +52,23 @@ namespace _Source.Features.NovatarBehaviour
             var telemetryTree = CreateTelemetryTree();
             var unacquaintedTree = CreateUnacquaintedTree();
             var neutralTree = CreateNeutralTree();
+            var friendTree = CreateFriendTree();
 
             return new BehaviourTreeBuilder()
-                .Parallel("Tree", 20, 20)
+                .Parallel("Tree", 1, 1)
                     .Splice(telemetryTree)
                     .Selector("RelationshipTreeSelector")
                         .Sequence("UnacquaintedSequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Unacquainted))
                             .Splice(unacquaintedTree)
                             .End()
-                        .Sequence("UnacquaintedSequence")
+                        .Sequence("NeutralSequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Neutral))
                             .Splice(neutralTree)
+                            .End()
+                        .Sequence("FriendSequence")
+                            .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Friend))
+                            .Splice(friendTree)
                             .End()
                     .End()
                 .End()
@@ -72,7 +78,7 @@ namespace _Source.Features.NovatarBehaviour
         private IBehaviourTreeNode CreateTelemetryTree()
         {
             return new BehaviourTreeBuilder()
-                .Parallel("TelemetryTree", 20, 20)
+                .Parallel("TelemetryTree", 1, 1)
                     .Do(nameof(TrackTimePassedInCurrentStatus), TrackTimePassedInCurrentStatus)
                     .Do(nameof(CalculateDistanceToAvatar), t => CalculateDistanceToAvatar())
                     .Do(nameof(EvaluateRelationshipOnTime), t => EvaluateRelationshipOnTime())
@@ -112,10 +118,34 @@ namespace _Source.Features.NovatarBehaviour
                 .Build();
         }
 
+        private IBehaviourTreeNode CreateFriendTree()
+        {
+            return new BehaviourTreeBuilder()
+                .Selector("FriendTree")
+                    .Sequence("FollowAvatar")
+                        .Condition(nameof(IsInFollowRange), t => IsInFollowRange())
+                        .Do(nameof(FollowAvatar), t => FollowAvatar())
+                        .End()
+                    .Sequence("FallingBehind")
+                        .Do(nameof(TrackTimePassedSinceFallingBehind), TrackTimePassedSinceFallingBehind)
+                        .Do(nameof(EvaluateRelationshipOnFallingBehind), t => EvaluateRelationshipOnFallingBehind())
+                        .End()
+                .End()
+                .Build();
+        }
+
         private BehaviourTreeStatus TrackTimePassedInCurrentStatus(TimeData t)
         {
             var currentTimePassed = _novatarStateModel.TimePassedInCurrentStatusSeconds.Value;
             _novatarStateModel.SetTimePassedInCurrentStatusSeconds(currentTimePassed + t.deltaTime);
+
+            return BehaviourTreeStatus.Success;
+        }
+
+        private BehaviourTreeStatus TrackTimePassedSinceFallingBehind(TimeData t)
+        {
+            var currentTimePassed = _novatarStateModel.TimePassedSinceFallingBehindSeconds.Value;
+            _novatarStateModel.SetTimePassedSinceFallingBehindSeconds(currentTimePassed + t.deltaTime);
 
             return BehaviourTreeStatus.Success;
         }
@@ -153,6 +183,7 @@ namespace _Source.Features.NovatarBehaviour
 
         private BehaviourTreeStatus FollowAvatar()
         {
+            _novatarStateModel.SetTimePassedSinceFallingBehindSeconds(0);
             _novatar.MoveTowards(_avatar.Position);
             return BehaviourTreeStatus.Success;
         }
@@ -177,17 +208,16 @@ namespace _Source.Features.NovatarBehaviour
             switch (currentRelationship)
             {
                 case RelationshipStatus.Unacquainted:
-                    nextStatus = RelationshipStatus.Neutral;
+                    nextStatus = GetWeightedRandomRelationshipStatus();
                     break;
 
                 case RelationshipStatus.Enemy:
                     break;
 
+                // Some relationships don't change on touch
+                case RelationshipStatus.Neutral:
                 case RelationshipStatus.Friend:
                     break;
-
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
 
             _novatarStateModel.SetCurrentRelationshipStatus(nextStatus);
@@ -199,7 +229,7 @@ namespace _Source.Features.NovatarBehaviour
             var currentRelationship = _novatarStateModel.CurrentRelationshipStatus.Value;
             var currentTimePassed = _novatarStateModel.TimePassedInCurrentStatusSeconds.Value;
 
-            var timeoutSeconds = _novatarConfig.GetRelationshipTimeout(currentRelationship);
+            var timeoutSeconds = _behaviourTreeConfig.GetEvaluationTimeoutSeconds(currentRelationship);
 
             // 0 -> status does not change spontaneously
             if (timeoutSeconds <= 0 || currentTimePassed < timeoutSeconds)
@@ -208,7 +238,7 @@ namespace _Source.Features.NovatarBehaviour
             }
 
             // Switch to NEUTRAL based on Dice Roll
-            var switchChance = _novatarConfig.GetRelationshipSwitchChance(currentRelationship);
+            var switchChance = _behaviourTreeConfig.GetTimeBasedSwitchChance(currentRelationship);
             var diceRoll = UnityEngine.Random.Range(0f, 1f);
 
             if (diceRoll <= switchChance)
@@ -216,7 +246,42 @@ namespace _Source.Features.NovatarBehaviour
                 _novatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Neutral);
             }
 
+            // Reset Time, so we re-evaluate only when the next interval is over
+            _novatarStateModel.SetTimePassedInCurrentStatusSeconds(0);
+
             return BehaviourTreeStatus.Success;
+        }
+
+        private BehaviourTreeStatus EvaluateRelationshipOnFallingBehind()
+        {
+            var secondsSinceFallingBehind = _novatarStateModel.TimePassedSinceFallingBehindSeconds.Value;
+            if (secondsSinceFallingBehind >= _behaviourTreeConfig.MaxSecondsToFallBehind)
+            {
+                _novatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Neutral);
+            }
+
+            return BehaviourTreeStatus.Success;
+        }
+
+        private RelationshipStatus GetWeightedRandomRelationshipStatus()
+        {
+            var currentRelationship = _novatarStateModel.CurrentRelationshipStatus.Value;
+            var switchChances = _behaviourTreeConfig.GetRelationshipSwitchWeights(currentRelationship);
+
+            var totalWeight = switchChances.Sum(item => item.WeightedChance);
+            var randomNumber = UnityEngine.Random.Range(0f, totalWeight);
+
+            foreach (var switchChance in switchChances)
+            {
+                if (randomNumber < switchChance.WeightedChance)
+                {
+                    return switchChance.SwitchToRelationship;
+                }
+
+                randomNumber = randomNumber - switchChance.WeightedChance;
+            }
+
+            return currentRelationship;
         }
     }
 }
