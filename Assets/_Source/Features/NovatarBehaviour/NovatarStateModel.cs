@@ -17,11 +17,15 @@ namespace _Source.Features.NovatarBehaviour
         private readonly ReactiveProperty<float> _currentDistanceToAvatar;
         public IReadOnlyReactiveProperty<float> CurrentDistanceToAvatar => _currentDistanceToAvatar;
 
+        private readonly ReactiveProperty<double> _timePassedInCurrentStatusSeconds;
+        public IReadOnlyReactiveProperty<double> TimePassedInCurrentStatusSeconds => _timePassedInCurrentStatusSeconds;
+
         public NovatarStateModel()
         {
             _isAlive = new ReactiveProperty<bool>().AddTo(Disposer);
             _currentRelationshipStatus = new ReactiveProperty<RelationshipStatus>().AddTo(Disposer);
             _currentDistanceToAvatar = new ReactiveProperty<float>().AddTo(Disposer);
+            _timePassedInCurrentStatusSeconds = new ReactiveProperty<double>().AddTo(Disposer);
         }
 
         public void SetIsAlive(bool value)
@@ -37,6 +41,11 @@ namespace _Source.Features.NovatarBehaviour
         public void SetCurrentDistanceToAvatar(float value)
         {
             _currentDistanceToAvatar.Value = value;
+        }
+
+        public void SetTimePassedInCurrentStatusSeconds(double value)
+        {
+            _timePassedInCurrentStatusSeconds.Value = value;
         }
     }
 }
