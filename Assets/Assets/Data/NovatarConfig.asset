@@ -19,16 +19,4 @@ MonoBehaviour:
   _movementSpeed: 2
   _turnSpeed: 5
   _turnAngleThreshold: 5
-  _relationshipTimeouts:
-  - _relationship: 0
-    _evaluationTimeoutSeconds: 5
-    _switchChance: 0.5
-  - _relationship: 1
-    _evaluationTimeoutSeconds: 0
-    _switchChance: 0
-  - _relationship: 2
-    _evaluationTimeoutSeconds: 0
-    _switchChance: 0
-  - _relationship: 3
-    _evaluationTimeoutSeconds: 0
-    _switchChance: 0
+  _touchDamage: 1

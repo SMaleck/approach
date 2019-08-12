@@ -9,7 +9,14 @@ namespace _Source.Entities.Avatar
         [SerializeField] private AvatarEntity _avatarPrefab;
         public AvatarEntity AvatarPrefab => _avatarPrefab;
 
+
+        [Header("Movement")]
         [SerializeField] private float _speed;
         public float Speed => _speed;
+
+
+        [Header("Health")]
+        [SerializeField] private double _health;
+        public double Health => _health;
     }
 }

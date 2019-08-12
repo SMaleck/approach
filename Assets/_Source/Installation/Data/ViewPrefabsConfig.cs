@@ -1,7 +1,7 @@
 ﻿using _Source.App;
+using _Source.Features.AvatarState;
 using _Source.Features.GameRound;
 using _Source.Features.SceneManagement;
-using _Source.Features.SurvivalStats;
 using UnityEngine;
 
 namespace _Source.Installation.Data

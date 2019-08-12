@@ -28,5 +28,9 @@ namespace _Source.Entities.Novatar
 
         [SerializeField] private float _turnAngleThreshold;
         public float TurnAngleThreshold => _turnAngleThreshold;
+
+        [Header("Damage")]
+        [SerializeField] private double _touchDamage;
+        public double TouchDamage => _touchDamage;
     }
 }

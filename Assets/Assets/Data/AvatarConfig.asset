@@ -15,3 +15,4 @@ MonoBehaviour:
   _avatarPrefab: {fileID: 3166036521292648234, guid: abb01a1fe25f44646b2507ff9c4275c3,
     type: 3}
   _speed: 5
+  _health: 10

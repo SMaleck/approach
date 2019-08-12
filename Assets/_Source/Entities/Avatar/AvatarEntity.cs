@@ -1,9 +1,6 @@
 ﻿using _Source.Features.UserInput;
 using _Source.Util;
-using System.Collections.Generic;
-using System.Linq;
 using UniRx;
-using UnityEngine;
 using Zenject;
 
 namespace _Source.Entities.Avatar
@@ -12,7 +9,6 @@ namespace _Source.Entities.Avatar
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, AvatarEntity> { }
 
-        [SerializeField] private List<Transform> _friendSlots;
 
         private AvatarConfig _avatarConfig;
         private IReadOnlyUserInputModel _userInputModel;
@@ -49,11 +45,6 @@ namespace _Source.Entities.Avatar
             var translateTarget = _userInputModel.InputVector.Value * timeAdjustedSpeed;
 
             transform.Translate(translateTarget);
-        }
-
-        public Transform GetFreeFriendSlot()
-        {
-            return _friendSlots.FirstOrDefault(slot => slot.childCount <= 0);
         }
     }
 }

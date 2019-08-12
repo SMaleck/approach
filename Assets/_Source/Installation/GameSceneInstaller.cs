@@ -1,9 +1,9 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
+using _Source.Features.AvatarState;
 using _Source.Features.GameRound;
 using _Source.Features.GameWorld;
 using _Source.Features.NovatarBehaviour;
-using _Source.Features.SurvivalStats;
 using _Source.Features.UserInput;
 using _Source.Util;
 using Zenject;
@@ -23,7 +23,7 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<UserInputModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<UserInputController>().AsSingleNonLazy();
 
-            Container.BindInterfacesAndSelfTo<SurvivalStatsModel>().AsSingleNonLazy();
+            Container.BindInterfacesAndSelfTo<AvatarStateModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<SurvivalStatsController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<GameRoundModel>().AsSingleNonLazy();

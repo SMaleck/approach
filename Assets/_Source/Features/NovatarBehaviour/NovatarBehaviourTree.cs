@@ -5,6 +5,7 @@ using _Source.Features.NovatarBehaviour.Data;
 using _Source.Util;
 using FluentBehaviourTree;
 using System.Linq;
+using _Source.Features.AvatarState;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -17,24 +18,30 @@ namespace _Source.Features.NovatarBehaviour
 
         private readonly NovatarEntity _novatar;
         private readonly NovatarStateModel _novatarStateModel;
+        private readonly NovatarConfig _novatarConfig;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
         private readonly AvatarEntity _avatar;
         private readonly ScreenSizeController _screenSizeController;
+        private readonly IDamageReceiver _avatarDamageReceiver;
 
         private IBehaviourTreeNode _behaviourTree;
 
         public NovatarBehaviourTree(
             NovatarEntity novatar,
             NovatarStateModel novatarStateModel,
+            NovatarConfig novatarConfig,
             BehaviourTreeConfig behaviourTreeConfig,
             AvatarEntity avatar,
-            ScreenSizeController screenSizeController)
+            ScreenSizeController screenSizeController,
+            IDamageReceiver avatarDamageReceiver)
         {
             _novatar = novatar;
             _novatarStateModel = novatarStateModel;
+            _novatarConfig = novatarConfig;
             _behaviourTreeConfig = behaviourTreeConfig;
             _avatar = avatar;
             _screenSizeController = screenSizeController;
+            _avatarDamageReceiver = avatarDamageReceiver;
         }
 
         public void Initialize()
@@ -53,6 +60,7 @@ namespace _Source.Features.NovatarBehaviour
             var unacquaintedTree = CreateUnacquaintedTree();
             var neutralTree = CreateNeutralTree();
             var friendTree = CreateFriendTree();
+            var enemyTree = CreateEnemyTree();
 
             return new BehaviourTreeBuilder()
                 .Parallel("Tree", 1, 1)
@@ -69,6 +77,10 @@ namespace _Source.Features.NovatarBehaviour
                         .Sequence("FriendSequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Friend))
                             .Splice(friendTree)
+                            .End()
+                        .Sequence("EnemySequence")
+                            .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Enemy))
+                            .Splice(enemyTree)
                             .End()
                     .End()
                 .End()
@@ -129,6 +141,18 @@ namespace _Source.Features.NovatarBehaviour
                     .Sequence("FallingBehind")
                         .Do(nameof(TrackTimePassedSinceFallingBehind), TrackTimePassedSinceFallingBehind)
                         .Do(nameof(EvaluateRelationshipOnFallingBehind), t => EvaluateRelationshipOnFallingBehind())
+                        .End()
+                .End()
+                .Build();
+        }
+
+        private IBehaviourTreeNode CreateEnemyTree()
+        {
+            return new BehaviourTreeBuilder()
+                .Selector("EnemyTree")
+                    .Sequence("DamageAvatar")
+                        .Condition(nameof(IsInTouchRange), t => IsInTouchRange())
+                        .Do(nameof(DamageAvatar), t => DamageAvatar())
                         .End()
                 .End()
                 .Build();
@@ -282,6 +306,15 @@ namespace _Source.Features.NovatarBehaviour
             }
 
             return currentRelationship;
+        }
+
+        private BehaviourTreeStatus DamageAvatar()
+        {
+            var damage = _novatarConfig.TouchDamage;
+            _avatarDamageReceiver.ReceiveDamage(damage);
+            DeactivateSelf();
+
+            return BehaviourTreeStatus.Success;
         }
     }
 }

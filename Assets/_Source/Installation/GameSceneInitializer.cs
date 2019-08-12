@@ -1,7 +1,7 @@
 ﻿using _Source.Entities;
 using _Source.Entities.Avatar;
+using _Source.Features.AvatarState;
 using _Source.Features.GameRound;
-using _Source.Features.SurvivalStats;
 using _Source.Installation.Data;
 using Zenject;
 

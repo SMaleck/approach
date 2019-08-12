@@ -41,6 +41,11 @@ namespace _Source.Entities.Novatar
             MoveForward();
         }
 
+        public void DamageTarget()
+        {
+
+        }
+
         private void FaceTarget(Vector3 targetPosition)
         {
             var headingToTarget = targetPosition - Position;

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using _Source.Entities.Avatar;
 using _Source.Util;
+using System;
 using UniRx;
 
-namespace _Source.Features.SurvivalStats
+namespace _Source.Features.AvatarState
 {
-    public class SurvivalStatsModel : AbstractDisposable, IReadOnlySurvivalStatsModel
+    public class AvatarStateModel : AbstractDisposable, IReadOnlyAvatarStateModel
     {
         private readonly ReactiveProperty<DateTime> _startedAt;
         public IReadOnlyReactiveProperty<DateTime> StartedAt => _startedAt;
@@ -12,14 +13,20 @@ namespace _Source.Features.SurvivalStats
         private readonly ReactiveProperty<double> _survivalSeconds;
         public IReadOnlyReactiveProperty<double> SurvivalSeconds => _survivalSeconds;
 
-        private readonly ReactiveProperty<bool> _isAlive;
-        public IReadOnlyReactiveProperty<bool> IsAlive => _isAlive;
+        public IReadOnlyReactiveProperty<bool> IsAlive { get; }
 
-        public SurvivalStatsModel()
+        private readonly ReactiveProperty<double> _health;
+        public IReadOnlyReactiveProperty<double> Health => _health;
+
+        public AvatarStateModel(AvatarConfig avatarConfig)
         {
             _startedAt = new ReactiveProperty<DateTime>().AddTo(Disposer);
             _survivalSeconds = new ReactiveProperty<double>().AddTo(Disposer);
-            _isAlive = new ReactiveProperty<bool>(true).AddTo(Disposer);
+            _health = new ReactiveProperty<double>(avatarConfig.Health).AddTo(Disposer);
+
+            IsAlive = _health.Select(health => health > 0)
+                .ToReadOnlyReactiveProperty()
+                .AddTo(Disposer);
         }
 
         public void SetStartedAt(DateTime value)
@@ -32,9 +39,9 @@ namespace _Source.Features.SurvivalStats
             _survivalSeconds.Value = value;
         }
 
-        public void SetIsAlive(bool value)
+        public void SetHealth(double value)
         {
-            _isAlive.Value = value;
+            _health.Value = value;
         }
     }
 }
