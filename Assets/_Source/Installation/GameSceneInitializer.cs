@@ -1,6 +1,7 @@
 ﻿using _Source.Entities;
+using _Source.Entities.Avatar;
+using _Source.Features.AvatarState;
 using _Source.Features.GameRound;
-using _Source.Features.SurvivalStats;
 using _Source.Installation.Data;
 using Zenject;
 
@@ -10,7 +11,7 @@ namespace _Source.Installation
     {
         [Inject] private DiContainer _container;
 
-        [Inject] private Avatar.Factory _avatarFactory;
+        [Inject] private AvatarEntity.Factory _avatarFactory;
         [Inject] private AvatarConfig _avatarConfig;
 
         [Inject] private ViewPrefabsConfig _viewPrefabsConfig;

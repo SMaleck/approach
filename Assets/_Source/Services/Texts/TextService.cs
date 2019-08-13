@@ -10,5 +10,9 @@ namespace _Source.Services.Texts
             return TimeSpan.FromSeconds(flooredSeconds).ToString("c");
         }
 
+        public static string HealthAmount(double amount)
+        {
+            return Math.Floor(amount).ToString();
+        }
     }
 }

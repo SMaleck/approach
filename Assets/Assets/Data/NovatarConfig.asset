@@ -19,4 +19,4 @@ MonoBehaviour:
   _movementSpeed: 2
   _turnSpeed: 5
   _turnAngleThreshold: 5
-  _spawnIntervalSeconds: 5
+  _touchDamage: 1

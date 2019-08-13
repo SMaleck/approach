@@ -1,4 +1,4 @@
-﻿using _Source.Features.SurvivalStats;
+﻿using _Source.Features.AvatarState;
 using _Source.Util;
 using UniRx;
 
@@ -10,7 +10,7 @@ namespace _Source.Features.GameRound
 
         public GameRoundController(
             GameRoundModel gameRoundModel,
-            SurvivalStatsModel survivalStatsModel)
+            AvatarStateModel survivalStatsModel)
         {
             _gameRoundModel = gameRoundModel;
             survivalStatsModel.IsAlive

@@ -1,6 +1,5 @@
 ﻿using _Source.Entities;
 using _Source.Features.GameRound;
-using _Source.Features.SurvivalStats;
 using _Source.Features.UserInput;
 using _Source.Util;
 using Zenject;

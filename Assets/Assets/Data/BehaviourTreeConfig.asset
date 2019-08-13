@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55f7006cff029e9429f72cabd18cdb95, type: 3}
+  m_Name: BehaviourTreeConfig
+  m_EditorClassIdentifier: 
+  _relationshipConfigItems:
+  - _relationship: 0
+    _evaluationTimeoutSeconds: 600
+    _timeBasedSwitchChance: 0.25
+    _relationshipSwitchWeights:
+    - _switchToRelationship: 1
+      _weightedChance: 0
+    - _switchToRelationship: 2
+      _weightedChance: 0
+    - _switchToRelationship: 3
+      _weightedChance: 1
+  - _relationship: 1
+    _evaluationTimeoutSeconds: 0
+    _timeBasedSwitchChance: 0
+    _relationshipSwitchWeights: []
+  - _relationship: 2
+    _evaluationTimeoutSeconds: 0
+    _timeBasedSwitchChance: 0
+    _relationshipSwitchWeights: []
+  - _relationship: 3
+    _evaluationTimeoutSeconds: 10
+    _timeBasedSwitchChance: 0.15
+    _relationshipSwitchWeights: []
+  _maxSecondsToFallBehind: 1
