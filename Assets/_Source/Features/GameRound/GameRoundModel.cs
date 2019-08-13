@@ -3,13 +3,13 @@ using UniRx;
 
 namespace _Source.Features.GameRound
 {
-    public class GameRoundModel : AbstractDisposable
+    public class GameRoundModel : AbstractDisposable, IPauseStateModel
     {
         private readonly ReactiveProperty<bool> _isPaused;
-        private IReadOnlyReactiveProperty<bool> IsPaused => _isPaused;
+        public IReadOnlyReactiveProperty<bool> IsPaused => _isPaused;
 
         private readonly ReactiveProperty<bool> _isInProgress;
-        private IReadOnlyReactiveProperty<bool> IsInProgress => _isInProgress;
+        public IReadOnlyReactiveProperty<bool> IsInProgress => _isInProgress;
 
         private readonly Subject<Unit> _onRoundStarted;
         public IOptimizedObservable<Unit> OnRoundStarted => _onRoundEnded;
