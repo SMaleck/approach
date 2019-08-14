@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _loadingScreenViewPrefab: {fileID: 5096529906785707454, guid: 5492aca37e887724894264ee302603af,
     type: 3}
+  _titleViewPrefab: {fileID: 7075341538032275555, guid: 0484835d3a7b1b442a25fc95a790bcc2,
+    type: 3}
   _survivalStatsViewPrefab: {fileID: 6172013491317949378, guid: ccfe499d2fdafe04084951f6d4e9d7db,
     type: 3}
   _roundEndedViewPrefab: {fileID: 2550958974713174961, guid: 1222405e7ff3dd943be06d81680a3468,

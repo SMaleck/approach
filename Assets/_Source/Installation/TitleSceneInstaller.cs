@@ -1,6 +1,4 @@
-﻿using _Source.Entities;
-using _Source.Features.GameRound;
-using _Source.Features.UserInput;
+﻿using _Source.Features.TitleMenu;
 using _Source.Util;
 using Zenject;
 
@@ -10,6 +8,8 @@ namespace _Source.Installation
     {
         public override void InstallBindings()
         {
+            Container.BindPrefabFactory<TitleView, TitleView.Factory>();
+
             Container.BindInterfacesAndSelfTo<TitleSceneInitializer>().AsSingleNonLazy();
         }
     }

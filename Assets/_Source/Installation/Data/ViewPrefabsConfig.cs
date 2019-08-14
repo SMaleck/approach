@@ -2,6 +2,7 @@
 using _Source.Features.AvatarState;
 using _Source.Features.GameRound;
 using _Source.Features.SceneManagement;
+using _Source.Features.TitleMenu;
 using UnityEngine;
 
 namespace _Source.Installation.Data
@@ -13,6 +14,9 @@ namespace _Source.Installation.Data
         [SerializeField] private LoadingScreenView _loadingScreenViewPrefab;
         public LoadingScreenView LoadingScreenViewPrefab => _loadingScreenViewPrefab;
 
+        [Header("Title Views")]
+        [SerializeField] private TitleView _titleViewPrefab;
+        public TitleView TitleViewPrefab => _titleViewPrefab;
 
         [Header("Game Views")]
         [SerializeField] private SurvivalStatsView _survivalStatsViewPrefab;

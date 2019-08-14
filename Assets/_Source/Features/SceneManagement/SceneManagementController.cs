@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace _Source.Features.SceneManagement
 {
-    public class SceneManagementController : AbstractDisposable
+    public class SceneManagementController : AbstractDisposable, ISceneManagementController
     {
         private readonly SceneManagementModel _sceneManagementModel;
 
