@@ -5,6 +5,7 @@ using _Source.Features.GameRound;
 using _Source.Features.GameWorld;
 using _Source.Features.NovatarBehaviour;
 using _Source.Features.UserInput;
+using _Source.Features.ViewManagement;
 using _Source.Util;
 using Zenject;
 
@@ -14,6 +15,8 @@ namespace _Source.Installation
     {
         public override void InstallBindings()
         {
+            Container.BindInterfacesAndSelfTo<ViewManagementController>().AsSingleNonLazy();
+
             Container.BindPrefabFactory<AvatarEntity, AvatarEntity.Factory>();
             Container.BindPrefabFactory<NovatarEntity, NovatarEntity.Factory>();
 

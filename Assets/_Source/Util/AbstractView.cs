@@ -1,6 +1,8 @@
-﻿namespace _Source.Util
+﻿using _Source.Features.ViewManagement;
+
+namespace _Source.Util
 {
-    public class AbstractView : AbstractDisposableMonoBehaviour
+    public class AbstractView : AbstractDisposableMonoBehaviour, IClosableView
     {
         public void Open()
         {

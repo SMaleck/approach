@@ -16,6 +16,10 @@ MonoBehaviour:
     type: 3}
   _titleViewPrefab: {fileID: 7075341538032275555, guid: 0484835d3a7b1b442a25fc95a790bcc2,
     type: 3}
+  _settingsViewPrefab: {fileID: 37031123224572338, guid: 902f71d428be4e147893bd8ee7efe09f,
+    type: 3}
+  _howToPlayViewPrefab: {fileID: 4761241913171718619, guid: 06563c7a11d970346b40dab0850face4,
+    type: 3}
   _survivalStatsViewPrefab: {fileID: 6172013491317949378, guid: ccfe499d2fdafe04084951f6d4e9d7db,
     type: 3}
   _roundEndedViewPrefab: {fileID: 2550958974713174961, guid: 1222405e7ff3dd943be06d81680a3468,

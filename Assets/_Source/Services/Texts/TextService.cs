@@ -54,5 +54,10 @@ namespace _Source.Services.Texts
         {
             return TextData.GetText(TextKey.Settings);
         }
+
+        public static string LanguageName(Language language)
+        {
+            return TextData.GetLanguageText(language);
+        }
     }
 }

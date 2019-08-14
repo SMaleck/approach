@@ -1,4 +1,5 @@
 ﻿using _Source.Features.SceneManagement;
+using _Source.Features.ViewManagement;
 using _Source.Services.Texts;
 using _Source.Util;
 using TMPro;
@@ -10,7 +11,7 @@ using Zenject;
 
 namespace _Source.Features.TitleMenu
 {
-    public class TitleView : AbstractView, IInitializable
+    public class TitleView : AbstractView, IInitializable, ILocalizable
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, TitleView> { }
 
@@ -21,11 +22,15 @@ namespace _Source.Features.TitleMenu
         [SerializeField] private Button _settingsButton;
         [SerializeField] private TextMeshProUGUI _settingsButtonText;
 
+        private IViewManagementController _viewManagementController;
         private ISceneManagementController _sceneManagementController;
 
         [Inject]
-        private void Inject(ISceneManagementController sceneManagementController)
+        private void Inject(
+            IViewManagementController viewManagementController,
+            ISceneManagementController sceneManagementController)
         {
+            _viewManagementController = viewManagementController;
             _sceneManagementController = sceneManagementController;
         }
 
@@ -35,10 +40,18 @@ namespace _Source.Features.TitleMenu
                 .Subscribe(_ => _sceneManagementController.ToGame())
                 .AddTo(Disposer);
 
+            _settingsButton.OnClickAsObservable()
+                .Subscribe(_ => _viewManagementController.OpenView(ViewType.Settings))
+                .AddTo(Disposer);
+
+            _howToPlayButton.OnClickAsObservable()
+                .Subscribe(_ => _viewManagementController.OpenView(ViewType.HowToPlay))
+                .AddTo(Disposer);
+
             Localize();
         }
 
-        private void Localize()
+        public void Localize()
         {
             _startGameButtonText.text = TextService.StartGame();
             _howToPlayButtonText.text = TextService.HowToPlay();

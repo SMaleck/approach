@@ -18,6 +18,12 @@ namespace _Source.Installation.Data
         [SerializeField] private TitleView _titleViewPrefab;
         public TitleView TitleViewPrefab => _titleViewPrefab;
 
+        [SerializeField] private SettingsView _settingsViewPrefab;
+        public SettingsView SettingsViewPrefab => _settingsViewPrefab;
+
+        [SerializeField] private HowToPlayView _howToPlayViewPrefab;
+        public HowToPlayView HowToPlayViewPrefab => _howToPlayViewPrefab;
+
         [Header("Game Views")]
         [SerializeField] private SurvivalStatsView _survivalStatsViewPrefab;
         public SurvivalStatsView SurvivalStatsViewPrefab => _survivalStatsViewPrefab;

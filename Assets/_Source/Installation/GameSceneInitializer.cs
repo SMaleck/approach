@@ -1,7 +1,7 @@
-﻿using _Source.Entities;
-using _Source.Entities.Avatar;
+﻿using _Source.Entities.Avatar;
 using _Source.Features.AvatarState;
 using _Source.Features.GameRound;
+using _Source.Features.ViewManagement;
 using _Source.Installation.Data;
 using Zenject;
 
@@ -10,11 +10,12 @@ namespace _Source.Installation
     public class GameSceneInitializer : IInitializable
     {
         [Inject] private DiContainer _container;
+        [Inject] private ViewPrefabsConfig _viewPrefabsConfig;
+        [Inject] private IViewManagementRegistrar _viewManagementRegistrar;
 
         [Inject] private AvatarEntity.Factory _avatarFactory;
         [Inject] private AvatarConfig _avatarConfig;
 
-        [Inject] private ViewPrefabsConfig _viewPrefabsConfig;
         [Inject] private SurvivalStatsView.Factory _survivalStatsViewFactory;
         [Inject] private RoundEndedView.Factory _roundEndedViewFactory;
 
