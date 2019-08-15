@@ -1,11 +1,12 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
+using _Source.Features.AvatarState;
 using _Source.Features.GameWorld;
 using _Source.Features.NovatarBehaviour.Data;
 using _Source.Util;
 using FluentBehaviourTree;
 using System.Linq;
-using _Source.Features.AvatarState;
+using _Source.Features.NovatarBehaviour.SubTrees;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -25,6 +26,8 @@ namespace _Source.Features.NovatarBehaviour
         private readonly IDamageReceiver _avatarDamageReceiver;
 
         private IBehaviourTreeNode _behaviourTree;
+
+        private TelemetryBehaviour _telemetrySubTree;
 
         public NovatarBehaviourTree(
             NovatarEntity novatar,
@@ -47,6 +50,7 @@ namespace _Source.Features.NovatarBehaviour
         public void Initialize()
         {
             _behaviourTree = CreateTree();
+            _telemetrySubTree = new TelemetryBehaviour(_novatar, _novatarStateModel, _avatar);
 
             Observable.EveryLateUpdate()
                 .Where(_ => _novatar.IsActive)
@@ -56,15 +60,15 @@ namespace _Source.Features.NovatarBehaviour
 
         private IBehaviourTreeNode CreateTree()
         {
-            var telemetryTree = CreateTelemetryTree();
             var unacquaintedTree = CreateUnacquaintedTree();
             var neutralTree = CreateNeutralTree();
             var friendTree = CreateFriendTree();
             var enemyTree = CreateEnemyTree();
 
             return new BehaviourTreeBuilder()
-                .Parallel("Tree", 1, 1)
-                    .Splice(telemetryTree)
+                .Parallel("Tree", 20, 20)
+                    .Do("AAA", _telemetrySubTree.Tick)
+                    .Do(nameof(EvaluateRelationshipOnTime), t => EvaluateRelationshipOnTime())
                     .Selector("RelationshipTreeSelector")
                         .Sequence("UnacquaintedSequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Unacquainted))
@@ -87,16 +91,6 @@ namespace _Source.Features.NovatarBehaviour
                 .Build();
         }
 
-        private IBehaviourTreeNode CreateTelemetryTree()
-        {
-            return new BehaviourTreeBuilder()
-                .Parallel("TelemetryTree", 1, 1)
-                    .Do(nameof(TrackTimePassedInCurrentStatus), TrackTimePassedInCurrentStatus)
-                    .Do(nameof(CalculateDistanceToAvatar), t => CalculateDistanceToAvatar())
-                    .Do(nameof(EvaluateRelationshipOnTime), t => EvaluateRelationshipOnTime())
-                .End()
-                .Build();
-        }
 
         private IBehaviourTreeNode CreateUnacquaintedTree()
         {
@@ -158,13 +152,6 @@ namespace _Source.Features.NovatarBehaviour
                 .Build();
         }
 
-        private BehaviourTreeStatus TrackTimePassedInCurrentStatus(TimeData t)
-        {
-            var currentTimePassed = _novatarStateModel.TimePassedInCurrentStatusSeconds.Value;
-            _novatarStateModel.SetTimePassedInCurrentStatusSeconds(currentTimePassed + t.deltaTime);
-
-            return BehaviourTreeStatus.Success;
-        }
 
         private BehaviourTreeStatus TrackTimePassedSinceFallingBehind(TimeData t)
         {
@@ -179,13 +166,6 @@ namespace _Source.Features.NovatarBehaviour
             return _novatarStateModel.CurrentRelationshipStatus.Value == status;
         }
 
-        private BehaviourTreeStatus CalculateDistanceToAvatar()
-        {
-            var sqrDistance = _novatar.GetSquaredDistanceTo(_avatar);
-            _novatarStateModel.SetCurrentDistanceToAvatar(sqrDistance);
-
-            return BehaviourTreeStatus.Success;
-        }
 
         private bool IsInFollowRange()
         {
