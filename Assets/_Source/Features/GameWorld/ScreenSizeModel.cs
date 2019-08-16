@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace _Source.Features.GameWorld
 {
+    // ToDo Adjust using this: https://docs.unity3d.com/Manual/FrustumSizeAtDistance.html
     public class ScreenSizeModel : AbstractDisposable
     {
         public readonly float WidthUnits;
