@@ -4,6 +4,7 @@ using _Source.Features.AvatarState;
 using _Source.Features.GameRound;
 using _Source.Features.GameWorld;
 using _Source.Features.NovatarBehaviour;
+using _Source.Features.NovatarSpawning;
 using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
 using _Source.Util;
@@ -36,6 +37,7 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<ScreenSizeController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
+            Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarPoolItem, NovatarPoolItem.Factory>();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
             Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
 

@@ -5,8 +5,9 @@
         private enum TextKey
         {
             StartGame,
+            Settings,
             HowToPlay,
-            Settings
+            HowToPlayDescription
         }
     }
 }

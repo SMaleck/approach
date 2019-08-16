@@ -1,6 +1,7 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Features.NovatarBehaviour;
 using _Source.Util;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -33,6 +34,10 @@ namespace _Source.Entities.Novatar
 
             SpawnedAtPosition = spawnPosition;
             SetPosition(spawnPosition);
+
+            novatarStateModel.IsAlive
+                .Subscribe(SetActive)
+                .AddTo(Disposer);
         }
 
         public void MoveTowards(Vector3 targetPosition)

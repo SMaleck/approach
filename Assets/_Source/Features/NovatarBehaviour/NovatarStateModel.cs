@@ -32,6 +32,14 @@ namespace _Source.Features.NovatarBehaviour
             _timePassedSinceFallingBehindSeconds = new ReactiveProperty<double>().AddTo(Disposer);
         }
 
+        public void Reset()
+        {
+            SetIsAlive(true);
+            SetCurrentRelationshipStatus(RelationshipStatus.Unacquainted);
+            SetTimePassedInCurrentStatusSeconds(0);
+            SetTimePassedSinceFallingBehindSeconds(0);
+        }
+
         public void SetIsAlive(bool value)
         {
             _isAlive.Value = value;

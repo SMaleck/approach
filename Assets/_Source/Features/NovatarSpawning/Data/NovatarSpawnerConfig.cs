@@ -1,7 +1,7 @@
 ﻿using _Source.App;
 using UnityEngine;
 
-namespace _Source.Features.GameWorld.Data
+namespace _Source.Features.NovatarSpawning.Data
 {
     [CreateAssetMenu(fileName = nameof(NovatarSpawnerConfig), menuName = Constants.ConfigRootPath + "/" + nameof(NovatarSpawnerConfig))]
     public class NovatarSpawnerConfig : ScriptableObject

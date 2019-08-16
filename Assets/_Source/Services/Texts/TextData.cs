@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace _Source.Services.Texts
@@ -38,14 +37,16 @@ namespace _Source.Services.Texts
             {
                 { TextKey.StartGame, "Start"},
                 { TextKey.Settings, "Settings"},
-                { TextKey.HowToPlay, "How to Play"}
+                { TextKey.HowToPlay, "How to Play"},
+                { TextKey.HowToPlayDescription, "#TUTORIAL#"}
             };
 
             private static Dictionary<TextKey, string> _textsDE = new Dictionary<TextKey, string>
             {
                 { TextKey.StartGame, "Start"},
                 { TextKey.Settings, "Einstellungen"},
-                { TextKey.HowToPlay, "Anleitung"}
+                { TextKey.HowToPlay, "Anleitung"},
+                { TextKey.HowToPlayDescription, "#ANLEITUNG#"}
             };
         }
     }
