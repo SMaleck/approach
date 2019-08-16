@@ -2,6 +2,7 @@
 using _Source.Features.NovatarBehaviour;
 using _Source.Util;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.NovatarSpawning
@@ -26,13 +27,14 @@ namespace _Source.Features.NovatarSpawning
             _novatarStateModel = novatarStateModel;
 
             _novatarStateModel.IsAlive
-                .Subscribe(SetIsFree)
+                .Subscribe(isAlive => SetIsFree(!isAlive))
                 .AddTo(Disposer);
         }
 
-        public void Reset()
+        public void Reset(Vector3 spawnPosition)
         {
             _novatarStateModel.Reset();
+            _novatarStateModel.SetSpawnPosition(spawnPosition);
         }
 
         private void SetIsFree(bool isFree)

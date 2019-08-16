@@ -3,10 +3,10 @@ using _Source.Entities.Novatar;
 using _Source.Features.AvatarState;
 using _Source.Features.GameWorld;
 using _Source.Features.NovatarBehaviour.Data;
+using _Source.Features.NovatarBehaviour.SubTrees;
 using _Source.Util;
 using FluentBehaviourTree;
 using System.Linq;
-using _Source.Features.NovatarBehaviour.SubTrees;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -26,8 +26,6 @@ namespace _Source.Features.NovatarBehaviour
         private readonly IDamageReceiver _avatarDamageReceiver;
 
         private IBehaviourTreeNode _behaviourTree;
-
-        private TelemetryBehaviour _telemetrySubTree;
 
         public NovatarBehaviourTree(
             NovatarEntity novatar,
@@ -50,7 +48,6 @@ namespace _Source.Features.NovatarBehaviour
         public void Initialize()
         {
             _behaviourTree = CreateTree();
-            _telemetrySubTree = new TelemetryBehaviour(_novatar, _novatarStateModel, _avatar);
 
             Observable.EveryLateUpdate()
                 .Where(_ => _novatar.IsActive)
@@ -65,9 +62,11 @@ namespace _Source.Features.NovatarBehaviour
             var friendTree = CreateFriendTree();
             var enemyTree = CreateEnemyTree();
 
+            var telemetrySubTree = new TelemetryBehaviour(_novatar, _novatarStateModel, _avatar);
+
             return new BehaviourTreeBuilder()
                 .Parallel("Tree", 20, 20)
-                    .Do("AAA", _telemetrySubTree.Tick)
+                    .Splice(telemetrySubTree.GetTree())
                     .Do(nameof(EvaluateRelationshipOnTime), t => EvaluateRelationshipOnTime())
                     .Selector("RelationshipTreeSelector")
                         .Sequence("UnacquaintedSequence")
@@ -90,7 +89,6 @@ namespace _Source.Features.NovatarBehaviour
                 .End()
                 .Build();
         }
-
 
         private IBehaviourTreeNode CreateUnacquaintedTree()
         {
@@ -194,7 +192,8 @@ namespace _Source.Features.NovatarBehaviour
 
         private BehaviourTreeStatus MoveToSpawnPosition()
         {
-            _novatar.MoveTowards(_novatar.SpawnedAtPosition);
+            var spawnPosition = _novatarStateModel.SpawnPosition.Value;
+            _novatar.MoveTowards(spawnPosition);
             return BehaviourTreeStatus.Success;
         }
 

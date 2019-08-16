@@ -27,9 +27,9 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
             _behaviourTree = CreateTree();
         }
 
-        public BehaviourTreeStatus Tick(TimeData timeData)
+        public IBehaviourTreeNode GetTree()
         {
-            return _behaviourTree.Tick(timeData);
+            return _behaviourTree;
         }
 
         private IBehaviourTreeNode CreateTree()

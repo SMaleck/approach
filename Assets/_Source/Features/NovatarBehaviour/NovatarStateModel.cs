@@ -1,5 +1,6 @@
 ﻿using _Source.Util;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.NovatarBehaviour
@@ -10,6 +11,9 @@ namespace _Source.Features.NovatarBehaviour
 
         private readonly ReactiveProperty<bool> _isAlive;
         public IReadOnlyReactiveProperty<bool> IsAlive => _isAlive;
+
+        private readonly ReactiveProperty<Vector3> _spawnPosition;
+        public IReadOnlyReactiveProperty<Vector3> SpawnPosition => _spawnPosition;
 
         private readonly ReactiveProperty<RelationshipStatus> _currentRelationshipStatus;
         public IReadOnlyReactiveProperty<RelationshipStatus> CurrentRelationshipStatus => _currentRelationshipStatus;
@@ -26,6 +30,7 @@ namespace _Source.Features.NovatarBehaviour
         public NovatarStateModel()
         {
             _isAlive = new ReactiveProperty<bool>().AddTo(Disposer);
+            _spawnPosition = new ReactiveProperty<Vector3>().AddTo(Disposer);
             _currentRelationshipStatus = new ReactiveProperty<RelationshipStatus>().AddTo(Disposer);
             _currentDistanceToAvatar = new ReactiveProperty<float>().AddTo(Disposer);
             _timePassedInCurrentStatusSeconds = new ReactiveProperty<double>().AddTo(Disposer);
@@ -43,6 +48,11 @@ namespace _Source.Features.NovatarBehaviour
         public void SetIsAlive(bool value)
         {
             _isAlive.Value = value;
+        }
+
+        public void SetSpawnPosition(Vector3 value)
+        {
+            _spawnPosition.Value = value;
         }
 
         public void SetCurrentRelationshipStatus(RelationshipStatus value)

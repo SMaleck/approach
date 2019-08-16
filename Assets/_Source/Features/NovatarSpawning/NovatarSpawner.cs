@@ -56,7 +56,9 @@ namespace _Source.Features.NovatarSpawning
             }
 
             var novatarPoolItem = GetFreeEntity();
-            novatarPoolItem.Reset();
+
+            var spawnPosition = GetSpawnPosition(novatarPoolItem.NovatarEntity);
+            novatarPoolItem.Reset(spawnPosition);
         }
 
         private IEntityPoolItem GetFreeEntity()
@@ -79,11 +81,8 @@ namespace _Source.Features.NovatarSpawning
                 .Create()
                 .AddTo(Disposer);
 
-            var spawnPosition = GetSpawnPosition(novatarEntity);
-
             novatarEntity.Setup(
-                novatarStateModel,
-                spawnPosition);
+                novatarStateModel);
 
             _novatarBehaviourTreeFactory
                 .Create(novatarEntity, novatarStateModel)

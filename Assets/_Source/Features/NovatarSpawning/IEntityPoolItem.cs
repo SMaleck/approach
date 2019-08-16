@@ -1,5 +1,6 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour;
+using UnityEngine;
 
 namespace _Source.Features.NovatarSpawning
 {
@@ -10,6 +11,6 @@ namespace _Source.Features.NovatarSpawning
         NovatarEntity NovatarEntity { get; }
         NovatarStateModel NovatarStateModel { get; }
 
-        void Reset();
+        void Reset(Vector3 spawnPosition);
     }
 }

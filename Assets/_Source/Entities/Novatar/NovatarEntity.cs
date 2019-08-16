@@ -14,7 +14,6 @@ namespace _Source.Entities.Novatar
         private NovatarStateModel _novatarStateModel;
         private NovatarConfig _novatarConfig;
 
-        public Vector3 SpawnedAtPosition { get; private set; }
         public float SqrRange => Mathf.Pow(_novatarConfig.Range, 2);
         public float SqrTargetReachedThreshold => Mathf.Pow(_novatarConfig.TargetReachedThreshold, 2);
         
@@ -26,17 +25,16 @@ namespace _Source.Entities.Novatar
         }
 
         // ToDo Quick Hack Zenjectify this properly
-        public void Setup(
-            NovatarStateModel novatarStateModel,
-            Vector3 spawnPosition)
+        public void Setup(NovatarStateModel novatarStateModel)
         {
             _novatarStateModel = novatarStateModel;
-
-            SpawnedAtPosition = spawnPosition;
-            SetPosition(spawnPosition);
-
+            
             novatarStateModel.IsAlive
                 .Subscribe(SetActive)
+                .AddTo(Disposer);
+
+            novatarStateModel.SpawnPosition
+                .Subscribe(SetPosition)
                 .AddTo(Disposer);
         }
 
