@@ -35,6 +35,8 @@ namespace _Source.Features.NovatarSpawning
         {
             _novatarStateModel.Reset();
             _novatarStateModel.SetSpawnPosition(spawnPosition);
+
+            _novatarEntity.Reset();
         }
 
         private void SetIsFree(bool isFree)

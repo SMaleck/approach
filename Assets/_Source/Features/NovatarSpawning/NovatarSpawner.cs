@@ -84,6 +84,8 @@ namespace _Source.Features.NovatarSpawning
             novatarEntity.Setup(
                 novatarStateModel);
 
+            novatarEntity.Initialize();
+
             _novatarBehaviourTreeFactory
                 .Create(novatarEntity, novatarStateModel)
                 .AddTo(Disposer)

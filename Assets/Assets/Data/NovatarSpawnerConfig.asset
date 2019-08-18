@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8308942765468d3498c2dafd38376a59, type: 3}
   m_Name: NovatarSpawnerConfig
   m_EditorClassIdentifier: 
-  _spawnIntervalSeconds: 1
-  _maxActiveSpawns: 100
+  _spawnIntervalSeconds: 2
+  _maxActiveSpawns: 5

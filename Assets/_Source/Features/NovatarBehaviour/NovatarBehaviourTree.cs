@@ -50,7 +50,6 @@ namespace _Source.Features.NovatarBehaviour
 
             Observable.EveryLateUpdate()
                 .Where(_ => _novatarEntity.IsActive)
-                .Do(_ => LogNovatarStatus())
                 .Subscribe(_ => _behaviourTree.Tick(new TimeData(Time.deltaTime)))
                 .AddTo(Disposer);
         }
@@ -113,11 +112,6 @@ namespace _Source.Features.NovatarBehaviour
                     .End()
                 .End()
                 .Build();
-        }
-
-        private void LogNovatarStatus()
-        {
-            App.Logger.Log($"{_novatarEntity.name} | ALIVE: {_novatarStateModel.IsAlive.Value} | STATUS: {_novatarStateModel.CurrentRelationshipStatus.Value}");
         }
 
         private bool IsCurrentRelationshipStatus(RelationshipStatus status)

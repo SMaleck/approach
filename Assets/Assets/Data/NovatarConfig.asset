@@ -15,8 +15,20 @@ MonoBehaviour:
   _novatarPrefab: {fileID: 7616588745787026386, guid: 27d4c0653fa67104687754e9db8d0d26,
     type: 3}
   _range: 5
-  _targetReachedThreshold: 0.1
+  _targetReachedThreshold: 0.8
   _movementSpeed: 2
   _turnSpeed: 5
   _turnAngleThreshold: 5
   _touchDamage: 1
+  _relationshipVisualsConfigs:
+  - _relationship: 0
+    _lightColor: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
+  - _relationship: 1
+    _lightColor: {r: 1, g: 1, b: 1, a: 1}
+  - _relationship: 2
+    _lightColor: {r: 1, g: 0.32622612, b: 0.2783019, a: 1}
+  - _relationship: 3
+    _lightColor: {r: 0.30980396, g: 1, b: 0.46084738, a: 1}
+  _lightColorFadeSeconds: 0.6
+  _lightDefaultIntensity: 1
+  _lightFlashIntensity: 5
