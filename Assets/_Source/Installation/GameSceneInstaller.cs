@@ -1,6 +1,7 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.AvatarState;
+using _Source.Features.Cheats;
 using _Source.Features.GameRound;
 using _Source.Features.GameWorld;
 using _Source.Features.NovatarBehaviour;
@@ -40,6 +41,8 @@ namespace _Source.Installation
             Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarPoolItem, NovatarPoolItem.Factory>();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
             Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+
+            Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<GameSceneInitializer>().AsSingleNonLazy();
         }

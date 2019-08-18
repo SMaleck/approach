@@ -18,11 +18,11 @@ MonoBehaviour:
     _timeBasedSwitchChance: 0.25
     _relationshipSwitchWeights:
     - _switchToRelationship: 1
-      _weightedChance: 0
+      _weightedChance: 0.25
     - _switchToRelationship: 2
-      _weightedChance: 0
+      _weightedChance: 0.25
     - _switchToRelationship: 3
-      _weightedChance: 1
+      _weightedChance: 0.5
   - _relationship: 1
     _evaluationTimeoutSeconds: 0
     _timeBasedSwitchChance: 0

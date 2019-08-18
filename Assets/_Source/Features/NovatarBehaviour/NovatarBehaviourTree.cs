@@ -6,7 +6,6 @@ using _Source.Features.NovatarBehaviour.Data;
 using _Source.Features.NovatarBehaviour.SubTrees;
 using _Source.Util;
 using FluentBehaviourTree;
-using System.Linq;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -17,7 +16,7 @@ namespace _Source.Features.NovatarBehaviour
     {
         public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, NovatarBehaviourTree> { }
 
-        private readonly NovatarEntity _novatar;
+        private readonly NovatarEntity _novatarEntity;
         private readonly NovatarStateModel _novatarStateModel;
         private readonly NovatarConfig _novatarConfig;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
@@ -28,7 +27,7 @@ namespace _Source.Features.NovatarBehaviour
         private IBehaviourTreeNode _behaviourTree;
 
         public NovatarBehaviourTree(
-            NovatarEntity novatar,
+            NovatarEntity novatarEntity,
             NovatarStateModel novatarStateModel,
             NovatarConfig novatarConfig,
             BehaviourTreeConfig behaviourTreeConfig,
@@ -36,7 +35,7 @@ namespace _Source.Features.NovatarBehaviour
             ScreenSizeController screenSizeController,
             IDamageReceiver avatarDamageReceiver)
         {
-            _novatar = novatar;
+            _novatarEntity = novatarEntity;
             _novatarStateModel = novatarStateModel;
             _novatarConfig = novatarConfig;
             _behaviourTreeConfig = behaviourTreeConfig;
@@ -50,250 +49,80 @@ namespace _Source.Features.NovatarBehaviour
             _behaviourTree = CreateTree();
 
             Observable.EveryLateUpdate()
-                .Where(_ => _novatar.IsActive)
+                .Where(_ => _novatarEntity.IsActive)
+                .Do(_ => LogNovatarStatus())
                 .Subscribe(_ => _behaviourTree.Tick(new TimeData(Time.deltaTime)))
                 .AddTo(Disposer);
         }
 
         private IBehaviourTreeNode CreateTree()
         {
-            var unacquaintedTree = CreateUnacquaintedTree();
-            var neutralTree = CreateNeutralTree();
-            var friendTree = CreateFriendTree();
-            var enemyTree = CreateEnemyTree();
+            var telemetrySubTree = new TelemetryBehaviour(
+                    _novatarEntity,
+                    _novatarStateModel,
+                    _avatar)
+                .Build();
 
-            var telemetrySubTree = new TelemetryBehaviour(_novatar, _novatarStateModel, _avatar);
+            var unacquaintedSubTree = new UnacquaintedBehaviour(
+                    _novatarEntity,
+                    _novatarStateModel,
+                    _avatar,
+                    _behaviourTreeConfig)
+                .Build();
+
+            var neutralSubTree = new NeutralBehaviour(
+                    _novatarEntity,
+                    _novatarStateModel,
+                    _screenSizeController)
+                .Build();
+
+            var friendSubTree = new FriendBehaviour(
+                    _novatarEntity,
+                    _novatarStateModel,
+                    _avatar,
+                    _behaviourTreeConfig)
+                .Build();
+
+            var enemySubTree = new EnemyBehaviour(
+                    _novatarEntity,
+                    _novatarStateModel,
+                    _novatarConfig,
+                    _avatarDamageReceiver)
+                .Build();
 
             return new BehaviourTreeBuilder()
-                .Parallel("Tree", 20, 20)
-                    .Splice(telemetrySubTree.GetTree())
-                    .Do(nameof(EvaluateRelationshipOnTime), t => EvaluateRelationshipOnTime())
+                .Parallel(nameof(NovatarBehaviourTree), 20, 20)
+                    .Splice(telemetrySubTree)
                     .Selector("RelationshipTreeSelector")
                         .Sequence("UnacquaintedSequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Unacquainted))
-                            .Splice(unacquaintedTree)
+                            .Splice(unacquaintedSubTree)
                             .End()
                         .Sequence("NeutralSequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Neutral))
-                            .Splice(neutralTree)
+                            .Splice(neutralSubTree)
                             .End()
                         .Sequence("FriendSequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Friend))
-                            .Splice(friendTree)
+                            .Splice(friendSubTree)
                             .End()
                         .Sequence("EnemySequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Enemy))
-                            .Splice(enemyTree)
+                            .Splice(enemySubTree)
                             .End()
                     .End()
                 .End()
                 .Build();
         }
 
-        private IBehaviourTreeNode CreateUnacquaintedTree()
+        private void LogNovatarStatus()
         {
-            return new BehaviourTreeBuilder()
-                .Selector("UnacquaintedTree")
-                    .Sequence("FollowAvatar")
-                        .Condition(nameof(IsInFollowRange), t => IsInFollowRange())
-                        .Do(nameof(FollowAvatar), t => FollowAvatar())
-                        .End()
-                    .Sequence("TouchAvatar")
-                        .Condition(nameof(IsInTouchRange), t => IsInTouchRange())
-                        .Do(nameof(EvaluateRelationshipOnTouch), t => EvaluateRelationshipOnTouch())
-                        .End()
-                .End()
-                .Build();
-        }
-
-        private IBehaviourTreeNode CreateNeutralTree()
-        {
-            return new BehaviourTreeBuilder()
-                .Selector("NeutralTree")
-                    .Sequence("LeavePlayingField")
-                        .Condition(nameof(IsWithinScreenBounds), t => IsWithinScreenBounds())
-                        .Do(nameof(MoveToSpawnPosition), t => MoveToSpawnPosition())
-                        .End()
-                    .Sequence("Deactivate")
-                        .Condition(nameof(IsWithinScreenBounds), t => !IsWithinScreenBounds())
-                        .Do(nameof(DeactivateSelf), t => DeactivateSelf())
-                        .End()
-                .End()
-                .Build();
-        }
-
-        private IBehaviourTreeNode CreateFriendTree()
-        {
-            return new BehaviourTreeBuilder()
-                .Selector("FriendTree")
-                    .Sequence("FollowAvatar")
-                        .Condition(nameof(IsInFollowRange), t => IsInFollowRange())
-                        .Do(nameof(FollowAvatar), t => FollowAvatar())
-                        .End()
-                    .Sequence("FallingBehind")
-                        .Do(nameof(TrackTimePassedSinceFallingBehind), TrackTimePassedSinceFallingBehind)
-                        .Do(nameof(EvaluateRelationshipOnFallingBehind), t => EvaluateRelationshipOnFallingBehind())
-                        .End()
-                .End()
-                .Build();
-        }
-
-        private IBehaviourTreeNode CreateEnemyTree()
-        {
-            return new BehaviourTreeBuilder()
-                .Selector("EnemyTree")
-                    .Sequence("DamageAvatar")
-                        .Condition(nameof(IsInTouchRange), t => IsInTouchRange())
-                        .Do(nameof(DamageAvatar), t => DamageAvatar())
-                        .End()
-                .End()
-                .Build();
-        }
-
-
-        private BehaviourTreeStatus TrackTimePassedSinceFallingBehind(TimeData t)
-        {
-            var currentTimePassed = _novatarStateModel.TimePassedSinceFallingBehindSeconds.Value;
-            _novatarStateModel.SetTimePassedSinceFallingBehindSeconds(currentTimePassed + t.deltaTime);
-
-            return BehaviourTreeStatus.Success;
+            App.Logger.Log($"{_novatarEntity.name} | ALIVE: {_novatarStateModel.IsAlive.Value} | STATUS: {_novatarStateModel.CurrentRelationshipStatus.Value}");
         }
 
         private bool IsCurrentRelationshipStatus(RelationshipStatus status)
         {
             return _novatarStateModel.CurrentRelationshipStatus.Value == status;
-        }
-
-
-        private bool IsInFollowRange()
-        {
-            var isInRange = _novatarStateModel.CurrentDistanceToAvatar.Value <= _novatar.SqrRange;
-            return isInRange && !IsInTouchRange();
-        }
-
-        private bool IsInTouchRange()
-        {
-            return _novatarStateModel.CurrentDistanceToAvatar.Value <= _novatar.SqrTargetReachedThreshold;
-        }
-
-        private bool IsWithinScreenBounds()
-        {
-            return !_screenSizeController.IsOutOfScreenBounds(
-                _novatar.Position,
-                _novatar.Size);
-        }
-
-        private BehaviourTreeStatus FollowAvatar()
-        {
-            _novatarStateModel.SetTimePassedSinceFallingBehindSeconds(0);
-            _novatar.MoveTowards(_avatar.Position);
-            return BehaviourTreeStatus.Success;
-        }
-
-        private BehaviourTreeStatus MoveToSpawnPosition()
-        {
-            var spawnPosition = _novatarStateModel.SpawnPosition.Value;
-            _novatar.MoveTowards(spawnPosition);
-            return BehaviourTreeStatus.Success;
-        }
-
-        private BehaviourTreeStatus DeactivateSelf()
-        {
-            _novatarStateModel.SetIsAlive(false);
-            return BehaviourTreeStatus.Success;
-        }
-
-        private BehaviourTreeStatus EvaluateRelationshipOnTouch()
-        {
-            var currentRelationship = _novatarStateModel.CurrentRelationshipStatus.Value;
-            RelationshipStatus nextStatus = currentRelationship;
-
-            switch (currentRelationship)
-            {
-                case RelationshipStatus.Unacquainted:
-                    nextStatus = GetWeightedRandomRelationshipStatus();
-                    break;
-
-                case RelationshipStatus.Enemy:
-                    break;
-
-                // Some relationships don't change on touch
-                case RelationshipStatus.Neutral:
-                case RelationshipStatus.Friend:
-                    break;
-            }
-
-            _novatarStateModel.SetCurrentRelationshipStatus(nextStatus);
-            return BehaviourTreeStatus.Success;
-        }
-
-        private BehaviourTreeStatus EvaluateRelationshipOnTime()
-        {
-            var currentRelationship = _novatarStateModel.CurrentRelationshipStatus.Value;
-            var currentTimePassed = _novatarStateModel.TimePassedInCurrentStatusSeconds.Value;
-
-            var timeoutSeconds = _behaviourTreeConfig.GetEvaluationTimeoutSeconds(currentRelationship);
-
-            // 0 -> status does not change spontaneously
-            if (timeoutSeconds <= 0 || currentTimePassed < timeoutSeconds)
-            {
-                return BehaviourTreeStatus.Success;
-            }
-
-            // Switch to NEUTRAL based on Dice Roll
-            var switchChance = _behaviourTreeConfig.GetTimeBasedSwitchChance(currentRelationship);
-            var diceRoll = UnityEngine.Random.Range(0f, 1f);
-
-            if (diceRoll <= switchChance)
-            {
-                _novatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Neutral);
-            }
-
-            // Reset Time, so we re-evaluate only when the next interval is over
-            _novatarStateModel.SetTimePassedInCurrentStatusSeconds(0);
-
-            return BehaviourTreeStatus.Success;
-        }
-
-        private BehaviourTreeStatus EvaluateRelationshipOnFallingBehind()
-        {
-            var secondsSinceFallingBehind = _novatarStateModel.TimePassedSinceFallingBehindSeconds.Value;
-            if (secondsSinceFallingBehind >= _behaviourTreeConfig.MaxSecondsToFallBehind)
-            {
-                _novatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Neutral);
-            }
-
-            return BehaviourTreeStatus.Success;
-        }
-
-        private RelationshipStatus GetWeightedRandomRelationshipStatus()
-        {
-            var currentRelationship = _novatarStateModel.CurrentRelationshipStatus.Value;
-            var switchChances = _behaviourTreeConfig.GetRelationshipSwitchWeights(currentRelationship);
-
-            var totalWeight = switchChances.Sum(item => item.WeightedChance);
-            var randomNumber = UnityEngine.Random.Range(0f, totalWeight);
-
-            foreach (var switchChance in switchChances)
-            {
-                if (randomNumber < switchChance.WeightedChance)
-                {
-                    return switchChance.SwitchToRelationship;
-                }
-
-                randomNumber = randomNumber - switchChance.WeightedChance;
-            }
-
-            return currentRelationship;
-        }
-
-        private BehaviourTreeStatus DamageAvatar()
-        {
-            var damage = _novatarConfig.TouchDamage;
-            _avatarDamageReceiver.ReceiveDamage(damage);
-            DeactivateSelf();
-
-            return BehaviourTreeStatus.Success;
         }
     }
 }

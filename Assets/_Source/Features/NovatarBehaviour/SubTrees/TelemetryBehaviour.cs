@@ -4,30 +4,25 @@ using FluentBehaviourTree;
 
 namespace _Source.Features.NovatarBehaviour.SubTrees
 {
-    public class TelemetryBehaviour
+    public class TelemetryBehaviour : AbstractBehaviour
     {
-        private const string TreeName = "";
-
-        private readonly NovatarEntity _novatar;
-        private readonly NovatarStateModel _novatarStateModel;
         private readonly AvatarEntity _avatar;
 
         private readonly IBehaviourTreeNode _behaviourTree;
         private RelationshipStatus _lastTrackedRelationShipStatus;
 
         public TelemetryBehaviour(
-            NovatarEntity novatar,
+            NovatarEntity novatarEntity,
             NovatarStateModel novatarStateModel,
-            AvatarEntity avatar)
+            AvatarEntity avatar) 
+            : base(novatarEntity, novatarStateModel)
         {
-            _novatar = novatar;
-            _novatarStateModel = novatarStateModel;
             _avatar = avatar;
 
             _behaviourTree = CreateTree();
         }
 
-        public IBehaviourTreeNode GetTree()
+        public override IBehaviourTreeNode Build()
         {
             return _behaviourTree;
         }
@@ -35,7 +30,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         private IBehaviourTreeNode CreateTree()
         {
             return new BehaviourTreeBuilder()
-                .Parallel(TreeName, 1, 1)
+                .Parallel(nameof(TelemetryBehaviour), 1, 1)
                     .Do(nameof(TrackTimePassedInCurrentStatus), TrackTimePassedInCurrentStatus)
                     .Do(nameof(CalculateDistanceToAvatar), t => CalculateDistanceToAvatar())
                 .End()
@@ -44,15 +39,15 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 
         private BehaviourTreeStatus TrackTimePassedInCurrentStatus(TimeData timeData)
         {
-            var currentStatus = _novatarStateModel.CurrentRelationshipStatus.Value;
-            var currentTimePassed = _novatarStateModel.TimePassedInCurrentStatusSeconds.Value;
+            var currentStatus = NovatarStateModel.CurrentRelationshipStatus.Value;
+            var currentTimePassed = NovatarStateModel.TimePassedInCurrentStatusSeconds.Value;
 
             var hasStatusChanged = currentStatus != _lastTrackedRelationShipStatus;
             var trackedTime = hasStatusChanged
                 ? 0
                 : currentTimePassed + timeData.deltaTime;
 
-            _novatarStateModel.SetTimePassedInCurrentStatusSeconds(trackedTime);
+            NovatarStateModel.SetTimePassedInCurrentStatusSeconds(trackedTime);
             _lastTrackedRelationShipStatus = currentStatus;
 
             return BehaviourTreeStatus.Success;
@@ -60,8 +55,8 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 
         private BehaviourTreeStatus CalculateDistanceToAvatar()
         {
-            var sqrDistance = _novatar.GetSquaredDistanceTo(_avatar);
-            _novatarStateModel.SetCurrentDistanceToAvatar(sqrDistance);
+            var sqrDistance = NovatarEntity.GetSquaredDistanceTo(_avatar);
+            NovatarStateModel.SetCurrentDistanceToAvatar(sqrDistance);
 
             return BehaviourTreeStatus.Success;
         }

@@ -1,11 +1,11 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.GameWorld;
 using _Source.Features.NovatarBehaviour;
+using _Source.Features.NovatarSpawning.Data;
 using _Source.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Source.Features.NovatarSpawning.Data;
 using UniRx;
 using UnityEngine;
 
@@ -47,7 +47,7 @@ namespace _Source.Features.NovatarSpawning
                 .AddTo(Disposer);
         }
 
-        private void Spawn()
+        public void Spawn()
         {
             var activeItemCount = _novatarPool.Count(item => !item.IsFree);
             if (activeItemCount >= _novatarSpawnerConfig.MaxActiveSpawns)
@@ -94,6 +94,8 @@ namespace _Source.Features.NovatarSpawning
                 novatarStateModel);
 
             _novatarPool.Add(novatarPoolItem);
+
+            novatarEntity.gameObject.name = $"Novatar [{_novatarPool.Count - 1}]";
 
             return novatarPoolItem;
         }
