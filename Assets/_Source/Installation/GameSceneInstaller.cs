@@ -10,14 +10,19 @@ using _Source.Features.NovatarSpawning;
 using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
 using _Source.Util;
+using UnityEngine;
 using Zenject;
 
 namespace _Source.Installation
 {
     public class GameSceneInstaller : MonoInstaller
     {
+        [SerializeField] private UnityEngine.Camera _sceneCamera;
+
         public override void InstallBindings()
         {
+            Container.BindInstance(_sceneCamera);
+
             Container.BindInterfacesAndSelfTo<ViewManagementController>().AsSingleNonLazy();
 
             Container.BindPrefabFactory<AvatarEntity, AvatarEntity.Factory>();

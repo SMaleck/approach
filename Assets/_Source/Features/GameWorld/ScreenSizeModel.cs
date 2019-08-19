@@ -3,19 +3,42 @@ using UnityEngine;
 
 namespace _Source.Features.GameWorld
 {
-    // ToDo Adjust using this: https://docs.unity3d.com/Manual/FrustumSizeAtDistance.html
     public class ScreenSizeModel : AbstractDisposable
     {
-        public readonly float WidthUnits;
-        public readonly float HeightUnits;
+        private readonly Camera _sceneCamera;
+
+        public float WidthUnits { get; private set; }
+        public float HeightUnits { get; private set; }
 
         public float WidthExtendUnits => WidthUnits / 2;
         public float HeightExtendUnits => HeightUnits / 2;
 
-        public ScreenSizeModel()
+        public ScreenSizeModel(UnityEngine.Camera sceneCamera)
         {
-            HeightUnits = 2f * Camera.main.orthographicSize;
-            WidthUnits = HeightUnits * Camera.main.aspect;
+            _sceneCamera = sceneCamera;
+
+            if (sceneCamera.orthographic)
+            {
+                CalculateOrthographicBased();
+            }
+            else
+            {
+                CalculatePerspectiveBased();
+            }
+        }
+
+        private void CalculateOrthographicBased()
+        {
+            HeightUnits = 2f * _sceneCamera.orthographicSize;
+            WidthUnits = HeightUnits * _sceneCamera.aspect;
+        }
+
+        private void CalculatePerspectiveBased()
+        {
+            var distance = Mathf.Abs(_sceneCamera.transform.position.z);
+
+            HeightUnits = 2.0f * distance * Mathf.Tan(_sceneCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+            WidthUnits = HeightUnits * _sceneCamera.aspect;
         }
     }
 }
