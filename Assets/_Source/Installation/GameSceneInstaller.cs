@@ -5,6 +5,7 @@ using _Source.Features.Cheats;
 using _Source.Features.GameRound;
 using _Source.Features.GameWorld;
 using _Source.Features.NovatarBehaviour;
+using _Source.Features.NovatarBehaviour.SubTrees;
 using _Source.Features.NovatarSpawning;
 using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
@@ -41,6 +42,11 @@ namespace _Source.Installation
             Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarPoolItem, NovatarPoolItem.Factory>();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
             Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+            Container.BindFactory<NovatarEntity, NovatarStateModel, TelemetryBehaviour, TelemetryBehaviour.Factory>();
+            Container.BindFactory<NovatarEntity, NovatarStateModel, UnacquaintedBehaviour, UnacquaintedBehaviour.Factory>();
+            Container.BindFactory<NovatarEntity, NovatarStateModel, NeutralBehaviour, NeutralBehaviour.Factory>();
+            Container.BindFactory<NovatarEntity, NovatarStateModel, FriendBehaviour, FriendBehaviour.Factory>();
+            Container.BindFactory<NovatarEntity, NovatarStateModel, EnemyBehaviour, EnemyBehaviour.Factory>();
 
             Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
 

@@ -3,11 +3,14 @@ using _Source.Entities.Novatar;
 using _Source.Features.GameWorld;
 using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
+using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public class NeutralBehaviour : AbstractBehaviour
     {
+        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, NeutralBehaviour> { }
+
         private readonly AvatarEntity _avatar;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
         private readonly ScreenSizeController _screenSizeController;
@@ -33,7 +36,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         private IBehaviourTreeNode CreateTree()
         {
             return new BehaviourTreeBuilder()
-                .Selector("NeutralTree")
+                .Selector(nameof(NeutralBehaviour))
                     .Sequence("LeavePlayingField")
                         .Condition(nameof(IsWithinScreenBounds), t => IsWithinScreenBounds())
                         .Do(nameof(MoveToSpawnPosition), t => MoveToSpawnPosition())

@@ -1,8 +1,4 @@
-﻿using _Source.Entities.Avatar;
-using _Source.Entities.Novatar;
-using _Source.Features.AvatarState;
-using _Source.Features.GameWorld;
-using _Source.Features.NovatarBehaviour.Data;
+﻿using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour.SubTrees;
 using _Source.Util;
 using FluentBehaviourTree;
@@ -18,30 +14,30 @@ namespace _Source.Features.NovatarBehaviour
 
         private readonly NovatarEntity _novatarEntity;
         private readonly NovatarStateModel _novatarStateModel;
-        private readonly NovatarConfig _novatarConfig;
-        private readonly BehaviourTreeConfig _behaviourTreeConfig;
-        private readonly AvatarEntity _avatar;
-        private readonly ScreenSizeController _screenSizeController;
-        private readonly IDamageReceiver _avatarDamageReceiver;
+        private readonly TelemetryBehaviour.Factory _telemetryBehaviourFactory;
+        private readonly UnacquaintedBehaviour.Factory _unacquaintedBehaviourFactory;
+        private readonly NeutralBehaviour.Factory _neutralBehaviourFactory;
+        private readonly FriendBehaviour.Factory _friendBehaviourFactory;
+        private readonly EnemyBehaviour.Factory _enemyBehaviourFactory;
 
         private IBehaviourTreeNode _behaviourTree;
 
         public NovatarBehaviourTree(
             NovatarEntity novatarEntity,
             NovatarStateModel novatarStateModel,
-            NovatarConfig novatarConfig,
-            BehaviourTreeConfig behaviourTreeConfig,
-            AvatarEntity avatar,
-            ScreenSizeController screenSizeController,
-            IDamageReceiver avatarDamageReceiver)
+            TelemetryBehaviour.Factory telemetryBehaviourFactory,
+            UnacquaintedBehaviour.Factory unacquaintedBehaviourFactory,
+            NeutralBehaviour.Factory neutralBehaviourFactory,
+            FriendBehaviour.Factory friendBehaviourFactory,
+            EnemyBehaviour.Factory enemyBehaviourFactory)
         {
             _novatarEntity = novatarEntity;
             _novatarStateModel = novatarStateModel;
-            _novatarConfig = novatarConfig;
-            _behaviourTreeConfig = behaviourTreeConfig;
-            _avatar = avatar;
-            _screenSizeController = screenSizeController;
-            _avatarDamageReceiver = avatarDamageReceiver;
+            _telemetryBehaviourFactory = telemetryBehaviourFactory;
+            _unacquaintedBehaviourFactory = unacquaintedBehaviourFactory;
+            _neutralBehaviourFactory = neutralBehaviourFactory;
+            _friendBehaviourFactory = friendBehaviourFactory;
+            _enemyBehaviourFactory = enemyBehaviourFactory;
         }
 
         public void Initialize()
@@ -56,37 +52,34 @@ namespace _Source.Features.NovatarBehaviour
 
         private IBehaviourTreeNode CreateTree()
         {
-            var telemetrySubTree = new TelemetryBehaviour(
+            var telemetrySubTree = _telemetryBehaviourFactory
+                .Create(
                     _novatarEntity,
-                    _novatarStateModel,
-                    _avatar)
+                    _novatarStateModel)
                 .Build();
 
-            var unacquaintedSubTree = new UnacquaintedBehaviour(
+            var unacquaintedSubTree = _unacquaintedBehaviourFactory
+                .Create(
                     _novatarEntity,
-                    _novatarStateModel,
-                    _avatar,
-                    _behaviourTreeConfig)
+                    _novatarStateModel)
                 .Build();
 
-            var neutralSubTree = new NeutralBehaviour(
+            var neutralSubTree = _neutralBehaviourFactory
+                .Create(
                     _novatarEntity,
-                    _novatarStateModel,
-                    _screenSizeController)
+                    _novatarStateModel)
                 .Build();
 
-            var friendSubTree = new FriendBehaviour(
+            var friendSubTree = _friendBehaviourFactory
+                .Create(
                     _novatarEntity,
-                    _novatarStateModel,
-                    _avatar,
-                    _behaviourTreeConfig)
+                    _novatarStateModel)
                 .Build();
 
-            var enemySubTree = new EnemyBehaviour(
+            var enemySubTree = _enemyBehaviourFactory
+                .Create(
                     _novatarEntity,
-                    _novatarStateModel,
-                    _novatarConfig,
-                    _avatarDamageReceiver)
+                    _novatarStateModel)
                 .Build();
 
             return new BehaviourTreeBuilder()

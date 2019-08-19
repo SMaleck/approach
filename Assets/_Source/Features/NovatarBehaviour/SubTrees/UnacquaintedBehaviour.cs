@@ -3,11 +3,14 @@ using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
 using System.Linq;
+using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public class UnacquaintedBehaviour : AbstractBehaviour
     {
+        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, UnacquaintedBehaviour> { }
+
         private readonly AvatarEntity _avatar;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 

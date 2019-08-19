@@ -1,11 +1,14 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using FluentBehaviourTree;
+using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public class TelemetryBehaviour : AbstractBehaviour
     {
+        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, TelemetryBehaviour> { }
+
         private readonly AvatarEntity _avatar;
 
         private readonly IBehaviourTreeNode _behaviourTree;

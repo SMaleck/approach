@@ -45,8 +45,8 @@ namespace _Source.Entities.Novatar
                 .AddTo(Disposer);
 
             _novatarStateModel.CurrentRelationshipStatus
-                .SkipLatestValueOnSubscribe()
-                .Subscribe(OnRelationshipChanged)
+                .Pairwise()
+                .Subscribe(OnRelationshipSwitched)
                 .AddTo(Disposer);
 
             _tweenDisposer = new SerialDisposable().AddTo(Disposer);
@@ -83,9 +83,18 @@ namespace _Source.Entities.Novatar
             transform.Translate(0, _novatarConfig.MovementSpeed.AsTimeAdjusted(), 0);
         }
 
-        private void OnRelationshipChanged(RelationshipStatus relationship)
+        private void OnRelationshipSwitched(Pair<RelationshipStatus> relationshipPair)
         {
-            UpdateLightColor();
+            var previousIsUnacquainted = relationshipPair.Previous == RelationshipStatus.Unacquainted;
+            var currentIsNeutral = relationshipPair.Current == RelationshipStatus.Neutral;
+
+            if (previousIsUnacquainted && currentIsNeutral)
+            {
+                return;
+            }
+
+            var isSilentVisualUpdate = relationshipPair.Current == RelationshipStatus.Unacquainted;
+            UpdateLightColor(isSilentVisualUpdate);
         }
 
         private void UpdateLightColor(bool forceInstant = false)

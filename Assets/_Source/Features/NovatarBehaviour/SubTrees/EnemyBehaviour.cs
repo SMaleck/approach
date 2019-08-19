@@ -1,32 +1,35 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.AvatarState;
-using _Source.Features.GameWorld;
-using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
+using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public class EnemyBehaviour : AbstractBehaviour
     {
+        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, EnemyBehaviour> { }
+
+        private readonly NeutralBehaviour.Factory _neutralBehaviourFactory;
         private readonly NovatarConfig _novatarConfig;
         private readonly IDamageReceiver _avatarDamageReceiver;
         private readonly AvatarEntity _avatar;
-        private readonly BehaviourTreeConfig _behaviourTreeConfig;
-        private readonly ScreenSizeController _screenSizeController;
 
         private readonly IBehaviourTreeNode _behaviourTree;
+
+        private bool _hasDamagedAvatar = false;
 
         public EnemyBehaviour(
             NovatarEntity novatarEntity,
             NovatarStateModel novatarStateModel,
+            NeutralBehaviour.Factory neutralBehaviourFactory,
             NovatarConfig novatarConfig,
             IDamageReceiver avatarDamageReceiver)
             : base(novatarEntity, novatarStateModel)
         {
+            _neutralBehaviourFactory = neutralBehaviourFactory;
             _novatarConfig = novatarConfig;
             _avatarDamageReceiver = avatarDamageReceiver;
-
 
             _behaviourTree = CreateTree();
         }
@@ -38,10 +41,22 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 
         private IBehaviourTreeNode CreateTree()
         {
+            var neutralBehaviour = _neutralBehaviourFactory
+                .Create(
+                    NovatarEntity,
+                    NovatarStateModel)
+                .Build();
+
             return new BehaviourTreeBuilder()
-                .Sequence("DamageAvatar")
+                .Selector(nameof(EnemyBehaviour))
+                    .Sequence("Neutral")
+                        .Condition("HasDamagedPlayer", t => _hasDamagedAvatar)
+                        .Splice(neutralBehaviour)
+                        .End()
+                    .Sequence("DamageAvatar")
                         .Condition(nameof(IsInTouchRange), t => IsInTouchRange())
                         .Do(nameof(DamageAvatar), t => DamageAvatar())
+                        .End()
                 .End()
                 .Build();
         }
@@ -50,14 +65,10 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         {
             var damage = _novatarConfig.TouchDamage;
             _avatarDamageReceiver.ReceiveDamage(damage);
-            DeactivateSelf();
+
+            _hasDamagedAvatar = true;
 
             return BehaviourTreeStatus.Success;
-        }
-
-        private void DeactivateSelf()
-        {
-            NovatarStateModel.SetIsAlive(false);
         }
     }
 }

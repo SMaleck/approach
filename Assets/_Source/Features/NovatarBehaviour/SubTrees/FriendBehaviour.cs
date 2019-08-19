@@ -2,11 +2,14 @@
 using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
+using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public class FriendBehaviour : AbstractBehaviour
     {
+        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, FriendBehaviour> { }
+
         private readonly AvatarEntity _avatar;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
@@ -34,7 +37,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         private IBehaviourTreeNode CreateTree()
         {
             return new BehaviourTreeBuilder()
-                .Selector("FriendTree")
+                .Selector(nameof(FriendBehaviour))
                     .Sequence("FollowAvatar")
                         .Condition(nameof(IsInFollowRange), t => IsInFollowRange())
                         .Do(nameof(FollowAvatar), t => FollowAvatar())
