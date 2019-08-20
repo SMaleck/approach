@@ -7,7 +7,8 @@
             StartGame,
             Settings,
             HowToPlay,
-            HowToPlayDescription
+            TutorialStepOne,
+            TutorialStepTwo
         }
     }
 }

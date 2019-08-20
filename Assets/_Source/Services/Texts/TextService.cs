@@ -59,5 +59,15 @@ namespace _Source.Services.Texts
         {
             return TextData.GetLanguageText(language);
         }
+
+        public static string TutorialStepOne()
+        {
+            return TextData.GetText(TextKey.TutorialStepOne);
+        }
+
+        public static string TutorialStepTwo()
+        {
+            return TextData.GetText(TextKey.TutorialStepTwo);
+        }
     }
 }
