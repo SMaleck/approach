@@ -33,7 +33,7 @@ namespace _Source.Features.NovatarSpawning
 
         public void Reset(Vector3 spawnPosition)
         {
-            _novatarStateModel.Reset();
+            _novatarStateModel.PublishOnReset();
             _novatarStateModel.SetSpawnPosition(spawnPosition);
 
             _novatarEntity.Reset();

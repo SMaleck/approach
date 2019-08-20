@@ -53,7 +53,6 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 
         private BehaviourTreeStatus FollowAvatar()
         {
-            NovatarStateModel.SetTimePassedSinceFallingBehindSeconds(0);
             NovatarEntity.MoveTowards(_avatar.Position);
             return BehaviourTreeStatus.Success;
         }

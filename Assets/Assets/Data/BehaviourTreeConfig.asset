@@ -35,4 +35,5 @@ MonoBehaviour:
     _evaluationTimeoutSeconds: 10
     _timeBasedSwitchChance: 0.15
     _relationshipSwitchWeights: []
-  _maxSecondsToFallBehind: 1
+  _maxSecondsToFallBehind: 2
+  _enemyLeavingTimeoutSeconds: 1

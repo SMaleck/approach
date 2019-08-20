@@ -1,9 +1,10 @@
 ﻿using _Source.Entities.Novatar;
+using _Source.Util;
 using FluentBehaviourTree;
 
 namespace _Source.Features.NovatarBehaviour.SubTrees
 {
-    public abstract class AbstractBehaviour : IBehaviourTreeBuilder
+    public abstract class AbstractBehaviour : AbstractDisposable, IBehaviourTreeBuilder
     {
         protected readonly NovatarEntity NovatarEntity;
         protected readonly NovatarStateModel NovatarStateModel;

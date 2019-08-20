@@ -24,8 +24,8 @@ namespace _Source.Features.NovatarBehaviour
         private readonly ReactiveProperty<double> _timePassedInCurrentStatusSeconds;
         public IReadOnlyReactiveProperty<double> TimePassedInCurrentStatusSeconds => _timePassedInCurrentStatusSeconds;
 
-        private readonly ReactiveProperty<double> _timePassedSinceFallingBehindSeconds;
-        public IReadOnlyReactiveProperty<double> TimePassedSinceFallingBehindSeconds => _timePassedSinceFallingBehindSeconds;
+        private readonly Subject<Unit> _onReset;
+        public IOptimizedObservable<Unit> OnReset => _onReset;
 
         public NovatarStateModel()
         {
@@ -34,15 +34,7 @@ namespace _Source.Features.NovatarBehaviour
             _currentRelationshipStatus = new ReactiveProperty<RelationshipStatus>().AddTo(Disposer);
             _currentDistanceToAvatar = new ReactiveProperty<float>().AddTo(Disposer);
             _timePassedInCurrentStatusSeconds = new ReactiveProperty<double>().AddTo(Disposer);
-            _timePassedSinceFallingBehindSeconds = new ReactiveProperty<double>().AddTo(Disposer);
-        }
-
-        public void Reset()
-        {
-            SetIsAlive(true);
-            SetCurrentRelationshipStatus(RelationshipStatus.Unacquainted);
-            SetTimePassedInCurrentStatusSeconds(0);
-            SetTimePassedSinceFallingBehindSeconds(0);
+            _onReset = new Subject<Unit>().AddTo(Disposer);
         }
 
         public void SetIsAlive(bool value)
@@ -70,9 +62,13 @@ namespace _Source.Features.NovatarBehaviour
             _timePassedInCurrentStatusSeconds.Value = value;
         }
 
-        public void SetTimePassedSinceFallingBehindSeconds(double value)
+        public void PublishOnReset()
         {
-            _timePassedSinceFallingBehindSeconds.Value = value;
+            SetIsAlive(true);
+            SetCurrentRelationshipStatus(RelationshipStatus.Unacquainted);
+            SetTimePassedInCurrentStatusSeconds(0);
+
+            _onReset.OnNext(Unit.Default);
         }
     }
 }

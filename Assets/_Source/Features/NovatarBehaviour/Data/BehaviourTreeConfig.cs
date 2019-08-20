@@ -41,10 +41,15 @@ namespace _Source.Features.NovatarBehaviour.Data
         [Header("Relationship Config Items")]
         [SerializeField] private List<RelationshipConfigItem> _relationshipConfigItems;
 
-        [Header("Friend Tree Settings")]
+        [Header("Friend Behaviour Settings")]
         [Range(0, 600)]
         [SerializeField] private double _maxSecondsToFallBehind;
         public double MaxSecondsToFallBehind => _maxSecondsToFallBehind;
+
+        [Header("Enemy Behaviour Settings")]
+        [Range(0, 600)]
+        [SerializeField] private double _enemyLeavingTimeoutSeconds;
+        public double EnemyLeavingTimeoutSeconds => _enemyLeavingTimeoutSeconds;
 
         private RelationshipConfigItem GetRelationshipConfigItem(RelationshipStatus relationshipStatus)
         {

@@ -2,6 +2,7 @@
 using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
+using UniRx;
 using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.SubTrees
@@ -14,8 +15,10 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
         private readonly IBehaviourTreeNode _behaviourTree;
-        private RelationshipStatus _lastTrackedRelationShipStatus;
 
+        private RelationshipStatus _lastTrackedRelationShipStatus;
+        private double _timeSinceFallingBehindSeconds = 0;
+        
         public FriendBehaviour(
             NovatarEntity novatarEntity,
             NovatarStateModel novatarStateModel,
@@ -27,6 +30,15 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
             _behaviourTreeConfig = behaviourTreeConfig;
 
             _behaviourTree = CreateTree();
+
+            NovatarStateModel.OnReset
+                .Subscribe(_ => Reset())
+                .AddTo(Disposer);
+        }
+
+        private void Reset()
+        {
+            _timeSinceFallingBehindSeconds = 0;
         }
 
         public override IBehaviourTreeNode Build()
@@ -52,8 +64,9 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 
         private BehaviourTreeStatus FollowAvatar()
         {
-            NovatarStateModel.SetTimePassedSinceFallingBehindSeconds(0);
+            _timeSinceFallingBehindSeconds = 0;
             NovatarEntity.MoveTowards(_avatar.Position);
+
             return BehaviourTreeStatus.Success;
         }
 
@@ -62,12 +75,11 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
             var hasFallenBehind = !IsInTouchRange() && !IsInFollowRange();
             if (!hasFallenBehind)
             {
-                NovatarStateModel.SetTimePassedSinceFallingBehindSeconds(0);
+                _timeSinceFallingBehindSeconds = 0;
             }
             else
             {
-                var currentTimePassed = NovatarStateModel.TimePassedSinceFallingBehindSeconds.Value;
-                NovatarStateModel.SetTimePassedSinceFallingBehindSeconds(currentTimePassed + t.deltaTime);
+                _timeSinceFallingBehindSeconds += t.deltaTime;
             }
 
             return BehaviourTreeStatus.Success;
@@ -75,8 +87,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 
         private BehaviourTreeStatus EvaluateRelationshipOnFallingBehind()
         {
-            var secondsSinceFallingBehind = NovatarStateModel.TimePassedSinceFallingBehindSeconds.Value;
-            if (secondsSinceFallingBehind >= _behaviourTreeConfig.MaxSecondsToFallBehind)
+            if (_timeSinceFallingBehindSeconds >= _behaviourTreeConfig.MaxSecondsToFallBehind)
             {
                 NovatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Neutral);
             }
