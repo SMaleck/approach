@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7686290467815048600}
   - component: {fileID: 4861820196354557216}
   - component: {fileID: 1626689476295460026}
-  m_Layer: 5
+  m_Layer: 31
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 6172013490635538793}
   - component: {fileID: 6172013490635538794}
   - component: {fileID: 3021499835112407049}
-  m_Layer: 5
+  m_Layer: 31
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!114 &6172013490635538793
 MonoBehaviour:
@@ -195,7 +195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6172013490721709858}
-  m_Layer: 5
+  m_Layer: 31
   m_Name: container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +232,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6172013491317949377}
   - component: {fileID: 5096529906785707454}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: prefab_loading_screen_view
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,3 +267,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 3021499835112407049}
+  _fadeSeconds: 0.6

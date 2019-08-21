@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7686290467815048600}
   - component: {fileID: 4861820196354557216}
   - component: {fileID: 1626689476295460026}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: img_background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 6216233326506714965}
   - component: {fileID: 392995638469169767}
   - component: {fileID: 31645907559393437}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: bttn_language_german
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 2279666701390819400}
   - component: {fileID: 5028651039783805898}
   - component: {fileID: 5338040980398560007}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: bttn_language_english
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 611153169979046339}
   - component: {fileID: 8569940253536698735}
   - component: {fileID: 2039567656821696465}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: txt_bttn_language_german
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 6172013490635538793}
   - component: {fileID: 6172013490635538794}
   - component: {fileID: 3021499835112407049}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -530,7 +530,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 20
   m_TargetDisplay: 0
 --- !u!114 &6172013490635538793
 MonoBehaviour:
@@ -592,7 +592,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6172013490721709858}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -629,7 +629,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6172013491317949377}
   - component: {fileID: 37031123224572338}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: prefab_settings_view
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -680,7 +680,7 @@ GameObject:
   - component: {fileID: 5632877730234484954}
   - component: {fileID: 3264037580509309719}
   - component: {fileID: 7586810574294041326}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: txt_bttn_language_english
   m_TagString: Untagged
   m_Icon: {fileID: 0}

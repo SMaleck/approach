@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4853252018050772351}
   - component: {fileID: 9012352490241047037}
   - component: {fileID: 3536344548720601897}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: txt_bttn_close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 6773555067056483195}
   - component: {fileID: 2435926654469333216}
   - component: {fileID: 24181368137052817}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: bttn_close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 6172013490635538793}
   - component: {fileID: 6172013490635538794}
   - component: {fileID: 3021499835112407049}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,9 +333,9 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 1
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 30
   m_TargetDisplay: 0
 --- !u!114 &6172013490635538793
 MonoBehaviour:
@@ -397,7 +397,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6172013491317949377}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: prefab_close_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using _Source.Services.Texts;
+﻿using _Source.Services.Texts;
 using _Source.Util;
 using DG.Tweening;
+using System.Linq;
 using TMPro;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
-using UniRx;
-using UniRx.Triggers;
 
 namespace _Source.Features.TitleMenu
 {
@@ -31,10 +27,18 @@ namespace _Source.Features.TitleMenu
         [SerializeField] private CanvasGroup _tutorialStepOneParent;
         [SerializeField] private CanvasGroup _tutorialStepTwoParent;
 
+        [Header("Fading")]
+        [SerializeField] private float _stepFadeInSeconds;
+        [SerializeField] private float _stepFadeInDelaySeconds;
+
         private Tween _tutorialTween;
 
         public void Initialize()
         {
+            _closeButton.OnClickAsObservable()
+                .Subscribe(_ => Close())
+                .AddTo(Disposer);
+
             _tutorialTween = CreateTutorialTween();
 
             gameObject.OnEnableAsObservable()
@@ -44,10 +48,13 @@ namespace _Source.Features.TitleMenu
 
         private Tween CreateTutorialTween()
         {
+            _tutorialStepOneParent.alpha = 0;
+            _tutorialStepTwoParent.alpha = 0;
+
             var tween = DOTween.Sequence()
-                .Append(_tutorialStepOneParent.DOFade(1, 1))
-                .AppendInterval(1)
-                .Append(_tutorialStepOneParent.DOFade(1, 1))
+                .Append(_tutorialStepOneParent.DOFade(1, _stepFadeInSeconds))
+                .AppendInterval(_stepFadeInDelaySeconds)
+                .Append(_tutorialStepTwoParent.DOFade(1, _stepFadeInSeconds))
                 .Pause()
                 .SetAutoKill(false);
 
@@ -56,9 +63,6 @@ namespace _Source.Features.TitleMenu
 
         private void OnObservableEnable()
         {
-            _tutorialStepOneParent.alpha = 0;
-            _tutorialStepTwoParent.alpha = 0;
-
             _tutorialTween.Restart();
         }
 

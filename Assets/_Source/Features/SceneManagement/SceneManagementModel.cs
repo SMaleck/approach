@@ -11,6 +11,9 @@ namespace _Source.Features.SceneManagement
         private readonly Subject<Unit> _onOpenLoadingScreenCompleted;
         public IOptimizedObservable<Unit> OnOpenLoadingScreenCompleted => _onOpenLoadingScreenCompleted;
 
+        private readonly Subject<Unit> _onSceneStarted;
+        public IOptimizedObservable<Unit> OnSceneStarted => _onSceneStarted;
+
         public SceneManagementModel()
         {
             _isLoadingScreenVisible = new ReactiveProperty<bool>().AddTo(Disposer);
@@ -23,8 +26,13 @@ namespace _Source.Features.SceneManagement
         }
 
         public void PublishOnOpenLoadingScreenCompleted()
-        {            
+        {
             _onOpenLoadingScreenCompleted.OnNext(Unit.Default);
+        }
+
+        public void PublishOnSceneStarted()
+        {
+            _onSceneStarted.OnNext(Unit.Default);
         }
     }
 }

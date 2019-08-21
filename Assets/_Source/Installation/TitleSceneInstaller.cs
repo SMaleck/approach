@@ -1,13 +1,12 @@
 ﻿using _Source.Features.TitleMenu;
 using _Source.Features.ViewManagement;
 using _Source.Util;
-using Zenject;
 
 namespace _Source.Installation
 {
-    public class TitleSceneInstaller : MonoInstaller
+    public class TitleSceneInstaller : AbstractSceneInstaller
     {
-        public override void InstallBindings()
+        protected override void InstallSceneBindings()
         {
             Container.BindInterfacesAndSelfTo<ViewManagementController>().AsSingleNonLazy();
 

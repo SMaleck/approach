@@ -11,15 +11,14 @@ using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
 using _Source.Util;
 using UnityEngine;
-using Zenject;
 
 namespace _Source.Installation
 {
-    public class GameSceneInstaller : MonoInstaller
+    public class GameSceneInstaller : AbstractSceneInstaller
     {
         [SerializeField] private UnityEngine.Camera _sceneCamera;
 
-        public override void InstallBindings()
+        protected override void InstallSceneBindings()
         {
             Container.BindInstance(_sceneCamera);
 
