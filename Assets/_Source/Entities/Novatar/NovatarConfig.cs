@@ -1,8 +1,8 @@
-﻿using System;
+﻿using _Source.App;
+using _Source.Features.NovatarBehaviour;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Source.App;
-using _Source.Features.NovatarBehaviour;
 using UnityEngine;
 
 namespace _Source.Entities.Novatar
@@ -25,6 +25,10 @@ namespace _Source.Entities.Novatar
 
 
         [Header("Movement")]
+        [Range(0.001f, 5)]
+        [SerializeField] private float _movementTargetAccuracy;
+        public float MovementTargetAccuracy => _movementTargetAccuracy;
+
         [SerializeField] private float _range;
         public float Range => _range;
 

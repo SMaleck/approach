@@ -24,7 +24,12 @@ namespace _Source.Entities
 
         public float GetSquaredDistanceTo(AbstractMonoEntity otherEntity)
         {
-            var distance = Position - otherEntity.Position;
+            return GetSquaredDistanceTo(otherEntity.Position);
+        }
+
+        public float GetSquaredDistanceTo(Vector3 targetPosition)
+        {
+            var distance = Position - targetPosition;
 
             return distance.sqrMagnitude;
         }

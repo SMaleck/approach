@@ -63,6 +63,12 @@ namespace _Source.Entities.Novatar
             MoveForward();
         }
 
+        public bool IsMovementTargetReached(Vector3 targetPosition)
+        {
+            var sqrDistanceToTarget = GetSquaredDistanceTo(targetPosition);
+            return sqrDistanceToTarget <= Mathf.Pow(_novatarConfig.MovementTargetAccuracy, 2);
+        }
+
         private void FaceTarget(Vector3 targetPosition)
         {
             var headingToTarget = targetPosition - Position;

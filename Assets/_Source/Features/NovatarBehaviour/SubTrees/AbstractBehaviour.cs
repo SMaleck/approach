@@ -1,6 +1,7 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Util;
 using FluentBehaviourTree;
+using UnityEngine;
 
 namespace _Source.Features.NovatarBehaviour.SubTrees
 {
@@ -17,7 +18,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
             NovatarStateModel = novatarStateModel;
         }
 
-        public abstract IBehaviourTreeNode Build();
+        public abstract IBehaviourTreeNode Build();        
 
         protected bool IsInFollowRange()
         {

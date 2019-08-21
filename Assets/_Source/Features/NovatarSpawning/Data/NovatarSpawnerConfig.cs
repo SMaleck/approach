@@ -13,5 +13,9 @@ namespace _Source.Features.NovatarSpawning.Data
         [Range(1, 100)]
         [SerializeField] private int _maxActiveSpawns;
         public float MaxActiveSpawns => _maxActiveSpawns;
+
+        [Range(0, 5)]
+        [SerializeField] private float _spawnPositionOffset;
+        public float SpawnPositionOffset => _spawnPositionOffset;
     }
 }

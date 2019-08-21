@@ -97,7 +97,7 @@ namespace _Source.Features.NovatarSpawning
 
             _novatarPool.Add(novatarPoolItem);
 
-            novatarEntity.gameObject.name = $"Novatar [{_novatarPool.Count - 1}]";
+            novatarEntity.gameObject.name = $"{nameof(novatarEntity)} [{_novatarPool.Count - 1}]";
 
             return novatarPoolItem;
         }
@@ -109,7 +109,8 @@ namespace _Source.Features.NovatarSpawning
 
             return _screenSizeController.GetRandomizedOutOfBoundsPosition(
                 spawnSide,
-                novatar.Size);
+                novatar.Size,
+                _novatarSpawnerConfig.SpawnPositionOffset);
         }
     }
 }

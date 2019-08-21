@@ -13,6 +13,7 @@ namespace _Source.Features.GameWorld
             _screenSizeModel = screenSizeModel;
         }
 
+        // ToDo This needs to respect the offset as well
         public bool IsOutOfScreenBounds(Vector3 position, Vector2 size)
         {
             var screenSides = EnumHelper<ScreenSide>.Iterator;
@@ -27,9 +28,12 @@ namespace _Source.Features.GameWorld
             return false;
         }
 
-        public Vector3 GetRandomizedOutOfBoundsPosition(ScreenSide side, Vector2 size)
+        public Vector3 GetRandomizedOutOfBoundsPosition(
+            ScreenSide side, 
+            Vector2 size,
+            float offset = 0)
         {
-            var halfSize = GetHalfSizeFor(side, size);
+            var halfSize = GetHalfSizeFor(side, size) + offset;
             var randomComponent = GetRandomComponentFor(side, size);
 
             switch (side)
