@@ -1,24 +1,23 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Util;
 using FluentBehaviourTree;
-using UnityEngine;
 
 namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public abstract class AbstractBehaviour : AbstractDisposable, IBehaviourTreeBuilder
     {
-        protected readonly NovatarEntity NovatarEntity;
+        protected readonly INovatar NovatarEntity;
         protected readonly NovatarStateModel NovatarStateModel;
 
         protected AbstractBehaviour(
-            NovatarEntity novatarEntity,
+            INovatar novatarEntity,
             NovatarStateModel novatarStateModel)
         {
             NovatarEntity = novatarEntity;
             NovatarStateModel = novatarStateModel;
         }
 
-        public abstract IBehaviourTreeNode Build();        
+        public abstract IBehaviourTreeNode Build();
 
         protected bool IsInFollowRange()
         {

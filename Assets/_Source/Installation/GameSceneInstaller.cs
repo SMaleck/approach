@@ -25,7 +25,6 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<ViewManagementController>().AsSingleNonLazy();
 
             Container.BindPrefabFactory<AvatarEntity, AvatarEntity.Factory>();
-            Container.BindPrefabFactory<NovatarEntity, NovatarEntity.Factory>();
 
             Container.BindPrefabFactory<SurvivalStatsView, SurvivalStatsView.Factory>();
             Container.BindPrefabFactory<RoundEndedView, RoundEndedView.Factory>();
@@ -43,14 +42,15 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<ScreenSizeController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
-            Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarPoolItem, NovatarPoolItem.Factory>();
+            Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarFacade, NovatarFacade.Factory>();
+            Container.BindPrefabFactory<NovatarEntity, NovatarEntity.Factory>();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
-            Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
-            Container.BindFactory<NovatarEntity, NovatarStateModel, TelemetryBehaviour, TelemetryBehaviour.Factory>();
-            Container.BindFactory<NovatarEntity, NovatarStateModel, UnacquaintedBehaviour, UnacquaintedBehaviour.Factory>();
-            Container.BindFactory<NovatarEntity, NovatarStateModel, NeutralBehaviour, NeutralBehaviour.Factory>();
-            Container.BindFactory<NovatarEntity, NovatarStateModel, FriendBehaviour, FriendBehaviour.Factory>();
-            Container.BindFactory<NovatarEntity, NovatarStateModel, EnemyBehaviour, EnemyBehaviour.Factory>();
+            Container.BindFactory<INovatar, NovatarStateModel, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+            Container.BindFactory<INovatar, NovatarStateModel, TelemetryBehaviour, TelemetryBehaviour.Factory>();
+            Container.BindFactory<INovatar, NovatarStateModel, UnacquaintedBehaviour, UnacquaintedBehaviour.Factory>();
+            Container.BindFactory<INovatar, NovatarStateModel, NeutralBehaviour, NeutralBehaviour.Factory>();
+            Container.BindFactory<INovatar, NovatarStateModel, FriendBehaviour, FriendBehaviour.Factory>();
+            Container.BindFactory<INovatar, NovatarStateModel, EnemyBehaviour, EnemyBehaviour.Factory>();
 
             Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
 

@@ -9,7 +9,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public class UnacquaintedBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, UnacquaintedBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, UnacquaintedBehaviour> { }
 
         private readonly AvatarEntity _avatar;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
@@ -17,7 +17,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         private readonly IBehaviourTreeNode _behaviourTree;
 
         public UnacquaintedBehaviour(
-            NovatarEntity novatarEntity,
+            INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
             AvatarEntity avatar,
             BehaviourTreeConfig behaviourTreeConfig)

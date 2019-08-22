@@ -8,9 +8,15 @@ namespace _Source.Entities
         public bool IsActive => isActiveAndEnabled;
         public Vector3 Position => transform.position;
         public Vector3 LocalPosition => transform.localPosition;
+        public Quaternion Rotation => transform.rotation;
 
         // ToDo Implement Size
         public Vector2 Size => Vector2.one;
+
+        public void SetActive(bool value)
+        {
+            gameObject.SetActive(value);
+        }
 
         public void SetPosition(Vector3 position)
         {
@@ -20,6 +26,11 @@ namespace _Source.Entities
         public void SetLocalPosition(Vector3 position)
         {
             transform.localPosition = position;
+        }
+
+        public void SetRotation(Quaternion rotation)
+        {
+            transform.rotation = rotation;
         }
 
         public float GetSquaredDistanceTo(AbstractMonoEntity otherEntity)
@@ -34,9 +45,9 @@ namespace _Source.Entities
             return distance.sqrMagnitude;
         }
 
-        public void SetActive(bool value)
+        public void Translate(float x, float y, float z)
         {
-            gameObject.SetActive(value);
+            transform.Translate(x, y, z);
         }
     }
 }

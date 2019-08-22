@@ -9,7 +9,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public class NeutralBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, NeutralBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, NeutralBehaviour> { }
 
         private readonly AvatarEntity _avatar;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
@@ -18,7 +18,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         private readonly IBehaviourTreeNode _behaviourTree;
 
         public NeutralBehaviour(
-            NovatarEntity novatarEntity,
+            INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
             ScreenSizeController screenSizeController)
             : base(novatarEntity, novatarStateModel)

@@ -7,7 +7,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public class TelemetryBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, TelemetryBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, TelemetryBehaviour> { }
 
         private readonly AvatarEntity _avatar;
 
@@ -15,7 +15,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         private RelationshipStatus _lastTrackedRelationShipStatus;
 
         public TelemetryBehaviour(
-            NovatarEntity novatarEntity,
+            INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
             AvatarEntity avatar) 
             : base(novatarEntity, novatarStateModel)

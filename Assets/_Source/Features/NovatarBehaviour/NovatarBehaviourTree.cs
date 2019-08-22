@@ -10,9 +10,9 @@ namespace _Source.Features.NovatarBehaviour
 {
     public class NovatarBehaviourTree : AbstractDisposable, IInitializable
     {
-        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, NovatarBehaviourTree> { }
+        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, NovatarBehaviourTree> { }
 
-        private readonly NovatarEntity _novatarEntity;
+        private readonly INovatar _novatarEntity;
         private readonly NovatarStateModel _novatarStateModel;
         private readonly TelemetryBehaviour.Factory _telemetryBehaviourFactory;
         private readonly UnacquaintedBehaviour.Factory _unacquaintedBehaviourFactory;
@@ -23,7 +23,7 @@ namespace _Source.Features.NovatarBehaviour
         private IBehaviourTreeNode _behaviourTree;
 
         public NovatarBehaviourTree(
-            NovatarEntity novatarEntity,
+            INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
             TelemetryBehaviour.Factory telemetryBehaviourFactory,
             UnacquaintedBehaviour.Factory unacquaintedBehaviourFactory,

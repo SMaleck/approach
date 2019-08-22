@@ -9,7 +9,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public class FriendBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, FriendBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, FriendBehaviour> { }
 
         private readonly AvatarEntity _avatar;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
@@ -20,7 +20,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         private double _timeSinceFallingBehindSeconds = 0;
         
         public FriendBehaviour(
-            NovatarEntity novatarEntity,
+            INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
             AvatarEntity avatar,
             BehaviourTreeConfig behaviourTreeConfig)

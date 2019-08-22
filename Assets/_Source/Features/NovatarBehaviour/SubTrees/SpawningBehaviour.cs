@@ -8,7 +8,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public class SpawningBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, SpawningBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, SpawningBehaviour> { }
 
         private readonly NovatarConfig _novatarConfig;
 
@@ -16,7 +16,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         private Vector3 _movementTarget;
 
         public SpawningBehaviour(
-            NovatarEntity novatarEntity,
+            INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
             NovatarConfig novatarConfig)
             : base(novatarEntity, novatarStateModel)

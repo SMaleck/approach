@@ -10,7 +10,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 {
     public class EnemyBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, EnemyBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, EnemyBehaviour> { }
 
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
         private readonly NeutralBehaviour.Factory _neutralBehaviourFactory;
@@ -24,7 +24,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         private double _timeSinceHasDamagedPlayerSeconds = 0;
 
         public EnemyBehaviour(
-            NovatarEntity novatarEntity,
+            INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
             BehaviourTreeConfig behaviourTreeConfig,
             NeutralBehaviour.Factory neutralBehaviourFactory,
