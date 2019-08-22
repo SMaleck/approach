@@ -14,6 +14,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         private readonly ScreenSizeModel _screenSizeModel;
 
         private readonly IBehaviourTreeNode _behaviourTree;
+        private bool _hasStarted;
         private Vector3 _movementTarget;
 
         public SpawningBehaviour(
@@ -32,6 +33,47 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
         }
 
         private void Reset()
+        {
+            _hasStarted = false;
+        }
+
+        public override IBehaviourTreeNode Build()
+        {
+            return _behaviourTree;
+        }
+
+        private IBehaviourTreeNode CreateTree()
+        {
+            return new BehaviourTreeBuilder()
+                .Selector(nameof(EnemyBehaviour))
+                    .Sequence("Switch Relationship")
+                        .Condition(nameof(HasReachedTarget), t => HasReachedTarget())
+                        .Do(nameof(SwitchToUnacquainted), t => SwitchToUnacquainted())
+                        .End()
+                    .Sequence("Start")
+                        .Condition(nameof(_hasStarted), t => !_hasStarted)
+                        .Do(nameof(StartOpeningSequence), t => StartOpeningSequence())
+                        .End()
+                    .Sequence("Move")
+                        .Condition(nameof(_hasStarted), t => _hasStarted)
+                        .Do(nameof(Move), t => Move())
+                        .End()
+                .End()
+                .Build();
+        }
+
+        private bool HasReachedTarget()
+        {
+            return NovatarEntity.IsMovementTargetReached(_movementTarget);
+        }
+
+        private BehaviourTreeStatus SwitchToUnacquainted()
+        {
+            NovatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Unacquainted);
+            return BehaviourTreeStatus.Success;
+        }
+
+        private BehaviourTreeStatus StartOpeningSequence()
         {
             var spawnPosition = NovatarStateModel.SpawnPosition.Value;
 
@@ -58,42 +100,20 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 
             NovatarEntity.LookAt(new Vector3(0, 0, lookRotation));
             NovatarEntity.TurnLightsOn();
-        }
 
-        public override IBehaviourTreeNode Build()
-        {
-            return _behaviourTree;
-        }
+            _hasStarted = true;
 
-        private IBehaviourTreeNode CreateTree()
-        {
-            return new BehaviourTreeBuilder()
-                .Selector(nameof(EnemyBehaviour))
-                    .Sequence("Switch Relationship")
-                        .Condition(nameof(HasReachedTarget), t => HasReachedTarget())
-                        .Do(nameof(SwitchToUnacquainted), t => SwitchToUnacquainted())
-                        .End()
-                    .Sequence("Move")
-                        .Do(nameof(Move), t => Move())
-                        .End()
-                .End()
-                .Build();
-        }
-
-        private bool HasReachedTarget()
-        {
-            return NovatarEntity.IsMovementTargetReached(_movementTarget);
-        }
-
-        private BehaviourTreeStatus SwitchToUnacquainted()
-        {
-            NovatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Unacquainted);
             return BehaviourTreeStatus.Success;
         }
 
         private BehaviourTreeStatus Move()
         {
-            NovatarEntity.MoveForward();
+            if (!HasReachedTarget())
+            {
+                NovatarEntity.MoveForward();
+                return BehaviourTreeStatus.Running;
+            }
+            
             return BehaviourTreeStatus.Success;
         }
     }

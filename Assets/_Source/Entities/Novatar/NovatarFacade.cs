@@ -27,7 +27,6 @@ namespace _Source.Entities.Novatar
         public float SqrTargetReachedThreshold => Mathf.Pow(_novatarConfig.TargetReachedThreshold, 2);
 
         private readonly SerialDisposable _tweenDisposer;
-
         private readonly Tween _lightsOnTween;
 
         public NovatarFacade(
@@ -52,6 +51,7 @@ namespace _Source.Entities.Novatar
                 .AddTo(Disposer);
 
             _novatarStateModel.CurrentRelationshipStatus
+                .Where(_ => IsActive)
                 .Pairwise()
                 .Subscribe(OnRelationshipSwitched)
                 .AddTo(Disposer);
@@ -65,13 +65,15 @@ namespace _Source.Entities.Novatar
 
         public void Reset(Vector3 spawnPosition)
         {
-            UpdateLightColor(true);
-
-            _novatarStateModel.SetIsAlive(true);
             _novatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Spawning);
             _novatarStateModel.SetTimePassedInCurrentStatusSeconds(0);
             _novatarStateModel.SetSpawnPosition(spawnPosition);
+
+            UpdateLightColor(true);
+
             _novatarStateModel.PublishOnReset();
+
+            _novatarStateModel.SetIsAlive(true);
         }
 
         public void MoveTowards(Vector3 targetPosition)
