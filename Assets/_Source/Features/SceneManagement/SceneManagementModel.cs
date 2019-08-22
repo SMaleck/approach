@@ -5,29 +5,21 @@ namespace _Source.Features.SceneManagement
 {
     public class SceneManagementModel : AbstractDisposable, IReadOnlySceneManagementModel
     {
-        private readonly ReactiveProperty<bool> _isLoadingScreenVisible;
-        public IReadOnlyReactiveProperty<bool> IsLoadingScreenVisible => _isLoadingScreenVisible;
-
-        private readonly Subject<Unit> _onOpenLoadingScreenCompleted;
-        public IOptimizedObservable<Unit> OnOpenLoadingScreenCompleted => _onOpenLoadingScreenCompleted;
+        private readonly ReactiveProperty<Scenes> _currentScene;
+        public IReadOnlyReactiveProperty<Scenes> CurrentScene => _currentScene;
 
         private readonly Subject<Unit> _onSceneStarted;
         public IOptimizedObservable<Unit> OnSceneStarted => _onSceneStarted;
 
         public SceneManagementModel()
         {
-            _isLoadingScreenVisible = new ReactiveProperty<bool>().AddTo(Disposer);
-            _onOpenLoadingScreenCompleted = new Subject<Unit>().AddTo(Disposer);
+            _currentScene = new ReactiveProperty<Scenes>().AddTo(Disposer);
+            _onSceneStarted = new Subject<Unit>().AddTo(Disposer);
         }
 
-        public void SetIsLoadingScreenVisible(bool value)
+        public void SetCurrentScene(Scenes value)
         {
-            _isLoadingScreenVisible.Value = value;
-        }
-
-        public void PublishOnOpenLoadingScreenCompleted()
-        {
-            _onOpenLoadingScreenCompleted.OnNext(Unit.Default);
+            _currentScene.Value = value;
         }
 
         public void PublishOnSceneStarted()

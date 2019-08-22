@@ -13,14 +13,14 @@ namespace _Source.Features.SceneManagement
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private float _fadeSeconds;
 
-        private SceneManagementModel _sceneManagementModel;
+        private LoadingScreenModel _loadingScreenModel;
         private Tween _openTween;
         private Tween _closeTween;
 
         [Inject]
-        private void Inject(SceneManagementModel sceneManagementModel)
+        private void Inject(LoadingScreenModel loadingScreenModel)
         {
-            _sceneManagementModel = sceneManagementModel;
+            _loadingScreenModel = loadingScreenModel;
         }
 
         public void Initialize()
@@ -49,18 +49,19 @@ namespace _Source.Features.SceneManagement
                 .Pause()
                 .AddTo(Disposer, TweenDisposalBehaviour.Rewind);
 
-            _sceneManagementModel.IsLoadingScreenVisible
+            _loadingScreenModel.IsLoadingScreenVisible
                 .Subscribe(UpdateVisibility)
                 .AddTo(Disposer);
         }
 
         private void OnOpenCompleted()
         {
-            _sceneManagementModel.PublishOnOpenLoadingScreenCompleted();
+            _loadingScreenModel.PublishOnOpenLoadingScreenCompleted();
         }
 
         private void OnCloseCompleted()
         {
+            _loadingScreenModel.PublishOnCloseLoadingScreenCompleted();
             Close();
         }
 
