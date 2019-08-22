@@ -28,6 +28,8 @@ namespace _Source.Entities.Novatar
 
         private readonly SerialDisposable _tweenDisposer;
 
+        private readonly Tween _lightsOnTween;
+
         public NovatarFacade(
             NovatarEntity novatarEntity,
             NovatarStateModel novatarStateModel,
@@ -55,16 +57,21 @@ namespace _Source.Entities.Novatar
                 .AddTo(Disposer);
 
             _tweenDisposer = new SerialDisposable().AddTo(Disposer);
+
+            _lightsOnTween = CreateLightsOnTween();
         }
 
         public bool IsFree { get; private set; }
 
         public void Reset(Vector3 spawnPosition)
         {
-            _novatarStateModel.PublishOnReset();
-            _novatarStateModel.SetSpawnPosition(spawnPosition);
-
             UpdateLightColor(true);
+
+            _novatarStateModel.SetIsAlive(true);
+            _novatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Spawning);
+            _novatarStateModel.SetTimePassedInCurrentStatusSeconds(0);
+            _novatarStateModel.SetSpawnPosition(spawnPosition);
+            _novatarStateModel.PublishOnReset();
         }
 
         public void MoveTowards(Vector3 targetPosition)
@@ -73,15 +80,30 @@ namespace _Source.Entities.Novatar
             MoveForward();
         }
 
+        public void MoveForward()
+        {
+            _novatarEntity.Translate(0, _novatarConfig.MovementSpeed.AsTimeAdjusted(), 0);
+        }
+
         public bool IsMovementTargetReached(Vector3 targetPosition)
         {
             var sqrDistanceToTarget = _novatarEntity.GetSquaredDistanceTo(targetPosition);
             return sqrDistanceToTarget <= Mathf.Pow(_novatarConfig.MovementTargetAccuracy, 2);
         }
 
+        public void LookAt(Vector3 targetRotation)
+        {
+            Entity.transform.eulerAngles = targetRotation;
+        }
+
         public float GetSquaredDistanceTo(AbstractMonoEntity otherEntity)
         {
             return Entity.GetSquaredDistanceTo(otherEntity);
+        }
+
+        public void TurnLightsOn()
+        {
+            _lightsOnTween.Restart();
         }
 
         private void FaceTarget(Vector3 targetPosition)
@@ -99,11 +121,6 @@ namespace _Source.Entities.Novatar
                 _novatarConfig.TurnSpeed.AsTimeAdjusted());
 
             _novatarEntity.SetRotation(rotation);
-        }
-
-        private void MoveForward()
-        {
-            _novatarEntity.Translate(0, _novatarConfig.MovementSpeed.AsTimeAdjusted(), 0);
         }
 
         private void OnRelationshipSwitched(Pair<RelationshipStatus> relationshipPair)
@@ -157,6 +174,23 @@ namespace _Source.Entities.Novatar
             return _novatarEntity.HeadLight
                 .DOColor(targetColor, _novatarConfig.LightColorFadeSeconds)
                 .SetEase(Ease.InOutCubic);
+        }
+
+        public Tween CreateLightsOnTween()
+        {
+            _novatarEntity.HeadLight.intensity = 0;
+
+            var tween = _novatarEntity.HeadLight
+                .DOIntensity(_novatarConfig.LightDefaultIntensity, _novatarConfig.LightColorFadeSeconds)
+                .SetEase(Ease.InOutCubic)
+                .SetAutoKill(false)
+                .Pause()
+                .AddTo(Disposer, TweenDisposalBehaviour.Rewind);
+            tween.ForceInit();
+
+            _novatarEntity.HeadLight.intensity = 1;
+
+            return tween;
         }
 
         private void SetLight(Color color, float intensity)

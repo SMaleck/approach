@@ -67,9 +67,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 
         private RelationshipStatus GetWeightedRandomRelationshipStatus()
         {
-            var currentRelationship = NovatarStateModel.CurrentRelationshipStatus.Value;
-            var switchChances = _behaviourTreeConfig.GetRelationshipSwitchWeights(currentRelationship);
-
+            var switchChances = _behaviourTreeConfig.UnacquaintedConfig.RelationshipSwitchWeights;
             var totalWeight = switchChances.Sum(item => item.WeightedChance);
             var randomNumber = UnityEngine.Random.Range(0f, totalWeight);
 
@@ -83,7 +81,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
                 randomNumber = randomNumber - switchChance.WeightedChance;
             }
 
-            return currentRelationship;
+            return NovatarStateModel.CurrentRelationshipStatus.Value;
         }
 
 
@@ -93,7 +91,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
             var currentRelationship = NovatarStateModel.CurrentRelationshipStatus.Value;
             var currentTimePassed = NovatarStateModel.TimePassedInCurrentStatusSeconds.Value;
 
-            var timeoutSeconds = _behaviourTreeConfig.GetEvaluationTimeoutSeconds(currentRelationship);
+            var timeoutSeconds = _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds;
 
             // 0 -> status does not change spontaneously
             if (timeoutSeconds <= 0 || currentTimePassed < timeoutSeconds)
@@ -102,7 +100,7 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
             }
 
             // Switch to NEUTRAL based on Dice Roll
-            var switchChance = _behaviourTreeConfig.GetTimeBasedSwitchChance(currentRelationship);
+            var switchChance = _behaviourTreeConfig.UnacquaintedConfig.TimeBasedSwitchChance;
             var diceRoll = UnityEngine.Random.Range(0f, 1f);
 
             if (diceRoll <= switchChance)

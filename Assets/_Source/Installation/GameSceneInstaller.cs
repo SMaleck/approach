@@ -46,6 +46,7 @@ namespace _Source.Installation
             Container.BindPrefabFactory<NovatarEntity, NovatarEntity.Factory>();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
             Container.BindFactory<INovatar, NovatarStateModel, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+            Container.BindFactory<INovatar, NovatarStateModel, SpawningBehaviour, SpawningBehaviour.Factory>();
             Container.BindFactory<INovatar, NovatarStateModel, TelemetryBehaviour, TelemetryBehaviour.Factory>();
             Container.BindFactory<INovatar, NovatarStateModel, UnacquaintedBehaviour, UnacquaintedBehaviour.Factory>();
             Container.BindFactory<INovatar, NovatarStateModel, NeutralBehaviour, NeutralBehaviour.Factory>();

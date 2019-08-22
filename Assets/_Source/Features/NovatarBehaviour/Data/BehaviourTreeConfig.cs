@@ -1,7 +1,6 @@
 ﻿using _Source.App;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace _Source.Features.NovatarBehaviour.Data
@@ -10,11 +9,8 @@ namespace _Source.Features.NovatarBehaviour.Data
     public class BehaviourTreeConfig : ScriptableObject
     {
         [Serializable]
-        private class RelationshipConfigItem
+        public class UnacquaintedRelationshipConfig
         {
-            [SerializeField] private RelationshipStatus _relationship;
-            public RelationshipStatus Relationship => _relationship;
-
             [Range(0, 600)]
             [SerializeField] private double _evaluationTimeoutSeconds;
             public double EvaluationTimeoutSeconds => _evaluationTimeoutSeconds;
@@ -38,8 +34,9 @@ namespace _Source.Features.NovatarBehaviour.Data
             public float WeightedChance => _weightedChance;
         }
 
-        [Header("Relationship Config Items")]
-        [SerializeField] private List<RelationshipConfigItem> _relationshipConfigItems;
+        [Header("Unacquainted Config")]
+        [SerializeField] private UnacquaintedRelationshipConfig _unacquaintedConfig;
+        public UnacquaintedRelationshipConfig UnacquaintedConfig => _unacquaintedConfig;
 
         [Header("Friend Behaviour Settings")]
         [Range(0, 600)]
@@ -50,29 +47,5 @@ namespace _Source.Features.NovatarBehaviour.Data
         [Range(0, 600)]
         [SerializeField] private double _enemyLeavingTimeoutSeconds;
         public double EnemyLeavingTimeoutSeconds => _enemyLeavingTimeoutSeconds;
-
-        private RelationshipConfigItem GetRelationshipConfigItem(RelationshipStatus relationshipStatus)
-        {
-            return _relationshipConfigItems
-                .First(item => item.Relationship == relationshipStatus);
-        }
-
-        public double GetEvaluationTimeoutSeconds(RelationshipStatus relationshipStatus)
-        {
-            return GetRelationshipConfigItem(relationshipStatus)
-                .EvaluationTimeoutSeconds;
-        }
-
-        public float GetTimeBasedSwitchChance(RelationshipStatus relationshipStatus)
-        {
-            return GetRelationshipConfigItem(relationshipStatus)
-                .TimeBasedSwitchChance;
-        }
-
-        public IReadOnlyList<RelationshipSwitchWeightItem> GetRelationshipSwitchWeights(RelationshipStatus relationshipStatus)
-        {
-            return GetRelationshipConfigItem(relationshipStatus)
-                .RelationshipSwitchWeights;
-        }
     }
 }

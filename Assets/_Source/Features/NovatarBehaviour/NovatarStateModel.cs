@@ -64,10 +64,6 @@ namespace _Source.Features.NovatarBehaviour
 
         public void PublishOnReset()
         {
-            SetIsAlive(true);
-            SetCurrentRelationshipStatus(RelationshipStatus.Unacquainted);
-            SetTimePassedInCurrentStatusSeconds(0);
-
             _onReset.OnNext(Unit.Default);
         }
     }

@@ -14,6 +14,7 @@ namespace _Source.Features.NovatarBehaviour
 
         private readonly INovatar _novatarEntity;
         private readonly NovatarStateModel _novatarStateModel;
+        private readonly SpawningBehaviour.Factory _spawningBehaviourFactory;
         private readonly TelemetryBehaviour.Factory _telemetryBehaviourFactory;
         private readonly UnacquaintedBehaviour.Factory _unacquaintedBehaviourFactory;
         private readonly NeutralBehaviour.Factory _neutralBehaviourFactory;
@@ -25,6 +26,7 @@ namespace _Source.Features.NovatarBehaviour
         public NovatarBehaviourTree(
             INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
+            SpawningBehaviour.Factory spawningBehaviourFactory,
             TelemetryBehaviour.Factory telemetryBehaviourFactory,
             UnacquaintedBehaviour.Factory unacquaintedBehaviourFactory,
             NeutralBehaviour.Factory neutralBehaviourFactory,
@@ -33,6 +35,7 @@ namespace _Source.Features.NovatarBehaviour
         {
             _novatarEntity = novatarEntity;
             _novatarStateModel = novatarStateModel;
+            _spawningBehaviourFactory = spawningBehaviourFactory;
             _telemetryBehaviourFactory = telemetryBehaviourFactory;
             _unacquaintedBehaviourFactory = unacquaintedBehaviourFactory;
             _neutralBehaviourFactory = neutralBehaviourFactory;
@@ -52,31 +55,37 @@ namespace _Source.Features.NovatarBehaviour
 
         private IBehaviourTreeNode CreateTree()
         {
-            var telemetrySubTree = _telemetryBehaviourFactory
+            var spawningBehaviour = _spawningBehaviourFactory
                 .Create(
                     _novatarEntity,
                     _novatarStateModel)
                 .Build();
 
-            var unacquaintedSubTree = _unacquaintedBehaviourFactory
+            var telemetryBehaviour = _telemetryBehaviourFactory
                 .Create(
                     _novatarEntity,
                     _novatarStateModel)
                 .Build();
 
-            var neutralSubTree = _neutralBehaviourFactory
+            var unacquaintedBehaviour = _unacquaintedBehaviourFactory
                 .Create(
                     _novatarEntity,
                     _novatarStateModel)
                 .Build();
 
-            var friendSubTree = _friendBehaviourFactory
+            var neutralBehaviour = _neutralBehaviourFactory
                 .Create(
                     _novatarEntity,
                     _novatarStateModel)
                 .Build();
 
-            var enemySubTree = _enemyBehaviourFactory
+            var friendBehaviour = _friendBehaviourFactory
+                .Create(
+                    _novatarEntity,
+                    _novatarStateModel)
+                .Build();
+
+            var enemyBehaviour = _enemyBehaviourFactory
                 .Create(
                     _novatarEntity,
                     _novatarStateModel)
@@ -84,23 +93,27 @@ namespace _Source.Features.NovatarBehaviour
 
             return new BehaviourTreeBuilder()
                 .Parallel(nameof(NovatarBehaviourTree), 20, 20)
-                    .Splice(telemetrySubTree)
+                    .Splice(telemetryBehaviour)
                     .Selector("RelationshipTreeSelector")
-                        .Sequence("UnacquaintedSequence")
+                        .Sequence("SpawningBehaviourSequence")
+                            .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Spawning))
+                            .Splice(spawningBehaviour)
+                            .End()
+                        .Sequence("UnacquaintedBehaviourSequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Unacquainted))
-                            .Splice(unacquaintedSubTree)
+                            .Splice(unacquaintedBehaviour)
                             .End()
-                        .Sequence("NeutralSequence")
+                        .Sequence("NeutralBehaviourSequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Neutral))
-                            .Splice(neutralSubTree)
+                            .Splice(neutralBehaviour)
                             .End()
-                        .Sequence("FriendSequence")
+                        .Sequence("FriendBehaviourSequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Friend))
-                            .Splice(friendSubTree)
+                            .Splice(friendBehaviour)
                             .End()
-                        .Sequence("EnemySequence")
+                        .Sequence("EnemyBehaviourSequence")
                             .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Enemy))
-                            .Splice(enemySubTree)
+                            .Splice(enemyBehaviour)
                             .End()
                     .End()
                 .End()

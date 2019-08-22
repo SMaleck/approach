@@ -12,28 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f7006cff029e9429f72cabd18cdb95, type: 3}
   m_Name: BehaviourTreeConfig
   m_EditorClassIdentifier: 
-  _relationshipConfigItems:
-  - _relationship: 0
+  _unacquaintedConfig:
     _evaluationTimeoutSeconds: 600
-    _timeBasedSwitchChance: 0.25
+    _timeBasedSwitchChance: 0.5
     _relationshipSwitchWeights:
-    - _switchToRelationship: 1
-      _weightedChance: 0.25
     - _switchToRelationship: 2
       _weightedChance: 0.25
     - _switchToRelationship: 3
-      _weightedChance: 0.5
-  - _relationship: 1
-    _evaluationTimeoutSeconds: 0
-    _timeBasedSwitchChance: 0
-    _relationshipSwitchWeights: []
-  - _relationship: 2
-    _evaluationTimeoutSeconds: 0
-    _timeBasedSwitchChance: 0
-    _relationshipSwitchWeights: []
-  - _relationship: 3
-    _evaluationTimeoutSeconds: 10
-    _timeBasedSwitchChance: 0.15
-    _relationshipSwitchWeights: []
+      _weightedChance: 0.25
+    - _switchToRelationship: 4
+      _weightedChance: 0.25
   _maxSecondsToFallBehind: 2
   _enemyLeavingTimeoutSeconds: 1
