@@ -82,11 +82,14 @@ namespace _Source.Features.NovatarBehaviour.SubTrees
 
         private BehaviourTreeStatus DamageAvatar()
         {
-            var damage = _novatarConfig.TouchDamage;
-            _avatarDamageReceiver.ReceiveDamage(damage);
+            if (!_hasDamagedAvatar)
+            {
+                var damage = _novatarConfig.TouchDamage;
+                _avatarDamageReceiver.ReceiveDamage(damage);
 
-            _hasDamagedAvatar = true;
-
+                _hasDamagedAvatar = true;
+            }
+            
             return BehaviourTreeStatus.Success;
         }
 

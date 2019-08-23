@@ -48,7 +48,7 @@ namespace _Source.Features.NovatarBehaviour
             _behaviourTree = CreateTree();
 
             Observable.EveryLateUpdate()
-                .Where(_ => _novatarEntity.IsActive)
+                .Where(_ => _novatarStateModel.IsAlive.Value)
                 .Subscribe(_ => _behaviourTree.Tick(new TimeData(Time.deltaTime)))
                 .AddTo(Disposer);
         }
@@ -96,23 +96,23 @@ namespace _Source.Features.NovatarBehaviour
                     .Splice(telemetryBehaviour)
                     .Selector("RelationshipTreeSelector")
                         .Sequence("SpawningBehaviourSequence")
-                            .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Spawning))
+                            .Condition(nameof(IsRelationshipStatus), t => IsRelationshipStatus(RelationshipStatus.Spawning))
                             .Splice(spawningBehaviour)
                             .End()
                         .Sequence("UnacquaintedBehaviourSequence")
-                            .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Unacquainted))
+                            .Condition(nameof(IsRelationshipStatus), t => IsRelationshipStatus(RelationshipStatus.Unacquainted))
                             .Splice(unacquaintedBehaviour)
                             .End()
                         .Sequence("NeutralBehaviourSequence")
-                            .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Neutral))
+                            .Condition(nameof(IsRelationshipStatus), t => IsRelationshipStatus(RelationshipStatus.Neutral))
                             .Splice(neutralBehaviour)
                             .End()
                         .Sequence("FriendBehaviourSequence")
-                            .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Friend))
+                            .Condition(nameof(IsRelationshipStatus), t => IsRelationshipStatus(RelationshipStatus.Friend))
                             .Splice(friendBehaviour)
                             .End()
                         .Sequence("EnemyBehaviourSequence")
-                            .Condition(nameof(IsCurrentRelationshipStatus), t => IsCurrentRelationshipStatus(RelationshipStatus.Enemy))
+                            .Condition(nameof(IsRelationshipStatus), t => IsRelationshipStatus(RelationshipStatus.Enemy))
                             .Splice(enemyBehaviour)
                             .End()
                     .End()
@@ -120,7 +120,7 @@ namespace _Source.Features.NovatarBehaviour
                 .Build();
         }
 
-        private bool IsCurrentRelationshipStatus(RelationshipStatus status)
+        private bool IsRelationshipStatus(RelationshipStatus status)
         {
             return _novatarStateModel.CurrentRelationshipStatus.Value == status;
         }

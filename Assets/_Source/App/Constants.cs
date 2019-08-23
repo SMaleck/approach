@@ -2,7 +2,7 @@
 {
     public static class Constants
     {
-        public const string ConfigRootPath = "Anxiety";
+        public const string ConfigRootPath = "Approach";
         public const string PrefsKeyLanguage = "LanguagePref";
     }
 }
