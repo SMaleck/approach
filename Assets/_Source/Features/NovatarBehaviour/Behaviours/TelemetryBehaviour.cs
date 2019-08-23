@@ -3,7 +3,7 @@ using _Source.Entities.Novatar;
 using FluentBehaviourTree;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour.SubTrees
+namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class TelemetryBehaviour : AbstractBehaviour
     {

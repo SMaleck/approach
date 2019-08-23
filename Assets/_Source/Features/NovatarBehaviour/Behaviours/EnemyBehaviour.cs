@@ -6,7 +6,7 @@ using FluentBehaviourTree;
 using UniRx;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour.SubTrees
+namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class EnemyBehaviour : AbstractBehaviour
     {

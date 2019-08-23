@@ -5,7 +5,7 @@ using _Source.Features.Cheats;
 using _Source.Features.GameRound;
 using _Source.Features.GameWorld;
 using _Source.Features.NovatarBehaviour;
-using _Source.Features.NovatarBehaviour.SubTrees;
+using _Source.Features.NovatarBehaviour.Behaviours;
 using _Source.Features.NovatarSpawning;
 using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;

@@ -2,7 +2,7 @@
 using _Source.Util;
 using FluentBehaviourTree;
 
-namespace _Source.Features.NovatarBehaviour.SubTrees
+namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public abstract class AbstractBehaviour : AbstractDisposable, IBehaviourTreeBuilder
     {

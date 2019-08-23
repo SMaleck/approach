@@ -1,5 +1,5 @@
 ﻿using _Source.Entities.Novatar;
-using _Source.Features.NovatarBehaviour.SubTrees;
+using _Source.Features.NovatarBehaviour.Behaviours;
 using _Source.Util;
 using FluentBehaviourTree;
 using UniRx;

@@ -5,7 +5,7 @@ using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour.SubTrees
+namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class NeutralBehaviour : AbstractBehaviour
     {

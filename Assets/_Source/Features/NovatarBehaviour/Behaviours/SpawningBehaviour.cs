@@ -5,7 +5,7 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour.SubTrees
+namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class SpawningBehaviour : AbstractBehaviour
     {
