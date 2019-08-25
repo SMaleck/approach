@@ -1,4 +1,6 @@
 ﻿using _Source.Features.SceneManagement;
+using _Source.Util;
+using UniRx;
 using Zenject;
 
 namespace _Source.Installation
@@ -7,6 +9,9 @@ namespace _Source.Installation
     {
         public override void InstallBindings()
         {
+            Container.BindInterfacesAndSelfTo<CompositeDisposable>()
+                .AsSingleNonLazy();
+
             InstallSceneBindings();
             PostInstall();
         }

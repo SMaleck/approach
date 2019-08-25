@@ -78,8 +78,6 @@ namespace _Source.Features.NovatarSpawning
             var novatarEntity = _novatarEntityFactory.Create(
                 _novatarConfig.NovatarPrefab);
 
-            novatarEntity.gameObject.name = $"{nameof(novatarEntity)} [{_novatarPool.Count - 1}]";
-
             var novatarStateModel = _novatarStateModelFactory
                 .Create()
                 .AddTo(Disposer); // ToDo needed?
@@ -94,6 +92,7 @@ namespace _Source.Features.NovatarSpawning
                 .Initialize();
 
             _novatarPool.Add(novatarFacade);
+            novatarEntity.gameObject.name = $"{nameof(novatarEntity)} [{_novatarPool.Count - 1}]";
 
             return novatarFacade;
         }

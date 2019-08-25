@@ -24,3 +24,5 @@ MonoBehaviour:
     type: 3}
   _roundEndedViewPrefab: {fileID: 2550958974713174961, guid: 1222405e7ff3dd943be06d81680a3468,
     type: 3}
+  _virtualJoystickViewPrefab: {fileID: 5373065323251436650, guid: 72c2433e6136e5848830ac42b63ae5fd,
+    type: 3}

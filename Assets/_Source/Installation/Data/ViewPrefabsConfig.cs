@@ -3,6 +3,7 @@ using _Source.Features.AvatarState;
 using _Source.Features.GameRound;
 using _Source.Features.SceneManagement;
 using _Source.Features.TitleMenu;
+using _Source.Features.UserInput;
 using UnityEngine;
 
 namespace _Source.Installation.Data
@@ -30,5 +31,8 @@ namespace _Source.Installation.Data
 
         [SerializeField] private RoundEndedView _roundEndedViewPrefab;
         public RoundEndedView RoundEndedViewPrefab => _roundEndedViewPrefab;
+
+        [SerializeField] private VirtualJoystickView _virtualJoystickViewPrefab;
+        public VirtualJoystickView VirtualJoystickViewPrefab => _virtualJoystickViewPrefab;
     }
 }

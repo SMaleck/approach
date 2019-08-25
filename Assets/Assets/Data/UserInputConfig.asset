@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424a71166aeb6eb4e9791b9cfd27e4da, type: 3}
   m_Name: UserInputConfig
   m_EditorClassIdentifier: 
-  _virtualJoystickMaxMagnitude: 80
+  _deadZone: 0.01
+  _screenHeightRelativeInputSize: 0.3

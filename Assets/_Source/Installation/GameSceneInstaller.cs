@@ -31,6 +31,7 @@ namespace _Source.Installation
 
             Container.BindInterfacesAndSelfTo<UserInputModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<UserInputController>().AsSingleNonLazy();
+            Container.BindPrefabFactory<VirtualJoystickView, VirtualJoystickView.Factory>();
 
             Container.BindInterfacesAndSelfTo<AvatarStateModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<SurvivalStatsController>().AsSingleNonLazy();

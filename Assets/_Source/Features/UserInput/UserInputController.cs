@@ -1,4 +1,5 @@
-﻿using _Source.Features.UserInput.Data;
+﻿using _Source.Features.GameWorld;
+using _Source.Features.UserInput.Data;
 using _Source.Util;
 using UniRx;
 using UnityEngine;
@@ -12,16 +13,19 @@ namespace _Source.Features.UserInput
 
         private readonly UserInputModel _userInputModel;
         private readonly UserInputConfig _userInputConfig;
+        private readonly ScreenSizeModel _screenSizeModel;
 
         private bool _isDraggingJoystick;
         private Vector2 _startTouchPosition;
 
         public UserInputController(
             UserInputModel userInputModel,
-            UserInputConfig userInputConfig)
+            UserInputConfig userInputConfig,
+            ScreenSizeModel screenSizeModel)
         {
             _userInputModel = userInputModel;
             _userInputConfig = userInputConfig;
+            _screenSizeModel = screenSizeModel;
 
             Observable.EveryUpdate()
                 .Subscribe(_ => OnUpdate())
@@ -39,23 +43,28 @@ namespace _Source.Features.UserInput
             var horizontalAxis = Input.GetAxisRaw(AxisNameHorizontal);
             var verticalAxis = Input.GetAxisRaw(AxisNameVertical);
 
-            _userInputModel.SetInputVector(horizontalAxis, verticalAxis);
+            _userInputModel.SetInputVector(new Vector2(horizontalAxis, verticalAxis));
         }
 
         private void TrackPointerInput()
         {
             var isDraggingJoystickInCurrentFrame = IsPointer();
-            
+            _userInputModel.SetIsPointerDown(isDraggingJoystickInCurrentFrame);
+
             if (!_isDraggingJoystick && isDraggingJoystickInCurrentFrame)
             {
-                _startTouchPosition = GetPointerPosition();
+                var startPointerPosition = GetPointerPosition();
+                _userInputModel.SetStartPointerPosition(startPointerPosition);
             }
 
             _isDraggingJoystick = isDraggingJoystickInCurrentFrame;
 
             if (_isDraggingJoystick)
             {
-                var dragDirection = GetPointerPosition() - _startTouchPosition;
+                var currentPointerPosition = GetPointerPosition();
+                _userInputModel.SetCurrentPointerPosition(currentPointerPosition);
+
+                var dragDirection = currentPointerPosition - _userInputModel.StartPointerPosition.Value;
                 var smoothedDragDirection = GetMagnitudeSmoothedVector(dragDirection);
 
                 _userInputModel.SetInputVector(smoothedDragDirection);
@@ -74,7 +83,9 @@ namespace _Source.Features.UserInput
 
         private Vector2 GetMagnitudeSmoothedVector(Vector2 vector)
         {
-            var relativeMagnitude = vector.magnitude / _userInputConfig.VirtualJoystickMaxMagnitude;
+            var maxMagnitude = _screenSizeModel.HeightUnits * _userInputConfig.ScreenHeightRelativeInputSize;
+
+            var relativeMagnitude = vector.magnitude / maxMagnitude;
             return Vector2.ClampMagnitude(vector, relativeMagnitude);
         }
     }

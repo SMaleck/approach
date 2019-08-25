@@ -3,7 +3,7 @@
 namespace _Source.Util
 {
     public class AbstractView : AbstractDisposableMonoBehaviour, IClosableView
-    {
+    {        
         public void Open()
         {
             SetActive(true);

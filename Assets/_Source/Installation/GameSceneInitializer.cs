@@ -1,6 +1,7 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Features.AvatarState;
 using _Source.Features.GameRound;
+using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
 using _Source.Installation.Data;
 using Zenject;
@@ -18,6 +19,7 @@ namespace _Source.Installation
 
         [Inject] private SurvivalStatsView.Factory _survivalStatsViewFactory;
         [Inject] private RoundEndedView.Factory _roundEndedViewFactory;
+        [Inject] private VirtualJoystickView.Factory _virtualJoystickViewFactory;
 
         public void Initialize()
         {
@@ -32,6 +34,10 @@ namespace _Source.Installation
 
             _roundEndedViewFactory
                 .Create(_viewPrefabsConfig.RoundEndedViewPrefab)
+                .Initialize();
+
+            _virtualJoystickViewFactory
+                .Create(_viewPrefabsConfig.VirtualJoystickViewPrefab)
                 .Initialize();
         }
     }
