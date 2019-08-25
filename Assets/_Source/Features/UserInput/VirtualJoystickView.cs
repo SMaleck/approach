@@ -9,16 +9,20 @@ namespace _Source.Features.UserInput
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, VirtualJoystickView> { }
 
-        [Header("Renderer")]
         [SerializeField] private GameObject _virtualJoystickParent;
-        [SerializeField] private LineRenderer _lineRenderer;
 
-        [Header("VJ Circle Settings")]
+        [Header("VJ Circle")]
+        [SerializeField] private Transform _circleParent;
+        [SerializeField] private LineRenderer _circleLineRenderer;
         [SerializeField] private int _circleSegmentCount;
         [SerializeField] private float _circleRadius;
         [SerializeField] private Color _circleColor;
 
-        [Header("VJ Indicator Settings")]
+        [Header("VJ Indicator")]
+        [SerializeField] private Transform _indicatorParent;
+        [SerializeField] private LineRenderer _indicatorLineRenderer;
+        [SerializeField] private int _indicatorSegmentCount;
+        [SerializeField] private float _indicatorRadius;
         [SerializeField] private Color _indicatorColor;
 
         private IReadOnlyVirtualJoystickModel _virtualJoystickModel;
@@ -40,48 +44,76 @@ namespace _Source.Features.UserInput
                 .AddTo(Disposer);
 
             _virtualJoystickModel.StartPointerPosition
-                .Subscribe(_ => UpdateJoystickPosition())
+                .Subscribe(UpdateCirclePosition)
                 .AddTo(Disposer);
 
             _virtualJoystickModel.CurrentPointerPosition
-                .Subscribe(_ => UpdateIndicatorPosition())
+                .Subscribe(UpdateIndicatorPosition)
                 .AddTo(Disposer);
 
-            SetupLineRenderer();
+            SetupCircleRenderer();
+            SetupIndicatorRenderer();
         }
 
-        private void SetupLineRenderer()
+        private void SetupCircleRenderer()
         {
-            _lineRenderer.positionCount = _circleSegmentCount;
-            _lineRenderer.startColor = _circleColor;
-            _lineRenderer.endColor = _circleColor;
+            SetupLineRenderer(
+                _circleLineRenderer,
+                _circleSegmentCount,
+                _circleRadius,
+                _circleColor);
+        }
 
-            var angleSteps = 360f / _circleSegmentCount;
+        private void SetupIndicatorRenderer()
+        {
+            SetupLineRenderer(
+                _indicatorLineRenderer,
+                _indicatorSegmentCount,
+                _indicatorRadius,
+                _indicatorColor);
+        }
 
-            for (var i = 0; i < _circleSegmentCount; i++)
+        private void SetupLineRenderer(
+            LineRenderer renderer,
+            int segmentCount,
+            float radius,
+            Color color)
+        {
+            renderer.positionCount = segmentCount;
+            renderer.startColor = color;
+            renderer.endColor = color;
+
+            var angleSteps = 360f / segmentCount;
+
+            for (var i = 0; i < segmentCount; i++)
             {
                 var currentAngle = angleSteps * i + 1;
 
-                var x = Mathf.Sin(Mathf.Deg2Rad * currentAngle) * _circleRadius;
-                var y = Mathf.Cos(Mathf.Deg2Rad * currentAngle) * _circleRadius;
+                var x = Mathf.Sin(Mathf.Deg2Rad * currentAngle) * radius;
+                var y = Mathf.Cos(Mathf.Deg2Rad * currentAngle) * radius;
 
-                _lineRenderer.SetPosition(i, new Vector3(x, y, transform.position.z));
+                renderer.SetPosition(i, new Vector3(x, y, transform.position.z));
             }
         }
 
-        private void UpdateJoystickPosition()
+        private void UpdateCirclePosition(Vector2 position)
         {
-            var pointerPosition = _virtualJoystickModel.StartPointerPosition.Value;
+            SetPositionFromPointer(position, _circleParent);
+        }
+
+        private void UpdateIndicatorPosition(Vector2 position)
+        {
+            SetPositionFromPointer(position, _indicatorParent);
+        }
+
+        private void SetPositionFromPointer(Vector2 pointerScreenPosition, Transform target)
+        {
             var sceneCameraZDistance = Mathf.Abs(_sceneCamera.transform.position.z);
 
             var targetPosition = _sceneCamera.ScreenToWorldPoint(
-                new Vector3(pointerPosition.x, pointerPosition.y, sceneCameraZDistance));
+                new Vector3(pointerScreenPosition.x, pointerScreenPosition.y, sceneCameraZDistance));
 
-            _virtualJoystickParent.transform.position = targetPosition;
-        }
-
-        private void UpdateIndicatorPosition()
-        {
+            target.position = targetPosition;
         }
     }
 }
