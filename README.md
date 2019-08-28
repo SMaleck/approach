@@ -6,3 +6,6 @@ A small game in Unity, build to explore behaviour trees for game AI.
 * Zenject
 * TextMeshPro
 * FluentBehaviourTree
+
+## *Color Codes*
+* **Electric Blue:** `#2EB9F7`
