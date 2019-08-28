@@ -13,17 +13,9 @@ namespace _Source.Features.UserInput
 
         [Header("VJ Circle")]
         [SerializeField] private Transform _circleParent;
-        [SerializeField] private LineRenderer _circleLineRenderer;
-        [SerializeField] private int _circleSegmentCount;
-        [SerializeField] private float _circleRadius;
-        [SerializeField] private Color _circleColor;
 
         [Header("VJ Indicator")]
-        [SerializeField] private Transform _indicatorParent;
-        [SerializeField] private LineRenderer _indicatorLineRenderer;
-        [SerializeField] private int _indicatorSegmentCount;
-        [SerializeField] private float _indicatorRadius;
-        [SerializeField] private Color _indicatorColor;
+        [SerializeField] private Transform _indicatorParent;        
 
         private IReadOnlyVirtualJoystickModel _virtualJoystickModel;
         private UnityEngine.Camera _sceneCamera;
@@ -49,52 +41,8 @@ namespace _Source.Features.UserInput
 
             _virtualJoystickModel.CurrentPointerPosition
                 .Subscribe(UpdateIndicatorPosition)
-                .AddTo(Disposer);
-
-            SetupCircleRenderer();
-            SetupIndicatorRenderer();
-        }
-
-        private void SetupCircleRenderer()
-        {
-            SetupLineRenderer(
-                _circleLineRenderer,
-                _circleSegmentCount,
-                _circleRadius,
-                _circleColor);
-        }
-
-        private void SetupIndicatorRenderer()
-        {
-            SetupLineRenderer(
-                _indicatorLineRenderer,
-                _indicatorSegmentCount,
-                _indicatorRadius,
-                _indicatorColor);
-        }
-
-        private void SetupLineRenderer(
-            LineRenderer renderer,
-            int segmentCount,
-            float radius,
-            Color color)
-        {
-            renderer.positionCount = segmentCount;
-            renderer.startColor = color;
-            renderer.endColor = color;
-
-            var angleSteps = 360f / segmentCount;
-
-            for (var i = 0; i < segmentCount; i++)
-            {
-                var currentAngle = angleSteps * i + 1;
-
-                var x = Mathf.Sin(Mathf.Deg2Rad * currentAngle) * radius;
-                var y = Mathf.Cos(Mathf.Deg2Rad * currentAngle) * radius;
-
-                renderer.SetPosition(i, new Vector3(x, y, transform.position.z));
-            }
-        }
+                .AddTo(Disposer);            
+        }        
 
         private void UpdateCirclePosition(Vector2 position)
         {
@@ -108,12 +56,7 @@ namespace _Source.Features.UserInput
 
         private void SetPositionFromPointer(Vector2 pointerScreenPosition, Transform target)
         {
-            var sceneCameraZDistance = Mathf.Abs(_sceneCamera.transform.position.z);
-
-            var targetPosition = _sceneCamera.ScreenToWorldPoint(
-                new Vector3(pointerScreenPosition.x, pointerScreenPosition.y, sceneCameraZDistance));
-
-            target.position = targetPosition;
+            target.position = pointerScreenPosition;
         }
     }
 }

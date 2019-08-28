@@ -236,17 +236,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb3d10d8b025a1b4c99c1d82925323ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _virtualJoystickParent: {fileID: 0}
-  _circleParent: {fileID: 6172013490635538795}
-  _circleLineRenderer: {fileID: 0}
-  _circleSegmentCount: 8
-  _circleRadius: 3.5
-  _circleColor: {r: 0.18039216, g: 0.7254902, b: 0.96862745, a: 1}
-  _indicatorParent: {fileID: 0}
-  _indicatorLineRenderer: {fileID: 0}
-  _indicatorSegmentCount: 4
-  _indicatorRadius: 1
-  _indicatorColor: {r: 0.18039216, g: 0.7254902, b: 0.96862745, a: 1}
+  _virtualJoystickParent: {fileID: 3412971948323989650}
+  _circleParent: {fileID: 9070712695742885546}
+  _indicatorParent: {fileID: 4500783700438112030}
 --- !u!1 &7168302121697792371
 GameObject:
   m_ObjectHideFlags: 0
