@@ -10,23 +10,16 @@ namespace _Source.Features.UserInput
         public class Factory : PlaceholderFactory<UnityEngine.Object, VirtualJoystickView> { }
 
         [SerializeField] private GameObject _virtualJoystickParent;
-
-        [Header("VJ Circle")]
         [SerializeField] private Transform _circleParent;
+        [SerializeField] private Transform _indicatorParent;
 
-        [Header("VJ Indicator")]
-        [SerializeField] private Transform _indicatorParent;        
-
-        private IReadOnlyVirtualJoystickModel _virtualJoystickModel;
-        private UnityEngine.Camera _sceneCamera;
+        private IReadOnlyVirtualJoystickModel _virtualJoystickModel;        
 
         [Inject]
         private void Inject(
-            IReadOnlyVirtualJoystickModel virtualJoystickModel,
-            UnityEngine.Camera sceneCamera)
+            IReadOnlyVirtualJoystickModel virtualJoystickModel)
         {
             _virtualJoystickModel = virtualJoystickModel;
-            _sceneCamera = sceneCamera;
         }
 
         public void Initialize()
@@ -41,22 +34,22 @@ namespace _Source.Features.UserInput
 
             _virtualJoystickModel.CurrentPointerPosition
                 .Subscribe(UpdateIndicatorPosition)
-                .AddTo(Disposer);            
-        }        
+                .AddTo(Disposer);
+        }
 
         private void UpdateCirclePosition(Vector2 position)
         {
-            SetPositionFromPointer(position, _circleParent);
+            _circleParent.position = position;
         }
 
         private void UpdateIndicatorPosition(Vector2 position)
         {
-            SetPositionFromPointer(position, _indicatorParent);
-        }
+            _indicatorParent.position = position;
 
-        private void SetPositionFromPointer(Vector2 pointerScreenPosition, Transform target)
-        {
-            target.position = pointerScreenPosition;
+            var differenceToCircle = _indicatorParent.position - _circleParent.position;
+            var rotation = Quaternion.LookRotation(Vector3.forward, differenceToCircle);
+
+            _indicatorParent.localRotation = rotation;            
         }
     }
 }

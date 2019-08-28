@@ -93,7 +93,7 @@ namespace _Source.Entities.Novatar
             return sqrDistanceToTarget <= Mathf.Pow(_novatarConfig.MovementTargetAccuracy, 2);
         }
 
-        public void LookAt(Vector3 targetRotation)
+        public void SetEulerAngles(Vector3 targetRotation)
         {
             Entity.transform.eulerAngles = targetRotation;
         }

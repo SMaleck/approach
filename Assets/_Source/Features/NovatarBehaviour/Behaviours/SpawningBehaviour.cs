@@ -98,7 +98,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
                 _movementTarget = spawnPosition - new Vector3(0, moveDistance, 0);
             }
 
-            NovatarEntity.LookAt(new Vector3(0, 0, lookRotation));
+            NovatarEntity.SetEulerAngles(new Vector3(0, 0, lookRotation));
             NovatarEntity.TurnLightsOn();
 
             _hasStarted = true;

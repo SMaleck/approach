@@ -10,7 +10,7 @@ namespace _Source.Entities.Novatar
         void MoveTowards(Vector3 targetPosition);
         void MoveForward();
         bool IsMovementTargetReached(Vector3 targetPosition);
-        void LookAt(Vector3 targetPosition);
+        void SetEulerAngles(Vector3 targetPosition);
 
         float GetSquaredDistanceTo(AbstractMonoEntity otherEntity);
 
