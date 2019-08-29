@@ -25,12 +25,12 @@ MonoBehaviour:
     m_StyleName: Regular
     m_PointSize: 114
     m_Scale: 1
-    m_LineHeight: 209.76
-    m_AscentLine: 139.878
+    m_LineHeight: 130
+    m_AscentLine: 78
     m_CapLine: 71
     m_MeanLine: 57
     m_Baseline: 0
-    m_DescentLine: -69.882
+    m_DescentLine: -23
     m_SuperscriptOffset: 139.878
     m_SuperscriptSize: 0.5
     m_SubscriptOffset: -69.882

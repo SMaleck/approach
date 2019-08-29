@@ -25,12 +25,12 @@ MonoBehaviour:
     m_StyleName: SemiBold
     m_PointSize: 107
     m_Scale: 1
-    m_LineHeight: 196.87999
-    m_AscentLine: 131.289
+    m_LineHeight: 130
+    m_AscentLine: 78
     m_CapLine: 67
     m_MeanLine: 54
     m_Baseline: 0
-    m_DescentLine: -65.590996
+    m_DescentLine: -23
     m_SuperscriptOffset: 131.289
     m_SuperscriptSize: 0.5
     m_SubscriptOffset: -65.590996
@@ -3787,7 +3787,7 @@ MonoBehaviour:
     m_GlyphIndex: 706
     m_Scale: 1
   m_AtlasTextures:
-  - {fileID: 28487730923254632}
+  - {fileID: 28690424492311328}
   m_AtlasTextureIndex: 0
   m_UsedGlyphRects:
   - m_X: 0
@@ -5242,9 +5242,9 @@ MonoBehaviour:
     packingMode: 0
     atlasWidth: 1024
     atlasHeight: 1024
-    characterSetSelectionMode: 1
-    characterSequence: 32 - 126, 160 - 255, 8192 - 8303, 8364, 8482, 9633
-    referencedFontAssetGUID: 
+    characterSetSelectionMode: 6
+    characterSequence: 20-7E,A0-AC,AE-FF,2013-2014,2018-201A,201C-201E,2020-2022,2026,2030,2039-203A,2044,20AC,2122
+    referencedFontAssetGUID: 510ce121817d0c248b841fec5583afb6
     referencedTextAssetGUID: 
     fontStyle: 0
     fontStyleModifier: 0
@@ -5310,7 +5310,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 28487730923254632}
+        m_Texture: {fileID: 28690424492311328}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OutlineTex:
@@ -5379,7 +5379,7 @@ Material:
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
---- !u!28 &28487730923254632
+--- !u!28 &28690424492311328
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
