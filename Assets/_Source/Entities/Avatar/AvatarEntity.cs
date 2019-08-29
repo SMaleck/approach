@@ -5,6 +5,7 @@ using Zenject;
 
 namespace _Source.Entities.Avatar
 {
+    // ToDo Limit at screenBounds
     public class AvatarEntity : AbstractMonoEntity, IInitializable
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, AvatarEntity> { }

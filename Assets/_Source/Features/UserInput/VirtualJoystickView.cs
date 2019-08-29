@@ -1,4 +1,5 @@
-﻿using _Source.Util;
+﻿using _Source.Features.UserInput.Data;
+using _Source.Util;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -13,13 +14,16 @@ namespace _Source.Features.UserInput
         [SerializeField] private Transform _circleParent;
         [SerializeField] private Transform _indicatorParent;
 
-        private IReadOnlyVirtualJoystickModel _virtualJoystickModel;        
+        private IReadOnlyVirtualJoystickModel _virtualJoystickModel;
+        private UserInputConfig _userInputConfig;
 
         [Inject]
         private void Inject(
-            IReadOnlyVirtualJoystickModel virtualJoystickModel)
+            IReadOnlyVirtualJoystickModel virtualJoystickModel,
+            UserInputConfig userInputConfig)
         {
             _virtualJoystickModel = virtualJoystickModel;
+            _userInputConfig = userInputConfig;
         }
 
         public void Initialize()
@@ -45,6 +49,7 @@ namespace _Source.Features.UserInput
         private void UpdateIndicatorPosition(Vector2 position)
         {
             _indicatorParent.position = position;
+            _indicatorParent.localPosition = Vector2.ClampMagnitude(_indicatorParent.localPosition, _userInputConfig.VirtualJoystickMaxMagnitude);
 
             var differenceToCircle = _indicatorParent.position - _circleParent.position;
             var rotation = Quaternion.LookRotation(Vector3.forward, differenceToCircle);

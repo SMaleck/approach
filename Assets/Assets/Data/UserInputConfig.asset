@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: UserInputConfig
   m_EditorClassIdentifier: 
   _deadZone: 0.01
-  _screenHeightRelativeInputSize: 0.3
+  _virtualJoystickMaxMagnitude: 115

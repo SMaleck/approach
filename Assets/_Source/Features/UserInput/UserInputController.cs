@@ -1,5 +1,4 @@
-﻿using _Source.Features.GameWorld;
-using _Source.Features.UserInput.Data;
+﻿using _Source.Features.UserInput.Data;
 using _Source.Util;
 using UniRx;
 using UnityEngine;
@@ -13,19 +12,16 @@ namespace _Source.Features.UserInput
 
         private readonly UserInputModel _userInputModel;
         private readonly UserInputConfig _userInputConfig;
-        private readonly ScreenSizeModel _screenSizeModel;
 
         private bool _isDraggingJoystick;
         private Vector2 _startTouchPosition;
 
         public UserInputController(
             UserInputModel userInputModel,
-            UserInputConfig userInputConfig,
-            ScreenSizeModel screenSizeModel)
+            UserInputConfig userInputConfig)
         {
             _userInputModel = userInputModel;
             _userInputConfig = userInputConfig;
-            _screenSizeModel = screenSizeModel;
 
             Observable.EveryUpdate()
                 .Subscribe(_ => OnUpdate())
@@ -83,9 +79,16 @@ namespace _Source.Features.UserInput
 
         private Vector2 GetMagnitudeSmoothedVector(Vector2 vector)
         {
-            var maxMagnitude = _screenSizeModel.HeightUnits * _userInputConfig.ScreenHeightRelativeInputSize;
+            App.Logger.Log($"RAW: {vector} MAG {vector.magnitude}");
+            var maxMagnitude = _userInputConfig.VirtualJoystickMaxMagnitude;
+            vector = Vector2.ClampMagnitude(vector, maxMagnitude);
 
+            // Calculate it down to a relative magnitude, so magnitude is always within [0, 1]
             var relativeMagnitude = vector.magnitude / maxMagnitude;
+
+            App.Logger.Log($"LiMAG: {vector.magnitude} RelMAG {relativeMagnitude}");
+            App.Logger.Log("");
+
             return Vector2.ClampMagnitude(vector, relativeMagnitude);
         }
     }
