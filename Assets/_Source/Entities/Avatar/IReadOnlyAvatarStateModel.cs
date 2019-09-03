@@ -1,7 +1,7 @@
 ﻿using System;
 using UniRx;
 
-namespace _Source.Features.AvatarState
+namespace _Source.Entities.Avatar
 {
     public interface IReadOnlyAvatarStateModel
     {

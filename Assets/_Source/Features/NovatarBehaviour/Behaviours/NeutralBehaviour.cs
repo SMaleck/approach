@@ -1,7 +1,5 @@
-﻿using _Source.Entities.Avatar;
-using _Source.Entities.Novatar;
+﻿using _Source.Entities.Novatar;
 using _Source.Features.GameWorld;
-using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
 using Zenject;
 
@@ -11,8 +9,6 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
     {
         public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, NeutralBehaviour> { }
 
-        private readonly AvatarEntity _avatar;
-        private readonly BehaviourTreeConfig _behaviourTreeConfig;
         private readonly ScreenSizeController _screenSizeController;
 
         private readonly IBehaviourTreeNode _behaviourTree;

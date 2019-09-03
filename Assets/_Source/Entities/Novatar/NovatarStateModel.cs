@@ -1,9 +1,10 @@
-﻿using _Source.Util;
+﻿using _Source.Features.NovatarBehaviour;
+using _Source.Util;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour
+namespace _Source.Entities.Novatar
 {
     public class NovatarStateModel : AbstractDisposable
     {

@@ -1,9 +1,8 @@
-﻿using _Source.Entities.Avatar;
-using _Source.Util;
+﻿using _Source.Util;
 using System;
 using UniRx;
 
-namespace _Source.Features.AvatarState
+namespace _Source.Entities.Avatar
 {
     public class AvatarStateModel : AbstractDisposable, IReadOnlyAvatarStateModel
     {

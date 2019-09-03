@@ -1,4 +1,5 @@
-﻿using _Source.Services.Texts;
+﻿using _Source.Entities.Avatar;
+using _Source.Services.Texts;
 using _Source.Util;
 using TMPro;
 using UniRx;

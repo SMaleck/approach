@@ -80,11 +80,12 @@ namespace _Source.Features.NovatarSpawning
 
             var novatarStateModel = _novatarStateModelFactory
                 .Create()
-                .AddTo(Disposer); // ToDo needed?
+                .AddTo(Disposer);
 
             var novatarFacade = _novatarFacadeFactory.Create(
-                novatarEntity,
-                novatarStateModel);
+                    novatarEntity,
+                    novatarStateModel)
+                .AddTo(Disposer);
 
             _novatarBehaviourTreeFactory
                 .Create(novatarFacade, novatarStateModel)

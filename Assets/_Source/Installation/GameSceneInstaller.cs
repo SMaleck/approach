@@ -25,6 +25,8 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<ViewManagementController>().AsSingleNonLazy();
 
             Container.BindPrefabFactory<AvatarEntity, AvatarEntity.Factory>();
+            Container.BindInterfacesAndSelfTo<AvatarStateModel>().AsSingleNonLazy();
+            Container.BindFactory<AvatarEntity, AvatarFacade, AvatarFacade.Factory>();
 
             Container.BindPrefabFactory<SurvivalStatsView, SurvivalStatsView.Factory>();
             Container.BindPrefabFactory<RoundEndedView, RoundEndedView.Factory>();
@@ -32,10 +34,7 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<UserInputModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<UserInputController>().AsSingleNonLazy();
             Container.BindPrefabFactory<VirtualJoystickView, VirtualJoystickView.Factory>();
-
-            Container.BindInterfacesAndSelfTo<AvatarStateModel>().AsSingleNonLazy();
-            Container.BindInterfacesAndSelfTo<SurvivalStatsController>().AsSingleNonLazy();
-
+            
             Container.BindInterfacesAndSelfTo<GameRoundModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<GameRoundController>().AsSingleNonLazy();
 

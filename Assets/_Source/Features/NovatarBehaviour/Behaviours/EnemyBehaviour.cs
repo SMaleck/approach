@@ -1,6 +1,5 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
-using _Source.Features.AvatarState;
 using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
 using UniRx;
@@ -16,7 +15,6 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         private readonly NeutralBehaviour.Factory _neutralBehaviourFactory;
         private readonly NovatarConfig _novatarConfig;
         private readonly IDamageReceiver _avatarDamageReceiver;
-        private readonly AvatarEntity _avatar;
 
         private readonly IBehaviourTreeNode _behaviourTree;
 
@@ -89,7 +87,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
                 _hasDamagedAvatar = true;
             }
-            
+
             return BehaviourTreeStatus.Success;
         }
 

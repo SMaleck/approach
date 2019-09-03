@@ -11,11 +11,11 @@ namespace _Source.Entities.Novatar
 {
     public class NovatarFacade : AbstractDisposable, INovatar, IEntityPoolItem<NovatarEntity>
     {
+        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, NovatarFacade> { }
+
         private readonly NovatarEntity _novatarEntity;
         private readonly NovatarStateModel _novatarStateModel;
         private readonly NovatarConfig _novatarConfig;
-
-        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, NovatarFacade> { }
 
         public NovatarEntity Entity => _novatarEntity;
         public bool IsActive => Entity.IsActive;
@@ -98,7 +98,7 @@ namespace _Source.Entities.Novatar
             Entity.transform.eulerAngles = targetRotation;
         }
 
-        public float GetSquaredDistanceTo(AbstractMonoEntity otherEntity)
+        public float GetSquaredDistanceTo(IMonoEntity otherEntity)
         {
             return Entity.GetSquaredDistanceTo(otherEntity);
         }

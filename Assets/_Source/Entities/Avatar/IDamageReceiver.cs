@@ -1,4 +1,4 @@
-﻿namespace _Source.Features.AvatarState
+﻿namespace _Source.Entities.Avatar
 {
     public interface IDamageReceiver
     {

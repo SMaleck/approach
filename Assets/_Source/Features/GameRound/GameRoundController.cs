@@ -1,4 +1,4 @@
-﻿using _Source.Features.AvatarState;
+﻿using _Source.Entities.Avatar;
 using _Source.Util;
 using UniRx;
 

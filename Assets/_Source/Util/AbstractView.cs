@@ -13,10 +13,5 @@ namespace _Source.Util
         {
             SetActive(false);
         }
-
-        protected void SetActive(bool isActive)
-        {
-            gameObject.SetActive(isActive);
-        }
     }
 }

@@ -9,7 +9,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
     {
         public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, TelemetryBehaviour> { }
 
-        private readonly AvatarEntity _avatar;
+        private readonly IAvatar _avatarEntity;
 
         private readonly IBehaviourTreeNode _behaviourTree;
         private RelationshipStatus _lastTrackedRelationShipStatus;
@@ -17,10 +17,10 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         public TelemetryBehaviour(
             INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
-            AvatarEntity avatar) 
+            IAvatar avatarEntity) 
             : base(novatarEntity, novatarStateModel)
         {
-            _avatar = avatar;
+            _avatarEntity = avatarEntity;
 
             _behaviourTree = CreateTree();
         }
@@ -58,7 +58,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         private BehaviourTreeStatus CalculateDistanceToAvatar()
         {
-            var sqrDistance = NovatarEntity.GetSquaredDistanceTo(_avatar);
+            var sqrDistance = NovatarEntity.GetSquaredDistanceTo(_avatarEntity);
             NovatarStateModel.SetCurrentDistanceToAvatar(sqrDistance);
 
             return BehaviourTreeStatus.Success;

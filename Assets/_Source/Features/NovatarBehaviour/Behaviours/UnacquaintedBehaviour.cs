@@ -11,7 +11,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
     {
         public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, UnacquaintedBehaviour> { }
 
-        private readonly AvatarEntity _avatar;
+        private readonly IAvatar _avatarEntity;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
         private readonly IBehaviourTreeNode _behaviourTree;
@@ -19,11 +19,11 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         public UnacquaintedBehaviour(
             INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
-            AvatarEntity avatar,
+            IAvatar avatarEntity,
             BehaviourTreeConfig behaviourTreeConfig)
             : base(novatarEntity, novatarStateModel)
         {
-            _avatar = avatar;
+            _avatarEntity = avatarEntity;
             _behaviourTreeConfig = behaviourTreeConfig;
 
             _behaviourTree = CreateTree();
@@ -53,7 +53,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         private BehaviourTreeStatus FollowAvatar()
         {
-            NovatarEntity.MoveTowards(_avatar.Position);
+            NovatarEntity.MoveTowards(_avatarEntity.Position);
             return BehaviourTreeStatus.Success;
         }
 

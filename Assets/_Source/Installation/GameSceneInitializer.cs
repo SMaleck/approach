@@ -5,16 +5,17 @@ using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
 using _Source.Installation.Data;
 using Zenject;
+using UniRx;
 
 namespace _Source.Installation
 {
-    public class GameSceneInitializer : IInitializable
+    public class GameSceneInitializer : AbstractSceneInitializer, IInitializable
     {
-        [Inject] private DiContainer _container;
         [Inject] private ViewPrefabsConfig _viewPrefabsConfig;
         [Inject] private IViewManagementRegistrar _viewManagementRegistrar;
 
         [Inject] private AvatarEntity.Factory _avatarFactory;
+        [Inject] private AvatarFacade.Factory _avatarFacadeFactory;
         [Inject] private AvatarConfig _avatarConfig;
 
         [Inject] private SurvivalStatsView.Factory _survivalStatsViewFactory;
@@ -24,9 +25,12 @@ namespace _Source.Installation
         public void Initialize()
         {
             var avatar = _avatarFactory.Create(_avatarConfig.AvatarPrefab);
-            avatar.Initialize();
+            
+            var avatarFacade = _avatarFacadeFactory.Create(avatar);
+            avatarFacade.AddTo(SceneDisposer);
 
-            _container.BindInstance(avatar);
+            SceneContainer.BindInterfacesAndSelfTo<AvatarFacade>()
+                .FromInstance(avatarFacade);
 
             _survivalStatsViewFactory
                 .Create(_viewPrefabsConfig.SurvivalStatsViewPrefab)

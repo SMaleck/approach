@@ -5,9 +5,8 @@ using Zenject;
 
 namespace _Source.Installation
 {
-    public class TitleSceneInitializer : IInitializable
+    public class TitleSceneInitializer : AbstractSceneInitializer, IInitializable
     {
-        [Inject] private DiContainer _container;
         [Inject] private ViewPrefabsConfig _viewPrefabsConfig;
         [Inject] private IViewManagementRegistrar _viewManagementRegistrar;
 

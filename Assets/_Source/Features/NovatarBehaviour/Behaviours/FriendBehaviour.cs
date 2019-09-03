@@ -11,7 +11,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
     {
         public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, FriendBehaviour> { }
 
-        private readonly AvatarEntity _avatar;
+        private readonly IAvatar _avatar;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
         private readonly IBehaviourTreeNode _behaviourTree;
@@ -22,7 +22,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         public FriendBehaviour(
             INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
-            AvatarEntity avatar,
+            IAvatar avatar,
             BehaviourTreeConfig behaviourTreeConfig)
             : base(novatarEntity, novatarStateModel)
         {
