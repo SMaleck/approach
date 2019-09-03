@@ -1,6 +1,7 @@
 ﻿using _Source.App;
 using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
+using _Source.Features.Movement.Data;
 using _Source.Features.NovatarBehaviour.Data;
 using _Source.Features.NovatarSpawning.Data;
 using _Source.Features.UserInput.Data;
@@ -22,12 +23,13 @@ namespace _Source.Installation
 
         public override void InstallBindings()
         {
-            Container.BindInstances(_avatarConfig);
+            Container.BindInstance(_avatarConfig);
+            Container.BindInstance<IMovementData>(_avatarConfig.MovementConfig);
             Container.BindInstance(_novatarConfig);
-            Container.BindInstances(_viewPrefabsConfig);
-            Container.BindInstances(_novatarSpawnerConfig);
-            Container.BindInstances(_behaviourTreeConfig);
-            Container.BindInstances(_userInputConfig);
+            Container.BindInstance(_viewPrefabsConfig);
+            Container.BindInstance(_novatarSpawnerConfig);
+            Container.BindInstance(_behaviourTreeConfig);
+            Container.BindInstance(_userInputConfig);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using _Source.Features.UserInput.Data;
 using _Source.Util;
+using Assets._Source.Features.Movement;
 using UniRx;
 using UnityEngine;
 
@@ -10,17 +11,20 @@ namespace _Source.Features.UserInput
         private const string AxisNameHorizontal = "Horizontal";
         private const string AxisNameVertical = "Vertical";
 
-        private readonly UserInputModel _userInputModel;
+        private readonly MovementModel _movementModel;
+        private readonly VirtualJoystickModel _virtualJoystickModel;
         private readonly UserInputConfig _userInputConfig;
 
         private bool _isDraggingJoystick;
         private Vector2 _startTouchPosition;
 
         public UserInputController(
-            UserInputModel userInputModel,
+            MovementModel movementModel,
+            VirtualJoystickModel virtualJoystickModel,
             UserInputConfig userInputConfig)
         {
-            _userInputModel = userInputModel;
+            _movementModel = movementModel;
+            _virtualJoystickModel = virtualJoystickModel;
             _userInputConfig = userInputConfig;
 
             Observable.EveryUpdate()
@@ -39,18 +43,23 @@ namespace _Source.Features.UserInput
             var horizontalAxis = Input.GetAxisRaw(AxisNameHorizontal);
             var verticalAxis = Input.GetAxisRaw(AxisNameVertical);
 
-            _userInputModel.SetInputVector(new Vector2(horizontalAxis, verticalAxis));
+            var inputVector = new Vector2(horizontalAxis, verticalAxis);
+            _movementModel.SetMovementIntention(inputVector);
+
+            var heading = inputVector - Vector2.zero;
+            var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
+            _movementModel.SetTurnIntention(lookRotation);
         }
 
         private void TrackPointerInput()
         {
             var isDraggingJoystickInCurrentFrame = IsPointer();
-            _userInputModel.SetIsPointerDown(isDraggingJoystickInCurrentFrame);
+            _virtualJoystickModel.SetIsPointerDown(isDraggingJoystickInCurrentFrame);
 
             if (!_isDraggingJoystick && isDraggingJoystickInCurrentFrame)
             {
                 var startPointerPosition = GetPointerPosition();
-                _userInputModel.SetStartPointerPosition(startPointerPosition);
+                _virtualJoystickModel.SetStartPointerPosition(startPointerPosition);
             }
 
             _isDraggingJoystick = isDraggingJoystickInCurrentFrame;
@@ -58,12 +67,16 @@ namespace _Source.Features.UserInput
             if (_isDraggingJoystick)
             {
                 var currentPointerPosition = GetPointerPosition();
-                _userInputModel.SetCurrentPointerPosition(currentPointerPosition);
+                _virtualJoystickModel.SetCurrentPointerPosition(currentPointerPosition);
 
-                var dragDirection = currentPointerPosition - _userInputModel.StartPointerPosition.Value;
+                var dragDirection = currentPointerPosition - _virtualJoystickModel.StartPointerPosition.Value;
                 var smoothedDragDirection = GetMagnitudeSmoothedVector(dragDirection);
 
-                _userInputModel.SetInputVector(smoothedDragDirection);
+                _movementModel.SetMovementIntention(smoothedDragDirection);
+
+                var heading = smoothedDragDirection - Vector2.zero;
+                var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
+                _movementModel.SetTurnIntention(lookRotation);                
             }
         }
 

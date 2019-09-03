@@ -1,5 +1,6 @@
-﻿using _Source.Features.UserInput;
+﻿using _Source.Features.GameWorld;
 using _Source.Util;
+using Assets._Source.Features.Movement;
 using System;
 using UniRx;
 using UnityEngine;
@@ -14,7 +15,8 @@ namespace _Source.Entities.Avatar
         private readonly AvatarEntity _avatarEntity;
         private readonly AvatarConfig _avatarConfig;
         private readonly AvatarStateModel _avatarStateModel;
-        private readonly IReadOnlyUserInputModel _userInputModel;
+        private readonly IReadOnlyMovementModel _movementModel;
+        private readonly ScreenSizeModel _screenSizeModel;
 
         public bool IsActive => _avatarEntity.IsActive;
         public Vector3 Position => _avatarEntity.Position;
@@ -25,12 +27,14 @@ namespace _Source.Entities.Avatar
             AvatarEntity avatarEntity,
             AvatarConfig avatarConfig,
             AvatarStateModel avatarStateModel,
-            IReadOnlyUserInputModel userInputModel)
+            IReadOnlyMovementModel movementModel,
+            ScreenSizeModel screenSizeModel)
         {
             _avatarEntity = avatarEntity;
             _avatarConfig = avatarConfig;
             _avatarStateModel = avatarStateModel;
-            _userInputModel = userInputModel;
+            _movementModel = movementModel;
+            _screenSizeModel = screenSizeModel;
 
             _avatarStateModel.SetStartedAt(DateTime.Now);
 
@@ -45,40 +49,48 @@ namespace _Source.Entities.Avatar
 
         private void OnUpdate()
         {
-            HandleInput();
+            HandleMoveInput();
+            HandleTurnInput();
+            KeepWithinScreenBounds();
         }
 
         // ToDo Limit at screenBounds
-        private void HandleInput()
+        private void HandleMoveInput()
         {
-            if (!_userInputModel.HasInput)
+            if (!_movementModel.HasMoveIntention)
             {
                 return;
             }
 
-            var timeAdjustedSpeed = _avatarConfig.Speed.AsTimeAdjusted();
-            var translateTarget = _userInputModel.InputVector.Value * timeAdjustedSpeed;
+            var timeAdjustedSpeed = _movementModel.MoveSpeed.AsTimeAdjusted();
+            var translateTarget = _movementModel.MoveIntention.Value * timeAdjustedSpeed;
 
-            FaceTarget(translateTarget);
             _avatarEntity.transform.Translate(translateTarget);
         }
 
-        private void FaceTarget(Vector3 targetPosition)
+        private void HandleTurnInput()
         {
-            var headingToTarget = targetPosition - Vector3.zero;
-            var lookRotation = Quaternion.LookRotation(Vector3.forward, headingToTarget);
-
-            if (lookRotation.eulerAngles.z < _avatarConfig.TurnAngleThreshold)
+            if (!_movementModel.HasTurnIntention)
             {
                 return;
             }
 
+            var turnRotation = _movementModel.TurnIntention.Value;
+
             var rotation = Quaternion.Slerp(
                 _avatarEntity.VisualRepresentationTransform.rotation,
-                lookRotation,
-                _avatarConfig.TurnSpeed.AsTimeAdjusted());
+                turnRotation,
+                _movementModel.TurnSpeed.AsTimeAdjusted());
 
             _avatarEntity.VisualRepresentationTransform.rotation = rotation;
+        }
+
+        private void KeepWithinScreenBounds()
+        {
+            var clampedX = Mathf.Clamp(Position.x, -_screenSizeModel.WidthExtendUnits, _screenSizeModel.WidthExtendUnits);
+            var clampedY = Mathf.Clamp(Position.y, -_screenSizeModel.HeightExtendUnits, _screenSizeModel.HeightExtendUnits);
+
+            _avatarEntity.SetPosition(new Vector3(clampedX, clampedY, Position.z));
         }
 
         private void OnTimePassed()

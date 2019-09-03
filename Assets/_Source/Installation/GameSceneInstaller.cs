@@ -10,6 +10,7 @@ using _Source.Features.NovatarSpawning;
 using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
 using _Source.Util;
+using Assets._Source.Features.Movement;
 using UnityEngine;
 
 namespace _Source.Installation
@@ -31,7 +32,8 @@ namespace _Source.Installation
             Container.BindPrefabFactory<SurvivalStatsView, SurvivalStatsView.Factory>();
             Container.BindPrefabFactory<RoundEndedView, RoundEndedView.Factory>();
 
-            Container.BindInterfacesAndSelfTo<UserInputModel>().AsSingleNonLazy();
+            Container.BindInterfacesAndSelfTo<VirtualJoystickModel>().AsSingleNonLazy();
+            Container.BindInterfacesAndSelfTo<MovementModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<UserInputController>().AsSingleNonLazy();
             Container.BindPrefabFactory<VirtualJoystickView, VirtualJoystickView.Factory>();
             

@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _avatarPrefab: {fileID: 3166036521292648234, guid: abb01a1fe25f44646b2507ff9c4275c3,
     type: 3}
-  _speed: 5
-  _turnSpeed: 5
-  _turnAngleThreshold: 5
+  _movementConfig:
+    _movementSpeed: 5
+    _movementDeadZoneMagnitude: 0.01
+    _turnSpeed: 5
+    _turnDeadZoneAngle: 5
   _health: 10
