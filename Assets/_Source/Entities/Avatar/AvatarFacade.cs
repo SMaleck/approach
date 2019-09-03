@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using _Source.Features.UserInput;
+﻿using _Source.Features.UserInput;
 using _Source.Util;
+using System;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -63,7 +59,26 @@ namespace _Source.Entities.Avatar
             var timeAdjustedSpeed = _avatarConfig.Speed.AsTimeAdjusted();
             var translateTarget = _userInputModel.InputVector.Value * timeAdjustedSpeed;
 
+            FaceTarget(translateTarget);
             _avatarEntity.transform.Translate(translateTarget);
+        }
+
+        private void FaceTarget(Vector3 targetPosition)
+        {
+            var headingToTarget = targetPosition - Vector3.zero;
+            var lookRotation = Quaternion.LookRotation(Vector3.forward, headingToTarget);
+
+            if (lookRotation.eulerAngles.z < _avatarConfig.TurnAngleThreshold)
+            {
+                return;
+            }
+
+            var rotation = Quaternion.Slerp(
+                _avatarEntity.VisualRepresentationTransform.rotation,
+                lookRotation,
+                _avatarConfig.TurnSpeed.AsTimeAdjusted());
+
+            _avatarEntity.VisualRepresentationTransform.rotation = rotation;
         }
 
         private void OnTimePassed()

@@ -14,6 +14,12 @@ namespace _Source.Entities.Avatar
         [SerializeField] private float _speed;
         public float Speed => _speed;
 
+        [Range(0.1f, 60)]
+        [SerializeField] private float _turnSpeed;
+        public float TurnSpeed => _turnSpeed;
+
+        [SerializeField] private float _turnAngleThreshold;
+        public float TurnAngleThreshold => _turnAngleThreshold;
 
         [Header("Health")]
         [SerializeField] private double _health;
