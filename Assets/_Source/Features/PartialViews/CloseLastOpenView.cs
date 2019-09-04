@@ -17,10 +17,6 @@ namespace _Source.Features.PartialViews
         private void Inject(IViewManagementController viewManagementController)
         {
             _viewManagementController = viewManagementController;
-
-            _closeButton.OnClickAsObservable()
-                .Subscribe(_ => _viewManagementController.CloseLastOpenView())
-                .AddTo(Disposer);
         }
 
         // ToDo Find a better way of getting this into IInitializable

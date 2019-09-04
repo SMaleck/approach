@@ -1,4 +1,5 @@
 ﻿using _Source.Entities.Novatar;
+using _Source.Features.GameRound;
 using _Source.Features.NovatarBehaviour.Behaviours;
 using _Source.Util;
 using FluentBehaviourTree;
@@ -20,6 +21,7 @@ namespace _Source.Features.NovatarBehaviour
         private readonly NeutralBehaviour.Factory _neutralBehaviourFactory;
         private readonly FriendBehaviour.Factory _friendBehaviourFactory;
         private readonly EnemyBehaviour.Factory _enemyBehaviourFactory;
+        private readonly IPauseStateModel _pauseStateModel;
 
         private IBehaviourTreeNode _behaviourTree;
 
@@ -31,7 +33,8 @@ namespace _Source.Features.NovatarBehaviour
             UnacquaintedBehaviour.Factory unacquaintedBehaviourFactory,
             NeutralBehaviour.Factory neutralBehaviourFactory,
             FriendBehaviour.Factory friendBehaviourFactory,
-            EnemyBehaviour.Factory enemyBehaviourFactory)
+            EnemyBehaviour.Factory enemyBehaviourFactory,
+            IPauseStateModel pauseStateModel)
         {
             _novatarEntity = novatarEntity;
             _novatarStateModel = novatarStateModel;
@@ -41,6 +44,7 @@ namespace _Source.Features.NovatarBehaviour
             _neutralBehaviourFactory = neutralBehaviourFactory;
             _friendBehaviourFactory = friendBehaviourFactory;
             _enemyBehaviourFactory = enemyBehaviourFactory;
+            _pauseStateModel = pauseStateModel;
         }
 
         public void Initialize()
@@ -48,7 +52,7 @@ namespace _Source.Features.NovatarBehaviour
             _behaviourTree = CreateTree();
 
             Observable.EveryLateUpdate()
-                .Where(_ => _novatarStateModel.IsAlive.Value)
+                .Where(_ => !_pauseStateModel.IsPaused.Value && _novatarStateModel.IsAlive.Value)
                 .Subscribe(_ => _behaviourTree.Tick(new TimeData(Time.deltaTime)))
                 .AddTo(Disposer);
         }

@@ -43,7 +43,7 @@ namespace _Source.Features.ViewManagement
         }
 
         public void CloseLastOpenView()
-        {
+        {            
             var view = _openViews.LastOrDefault();
             if (view != null)
             {

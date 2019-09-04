@@ -57,15 +57,15 @@ namespace _Source.Features.PauseMenu
                 .Subscribe(_ => OnGoToTitleClicked())
                 .AddTo(Disposer);
 
-            Localize();
+            OnOpened
+                .Subscribe(_ => _gameRoundController.PauseRound(true))
+                .AddTo(Disposer);
 
-            // ToDo Unpause when closed
-        }
+            OnClosed
+                .Subscribe(_ => _gameRoundController.PauseRound(false))
+                .AddTo(Disposer);
 
-        private void OnCloseClicked()
-        {
-            Close();
-            _gameRoundController.PauseRound(false);
+            Localize();            
         }
 
         private void OnRestartClicked()

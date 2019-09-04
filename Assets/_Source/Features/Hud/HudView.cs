@@ -1,5 +1,4 @@
-﻿using _Source.Features.GameRound;
-using _Source.Features.ViewManagement;
+﻿using _Source.Features.ViewManagement;
 using _Source.Util;
 using UniRx;
 using UnityEngine;
@@ -15,15 +14,12 @@ namespace _Source.Features.Hud
         [SerializeField] private Button _pauseButton;
 
         private IViewManagementController _viewManagementController;
-        private GameRoundController _gameRoundController;
 
         [Inject]
         private void Inject(
-            IViewManagementController viewManagementController,
-            GameRoundController gameRoundController)
+            IViewManagementController viewManagementController)
         {
             _viewManagementController = viewManagementController;
-            _gameRoundController = gameRoundController;
         }
 
         public void Initialize()
@@ -35,7 +31,6 @@ namespace _Source.Features.Hud
 
         private void OnPauseButtonClicked()
         {
-            _gameRoundController.PauseRound(true);
             _viewManagementController.OpenView(ViewType.Pause);
         }
     }
