@@ -1,12 +1,10 @@
 ﻿using _Source.Services.Texts;
 using _Source.Util;
 using DG.Tweening;
-using System.Linq;
 using TMPro;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 namespace _Source.Features.TitleMenu
@@ -14,9 +12,6 @@ namespace _Source.Features.TitleMenu
     public class HowToPlayView : AbstractView, IInitializable, ILocalizable
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, HowToPlayView> { }
-
-        [Header("Close Button")]
-        [SerializeField] private Button _closeButton;
 
         [Header("Texts")]
         [SerializeField] private TextMeshProUGUI _titleText;
@@ -35,15 +30,13 @@ namespace _Source.Features.TitleMenu
 
         public void Initialize()
         {
-            _closeButton.OnClickAsObservable()
-                .Subscribe(_ => Close())
-                .AddTo(Disposer);
-
             _tutorialTween = CreateTutorialTween();
 
             gameObject.OnEnableAsObservable()
                 .Subscribe(_ => OnObservableEnable())
                 .AddTo(Disposer);
+
+            Localize();
         }
 
         private Tween CreateTutorialTween()

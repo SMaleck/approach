@@ -20,7 +20,11 @@ MonoBehaviour:
     type: 3}
   _howToPlayViewPrefab: {fileID: 4761241913171718619, guid: 06563c7a11d970346b40dab0850face4,
     type: 3}
+  _hudViewPrefab: {fileID: 2257090153801255521, guid: 119e8a9f4d09ac8499804d1a209030ad,
+    type: 3}
   _survivalStatsViewPrefab: {fileID: 6172013491317949378, guid: ccfe499d2fdafe04084951f6d4e9d7db,
+    type: 3}
+  _pauseViewPrefab: {fileID: 8027596598585036902, guid: 34fa6766be777e047ad03907f620daaf,
     type: 3}
   _roundEndedViewPrefab: {fileID: 2550958974713174961, guid: 1222405e7ff3dd943be06d81680a3468,
     type: 3}

@@ -22,14 +22,12 @@ namespace _Source.Installation
 
             var settingsView = _settingsViewFactory
                 .Create(_viewPrefabsConfig.SettingsViewPrefab);
-            settingsView.Close();
             settingsView.Initialize();
             
             _viewManagementRegistrar.RegisterView(ViewType.Settings, settingsView);
 
             var howToPlayView = _howToPlayViewFactory
                 .Create(_viewPrefabsConfig.HowToPlayViewPrefab);
-            howToPlayView.Close();
             howToPlayView.Initialize();
 
             _viewManagementRegistrar.RegisterView(ViewType.HowToPlay, howToPlayView);

@@ -69,5 +69,20 @@ namespace _Source.Services.Texts
         {
             return TextData.GetText(TextKey.TutorialStepTwo);
         }
+
+        public static string Pause()
+        {
+            return TextData.GetText(TextKey.Pause);
+        }
+
+        public static string Restart()
+        {
+            return TextData.GetText(TextKey.Restart);
+        }
+
+        public static string ExitToMenu()
+        {
+            return TextData.GetText(TextKey.ExitToMenu);
+        }
     }
 }

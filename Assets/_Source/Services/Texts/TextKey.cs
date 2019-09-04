@@ -8,7 +8,10 @@
             Settings,
             HowToPlay,
             TutorialStepOne,
-            TutorialStepTwo
+            TutorialStepTwo,
+            Pause,
+            Restart,
+            ExitToMenu
         }
     }
 }

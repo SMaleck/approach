@@ -14,8 +14,8 @@ namespace _Source.Features.TitleMenu
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, SettingsView> { }
 
-        [Header("Close Button")]
-        [SerializeField] private Button _closeButton;
+        [Header("Screen Elements")]
+        [SerializeField] private TextMeshProUGUI _screenTitle;
 
         [Header("Language Buttons")]
         [SerializeField] private Button _englishLanguageButton;
@@ -33,10 +33,6 @@ namespace _Source.Features.TitleMenu
 
         public void Initialize()
         {
-            _closeButton.OnClickAsObservable()
-                .Subscribe(_ => Close())
-                .AddTo(Disposer);
-
             _englishLanguageButton.OnClickAsObservable()
                 .Subscribe(_ => SwitchLanguageTo(Language.English))
                 .AddTo(Disposer);
@@ -74,6 +70,7 @@ namespace _Source.Features.TitleMenu
 
         public void Localize()
         {
+            _screenTitle.text = TextService.Settings();
             _englishLanguageButtonText.text = TextService.LanguageName(Language.English);
             _germanLanguageButtonText.text = TextService.LanguageName(Language.German);
         }

@@ -1,6 +1,7 @@
 ﻿using _Source.App;
-using _Source.Features.AvatarState;
 using _Source.Features.GameRound;
+using _Source.Features.Hud;
+using _Source.Features.PauseMenu;
 using _Source.Features.SceneManagement;
 using _Source.Features.TitleMenu;
 using _Source.Features.UserInput;
@@ -26,8 +27,14 @@ namespace _Source.Installation.Data
         public HowToPlayView HowToPlayViewPrefab => _howToPlayViewPrefab;
 
         [Header("Game Views")]
+        [SerializeField] private HudView _hudViewPrefab;
+        public HudView HudViewPrefab => _hudViewPrefab;
+
         [SerializeField] private SurvivalStatsView _survivalStatsViewPrefab;
         public SurvivalStatsView SurvivalStatsViewPrefab => _survivalStatsViewPrefab;
+
+        [SerializeField] private PauseView _pauseViewPrefab;
+        public PauseView PauseViewPrefab => _pauseViewPrefab;
 
         [SerializeField] private RoundEndedView _roundEndedViewPrefab;
         public RoundEndedView RoundEndedViewPrefab => _roundEndedViewPrefab;

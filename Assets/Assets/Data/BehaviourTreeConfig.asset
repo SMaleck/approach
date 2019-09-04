@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BehaviourTreeConfig
   m_EditorClassIdentifier: 
   _unacquaintedConfig:
-    _evaluationTimeoutSeconds: 600
-    _timeBasedSwitchChance: 0.5
+    _evaluationTimeoutSeconds: 5
+    _timeBasedSwitchChance: 0.3
     _relationshipSwitchWeights:
     - _switchToRelationship: 2
       _weightedChance: 0.25

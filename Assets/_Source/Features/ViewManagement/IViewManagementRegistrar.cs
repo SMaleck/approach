@@ -2,6 +2,6 @@
 {
     public interface IViewManagementRegistrar
     {
-        void RegisterView(ViewType viewType, IClosableView view);
+        void RegisterView(ViewType viewType, IClosableView view, bool startClosed = true);
     }
 }

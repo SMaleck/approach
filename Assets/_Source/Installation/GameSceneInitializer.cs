@@ -1,6 +1,8 @@
 ﻿using _Source.Entities.Avatar;
-using _Source.Features.AvatarState;
 using _Source.Features.GameRound;
+using _Source.Features.Hud;
+using _Source.Features.PauseMenu;
+using _Source.Features.TitleMenu;
 using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
 using _Source.Installation.Data;
@@ -18,6 +20,9 @@ namespace _Source.Installation
         [Inject] private AvatarFacade.Factory _avatarFacadeFactory;
         [Inject] private AvatarConfig _avatarConfig;
 
+        [Inject] private HudView.Factory _hudViewFactory;
+        [Inject] private PauseView.Factory _pauseViewFactory;
+        [Inject] private SettingsView.Factory _settingsViewFactory;
         [Inject] private SurvivalStatsView.Factory _survivalStatsViewFactory;
         [Inject] private RoundEndedView.Factory _roundEndedViewFactory;
         [Inject] private VirtualJoystickView.Factory _virtualJoystickViewFactory;
@@ -32,13 +37,28 @@ namespace _Source.Installation
             SceneContainer.BindInterfacesAndSelfTo<AvatarFacade>()
                 .FromInstance(avatarFacade);
 
+            _hudViewFactory
+                .Create(_viewPrefabsConfig.HudViewPrefab)
+                .Initialize();
+
+            var pauseView = _pauseViewFactory
+                .Create(_viewPrefabsConfig.PauseViewPrefab);
+            pauseView.Initialize();
+            _viewManagementRegistrar.RegisterView(ViewType.Pause, pauseView);
+
+            var settingsView = _settingsViewFactory
+                .Create(_viewPrefabsConfig.SettingsViewPrefab);
+            settingsView.Initialize();
+            _viewManagementRegistrar.RegisterView(ViewType.Settings, settingsView);
+
             _survivalStatsViewFactory
                 .Create(_viewPrefabsConfig.SurvivalStatsViewPrefab)
                 .Initialize();
 
-            _roundEndedViewFactory
-                .Create(_viewPrefabsConfig.RoundEndedViewPrefab)
-                .Initialize();
+            var roundEndView = _roundEndedViewFactory
+                .Create(_viewPrefabsConfig.RoundEndedViewPrefab);
+            roundEndView.Initialize();
+            _viewManagementRegistrar.RegisterView(ViewType.RoundEnd, roundEndView);
 
             _virtualJoystickViewFactory
                 .Create(_viewPrefabsConfig.VirtualJoystickViewPrefab)

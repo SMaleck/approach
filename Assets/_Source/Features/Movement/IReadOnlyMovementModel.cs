@@ -1,7 +1,7 @@
 ﻿using UniRx;
 using UnityEngine;
 
-namespace Assets._Source.Features.Movement
+namespace _Source.Features.Movement
 {
     public interface IReadOnlyMovementModel
     {

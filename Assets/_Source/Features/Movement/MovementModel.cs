@@ -4,7 +4,7 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace Assets._Source.Features.Movement
+namespace _Source.Features.Movement
 {
     public class MovementModel : AbstractDisposable, IReadOnlyMovementModel
     {
@@ -35,6 +35,12 @@ namespace Assets._Source.Features.Movement
             _movementData = movementData;
             _moveIntention = new ReactiveProperty<Vector2>(Vector2.zero).AddTo(Disposer);
             _turnIntention = new ReactiveProperty<Quaternion>(Quaternion.identity).AddTo(Disposer);
+        }
+
+        public void Reset()
+        {
+            _moveIntention.Value = Vector2.zero;
+            _turnIntention.Value = Quaternion.identity;
         }
 
         public void SetMovementIntention(Vector2 moveTarget)

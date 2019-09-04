@@ -1,6 +1,7 @@
-﻿using _Source.Features.UserInput.Data;
+﻿using _Source.Features.GameRound;
+using _Source.Features.Movement;
+using _Source.Features.UserInput.Data;
 using _Source.Util;
-using Assets._Source.Features.Movement;
 using UniRx;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace _Source.Features.UserInput
         private readonly MovementModel _movementModel;
         private readonly VirtualJoystickModel _virtualJoystickModel;
         private readonly UserInputConfig _userInputConfig;
+        private readonly IPauseStateModel _pauseStateModel;
 
         private bool _isDraggingJoystick;
         private Vector2 _startTouchPosition;
@@ -21,11 +23,13 @@ namespace _Source.Features.UserInput
         public UserInputController(
             MovementModel movementModel,
             VirtualJoystickModel virtualJoystickModel,
-            UserInputConfig userInputConfig)
+            UserInputConfig userInputConfig,
+            IPauseStateModel pauseStateModel)
         {
             _movementModel = movementModel;
             _virtualJoystickModel = virtualJoystickModel;
             _userInputConfig = userInputConfig;
+            _pauseStateModel = pauseStateModel;
 
             Observable.EveryUpdate()
                 .Subscribe(_ => OnUpdate())
@@ -34,6 +38,12 @@ namespace _Source.Features.UserInput
 
         private void OnUpdate()
         {
+            if (_pauseStateModel.IsPaused.Value)
+            {
+                _movementModel.Reset();
+                return;
+            }
+
             TrackKeyInput();
             TrackPointerInput();
         }
@@ -46,6 +56,7 @@ namespace _Source.Features.UserInput
             var inputVector = new Vector2(horizontalAxis, verticalAxis);
             _movementModel.SetMovementIntention(inputVector);
 
+            // ToDo V2.Zero is a quick hack, need the actual values of the entity
             var heading = inputVector - Vector2.zero;
             var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
             _movementModel.SetTurnIntention(lookRotation);
@@ -74,9 +85,10 @@ namespace _Source.Features.UserInput
 
                 _movementModel.SetMovementIntention(smoothedDragDirection);
 
+                // ToDo V2.Zero is a quick hack, need the actual values of the entity
                 var heading = smoothedDragDirection - Vector2.zero;
                 var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
-                _movementModel.SetTurnIntention(lookRotation);                
+                _movementModel.SetTurnIntention(lookRotation);
             }
         }
 
@@ -90,6 +102,7 @@ namespace _Source.Features.UserInput
             return Input.mousePosition;
         }
 
+        // ToDo Actual input Magnitude and virtual joystick magnitude seem to diverge
         private Vector2 GetMagnitudeSmoothedVector(Vector2 vector)
         {
             App.Logger.Log($"RAW: {vector} MAG {vector.magnitude}");

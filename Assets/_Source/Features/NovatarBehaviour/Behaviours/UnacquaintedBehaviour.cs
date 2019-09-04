@@ -3,6 +3,7 @@ using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
 using System.Linq;
+using UniRx;
 using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.Behaviours
@@ -16,6 +17,8 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         private readonly IBehaviourTreeNode _behaviourTree;
 
+        private double _timePassedForStatusEvaluation;
+
         public UnacquaintedBehaviour(
             INovatar novatarEntity,
             NovatarStateModel novatarStateModel,
@@ -27,6 +30,15 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
             _behaviourTreeConfig = behaviourTreeConfig;
 
             _behaviourTree = CreateTree();
+
+            NovatarStateModel.OnReset
+                .Subscribe(_ => Reset())
+                .AddTo(Disposer);
+        }
+
+        private void Reset()
+        {
+            _timePassedForStatusEvaluation = 0;
         }
 
         public override IBehaviourTreeNode Build()
@@ -46,13 +58,15 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
                         .Condition(nameof(IsInTouchRange), t => IsInTouchRange())
                         .Do(nameof(EvaluateRelationshipOnTouch), t => EvaluateRelationshipOnTouch())
                         .End()
-                    .Do(nameof(EvaluateRelationshipOnTime), t => EvaluateRelationshipOnTime())
+                    .Do(nameof(EvaluateRelationshipOnTime), EvaluateRelationshipOnTime)
                 .End()
                 .Build();
         }
 
         private BehaviourTreeStatus FollowAvatar()
         {
+            _timePassedForStatusEvaluation = 0;
+
             NovatarEntity.MoveTowards(_avatarEntity.Position);
             return BehaviourTreeStatus.Success;
         }
@@ -78,23 +92,19 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
                     return switchChance.SwitchToRelationship;
                 }
 
-                randomNumber = randomNumber - switchChance.WeightedChance;
+                randomNumber -= switchChance.WeightedChance;
             }
 
             return NovatarStateModel.CurrentRelationshipStatus.Value;
         }
 
-
-        // ToDo This assumes it could switch from any status, but logically it only ever happens from Unacquainted -> Neutral
-        private BehaviourTreeStatus EvaluateRelationshipOnTime()
+        private BehaviourTreeStatus EvaluateRelationshipOnTime(TimeData timeData)
         {
-            var currentRelationship = NovatarStateModel.CurrentRelationshipStatus.Value;
-            var currentTimePassed = NovatarStateModel.TimePassedInCurrentStatusSeconds.Value;
+            _timePassedForStatusEvaluation += timeData.deltaTime;
 
             var timeoutSeconds = _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds;
 
-            // 0 -> status does not change spontaneously
-            if (timeoutSeconds <= 0 || currentTimePassed < timeoutSeconds)
+            if (_timePassedForStatusEvaluation < timeoutSeconds)
             {
                 return BehaviourTreeStatus.Success;
             }
@@ -107,9 +117,11 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
             {
                 NovatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Neutral);
             }
-
-            // Reset Time, so we re-evaluate only when the next interval is over
-            NovatarStateModel.SetTimePassedInCurrentStatusSeconds(0);
+            else
+            {
+                // Reset interval, if this switch-roll failed
+                _timePassedForStatusEvaluation = 0;
+            }
 
             return BehaviourTreeStatus.Success;
         }

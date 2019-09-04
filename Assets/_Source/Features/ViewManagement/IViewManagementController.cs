@@ -4,5 +4,6 @@
     {
         void OpenView(ViewType viewType);
         void CloseView(ViewType viewType);
+        void CloseLastOpenView();
     }
 }

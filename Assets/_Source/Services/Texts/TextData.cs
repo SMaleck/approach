@@ -39,7 +39,10 @@ namespace _Source.Services.Texts
                 { TextKey.Settings, "Settings"},
                 { TextKey.HowToPlay, "How to Play"},
                 { TextKey.TutorialStepOne, "You are the blue cube.\nYou can move around using the arrow keys."},
-                { TextKey.TutorialStepTwo, "There are others as well.\nThey might interact when you approach them."}
+                { TextKey.TutorialStepTwo, "There are others as well.\nThey might interact when you approach them."},
+                { TextKey.Pause, "Pause"},
+                { TextKey.Restart, "Restart"},
+                { TextKey.ExitToMenu, "Exit to Menu"}
             };
 
             private static Dictionary<TextKey, string> _textsDE = new Dictionary<TextKey, string>
@@ -48,7 +51,10 @@ namespace _Source.Services.Texts
                 { TextKey.Settings, "Einstellungen"},
                 { TextKey.HowToPlay, "Anleitung"},
                 { TextKey.TutorialStepOne, "Du bist der blaue Würfel.\nMit den Pfeiltasten kannst du dich bewegen."},
-                { TextKey.TutorialStepTwo, "Es gibt auch andere Würfel.\nSie werden mit dir interagieren, wenn du dich näherst."}
+                { TextKey.TutorialStepTwo, "Es gibt auch andere Würfel.\nSie werden mit dir interagieren, wenn du dich näherst."},
+                { TextKey.Pause, "Pause"},
+                { TextKey.Restart, "Neustarten"},
+                { TextKey.ExitToMenu, "Zurück zum Menü"}
             };
         }
     }
