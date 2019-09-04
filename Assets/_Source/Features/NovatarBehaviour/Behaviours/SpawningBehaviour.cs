@@ -1,5 +1,5 @@
 ﻿using _Source.Entities.Novatar;
-using _Source.Features.GameWorld;
+using _Source.Features.ScreenSize;
 using FluentBehaviourTree;
 using UniRx;
 using UnityEngine;

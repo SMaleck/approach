@@ -1,7 +1,7 @@
-﻿using _Source.Features.GameWorld;
-using _Source.Util;
+﻿using _Source.Util;
 using Assets._Source.Features.Movement;
 using System;
+using _Source.Features.ScreenSize;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -54,7 +54,6 @@ namespace _Source.Entities.Avatar
             KeepWithinScreenBounds();
         }
 
-        // ToDo Limit at screenBounds
         private void HandleMoveInput()
         {
             if (!_movementModel.HasMoveIntention)

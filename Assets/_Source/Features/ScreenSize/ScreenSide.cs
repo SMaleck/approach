@@ -1,4 +1,4 @@
-﻿namespace _Source.Features.GameWorld
+﻿namespace _Source.Features.ScreenSize
 {
     public enum ScreenSide
     {

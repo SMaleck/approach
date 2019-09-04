@@ -1,8 +1,8 @@
-﻿using _Source.Util;
-using System;
+﻿using System;
+using _Source.Util;
 using UnityEngine;
 
-namespace _Source.Features.GameWorld
+namespace _Source.Features.ScreenSize
 {
     public class ScreenSizeController : AbstractDisposable
     {

@@ -1,12 +1,12 @@
 ﻿using _Source.Entities;
 using _Source.Entities.Novatar;
-using _Source.Features.GameWorld;
 using _Source.Features.NovatarBehaviour;
 using _Source.Features.NovatarSpawning.Data;
 using _Source.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Source.Features.ScreenSize;
 using UniRx;
 using UnityEngine;
 
