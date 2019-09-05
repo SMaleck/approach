@@ -84,5 +84,10 @@ namespace _Source.Services.Texts
         {
             return TextData.GetText(TextKey.ExitToMenu);
         }
+
+        public static string End()
+        {
+            return TextData.GetText(TextKey.End);
+        }
     }
 }

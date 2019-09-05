@@ -1,7 +1,8 @@
-﻿using _Source.Util;
-using System;
+﻿using _Source.Features.GameRound;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
+using _Source.Util;
+using System;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -17,6 +18,7 @@ namespace _Source.Entities.Avatar
         private readonly AvatarStateModel _avatarStateModel;
         private readonly IReadOnlyMovementModel _movementModel;
         private readonly ScreenSizeModel _screenSizeModel;
+        private readonly IPauseStateModel _pauseStateModel;
 
         public bool IsActive => _avatarEntity.IsActive;
         public Vector3 Position => _avatarEntity.Position;
@@ -28,23 +30,39 @@ namespace _Source.Entities.Avatar
             AvatarConfig avatarConfig,
             AvatarStateModel avatarStateModel,
             IReadOnlyMovementModel movementModel,
-            ScreenSizeModel screenSizeModel)
+            ScreenSizeModel screenSizeModel,
+            IPauseStateModel pauseStateModel)
         {
             _avatarEntity = avatarEntity;
             _avatarConfig = avatarConfig;
             _avatarStateModel = avatarStateModel;
             _movementModel = movementModel;
             _screenSizeModel = screenSizeModel;
+            _pauseStateModel = pauseStateModel;
 
             _avatarStateModel.SetStartedAt(DateTime.Now);
 
             Observable.Interval(TimeSpan.FromSeconds(1))
+                .Where(_ => !_pauseStateModel.IsPaused.Value)
                 .Subscribe(_ => OnTimePassed())
                 .AddTo(Disposer);
 
             Observable.EveryUpdate()
+                .Where(_ => !_pauseStateModel.IsPaused.Value)
                 .Subscribe(_ => OnUpdate())
                 .AddTo(Disposer);
+
+            _avatarStateModel.Health
+                .Subscribe(OnHealthChanged)
+                .AddTo(Disposer);
+        }
+
+        public void ReceiveDamage(double damageAmount)
+        {
+            var currentHealth = _avatarStateModel.Health.Value;
+            var newHealth = Math.Max(0, currentHealth - damageAmount);
+
+            _avatarStateModel.SetHealth(newHealth);
         }
 
         private void OnUpdate()
@@ -98,12 +116,10 @@ namespace _Source.Entities.Avatar
             _avatarStateModel.SetSurvivalSeconds(timePassed.TotalSeconds);
         }
 
-        public void ReceiveDamage(double damageAmount)
+        private void OnHealthChanged(double health)
         {
-            var currentHealth = _avatarStateModel.Health.Value;
-            var newHealth = Math.Max(0, currentHealth - damageAmount);
-
-            _avatarStateModel.SetHealth(newHealth);
+            var relativeHealth = health / _avatarConfig.Health;
+            _avatarEntity.HeadLight.intensity = _avatarConfig.MaxLightIntensity * (float)relativeHealth;
         }
     }
 }

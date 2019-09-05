@@ -8,8 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-
-namespace _Source.Features.TitleMenu
+namespace _Source.Features.UiScreens
 {
     public class TitleView : AbstractView, IInitializable, ILocalizable
     {

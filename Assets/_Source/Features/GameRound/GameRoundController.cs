@@ -13,8 +13,9 @@ namespace _Source.Features.GameRound
             AvatarStateModel survivalStatsModel)
         {
             _gameRoundModel = gameRoundModel;
+
             survivalStatsModel.IsAlive
-                .Where(isAlive => isAlive)
+                .Where(isAlive => !isAlive)
                 .Take(1)
                 .Subscribe(_ => gameRoundModel.PublishOnRoundEnded())
                 .AddTo(Disposer);

@@ -42,7 +42,8 @@ namespace _Source.Services.Texts
                 { TextKey.TutorialStepTwo, "There are others as well.\nThey might interact when you approach them."},
                 { TextKey.Pause, "Pause"},
                 { TextKey.Restart, "Restart"},
-                { TextKey.ExitToMenu, "Exit to Menu"}
+                { TextKey.ExitToMenu, "Exit to Menu"},
+                { TextKey.End, "The End"}
             };
 
             private static Dictionary<TextKey, string> _textsDE = new Dictionary<TextKey, string>
@@ -54,7 +55,8 @@ namespace _Source.Services.Texts
                 { TextKey.TutorialStepTwo, "Es gibt auch andere Würfel.\nSie werden mit dir interagieren, wenn du dich näherst."},
                 { TextKey.Pause, "Pause"},
                 { TextKey.Restart, "Neustarten"},
-                { TextKey.ExitToMenu, "Zurück zum Menü"}
+                { TextKey.ExitToMenu, "Zurück zum Menü"},
+                { TextKey.End, "Ende"}
             };
         }
     }

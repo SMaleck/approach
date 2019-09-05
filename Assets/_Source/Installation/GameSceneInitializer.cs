@@ -1,8 +1,7 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Features.GameRound;
 using _Source.Features.Hud;
-using _Source.Features.PauseMenu;
-using _Source.Features.TitleMenu;
+using _Source.Features.UiScreens;
 using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
 using _Source.Installation.Data;

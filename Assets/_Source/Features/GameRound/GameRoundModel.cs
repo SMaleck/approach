@@ -3,13 +3,10 @@ using UniRx;
 
 namespace _Source.Features.GameRound
 {
-    public class GameRoundModel : AbstractDisposable, IPauseStateModel
+    public class GameRoundModel : AbstractDisposable, IGameRoundStateModel, IPauseStateModel
     {
         private readonly ReactiveProperty<bool> _isPaused;
         public IReadOnlyReactiveProperty<bool> IsPaused => _isPaused;
-
-        private readonly ReactiveProperty<bool> _isInProgress;
-        public IReadOnlyReactiveProperty<bool> IsInProgress => _isInProgress;
 
         private readonly Subject<Unit> _onRoundStarted;
         public IOptimizedObservable<Unit> OnRoundStarted => _onRoundEnded;
@@ -20,7 +17,6 @@ namespace _Source.Features.GameRound
         public GameRoundModel()
         {
             _isPaused = new ReactiveProperty<bool>().AddTo(Disposer);
-            _isInProgress = new ReactiveProperty<bool>().AddTo(Disposer);
             _onRoundStarted = new Subject<Unit>().AddTo(Disposer);
             _onRoundEnded = new Subject<Unit>().AddTo(Disposer);
         }
@@ -29,22 +25,15 @@ namespace _Source.Features.GameRound
         {
             _isPaused.Value = value;
         }
-
-        private void SetIsInProgress(bool value)
-        {
-            _isInProgress.Value = value;
-        }
-
+        
         public void PublishOnRoundStarted()
         {
             _onRoundStarted.OnNext(Unit.Default);
-            SetIsInProgress(true);
         }
 
         public void PublishOnRoundEnded()
         {
             _onRoundEnded.OnNext(Unit.Default);
-            SetIsInProgress(false);
         }
     }
 }

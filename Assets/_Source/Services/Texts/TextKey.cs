@@ -11,7 +11,8 @@
             TutorialStepTwo,
             Pause,
             Restart,
-            ExitToMenu
+            ExitToMenu,
+            End
         }
     }
 }

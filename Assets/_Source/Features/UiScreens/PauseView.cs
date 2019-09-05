@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace _Source.Features.PauseMenu
+namespace _Source.Features.UiScreens
 {
     public class PauseView : AbstractView, IInitializable, ILocalizable
     {

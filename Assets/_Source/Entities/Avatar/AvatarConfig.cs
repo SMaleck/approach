@@ -17,5 +17,8 @@ namespace _Source.Entities.Avatar
         [Header("Health")]
         [SerializeField] private double _health;
         public double Health => _health;
+
+        [SerializeField] private float _maxLightIntensity;
+        public float MaxLightIntensity => _maxLightIntensity;
     }
 }

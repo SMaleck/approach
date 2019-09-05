@@ -7,7 +7,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Features.TitleMenu
+namespace _Source.Features.UiScreens
 {
     public class HowToPlayView : AbstractView, IInitializable, ILocalizable
     {

@@ -1,14 +1,14 @@
-﻿using _Source.Features.SceneManagement;
+﻿using System;
+using _Source.Features.SceneManagement;
 using _Source.Services.Texts;
 using _Source.Util;
-using System;
 using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace _Source.Features.TitleMenu
+namespace _Source.Features.UiScreens
 {
     public class SettingsView : AbstractView, IInitializable, ILocalizable
     {
