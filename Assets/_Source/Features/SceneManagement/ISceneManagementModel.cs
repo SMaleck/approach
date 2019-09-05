@@ -2,7 +2,7 @@
 
 namespace _Source.Features.SceneManagement
 {
-    public interface IReadOnlySceneManagementModel
+    public interface ISceneManagementModel
     {
         IReadOnlyReactiveProperty<Scenes> CurrentScene { get; }
         IOptimizedObservable<Unit> OnSceneStarted { get; }

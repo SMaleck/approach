@@ -3,7 +3,7 @@ using UniRx;
 
 namespace _Source.Features.SceneManagement
 {
-    public class SceneManagementModel : AbstractDisposable, IReadOnlySceneManagementModel
+    public class SceneManagementModel : AbstractDisposable, ISceneManagementModel
     {
         private readonly ReactiveProperty<Scenes> _currentScene;
         public IReadOnlyReactiveProperty<Scenes> CurrentScene => _currentScene;

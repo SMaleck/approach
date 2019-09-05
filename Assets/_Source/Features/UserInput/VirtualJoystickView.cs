@@ -14,12 +14,12 @@ namespace _Source.Features.UserInput
         [SerializeField] private Transform _circleParent;
         [SerializeField] private Transform _indicatorParent;
 
-        private IReadOnlyVirtualJoystickModel _virtualJoystickModel;
+        private IVirtualJoystickModel _virtualJoystickModel;
         private UserInputConfig _userInputConfig;
 
         [Inject]
         private void Inject(
-            IReadOnlyVirtualJoystickModel virtualJoystickModel,
+            IVirtualJoystickModel virtualJoystickModel,
             UserInputConfig userInputConfig)
         {
             _virtualJoystickModel = virtualJoystickModel;

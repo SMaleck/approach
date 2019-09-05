@@ -15,10 +15,10 @@ namespace _Source.Features.Hud
         [SerializeField] private TextMeshProUGUI _survivalTimeText;
         [SerializeField] private TextMeshProUGUI _healthText;
 
-        private IReadOnlyAvatarStateModel _avatarStateModel;
+        private IAvatarStateModel _avatarStateModel;
 
         [Inject]
-        private void Inject(IReadOnlyAvatarStateModel survivalStatsModel)
+        private void Inject(IAvatarStateModel survivalStatsModel)
         {
             _avatarStateModel = survivalStatsModel;
         }

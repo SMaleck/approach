@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace _Source.Features.PartialViews
+namespace _Source.Features.UiScreens.PartialViews
 {
     public class CloseLastOpenView : AbstractDisposableMonoBehaviour
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _Source.Features.Movement
 {
-    public interface IReadOnlyMovementModel
+    public interface IMovementModel
     {
         bool HasMoveIntention { get; }
         IReadOnlyReactiveProperty<Vector2> MoveIntention { get; }

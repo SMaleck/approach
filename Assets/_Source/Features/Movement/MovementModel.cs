@@ -6,7 +6,7 @@ using Zenject;
 
 namespace _Source.Features.Movement
 {
-    public class MovementModel : AbstractDisposable, IReadOnlyMovementModel
+    public class MovementModel : AbstractDisposable, IMovementModel
     {
         public class Factory : PlaceholderFactory<MovementModel> { }
 

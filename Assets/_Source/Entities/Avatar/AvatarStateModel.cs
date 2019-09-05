@@ -4,7 +4,7 @@ using UniRx;
 
 namespace _Source.Entities.Avatar
 {
-    public class AvatarStateModel : AbstractDisposable, IReadOnlyAvatarStateModel
+    public class AvatarStateModel : AbstractDisposable, IAvatarStateModel
     {
         private readonly ReactiveProperty<DateTime> _startedAt;
         public IReadOnlyReactiveProperty<DateTime> StartedAt => _startedAt;

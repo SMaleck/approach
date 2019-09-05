@@ -16,7 +16,7 @@ namespace _Source.Entities.Avatar
         private readonly AvatarEntity _avatarEntity;
         private readonly AvatarConfig _avatarConfig;
         private readonly AvatarStateModel _avatarStateModel;
-        private readonly IReadOnlyMovementModel _movementModel;
+        private readonly IMovementModel _movementModel;
         private readonly ScreenSizeModel _screenSizeModel;
         private readonly IPauseStateModel _pauseStateModel;
 
@@ -29,7 +29,7 @@ namespace _Source.Entities.Avatar
             AvatarEntity avatarEntity,
             AvatarConfig avatarConfig,
             AvatarStateModel avatarStateModel,
-            IReadOnlyMovementModel movementModel,
+            IMovementModel movementModel,
             ScreenSizeModel screenSizeModel,
             IPauseStateModel pauseStateModel)
         {

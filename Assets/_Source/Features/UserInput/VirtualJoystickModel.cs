@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _Source.Features.UserInput
 {
-    public class VirtualJoystickModel : AbstractDisposable, IReadOnlyVirtualJoystickModel
+    public class VirtualJoystickModel : AbstractDisposable, IVirtualJoystickModel
     {
         private readonly ReactiveProperty<bool> _isPointerDown;
         public IReadOnlyReactiveProperty<bool> IsPointerDown => _isPointerDown;

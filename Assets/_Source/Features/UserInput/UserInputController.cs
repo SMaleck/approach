@@ -102,18 +102,15 @@ namespace _Source.Features.UserInput
             return Input.mousePosition;
         }
 
-        // ToDo Actual input Magnitude and virtual joystick magnitude seem to diverge
+        // Magnitude limit seems to be higher for mouse input as opposed to the joysticks max position
+        // However it works as expected on a touch input device
         private Vector2 GetMagnitudeSmoothedVector(Vector2 vector)
         {
-            App.Logger.Log($"RAW: {vector} MAG {vector.magnitude}");
             var maxMagnitude = _userInputConfig.VirtualJoystickMaxMagnitude;
             vector = Vector2.ClampMagnitude(vector, maxMagnitude);
 
             // Calculate it down to a relative magnitude, so magnitude is always within [0, 1]
             var relativeMagnitude = vector.magnitude / maxMagnitude;
-
-            App.Logger.Log($"LiMAG: {vector.magnitude} RelMAG {relativeMagnitude}");
-            App.Logger.Log("");
 
             return Vector2.ClampMagnitude(vector, relativeMagnitude);
         }

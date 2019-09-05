@@ -3,7 +3,7 @@ using UniRx;
 
 namespace _Source.Entities.Avatar
 {
-    public interface IReadOnlyAvatarStateModel
+    public interface IAvatarStateModel
     {
         IReadOnlyReactiveProperty<DateTime> StartedAt { get; }
         IReadOnlyReactiveProperty<double> SurvivalSeconds { get; }

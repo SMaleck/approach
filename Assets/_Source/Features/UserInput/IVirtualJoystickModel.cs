@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _Source.Features.UserInput
 {
-    public interface IReadOnlyVirtualJoystickModel
+    public interface IVirtualJoystickModel
     {
         IReadOnlyReactiveProperty<bool> IsPointerDown { get; }
 
