@@ -1,6 +1,7 @@
-﻿namespace _Source.Features.NovatarBehaviour
+﻿namespace Assets._Source.Entities.Novatar
 {
-    public enum RelationshipStatus
+    // ToDo Fix namespace with ReSharper :D 
+    public enum EntityState
     {
         Spawning = 0,
         Unacquainted = 1,

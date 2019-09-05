@@ -20,4 +20,4 @@ MonoBehaviour:
     _turnSpeed: 5
     _turnDeadZoneAngle: 5
   _health: 3
-  _maxLightIntensity: 2
+  _maxLightIntensity: 3

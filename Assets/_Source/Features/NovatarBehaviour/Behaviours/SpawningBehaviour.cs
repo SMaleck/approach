@@ -1,5 +1,6 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.ScreenSize;
+using Assets._Source.Entities.Novatar;
 using FluentBehaviourTree;
 using UniRx;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class SpawningBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, SpawningBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, SpawningBehaviour> { }
 
         private readonly ScreenSizeModel _screenSizeModel;
 
@@ -19,7 +20,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         public SpawningBehaviour(
             INovatar novatarEntity,
-            NovatarStateModel novatarStateModel,
+            INovatarStateModel novatarStateModel,
             ScreenSizeModel screenSizeModel)
             : base(novatarEntity, novatarStateModel)
         {
@@ -69,7 +70,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         private BehaviourTreeStatus SwitchToUnacquainted()
         {
-            NovatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Unacquainted);
+            NovatarEntity.SwitchToEntityState(EntityState.Unacquainted);
             return BehaviourTreeStatus.Success;
         }
 

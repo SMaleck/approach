@@ -1,6 +1,7 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour.Data;
+using Assets._Source.Entities.Novatar;
 using FluentBehaviourTree;
 using System.Linq;
 using UniRx;
@@ -10,7 +11,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class UnacquaintedBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, UnacquaintedBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, UnacquaintedBehaviour> { }
 
         private readonly IAvatar _avatarEntity;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
@@ -21,7 +22,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         public UnacquaintedBehaviour(
             INovatar novatarEntity,
-            NovatarStateModel novatarStateModel,
+            INovatarStateModel novatarStateModel,
             IAvatar avatarEntity,
             BehaviourTreeConfig behaviourTreeConfig)
             : base(novatarEntity, novatarStateModel)
@@ -73,13 +74,13 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         private BehaviourTreeStatus EvaluateRelationshipOnTouch()
         {
-            RelationshipStatus nextStatus = GetWeightedRandomRelationshipStatus();
+            EntityState nextStatus = GetWeightedRandomRelationshipStatus();
 
-            NovatarStateModel.SetCurrentRelationshipStatus(nextStatus);
+            NovatarEntity.SwitchToEntityState(nextStatus);
             return BehaviourTreeStatus.Success;
         }
 
-        private RelationshipStatus GetWeightedRandomRelationshipStatus()
+        private EntityState GetWeightedRandomRelationshipStatus()
         {
             var switchChances = _behaviourTreeConfig.UnacquaintedConfig.RelationshipSwitchWeights;
             var totalWeight = switchChances.Sum(item => item.WeightedChance);
@@ -95,7 +96,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
                 randomNumber -= switchChance.WeightedChance;
             }
 
-            return NovatarStateModel.CurrentRelationshipStatus.Value;
+            return NovatarStateModel.CurrentEntityState.Value;
         }
 
         private BehaviourTreeStatus EvaluateRelationshipOnTime(TimeData timeData)
@@ -115,7 +116,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
             if (diceRoll <= switchChance)
             {
-                NovatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Neutral);
+                NovatarEntity.SwitchToEntityState(EntityState.Neutral);
             }
             else
             {

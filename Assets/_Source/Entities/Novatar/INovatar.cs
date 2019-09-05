@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets._Source.Entities.Novatar;
+using UnityEngine;
 
 namespace _Source.Entities.Novatar
 {
@@ -6,6 +7,10 @@ namespace _Source.Entities.Novatar
     {
         float SqrRange { get; }
         float SqrTargetReachedThreshold { get; }
+
+        void SwitchToEntityState(EntityState entityState);
+        void SetCurrentDistanceToAvatar(float value);
+        void Deactivate();
 
         void MoveTowards(Vector3 targetPosition);
         void MoveForward();

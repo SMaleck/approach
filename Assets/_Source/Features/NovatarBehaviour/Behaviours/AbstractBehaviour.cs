@@ -7,11 +7,11 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
     public abstract class AbstractBehaviour : AbstractDisposable, IBehaviourTreeBuilder
     {
         protected readonly INovatar NovatarEntity;
-        protected readonly NovatarStateModel NovatarStateModel;
+        protected readonly INovatarStateModel NovatarStateModel;
 
         protected AbstractBehaviour(
             INovatar novatarEntity,
-            NovatarStateModel novatarStateModel)
+            INovatarStateModel novatarStateModel)
         {
             NovatarEntity = novatarEntity;
             NovatarStateModel = novatarStateModel;

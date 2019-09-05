@@ -7,7 +7,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class NeutralBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, NeutralBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, NeutralBehaviour> { }
 
         private readonly ScreenSizeController _screenSizeController;
 
@@ -15,7 +15,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         public NeutralBehaviour(
             INovatar novatarEntity,
-            NovatarStateModel novatarStateModel,
+            INovatarStateModel novatarStateModel,
             ScreenSizeController screenSizeController)
             : base(novatarEntity, novatarStateModel)
         {
@@ -61,7 +61,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         private BehaviourTreeStatus DeactivateSelf()
         {
-            NovatarStateModel.SetIsAlive(false);
+            NovatarEntity.Deactivate();
             return BehaviourTreeStatus.Success;
         }
     }

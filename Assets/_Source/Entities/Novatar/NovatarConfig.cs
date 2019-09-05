@@ -1,6 +1,6 @@
 ﻿using _Source.App;
 using _Source.Features.Movement.Data;
-using _Source.Features.NovatarBehaviour;
+using Assets._Source.Entities.Novatar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +14,8 @@ namespace _Source.Entities.Novatar
         [Serializable]
         private class RelationshipVisualsConfig
         {
-            [SerializeField] private RelationshipStatus _relationship;
-            public RelationshipStatus Relationship => _relationship;
+            [SerializeField] private EntityState _relationship;
+            public EntityState Relationship => _relationship;
 
             [SerializeField] private Color _lightColor;
             public Color LightColor => _lightColor;
@@ -64,7 +64,7 @@ namespace _Source.Entities.Novatar
         [SerializeField] private float _lightFlashIntensity;
         public float LightFlashIntensity => _lightFlashIntensity;
 
-        public Color GetLightColor(RelationshipStatus relationship)
+        public Color GetLightColor(EntityState relationship)
         {
             return _relationshipVisualsConfigs
                 .First(config => config.Relationship == relationship)

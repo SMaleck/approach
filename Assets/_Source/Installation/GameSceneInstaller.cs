@@ -52,13 +52,13 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
             Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarFacade, NovatarFacade.Factory>();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
-            Container.BindFactory<INovatar, NovatarStateModel, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
-            Container.BindFactory<INovatar, NovatarStateModel, SpawningBehaviour, SpawningBehaviour.Factory>();
-            Container.BindFactory<INovatar, NovatarStateModel, TelemetryBehaviour, TelemetryBehaviour.Factory>();
-            Container.BindFactory<INovatar, NovatarStateModel, UnacquaintedBehaviour, UnacquaintedBehaviour.Factory>();
-            Container.BindFactory<INovatar, NovatarStateModel, NeutralBehaviour, NeutralBehaviour.Factory>();
-            Container.BindFactory<INovatar, NovatarStateModel, FriendBehaviour, FriendBehaviour.Factory>();
-            Container.BindFactory<INovatar, NovatarStateModel, EnemyBehaviour, EnemyBehaviour.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, SpawningBehaviour, SpawningBehaviour.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, TelemetryBehaviour, TelemetryBehaviour.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, UnacquaintedBehaviour, UnacquaintedBehaviour.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, NeutralBehaviour, NeutralBehaviour.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, FriendBehaviour, FriendBehaviour.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, EnemyBehaviour, EnemyBehaviour.Factory>();
 
             Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
 

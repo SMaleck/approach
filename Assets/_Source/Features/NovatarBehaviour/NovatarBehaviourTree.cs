@@ -2,6 +2,7 @@
 using _Source.Features.GameRound;
 using _Source.Features.NovatarBehaviour.Behaviours;
 using _Source.Util;
+using Assets._Source.Entities.Novatar;
 using FluentBehaviourTree;
 using UniRx;
 using UnityEngine;
@@ -11,10 +12,10 @@ namespace _Source.Features.NovatarBehaviour
 {
     public class NovatarBehaviourTree : AbstractDisposable, IInitializable
     {
-        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, NovatarBehaviourTree> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, NovatarBehaviourTree> { }
 
         private readonly INovatar _novatarEntity;
-        private readonly NovatarStateModel _novatarStateModel;
+        private readonly INovatarStateModel _novatarStateModel;
         private readonly SpawningBehaviour.Factory _spawningBehaviourFactory;
         private readonly TelemetryBehaviour.Factory _telemetryBehaviourFactory;
         private readonly UnacquaintedBehaviour.Factory _unacquaintedBehaviourFactory;
@@ -27,7 +28,7 @@ namespace _Source.Features.NovatarBehaviour
 
         public NovatarBehaviourTree(
             INovatar novatarEntity,
-            NovatarStateModel novatarStateModel,
+            INovatarStateModel novatarStateModel,
             SpawningBehaviour.Factory spawningBehaviourFactory,
             TelemetryBehaviour.Factory telemetryBehaviourFactory,
             UnacquaintedBehaviour.Factory unacquaintedBehaviourFactory,
@@ -99,24 +100,24 @@ namespace _Source.Features.NovatarBehaviour
                 .Parallel(nameof(NovatarBehaviourTree), 20, 20)
                     .Splice(telemetryBehaviour)
                     .Selector("RelationshipTreeSelector")
-                        .Sequence("SpawningBehaviourSequence")
-                            .Condition(nameof(IsRelationshipStatus), t => IsRelationshipStatus(RelationshipStatus.Spawning))
+                        .Sequence(nameof(spawningBehaviour))
+                            .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Spawning))
                             .Splice(spawningBehaviour)
                             .End()
-                        .Sequence("UnacquaintedBehaviourSequence")
-                            .Condition(nameof(IsRelationshipStatus), t => IsRelationshipStatus(RelationshipStatus.Unacquainted))
+                        .Sequence(nameof(unacquaintedBehaviour))
+                            .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Unacquainted))
                             .Splice(unacquaintedBehaviour)
                             .End()
-                        .Sequence("NeutralBehaviourSequence")
-                            .Condition(nameof(IsRelationshipStatus), t => IsRelationshipStatus(RelationshipStatus.Neutral))
+                        .Sequence(nameof(neutralBehaviour))
+                            .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Neutral))
                             .Splice(neutralBehaviour)
                             .End()
-                        .Sequence("FriendBehaviourSequence")
-                            .Condition(nameof(IsRelationshipStatus), t => IsRelationshipStatus(RelationshipStatus.Friend))
+                        .Sequence(nameof(friendBehaviour))
+                            .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Friend))
                             .Splice(friendBehaviour)
                             .End()
-                        .Sequence("EnemyBehaviourSequence")
-                            .Condition(nameof(IsRelationshipStatus), t => IsRelationshipStatus(RelationshipStatus.Enemy))
+                        .Sequence(nameof(enemyBehaviour))
+                            .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Enemy))
                             .Splice(enemyBehaviour)
                             .End()
                     .End()
@@ -124,9 +125,9 @@ namespace _Source.Features.NovatarBehaviour
                 .Build();
         }
 
-        private bool IsRelationshipStatus(RelationshipStatus status)
+        private bool IsEntityState(EntityState status)
         {
-            return _novatarStateModel.CurrentRelationshipStatus.Value == status;
+            return _novatarStateModel.CurrentEntityState.Value == status;
         }
     }
 }

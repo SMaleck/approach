@@ -9,7 +9,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class EnemyBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, EnemyBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, EnemyBehaviour> { }
 
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
         private readonly NeutralBehaviour.Factory _neutralBehaviourFactory;
@@ -23,7 +23,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         public EnemyBehaviour(
             INovatar novatarEntity,
-            NovatarStateModel novatarStateModel,
+            INovatarStateModel novatarStateModel,
             BehaviourTreeConfig behaviourTreeConfig,
             NeutralBehaviour.Factory neutralBehaviourFactory,
             NovatarConfig novatarConfig,

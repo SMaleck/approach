@@ -1,6 +1,6 @@
-﻿using _Source.Features.NovatarBehaviour;
-using _Source.Features.NovatarSpawning;
+﻿using _Source.Features.NovatarSpawning;
 using _Source.Util;
+using Assets._Source.Entities.Novatar;
 using DG.Tweening;
 using System.Linq;
 using UniRx;
@@ -9,6 +9,7 @@ using Zenject;
 
 namespace _Source.Entities.Novatar
 {
+    // ToDo NovatarFacade became a bit of an ugly amalgamation of Features, split this up
     public class NovatarFacade : AbstractDisposable, INovatar, IEntityPoolItem<NovatarEntity>
     {
         public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, NovatarFacade> { }
@@ -50,7 +51,7 @@ namespace _Source.Entities.Novatar
                 .Subscribe(Entity.SetPosition)
                 .AddTo(Disposer);
 
-            _novatarStateModel.CurrentRelationshipStatus
+            _novatarStateModel.CurrentEntityState
                 .Where(_ => IsActive)
                 .Pairwise()
                 .Subscribe(OnRelationshipSwitched)
@@ -63,10 +64,24 @@ namespace _Source.Entities.Novatar
 
         public bool IsFree { get; private set; }
 
+        public void SwitchToEntityState(EntityState entityState)
+        {
+            _novatarStateModel.SetCurrentEntityState(entityState);
+        }
+
+        public void SetCurrentDistanceToAvatar(float value)
+        {
+            _novatarStateModel.SetCurrentDistanceToAvatar(value);
+        }
+
+        public void Deactivate()
+        {
+            _novatarStateModel.SetIsAlive(false);
+        }
+
         public void Reset(Vector3 spawnPosition)
         {
-            _novatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Spawning);
-            _novatarStateModel.SetTimePassedInCurrentStatusSeconds(0);
+            _novatarStateModel.SetCurrentEntityState(EntityState.Spawning);            
             _novatarStateModel.SetSpawnPosition(spawnPosition);
 
             UpdateLightColor(true);
@@ -76,6 +91,8 @@ namespace _Source.Entities.Novatar
             _novatarStateModel.SetIsAlive(true);
         }
 
+        // ToDo Use Movement Model as well in combination with an AI driver
+        // Then movement can be split out and generalized for both entities
         public void MoveTowards(Vector3 targetPosition)
         {
             FaceTarget(targetPosition);
@@ -125,23 +142,23 @@ namespace _Source.Entities.Novatar
             _novatarEntity.SetRotation(rotation);
         }
 
-        private void OnRelationshipSwitched(Pair<RelationshipStatus> relationshipPair)
+        private void OnRelationshipSwitched(Pair<EntityState> relationshipPair)
         {
-            var previousIsUnacquainted = relationshipPair.Previous == RelationshipStatus.Unacquainted;
-            var currentIsNeutral = relationshipPair.Current == RelationshipStatus.Neutral;
+            var previousIsUnacquainted = relationshipPair.Previous == EntityState.Unacquainted;
+            var currentIsNeutral = relationshipPair.Current == EntityState.Neutral;
 
             if (previousIsUnacquainted && currentIsNeutral)
             {
                 return;
             }
 
-            var isSilentVisualUpdate = relationshipPair.Current == RelationshipStatus.Unacquainted;
+            var isSilentVisualUpdate = relationshipPair.Current == EntityState.Unacquainted;
             UpdateLightColor(isSilentVisualUpdate);
         }
 
         private void UpdateLightColor(bool forceInstant = false)
         {
-            var relationship = _novatarStateModel.CurrentRelationshipStatus.Value;
+            var relationship = _novatarStateModel.CurrentEntityState.Value;
             var lightColor = _novatarConfig.GetLightColor(relationship);
 
             if (forceInstant)

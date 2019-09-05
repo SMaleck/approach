@@ -1,4 +1,5 @@
 ﻿using _Source.App;
+using Assets._Source.Entities.Novatar;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,8 +27,8 @@ namespace _Source.Features.NovatarBehaviour.Data
         [Serializable]
         public class RelationshipSwitchWeightItem
         {
-            [SerializeField] private RelationshipStatus _switchToRelationship;
-            public RelationshipStatus SwitchToRelationship => _switchToRelationship;
+            [SerializeField] private EntityState _switchToRelationship;
+            public EntityState SwitchToRelationship => _switchToRelationship;
 
             [Range(0, 1)]
             [SerializeField] private float _weightedChance;

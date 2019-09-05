@@ -1,6 +1,7 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour.Data;
+using Assets._Source.Entities.Novatar;
 using FluentBehaviourTree;
 using UniRx;
 using Zenject;
@@ -9,19 +10,19 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class FriendBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<INovatar, NovatarStateModel, FriendBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, FriendBehaviour> { }
 
         private readonly IAvatar _avatar;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
         private readonly IBehaviourTreeNode _behaviourTree;
 
-        private RelationshipStatus _lastTrackedRelationShipStatus;
+        private EntityState _lastTrackedRelationShipStatus;
         private double _timeSinceFallingBehindSeconds = 0;
         
         public FriendBehaviour(
             INovatar novatarEntity,
-            NovatarStateModel novatarStateModel,
+            INovatarStateModel novatarStateModel,
             IAvatar avatar,
             BehaviourTreeConfig behaviourTreeConfig)
             : base(novatarEntity, novatarStateModel)
@@ -89,7 +90,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         {
             if (_timeSinceFallingBehindSeconds >= _behaviourTreeConfig.MaxSecondsToFallBehind)
             {
-                NovatarStateModel.SetCurrentRelationshipStatus(RelationshipStatus.Neutral);
+                NovatarEntity.SwitchToEntityState(EntityState.Neutral);
             }
 
             return BehaviourTreeStatus.Success;
