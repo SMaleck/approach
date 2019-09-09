@@ -2,7 +2,6 @@
 using _Source.Features.GameRound;
 using _Source.Features.NovatarBehaviour.Behaviours;
 using _Source.Util;
-using Assets._Source.Entities.Novatar;
 using FluentBehaviourTree;
 using UniRx;
 using UnityEngine;

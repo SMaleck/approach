@@ -1,7 +1,6 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour.Data;
-using Assets._Source.Entities.Novatar;
 using FluentBehaviourTree;
 using System.Linq;
 using UniRx;

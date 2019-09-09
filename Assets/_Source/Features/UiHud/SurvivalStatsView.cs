@@ -6,7 +6,7 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Features.Hud
+namespace _Source.Features.UiHud
 {
     public class SurvivalStatsView : AbstractView, IInitializable
     {

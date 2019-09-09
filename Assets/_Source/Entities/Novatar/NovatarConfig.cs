@@ -1,6 +1,4 @@
 ﻿using _Source.App;
-using _Source.Features.Movement.Data;
-using Assets._Source.Entities.Novatar;
 using System;
 using System.Collections.Generic;
 using System.Linq;

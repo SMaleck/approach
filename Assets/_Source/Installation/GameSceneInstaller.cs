@@ -2,12 +2,12 @@
 using _Source.Entities.Novatar;
 using _Source.Features.Cheats;
 using _Source.Features.GameRound;
-using _Source.Features.Hud;
 using _Source.Features.Movement;
 using _Source.Features.NovatarBehaviour;
 using _Source.Features.NovatarBehaviour.Behaviours;
 using _Source.Features.NovatarSpawning;
 using _Source.Features.ScreenSize;
+using _Source.Features.UiHud;
 using _Source.Features.UiScreens;
 using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;

@@ -1,5 +1,4 @@
 ﻿using _Source.Util;
-using Assets._Source.Entities.Novatar;
 using UniRx;
 using UnityEngine;
 using Zenject;
