@@ -1,4 +1,5 @@
-﻿using _Source.Features.NovatarSpawning;
+﻿using _Source.Features.Movement;
+using _Source.Features.NovatarSpawning;
 using _Source.Util;
 using Assets._Source.Entities.Novatar;
 using DG.Tweening;
@@ -12,10 +13,11 @@ namespace _Source.Entities.Novatar
     // ToDo NovatarFacade became a bit of an ugly amalgamation of Features, split this up
     public class NovatarFacade : AbstractDisposable, INovatar, IEntityPoolItem<NovatarEntity>
     {
-        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, NovatarFacade> { }
+        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, IMovementModel, NovatarFacade> { }
 
         private readonly NovatarEntity _novatarEntity;
         private readonly NovatarStateModel _novatarStateModel;
+        private readonly IMovementModel _movementModel;
         private readonly NovatarConfig _novatarConfig;
 
         public NovatarEntity Entity => _novatarEntity;
@@ -33,10 +35,12 @@ namespace _Source.Entities.Novatar
         public NovatarFacade(
             NovatarEntity novatarEntity,
             NovatarStateModel novatarStateModel,
+            IMovementModel movementModel,
             NovatarConfig novatarConfig)
         {
             _novatarEntity = novatarEntity;
             _novatarStateModel = novatarStateModel;
+            _movementModel = movementModel;
             _novatarConfig = novatarConfig;
 
             _novatarStateModel.IsAlive

@@ -1,12 +1,13 @@
 ﻿using _Source.Entities;
 using _Source.Entities.Novatar;
+using _Source.Features.Movement;
 using _Source.Features.NovatarBehaviour;
 using _Source.Features.NovatarSpawning.Data;
+using _Source.Features.ScreenSize;
 using _Source.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Source.Features.ScreenSize;
 using UniRx;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ namespace _Source.Features.NovatarSpawning
         private readonly NovatarEntity.Factory _novatarEntityFactory;
         private readonly NovatarStateModel.Factory _novatarStateModelFactory;
         private readonly NovatarBehaviourTree.Factory _novatarBehaviourTreeFactory;
+        private readonly MovementModel.Factory _movementModelFactory;
         private readonly ScreenSizeController _screenSizeController;
 
         private readonly List<IEntityPoolItem<NovatarEntity>> _novatarPool;
@@ -31,6 +33,7 @@ namespace _Source.Features.NovatarSpawning
             NovatarEntity.Factory novatarEntityFactory,
             NovatarStateModel.Factory novatarStateModelFactory,
             NovatarBehaviourTree.Factory novatarBehaviourTreeFactory,
+            MovementModel.Factory movementModelFactory,
             ScreenSizeController screenSizeController)
         {
             _novatarSpawnerConfig = novatarSpawnerConfig;
@@ -39,6 +42,7 @@ namespace _Source.Features.NovatarSpawning
             _novatarEntityFactory = novatarEntityFactory;
             _novatarStateModelFactory = novatarStateModelFactory;
             _novatarBehaviourTreeFactory = novatarBehaviourTreeFactory;
+            _movementModelFactory = movementModelFactory;
             _screenSizeController = screenSizeController;
 
             _novatarPool = new List<IEntityPoolItem<NovatarEntity>>();
@@ -82,9 +86,14 @@ namespace _Source.Features.NovatarSpawning
                 .Create()
                 .AddTo(Disposer);
 
+            var navatarMovmentModel = _movementModelFactory
+                .Create()
+                .AddTo(Disposer);
+
             var novatarFacade = _novatarFacadeFactory.Create(
                     novatarEntity,
-                    novatarStateModel)
+                    novatarStateModel,
+                    navatarMovmentModel)
                 .AddTo(Disposer);
 
             _novatarBehaviourTreeFactory
