@@ -1,6 +1,5 @@
-﻿namespace Assets._Source.Entities.Novatar
+﻿namespace _Source.Entities.Novatar
 {
-    // ToDo Fix namespace with ReSharper :D 
     public enum EntityState
     {
         Spawning = 0,

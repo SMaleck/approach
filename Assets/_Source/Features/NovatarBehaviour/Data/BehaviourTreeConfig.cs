@@ -1,5 +1,5 @@
 ﻿using _Source.App;
-using Assets._Source.Entities.Novatar;
+using _Source.Entities.Novatar;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

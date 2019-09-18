@@ -1,5 +1,4 @@
-﻿using Assets._Source.Entities.Novatar;
-using UniRx;
+﻿using UniRx;
 using UnityEngine;
 
 namespace _Source.Entities.Novatar

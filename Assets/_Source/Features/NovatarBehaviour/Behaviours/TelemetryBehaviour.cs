@@ -1,6 +1,5 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
-using Assets._Source.Entities.Novatar;
 using FluentBehaviourTree;
 using Zenject;
 

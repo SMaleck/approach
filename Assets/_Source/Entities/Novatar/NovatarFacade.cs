@@ -1,7 +1,6 @@
 ﻿using _Source.Features.Movement;
 using _Source.Features.NovatarSpawning;
 using _Source.Util;
-using Assets._Source.Entities.Novatar;
 using DG.Tweening;
 using System.Linq;
 using UniRx;

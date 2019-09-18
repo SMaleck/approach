@@ -1,5 +1,4 @@
-﻿using Assets._Source.Entities.Novatar;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace _Source.Entities.Novatar
 {

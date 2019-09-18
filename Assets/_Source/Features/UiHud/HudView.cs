@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace _Source.Features.Hud
+namespace _Source.Features.UiHud
 {
     public class HudView : AbstractView, IInitializable
     {
