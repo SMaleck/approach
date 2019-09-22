@@ -4,11 +4,14 @@ using _Source.Features.UserInput.Data;
 using _Source.Util;
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 namespace _Source.Features.UserInput
 {
     public class UserInputController : AbstractDisposable
     {
+        public class Factory : PlaceholderFactory<MovementModel, UserInputController> { }
+
         private const string AxisNameHorizontal = "Horizontal";
         private const string AxisNameVertical = "Vertical";
 

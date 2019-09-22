@@ -22,9 +22,11 @@ namespace _Source.Features.NovatarSpawning
         private readonly NovatarStateModel.Factory _novatarStateModelFactory;
         private readonly NovatarBehaviourTree.Factory _novatarBehaviourTreeFactory;
         private readonly MovementModel.Factory _movementModelFactory;
+        private readonly MovementController.Factory _movementControllerFactory;
+        private readonly MovementComponent.Factory _movementComponentFactory;
         private readonly ScreenSizeController _screenSizeController;
 
-        private readonly List<IEntityPoolItem<NovatarEntity>> _novatarPool;
+        private readonly List<IEntityPoolItem<IMonoEntity>> _novatarPool;
 
         public NovatarSpawner(
             NovatarSpawnerConfig novatarSpawnerConfig,
@@ -34,6 +36,8 @@ namespace _Source.Features.NovatarSpawning
             NovatarStateModel.Factory novatarStateModelFactory,
             NovatarBehaviourTree.Factory novatarBehaviourTreeFactory,
             MovementModel.Factory movementModelFactory,
+            MovementController.Factory movementControllerFactory,
+            MovementComponent.Factory movementComponentFactory,
             ScreenSizeController screenSizeController)
         {
             _novatarSpawnerConfig = novatarSpawnerConfig;
@@ -43,9 +47,11 @@ namespace _Source.Features.NovatarSpawning
             _novatarStateModelFactory = novatarStateModelFactory;
             _novatarBehaviourTreeFactory = novatarBehaviourTreeFactory;
             _movementModelFactory = movementModelFactory;
+            _movementControllerFactory = movementControllerFactory;
+            _movementComponentFactory = movementComponentFactory;
             _screenSizeController = screenSizeController;
 
-            _novatarPool = new List<IEntityPoolItem<NovatarEntity>>();
+            _novatarPool = new List<IEntityPoolItem<IMonoEntity>>();
 
             Observable.Interval(TimeSpan.FromSeconds(_novatarSpawnerConfig.SpawnIntervalSeconds))
                 .Subscribe(_ => Spawn())
@@ -66,7 +72,7 @@ namespace _Source.Features.NovatarSpawning
             novatarPoolItem.Reset(spawnPosition);
         }
 
-        private IEntityPoolItem<NovatarEntity> GetFreeEntity()
+        private IEntityPoolItem<IMonoEntity> GetFreeEntity()
         {
             var freeItem = _novatarPool.FirstOrDefault(item => item.IsFree);
             if (freeItem != null)
@@ -77,7 +83,7 @@ namespace _Source.Features.NovatarSpawning
             return CreateEntity();
         }
 
-        private IEntityPoolItem<NovatarEntity> CreateEntity()
+        private IEntityPoolItem<IMonoEntity> CreateEntity()
         {
             var novatarEntity = _novatarEntityFactory.Create(
                 _novatarConfig.NovatarPrefab);
@@ -85,15 +91,22 @@ namespace _Source.Features.NovatarSpawning
             var novatarStateModel = _novatarStateModelFactory
                 .Create()
                 .AddTo(Disposer);
+                        
+            var novatarFacade = _novatarFacadeFactory.Create(
+                    novatarEntity,
+                    novatarStateModel)
+                .AddTo(Disposer);
 
             var navatarMovmentModel = _movementModelFactory
                 .Create()
                 .AddTo(Disposer);
 
-            var novatarFacade = _novatarFacadeFactory.Create(
-                    novatarEntity,
-                    novatarStateModel,
-                    navatarMovmentModel)
+            _movementControllerFactory
+                .Create(navatarMovmentModel, novatarFacade)
+                .AddTo(Disposer);
+
+            _movementComponentFactory
+                .Create(novatarFacade, navatarMovmentModel)
                 .AddTo(Disposer);
 
             _novatarBehaviourTreeFactory
@@ -107,7 +120,7 @@ namespace _Source.Features.NovatarSpawning
             return novatarFacade;
         }
 
-        private Vector3 GetSpawnPosition(AbstractMonoEntity entity)
+        private Vector3 GetSpawnPosition(IMonoEntity entity)
         {
             var spawnSideInt = UnityEngine.Random.Range(0, 4);
             var spawnSide = (ScreenSide)spawnSideInt;

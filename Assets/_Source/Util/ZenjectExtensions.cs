@@ -16,5 +16,13 @@ namespace _Source.Util
             return diContainer.BindFactory<UnityEngine.Object, TContract, TFactory>()
                 .FromFactory<PrefabFactory<TContract>>();
         }
+
+        public static ConditionCopyNonLazyBinder BindPrefabFactory<TContract, TContract2, TFactory>(
+            this DiContainer diContainer)
+            where TFactory : PlaceholderFactory<UnityEngine.Object, TContract2, TContract>
+        {
+            return diContainer.BindFactory<UnityEngine.Object, TContract2, TContract, TFactory>()
+                .FromFactory<PrefabFactory<TContract2, TContract>>();
+        }
     }
 }

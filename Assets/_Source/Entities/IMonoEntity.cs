@@ -8,5 +8,8 @@ namespace _Source.Entities
         Vector3 Position { get; }
         Quaternion Rotation { get; }
         Vector3 Size { get; }
+
+        Transform LocomotionTarget { get; }
+        Transform RotationTarget { get; }
     }
 }

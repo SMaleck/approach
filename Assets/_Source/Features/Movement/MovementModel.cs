@@ -21,7 +21,7 @@ namespace _Source.Features.Movement
 
 
         private readonly ReactiveProperty<bool> _hasTurnIntention;
-        public bool HasTurnIntention => _turnIntention.Value.eulerAngles.z> _movementData.TurnDeadZoneAngle;
+        public bool HasTurnIntention => _turnIntention.Value.eulerAngles.z > _movementData.TurnDeadZoneAngle;
 
         private readonly ReactiveProperty<Quaternion> _turnIntention;
         public IReadOnlyReactiveProperty<Quaternion> TurnIntention => _turnIntention;

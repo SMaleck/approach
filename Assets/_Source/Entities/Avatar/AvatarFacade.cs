@@ -1,5 +1,4 @@
 ﻿using _Source.Features.GameRound;
-using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using _Source.Util;
 using System;
@@ -16,10 +15,11 @@ namespace _Source.Entities.Avatar
         private readonly AvatarEntity _avatarEntity;
         private readonly AvatarConfig _avatarConfig;
         private readonly AvatarStateModel _avatarStateModel;
-        private readonly IMovementModel _movementModel;
         private readonly ScreenSizeModel _screenSizeModel;
         private readonly IPauseStateModel _pauseStateModel;
 
+        public Transform LocomotionTarget => _avatarEntity.LocomotionTarget;
+        public Transform RotationTarget => _avatarEntity.RotationTarget;
         public bool IsActive => _avatarEntity.IsActive;
         public Vector3 Position => _avatarEntity.Position;
         public Quaternion Rotation => _avatarEntity.Rotation;
@@ -29,14 +29,12 @@ namespace _Source.Entities.Avatar
             AvatarEntity avatarEntity,
             AvatarConfig avatarConfig,
             AvatarStateModel avatarStateModel,
-            IMovementModel movementModel,
             ScreenSizeModel screenSizeModel,
             IPauseStateModel pauseStateModel)
         {
             _avatarEntity = avatarEntity;
             _avatarConfig = avatarConfig;
             _avatarStateModel = avatarStateModel;
-            _movementModel = movementModel;
             _screenSizeModel = screenSizeModel;
             _pauseStateModel = pauseStateModel;
 
@@ -67,39 +65,7 @@ namespace _Source.Entities.Avatar
 
         private void OnUpdate()
         {
-            HandleMoveInput();
-            HandleTurnInput();
             KeepWithinScreenBounds();
-        }
-
-        private void HandleMoveInput()
-        {
-            if (!_movementModel.HasMoveIntention)
-            {
-                return;
-            }
-
-            var timeAdjustedSpeed = _movementModel.MoveSpeed.AsTimeAdjusted();
-            var translateTarget = _movementModel.MoveIntention.Value * timeAdjustedSpeed;
-
-            _avatarEntity.transform.Translate(translateTarget);
-        }
-
-        private void HandleTurnInput()
-        {
-            if (!_movementModel.HasTurnIntention)
-            {
-                return;
-            }
-
-            var turnRotation = _movementModel.TurnIntention.Value;
-
-            var rotation = Quaternion.Slerp(
-                _avatarEntity.VisualRepresentationTransform.rotation,
-                turnRotation,
-                _movementModel.TurnSpeed.AsTimeAdjusted());
-
-            _avatarEntity.VisualRepresentationTransform.rotation = rotation;
         }
 
         private void KeepWithinScreenBounds()

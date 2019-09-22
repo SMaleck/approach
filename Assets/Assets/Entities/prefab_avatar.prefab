@@ -222,5 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce68cd7ed55515f49a9ddea23d2df2f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _locomotionTarget: {fileID: 9105761261365866959}
+  _rotationTarget: {fileID: 7361955057735304212}
   _visualRepresentationTransform: {fileID: 7361955057735304212}
   _headLight: {fileID: 8827866579564156490}

@@ -5,6 +5,12 @@ namespace _Source.Entities
 {
     public class AbstractMonoEntity : AbstractDisposableMonoBehaviour
     {
+        [SerializeField] private Transform _locomotionTarget;
+        public Transform LocomotionTarget => _locomotionTarget;
+
+        [SerializeField] private Transform _rotationTarget;
+        public Transform RotationTarget => _rotationTarget;
+
         // ToDo Implement Size correctly, this only works implicitly
         public Vector2 Size => Vector2.one;
 

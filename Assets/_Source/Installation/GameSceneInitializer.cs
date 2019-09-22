@@ -1,12 +1,12 @@
 ﻿using _Source.Entities.Avatar;
-using _Source.Features.GameRound;
+using _Source.Features.Movement;
 using _Source.Features.UiHud;
 using _Source.Features.UiScreens;
 using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
 using _Source.Installation.Data;
-using Zenject;
 using UniRx;
+using Zenject;
 
 namespace _Source.Installation
 {
@@ -18,6 +18,9 @@ namespace _Source.Installation
         [Inject] private AvatarEntity.Factory _avatarFactory;
         [Inject] private AvatarFacade.Factory _avatarFacadeFactory;
         [Inject] private AvatarConfig _avatarConfig;
+        [Inject] private MovementModel.Factory _movementModelFactory;
+        [Inject] private MovementComponent.Factory _movementComponentFactory;
+        [Inject] private UserInputController.Factory _userInputControllerFactory;        
 
         [Inject] private HudView.Factory _hudViewFactory;
         [Inject] private PauseView.Factory _pauseViewFactory;
@@ -29,9 +32,21 @@ namespace _Source.Installation
         public void Initialize()
         {
             var avatar = _avatarFactory.Create(_avatarConfig.AvatarPrefab);
-            
+
             var avatarFacade = _avatarFacadeFactory.Create(avatar);
             avatarFacade.AddTo(SceneDisposer);
+
+            var movementModel = _movementModelFactory
+                .Create()
+                .AddTo(SceneDisposer);
+
+            _userInputControllerFactory
+                .Create(movementModel)
+                .AddTo(SceneDisposer);
+
+            _movementComponentFactory
+                .Create(avatarFacade, movementModel)
+                .AddTo(SceneDisposer);
 
             SceneContainer.BindInterfacesAndSelfTo<AvatarFacade>()
                 .FromInstance(avatarFacade);

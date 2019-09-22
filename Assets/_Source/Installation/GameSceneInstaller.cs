@@ -1,4 +1,5 @@
-﻿using _Source.Entities.Avatar;
+﻿using _Source.Entities;
+using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.Cheats;
 using _Source.Features.GameRound;
@@ -39,9 +40,12 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<AvatarStateModel>().AsSingleNonLazy();
             Container.BindFactory<AvatarEntity, AvatarFacade, AvatarFacade.Factory>();
 
+            Container.BindFactory<MovementModel, MovementModel.Factory>();
+            Container.BindFactory<MovementModel, IMonoEntity, MovementController, MovementController.Factory>();
+
+            Container.BindFactory<IMonoEntity, IMovementModel, MovementComponent, MovementComponent.Factory>();
             Container.BindInterfacesAndSelfTo<VirtualJoystickModel>().AsSingleNonLazy();
-            Container.BindInterfacesAndSelfTo<MovementModel>().AsSingleNonLazy();
-            Container.BindInterfacesAndSelfTo<UserInputController>().AsSingleNonLazy();
+            Container.BindFactory<MovementModel, UserInputController, UserInputController.Factory>();
 
             Container.BindInterfacesAndSelfTo<GameRoundModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<GameRoundController>().AsSingleNonLazy();
@@ -50,7 +54,7 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<ScreenSizeController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
-            Container.BindFactory<NovatarEntity, NovatarStateModel, IMovementModel, NovatarFacade, NovatarFacade.Factory>();
+            Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarFacade, NovatarFacade.Factory>();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, SpawningBehaviour, SpawningBehaviour.Factory>();

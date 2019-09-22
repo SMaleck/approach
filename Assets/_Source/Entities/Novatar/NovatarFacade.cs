@@ -1,5 +1,4 @@
-﻿using _Source.Features.Movement;
-using _Source.Features.NovatarSpawning;
+﻿using _Source.Features.NovatarSpawning;
 using _Source.Util;
 using DG.Tweening;
 using System.Linq;
@@ -10,20 +9,22 @@ using Zenject;
 namespace _Source.Entities.Novatar
 {
     // ToDo NovatarFacade became a bit of an ugly amalgamation of Features, split this up
-    public class NovatarFacade : AbstractDisposable, INovatar, IEntityPoolItem<NovatarEntity>
+    public class NovatarFacade : AbstractDisposable, INovatar, IEntityPoolItem<IMonoEntity>
     {
-        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, IMovementModel, NovatarFacade> { }
+        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, NovatarFacade> { }
 
         private readonly NovatarEntity _novatarEntity;
         private readonly NovatarStateModel _novatarStateModel;
-        private readonly IMovementModel _movementModel;
         private readonly NovatarConfig _novatarConfig;
 
-        public NovatarEntity Entity => _novatarEntity;
-        public bool IsActive => Entity.IsActive;
-        public Vector3 Position => Entity.Position;
-        public Quaternion Rotation => Entity.Rotation;
-        public Vector3 Size => Entity.Size;
+        public IMonoEntity Entity => this;
+
+        public Transform LocomotionTarget => _novatarEntity.LocomotionTarget;
+        public Transform RotationTarget => _novatarEntity.RotationTarget;
+        public bool IsActive => _novatarEntity.IsActive;
+        public Vector3 Position => _novatarEntity.Position;
+        public Quaternion Rotation => _novatarEntity.Rotation;
+        public Vector3 Size => _novatarEntity.Size;
 
         public float SqrRange => Mathf.Pow(_novatarConfig.Range, 2);
         public float SqrTargetReachedThreshold => Mathf.Pow(_novatarConfig.TargetReachedThreshold, 2);
@@ -34,24 +35,22 @@ namespace _Source.Entities.Novatar
         public NovatarFacade(
             NovatarEntity novatarEntity,
             NovatarStateModel novatarStateModel,
-            IMovementModel movementModel,
             NovatarConfig novatarConfig)
         {
             _novatarEntity = novatarEntity;
             _novatarStateModel = novatarStateModel;
-            _movementModel = movementModel;
             _novatarConfig = novatarConfig;
 
             _novatarStateModel.IsAlive
                 .Subscribe(isAlive =>
                 {
-                    Entity.SetActive(isAlive);
+                    _novatarEntity.SetActive(isAlive);
                     IsFree = !isAlive;
                 })
                 .AddTo(Disposer);
 
             _novatarStateModel.SpawnPosition
-                .Subscribe(Entity.SetPosition)
+                .Subscribe(_novatarEntity.SetPosition)
                 .AddTo(Disposer);
 
             _novatarStateModel.CurrentEntityState
@@ -84,7 +83,7 @@ namespace _Source.Entities.Novatar
 
         public void Reset(Vector3 spawnPosition)
         {
-            _novatarStateModel.SetCurrentEntityState(EntityState.Spawning);            
+            _novatarStateModel.SetCurrentEntityState(EntityState.Spawning);
             _novatarStateModel.SetSpawnPosition(spawnPosition);
 
             UpdateLightColor(true);
@@ -102,32 +101,6 @@ namespace _Source.Entities.Novatar
             MoveForward();
         }
 
-        public void MoveForward()
-        {
-            _novatarEntity.Translate(0, _novatarConfig.MovementSpeed.AsTimeAdjusted(), 0);
-        }
-
-        public bool IsMovementTargetReached(Vector3 targetPosition)
-        {
-            var sqrDistanceToTarget = _novatarEntity.GetSquaredDistanceTo(targetPosition);
-            return sqrDistanceToTarget <= Mathf.Pow(_novatarConfig.MovementTargetAccuracy, 2);
-        }
-
-        public void SetEulerAngles(Vector3 targetRotation)
-        {
-            Entity.transform.eulerAngles = targetRotation;
-        }
-
-        public float GetSquaredDistanceTo(IMonoEntity otherEntity)
-        {
-            return Entity.GetSquaredDistanceTo(otherEntity);
-        }
-
-        public void TurnLightsOn()
-        {
-            _lightsOnTween.Restart();
-        }
-
         private void FaceTarget(Vector3 targetPosition)
         {
             var headingToTarget = targetPosition - _novatarEntity.Position;
@@ -143,6 +116,32 @@ namespace _Source.Entities.Novatar
                 _novatarConfig.TurnSpeed.AsTimeAdjusted());
 
             _novatarEntity.SetRotation(rotation);
+        }
+
+        public void MoveForward()
+        {
+            _novatarEntity.Translate(0, _novatarConfig.MovementSpeed.AsTimeAdjusted(), 0);
+        }
+
+        public bool IsMovementTargetReached(Vector3 targetPosition)
+        {
+            var sqrDistanceToTarget = _novatarEntity.GetSquaredDistanceTo(targetPosition);
+            return sqrDistanceToTarget <= Mathf.Pow(_novatarConfig.MovementTargetAccuracy, 2);
+        }
+
+        public void SetEulerAngles(Vector3 targetRotation)
+        {
+            _novatarEntity.transform.eulerAngles = targetRotation;
+        }
+
+        public float GetSquaredDistanceTo(IMonoEntity otherEntity)
+        {
+            return _novatarEntity.GetSquaredDistanceTo(otherEntity);
+        }
+
+        public void TurnLightsOn()
+        {
+            _lightsOnTween.Restart();
         }
 
         private void OnRelationshipSwitched(Pair<EntityState> relationshipPair)
