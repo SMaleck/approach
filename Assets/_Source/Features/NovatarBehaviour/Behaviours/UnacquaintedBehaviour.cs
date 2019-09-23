@@ -73,7 +73,6 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
             if (IsInTouchRange())
             {
-                _movementController.Stop();
                 return BehaviourTreeStatus.Success;
             }
 

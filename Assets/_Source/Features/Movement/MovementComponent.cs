@@ -35,7 +35,7 @@ namespace _Source.Features.Movement
             HandleMoveIntention();
             HandleTurnIntention();
 
-            App.Logger.Warn($"{_monoEntity.ToDebugString()} | {_movementModel.HasMoveIntention} | {_movementModel.HasTurnIntention} ");
+            _movementModel.ResetIntentions();
         }
 
         private void HandleMoveIntention()

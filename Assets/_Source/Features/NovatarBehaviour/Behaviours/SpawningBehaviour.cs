@@ -68,13 +68,11 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         private bool HasReachedTarget()
         {
-            return _movementController.IsLastTargetReached();
+            return _movementController.IsTargetReached(_movementTarget);
         }
 
         private BehaviourTreeStatus SwitchToUnacquainted()
         {
-            _movementController.Stop();
-
             NovatarEntity.SwitchToEntityState(EntityState.Unacquainted);
             return BehaviourTreeStatus.Success;
         }

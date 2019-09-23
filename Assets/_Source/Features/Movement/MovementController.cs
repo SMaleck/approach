@@ -1,6 +1,5 @@
 ﻿using _Source.Entities;
 using _Source.Util;
-using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -15,22 +14,12 @@ namespace _Source.Features.Movement
         private readonly MovementModel _movementModel;
         private readonly IMonoEntity _entity;
 
-        private Vector3 _lastMovementTarget;
-        private float _lastTargetAccuracy;
-
         public MovementController(
             MovementModel movementModel,
             IMonoEntity entity)
         {
             _movementModel = movementModel;
             _entity = entity;
-
-            _lastMovementTarget = _entity.Position;
-
-            Observable.EveryLateUpdate()
-                .Where(_ => IsLastTargetReached())
-                .Subscribe(_ => Stop())
-                .AddTo(Disposer);
         }
 
         public bool IsMoving()
@@ -38,25 +27,11 @@ namespace _Source.Features.Movement
             return _movementModel.HasMoveIntention || _movementModel.HasTurnIntention;
         }
 
-        // ToDo CleanUp MovementController
         public void MoveToTarget(Vector3 targetPosition)
         {
-            MoveToTarget(targetPosition, _movementModel.MoveTargetReachedAccuracy);
-        }
-
-        public void MoveToTarget(Vector3 targetPosition, float targetAccuracy)
-        {
-            _lastMovementTarget = targetPosition;
-            _lastTargetAccuracy = targetAccuracy;
-            if (IsLastTargetReached())
-            {
-                Stop();
-                return;
-            }
-
             var turnIntention = GetTurnIntention(targetPosition);
             _movementModel.SetTurnIntention(turnIntention);
-            
+
             var moveIntention = _movementModel.UseDirectMovement
                 ? targetPosition
                 : V3Forward;
@@ -64,15 +39,10 @@ namespace _Source.Features.Movement
             _movementModel.SetMovementIntention(moveIntention);
         }
 
-        public void Stop()
+        public bool IsTargetReached(Vector3 target)
         {
-            _movementModel.Reset();
-        }
-
-        public bool IsLastTargetReached()
-        {
-            var sqrDistance = (_entity.Position - _lastMovementTarget).sqrMagnitude;
-            return sqrDistance <= Mathf.Pow(_lastTargetAccuracy, 2);
+            var sqrDistance = (_entity.Position - target).sqrMagnitude;
+            return sqrDistance <= Mathf.Pow(_movementModel.MoveTargetReachedAccuracy, 2);
         }
 
         public void SetEulerAngles(Vector3 targetRotation)

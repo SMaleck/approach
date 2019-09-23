@@ -13,5 +13,7 @@ namespace _Source.Features.Movement
 
         float MoveSpeed { get; }
         float TurnSpeed { get; }
+
+        void ResetIntentions();
     }
 }

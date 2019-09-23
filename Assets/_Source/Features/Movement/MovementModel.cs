@@ -39,7 +39,7 @@ namespace _Source.Features.Movement
             _turnIntention = new ReactiveProperty<Quaternion>(Quaternion.identity).AddTo(Disposer);
         }
 
-        public void Reset()
+        public void ResetIntentions()
         {
             _moveIntention.Value = Vector2.zero;
             _turnIntention.Value = Quaternion.identity;

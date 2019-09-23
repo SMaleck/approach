@@ -43,7 +43,7 @@ namespace _Source.Features.UserInput
         {
             if (_pauseStateModel.IsPaused.Value)
             {
-                _movementModel.Reset();
+                _movementModel.ResetIntentions();
                 return;
             }
 
