@@ -2,6 +2,10 @@
 {
     public interface IMovementData
     {
+        bool UseDirectMovement { get; }
+        float MoveTargetReachedAccuracy { get; }
+        float MoveTargetTouchedAccuracy { get; }
+
         float MovementSpeed { get; }
         float MovementDeadZoneMagnitude { get; }
 

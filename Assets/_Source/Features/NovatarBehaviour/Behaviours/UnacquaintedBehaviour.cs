@@ -1,5 +1,6 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
+using _Source.Features.Movement;
 using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
 using System.Linq;
@@ -10,8 +11,9 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class UnacquaintedBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, UnacquaintedBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, MovementController, UnacquaintedBehaviour> { }
 
+        private readonly MovementController _movementController;
         private readonly IAvatar _avatarEntity;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
@@ -22,10 +24,12 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         public UnacquaintedBehaviour(
             INovatar novatarEntity,
             INovatarStateModel novatarStateModel,
+            MovementController movementController,
             IAvatar avatarEntity,
             BehaviourTreeConfig behaviourTreeConfig)
             : base(novatarEntity, novatarStateModel)
         {
+            _movementController = movementController;
             _avatarEntity = avatarEntity;
             _behaviourTreeConfig = behaviourTreeConfig;
 
@@ -67,7 +71,13 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         {
             _timePassedForStatusEvaluation = 0;
 
-            NovatarEntity.MoveTowards(_avatarEntity.Position);
+            if (IsInTouchRange())
+            {
+                _movementController.Stop();
+                return BehaviourTreeStatus.Success;
+            }
+
+            _movementController.MoveToTarget(_avatarEntity.Position);
             return BehaviourTreeStatus.Success;
         }
 

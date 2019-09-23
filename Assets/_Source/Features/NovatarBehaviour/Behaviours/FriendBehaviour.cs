@@ -1,5 +1,6 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
+using _Source.Features.Movement;
 using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
 using UniRx;
@@ -9,8 +10,9 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class FriendBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, FriendBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, MovementController, FriendBehaviour> { }
 
+        private readonly MovementController _movementController;
         private readonly IAvatar _avatar;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
@@ -22,10 +24,12 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         public FriendBehaviour(
             INovatar novatarEntity,
             INovatarStateModel novatarStateModel,
+            MovementController movementController,
             IAvatar avatar,
             BehaviourTreeConfig behaviourTreeConfig)
             : base(novatarEntity, novatarStateModel)
         {
+            _movementController = movementController;
             _avatar = avatar;
             _behaviourTreeConfig = behaviourTreeConfig;
 
@@ -65,8 +69,15 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         private BehaviourTreeStatus FollowAvatar()
         {
             _timeSinceFallingBehindSeconds = 0;
-            NovatarEntity.MoveTowards(_avatar.Position);
 
+            if (IsInTouchRange())
+            {
+                _movementController.Stop();
+
+                return BehaviourTreeStatus.Success;
+            }
+            
+            _movementController.MoveToTarget(_avatar.Position);
             return BehaviourTreeStatus.Success;
         }
 

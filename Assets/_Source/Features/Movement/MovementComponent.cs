@@ -1,7 +1,6 @@
 ﻿using _Source.Entities;
 using _Source.Features.GameRound;
 using _Source.Util;
-using System.Linq;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -33,11 +32,13 @@ namespace _Source.Features.Movement
 
         private void OnUpdate()
         {
-            HandleMoveInput();
-            HandleTurnInput();
+            HandleMoveIntention();
+            HandleTurnIntention();
+
+            App.Logger.Warn($"{_monoEntity.ToDebugString()} | {_movementModel.HasMoveIntention} | {_movementModel.HasTurnIntention} ");
         }
 
-        private void HandleMoveInput()
+        private void HandleMoveIntention()
         {
             if (!_movementModel.HasMoveIntention)
             {
@@ -50,7 +51,7 @@ namespace _Source.Features.Movement
             _monoEntity.LocomotionTarget.Translate(translateTarget);
         }
 
-        private void HandleTurnInput()
+        private void HandleTurnIntention()
         {
             if (!_movementModel.HasTurnIntention)
             {

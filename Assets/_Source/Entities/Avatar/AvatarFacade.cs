@@ -24,6 +24,7 @@ namespace _Source.Entities.Avatar
         public Vector3 Position => _avatarEntity.Position;
         public Quaternion Rotation => _avatarEntity.Rotation;
         public Vector3 Size => _avatarEntity.Size;
+        public string ToDebugString() => _avatarEntity.ToDebugString();
 
         public AvatarFacade(
             AvatarEntity avatarEntity,

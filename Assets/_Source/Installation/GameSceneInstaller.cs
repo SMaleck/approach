@@ -4,6 +4,7 @@ using _Source.Entities.Novatar;
 using _Source.Features.Cheats;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
+using _Source.Features.Movement.Data;
 using _Source.Features.NovatarBehaviour;
 using _Source.Features.NovatarBehaviour.Behaviours;
 using _Source.Features.NovatarSpawning;
@@ -40,7 +41,7 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<AvatarStateModel>().AsSingleNonLazy();
             Container.BindFactory<AvatarEntity, AvatarFacade, AvatarFacade.Factory>();
 
-            Container.BindFactory<MovementModel, MovementModel.Factory>();
+            Container.BindFactory<IMovementData, MovementModel, MovementModel.Factory>();
             Container.BindFactory<MovementModel, IMonoEntity, MovementController, MovementController.Factory>();
 
             Container.BindFactory<IMonoEntity, IMovementModel, MovementComponent, MovementComponent.Factory>();
@@ -56,13 +57,13 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
             Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarFacade, NovatarFacade.Factory>();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, SpawningBehaviour, SpawningBehaviour.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, MovementController, SpawningBehaviour, SpawningBehaviour.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, TelemetryBehaviour, TelemetryBehaviour.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, UnacquaintedBehaviour, UnacquaintedBehaviour.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, NeutralBehaviour, NeutralBehaviour.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, FriendBehaviour, FriendBehaviour.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, EnemyBehaviour, EnemyBehaviour.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, MovementController, UnacquaintedBehaviour, UnacquaintedBehaviour.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, MovementController, NeutralBehaviour, NeutralBehaviour.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, MovementController, FriendBehaviour, FriendBehaviour.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, MovementController, EnemyBehaviour, EnemyBehaviour.Factory>();
 
             Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
 

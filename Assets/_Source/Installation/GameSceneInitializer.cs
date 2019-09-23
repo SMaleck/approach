@@ -37,7 +37,7 @@ namespace _Source.Installation
             avatarFacade.AddTo(SceneDisposer);
 
             var movementModel = _movementModelFactory
-                .Create()
+                .Create(_avatarConfig.MovementConfig)
                 .AddTo(SceneDisposer);
 
             _userInputControllerFactory

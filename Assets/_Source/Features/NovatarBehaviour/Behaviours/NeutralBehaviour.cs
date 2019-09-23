@@ -1,4 +1,5 @@
 ﻿using _Source.Entities.Novatar;
+using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using FluentBehaviourTree;
 using Zenject;
@@ -7,8 +8,9 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class NeutralBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, NeutralBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, MovementController, NeutralBehaviour> { }
 
+        private readonly MovementController _movementController;
         private readonly ScreenSizeController _screenSizeController;
 
         private readonly IBehaviourTreeNode _behaviourTree;
@@ -16,9 +18,11 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         public NeutralBehaviour(
             INovatar novatarEntity,
             INovatarStateModel novatarStateModel,
+            MovementController movementController,
             ScreenSizeController screenSizeController)
             : base(novatarEntity, novatarStateModel)
         {
+            _movementController = movementController;
             _screenSizeController = screenSizeController;
 
             _behaviourTree = CreateTree();
@@ -55,7 +59,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         private BehaviourTreeStatus MoveToSpawnPosition()
         {
             var spawnPosition = NovatarStateModel.SpawnPosition.Value;
-            NovatarEntity.MoveTowards(spawnPosition);
+            _movementController.MoveToTarget(spawnPosition);
             return BehaviourTreeStatus.Success;
         }
 

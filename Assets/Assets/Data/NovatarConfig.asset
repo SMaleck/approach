@@ -14,6 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _novatarPrefab: {fileID: 7616588745787026386, guid: 27d4c0653fa67104687754e9db8d0d26,
     type: 3}
+  _movementConfig:
+    _useDirectMovement: 0
+    _moveTargetReachedAccuracy: 0.05
+    _movementSpeed: 2
+    _movementDeadZoneMagnitude: 0.01
+    _turnSpeed: 5
+    _turnDeadZoneAngle: 5
   _movementTargetAccuracy: 0.05
   _range: 5
   _targetReachedThreshold: 0.8

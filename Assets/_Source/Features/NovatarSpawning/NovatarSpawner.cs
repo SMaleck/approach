@@ -97,20 +97,20 @@ namespace _Source.Features.NovatarSpawning
                     novatarStateModel)
                 .AddTo(Disposer);
 
-            var navatarMovmentModel = _movementModelFactory
-                .Create()
+            var novatarMovementModel = _movementModelFactory
+                .Create(_novatarConfig.MovementConfig)
                 .AddTo(Disposer);
 
-            _movementControllerFactory
-                .Create(navatarMovmentModel, novatarFacade)
+            var novatarMovementController = _movementControllerFactory
+                .Create(novatarMovementModel, novatarFacade)
                 .AddTo(Disposer);
 
             _movementComponentFactory
-                .Create(novatarFacade, navatarMovmentModel)
+                .Create(novatarFacade, novatarMovementModel)
                 .AddTo(Disposer);
 
             _novatarBehaviourTreeFactory
-                .Create(novatarFacade, novatarStateModel)
+                .Create(novatarFacade, novatarStateModel, novatarMovementController)
                 .AddTo(Disposer)
                 .Initialize();
 

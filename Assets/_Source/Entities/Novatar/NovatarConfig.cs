@@ -1,4 +1,5 @@
 ﻿using _Source.App;
+using _Source.Features.Movement.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,11 +23,9 @@ namespace _Source.Entities.Novatar
         [SerializeField] private NovatarEntity _novatarPrefab;
         public NovatarEntity NovatarPrefab => _novatarPrefab;
 
-
         [Header("Movement")]
-        [Range(0.001f, 5)]
-        [SerializeField] private float _movementTargetAccuracy;
-        public float MovementTargetAccuracy => _movementTargetAccuracy;
+        [SerializeField] private MovementConfig _movementConfig;
+        public MovementConfig MovementConfig => _movementConfig;
 
         [SerializeField] private float _range;
         public float Range => _range;
@@ -35,16 +34,6 @@ namespace _Source.Entities.Novatar
         [SerializeField] private float _targetReachedThreshold;
         public float TargetReachedThreshold => _targetReachedThreshold;
 
-        [Range(0.1f, 20)]
-        [SerializeField] private float _movementSpeed;
-        public float MovementSpeed => _movementSpeed;
-
-        [Range(0.1f, 60)]
-        [SerializeField] private float _turnSpeed;
-        public float TurnSpeed => _turnSpeed;
-
-        [SerializeField] private float _turnAngleThreshold;
-        public float TurnAngleThreshold => _turnAngleThreshold;
 
         [Header("Damage")]
         [SerializeField] private double _touchDamage;

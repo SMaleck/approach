@@ -21,10 +21,12 @@ namespace _Source.Entities.Novatar
 
         public Transform LocomotionTarget => _novatarEntity.LocomotionTarget;
         public Transform RotationTarget => _novatarEntity.RotationTarget;
+
         public bool IsActive => _novatarEntity.IsActive;
         public Vector3 Position => _novatarEntity.Position;
         public Quaternion Rotation => _novatarEntity.Rotation;
         public Vector3 Size => _novatarEntity.Size;
+        public string ToDebugString() => _novatarEntity.ToDebugString();
 
         public float SqrRange => Mathf.Pow(_novatarConfig.Range, 2);
         public float SqrTargetReachedThreshold => Mathf.Pow(_novatarConfig.TargetReachedThreshold, 2);
@@ -91,47 +93,6 @@ namespace _Source.Entities.Novatar
             _novatarStateModel.PublishOnReset();
 
             _novatarStateModel.SetIsAlive(true);
-        }
-
-        // ToDo Use Movement Model as well in combination with an AI driver
-        // Then movement can be split out and generalized for both entities
-        public void MoveTowards(Vector3 targetPosition)
-        {
-            FaceTarget(targetPosition);
-            MoveForward();
-        }
-
-        private void FaceTarget(Vector3 targetPosition)
-        {
-            var headingToTarget = targetPosition - _novatarEntity.Position;
-
-            if (Vector3.Angle(_novatarEntity.Position, headingToTarget) < _novatarConfig.TurnAngleThreshold)
-            {
-                return;
-            }
-
-            var rotation = Quaternion.Slerp(
-                _novatarEntity.Rotation,
-                Quaternion.LookRotation(Vector3.forward, headingToTarget),
-                _novatarConfig.TurnSpeed.AsTimeAdjusted());
-
-            _novatarEntity.SetRotation(rotation);
-        }
-
-        public void MoveForward()
-        {
-            _novatarEntity.Translate(0, _novatarConfig.MovementSpeed.AsTimeAdjusted(), 0);
-        }
-
-        public bool IsMovementTargetReached(Vector3 targetPosition)
-        {
-            var sqrDistanceToTarget = _novatarEntity.GetSquaredDistanceTo(targetPosition);
-            return sqrDistanceToTarget <= Mathf.Pow(_novatarConfig.MovementTargetAccuracy, 2);
-        }
-
-        public void SetEulerAngles(Vector3 targetRotation)
-        {
-            _novatarEntity.transform.eulerAngles = targetRotation;
         }
 
         public float GetSquaredDistanceTo(IMonoEntity otherEntity)

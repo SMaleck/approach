@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _locomotionTarget: {fileID: 1362777207899459469}
-  _rotationTarget: {fileID: 8803812276700591331}
+  _rotationTarget: {fileID: 1362777207899459469}
   _headLight: {fileID: 7319393582979043941}
 --- !u!1 &2443309513826751692
 GameObject:

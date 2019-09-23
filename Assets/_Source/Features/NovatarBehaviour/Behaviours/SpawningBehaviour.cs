@@ -1,4 +1,5 @@
 ﻿using _Source.Entities.Novatar;
+using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using FluentBehaviourTree;
 using UniRx;
@@ -9,8 +10,9 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class SpawningBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, SpawningBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, MovementController, SpawningBehaviour> { }
 
+        private readonly MovementController _movementController;
         private readonly ScreenSizeModel _screenSizeModel;
 
         private readonly IBehaviourTreeNode _behaviourTree;
@@ -20,9 +22,11 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         public SpawningBehaviour(
             INovatar novatarEntity,
             INovatarStateModel novatarStateModel,
+            MovementController movementController,
             ScreenSizeModel screenSizeModel)
             : base(novatarEntity, novatarStateModel)
         {
+            _movementController = movementController;
             _screenSizeModel = screenSizeModel;
 
             _behaviourTree = CreateTree();
@@ -64,11 +68,13 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         private bool HasReachedTarget()
         {
-            return NovatarEntity.IsMovementTargetReached(_movementTarget);
+            return _movementController.IsLastTargetReached();
         }
 
         private BehaviourTreeStatus SwitchToUnacquainted()
         {
+            _movementController.Stop();
+
             NovatarEntity.SwitchToEntityState(EntityState.Unacquainted);
             return BehaviourTreeStatus.Success;
         }
@@ -98,7 +104,7 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
                 _movementTarget = spawnPosition - new Vector3(0, moveDistance, 0);
             }
 
-            NovatarEntity.SetEulerAngles(new Vector3(0, 0, lookRotation));
+            _movementController.SetEulerAngles(new Vector3(0, 0, lookRotation));
             NovatarEntity.TurnLightsOn();
 
             _hasStarted = true;
@@ -108,13 +114,14 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 
         private BehaviourTreeStatus Move()
         {
-            if (!HasReachedTarget())
+            if (!_movementController.IsMoving())
             {
-                NovatarEntity.MoveForward();
-                return BehaviourTreeStatus.Running;
+                _movementController.MoveToTarget(_movementTarget);
             }
-            
-            return BehaviourTreeStatus.Success;
+
+            return HasReachedTarget() 
+                ? BehaviourTreeStatus.Success
+                : BehaviourTreeStatus.Running;
         }
     }
 }

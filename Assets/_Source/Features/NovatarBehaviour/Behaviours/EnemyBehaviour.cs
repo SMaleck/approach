@@ -1,5 +1,6 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
+using _Source.Features.Movement;
 using _Source.Features.NovatarBehaviour.Data;
 using FluentBehaviourTree;
 using UniRx;
@@ -9,8 +10,9 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
 {
     public class EnemyBehaviour : AbstractBehaviour
     {
-        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, EnemyBehaviour> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, MovementController , EnemyBehaviour> { }
 
+        private readonly MovementController _movementController;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
         private readonly NeutralBehaviour.Factory _neutralBehaviourFactory;
         private readonly NovatarConfig _novatarConfig;
@@ -24,12 +26,14 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
         public EnemyBehaviour(
             INovatar novatarEntity,
             INovatarStateModel novatarStateModel,
+            MovementController movementController,
             BehaviourTreeConfig behaviourTreeConfig,
             NeutralBehaviour.Factory neutralBehaviourFactory,
             NovatarConfig novatarConfig,
             IDamageReceiver avatarDamageReceiver)
             : base(novatarEntity, novatarStateModel)
         {
+            _movementController = movementController;
             _behaviourTreeConfig = behaviourTreeConfig;
             _neutralBehaviourFactory = neutralBehaviourFactory;
             _novatarConfig = novatarConfig;
@@ -58,7 +62,8 @@ namespace _Source.Features.NovatarBehaviour.Behaviours
             var neutralBehaviour = _neutralBehaviourFactory
                 .Create(
                     NovatarEntity,
-                    NovatarStateModel)
+                    NovatarStateModel,
+                    _movementController)
                 .Build();
 
             return new BehaviourTreeBuilder()

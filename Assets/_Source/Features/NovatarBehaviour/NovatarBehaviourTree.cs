@@ -1,5 +1,6 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.GameRound;
+using _Source.Features.Movement;
 using _Source.Features.NovatarBehaviour.Behaviours;
 using _Source.Util;
 using FluentBehaviourTree;
@@ -11,10 +12,11 @@ namespace _Source.Features.NovatarBehaviour
 {
     public class NovatarBehaviourTree : AbstractDisposable, IInitializable
     {
-        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, NovatarBehaviourTree> { }
+        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, MovementController, NovatarBehaviourTree> { }
 
         private readonly INovatar _novatarEntity;
         private readonly INovatarStateModel _novatarStateModel;
+        private readonly MovementController _movementController;
         private readonly SpawningBehaviour.Factory _spawningBehaviourFactory;
         private readonly TelemetryBehaviour.Factory _telemetryBehaviourFactory;
         private readonly UnacquaintedBehaviour.Factory _unacquaintedBehaviourFactory;
@@ -28,6 +30,7 @@ namespace _Source.Features.NovatarBehaviour
         public NovatarBehaviourTree(
             INovatar novatarEntity,
             INovatarStateModel novatarStateModel,
+            MovementController movementController,
             SpawningBehaviour.Factory spawningBehaviourFactory,
             TelemetryBehaviour.Factory telemetryBehaviourFactory,
             UnacquaintedBehaviour.Factory unacquaintedBehaviourFactory,
@@ -38,6 +41,7 @@ namespace _Source.Features.NovatarBehaviour
         {
             _novatarEntity = novatarEntity;
             _novatarStateModel = novatarStateModel;
+            _movementController = movementController;
             _spawningBehaviourFactory = spawningBehaviourFactory;
             _telemetryBehaviourFactory = telemetryBehaviourFactory;
             _unacquaintedBehaviourFactory = unacquaintedBehaviourFactory;
@@ -62,7 +66,8 @@ namespace _Source.Features.NovatarBehaviour
             var spawningBehaviour = _spawningBehaviourFactory
                 .Create(
                     _novatarEntity,
-                    _novatarStateModel)
+                    _novatarStateModel,
+                    _movementController)
                 .Build();
 
             var telemetryBehaviour = _telemetryBehaviourFactory
@@ -74,25 +79,29 @@ namespace _Source.Features.NovatarBehaviour
             var unacquaintedBehaviour = _unacquaintedBehaviourFactory
                 .Create(
                     _novatarEntity,
-                    _novatarStateModel)
+                    _novatarStateModel,
+                    _movementController)
                 .Build();
 
             var neutralBehaviour = _neutralBehaviourFactory
                 .Create(
                     _novatarEntity,
-                    _novatarStateModel)
+                    _novatarStateModel,
+                    _movementController)
                 .Build();
 
             var friendBehaviour = _friendBehaviourFactory
                 .Create(
                     _novatarEntity,
-                    _novatarStateModel)
+                    _novatarStateModel,
+                    _movementController)
                 .Build();
 
             var enemyBehaviour = _enemyBehaviourFactory
                 .Create(
                     _novatarEntity,
-                    _novatarStateModel)
+                    _novatarStateModel,
+                    _movementController)
                 .Build();
 
             return new BehaviourTreeBuilder()
