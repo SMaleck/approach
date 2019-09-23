@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: NovatarSpawnerConfig
   m_EditorClassIdentifier: 
   _spawnIntervalSeconds: 1
-  _maxActiveSpawns: 1
+  _maxActiveSpawns: 6
   _spawnPositionOffset: 0.5

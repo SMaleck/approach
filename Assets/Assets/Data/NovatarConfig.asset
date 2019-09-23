@@ -16,17 +16,14 @@ MonoBehaviour:
     type: 3}
   _movementConfig:
     _useDirectMovement: 0
-    _moveTargetReachedAccuracy: 0.05
+    _moveTargetReachedAccuracy: 0.1
+    _moveTargetTouchedAccuracy: 0.8
     _movementSpeed: 2
     _movementDeadZoneMagnitude: 0.01
-    _turnSpeed: 5
-    _turnDeadZoneAngle: 5
-  _movementTargetAccuracy: 0.05
+    _turnSpeed: 10
+    _turnDeadZoneAngle: 1
   _range: 5
   _targetReachedThreshold: 0.8
-  _movementSpeed: 2
-  _turnSpeed: 5
-  _turnAngleThreshold: 5
   _touchDamage: 1
   _relationshipVisualsConfigs:
   - _relationship: 0
