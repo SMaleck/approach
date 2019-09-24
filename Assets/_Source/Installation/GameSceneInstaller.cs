@@ -7,6 +7,8 @@ using _Source.Features.Movement;
 using _Source.Features.Movement.Data;
 using _Source.Features.NovatarBehaviour;
 using _Source.Features.NovatarBehaviour.Behaviours;
+using _Source.Features.NovatarBehaviour.Nodes;
+using _Source.Features.NovatarBehaviour.Sensors;
 using _Source.Features.NovatarSpawning;
 using _Source.Features.ScreenSize;
 using _Source.Features.UiHud;
@@ -64,6 +66,12 @@ namespace _Source.Installation
             Container.BindFactory<INovatar, INovatarStateModel, MovementController, NeutralBehaviour, NeutralBehaviour.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, MovementController, FriendBehaviour, FriendBehaviour.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, MovementController, EnemyBehaviour, EnemyBehaviour.Factory>();
+
+            Container.BindFactory<INovatar, RangeSensor, RangeSensor.Factory>();
+            Container.BindFactory<RangeSensor, MovementController, FollowAvatarNode, FollowAvatarNode.Factory>();
+            Container.BindFactory<double, IdleTimeoutNode, IdleTimeoutNode.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, RangeSensor, FirstTouchNode, FirstTouchNode.Factory>();
+            Container.BindFactory<INovatar, EntityState, SwitchEntityStateNode, SwitchEntityStateNode.Factory>();
 
             Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
 

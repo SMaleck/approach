@@ -1,33 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using _Source.Features.Movement;
+using _Source.Features.NovatarBehaviour.Sensors;
 using FluentBehaviourTree;
+using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.Nodes
 {
-    public class FollowAvatarNode : IBehaviourTreeNode
+    public class FollowAvatarNode : AbstractNode
     {
-        public FollowAvatarNode()
-        {
+        public class Factory : PlaceholderFactory<RangeSensor, MovementController, FollowAvatarNode> { }
 
+        private readonly RangeSensor _rangeSensor;
+        private readonly MovementController _movementController;
+
+        public FollowAvatarNode(
+            RangeSensor rangeSensor,
+            MovementController movementController)
+        {
+            _rangeSensor = rangeSensor;
+            _movementController = movementController;
         }
 
-        public BehaviourTreeStatus Tick(TimeData time)
+        public override BehaviourTreeStatus Tick(TimeData time)
         {
-            throw new NotImplementedException();
-        }
+            if (!_rangeSensor.IsInFollowRange())
+            {
+                return BehaviourTreeStatus.Failure;
+            }
+            if (_rangeSensor.IsInTouchRange())
+            {
+                return BehaviourTreeStatus.Success;
+            }
 
-        protected bool IsInFollowRange()
-        {
-            var isInRange = NovatarStateModel.CurrentDistanceToAvatar.Value <= NovatarEntity.SqrRange;
-            return isInRange && !IsInTouchRange();
-        }
-
-        protected bool IsInTouchRange()
-        {
-            return NovatarStateModel.CurrentDistanceToAvatar.Value <= NovatarEntity.SqrTargetReachedThreshold;
+            _movementController.MoveToTarget(_rangeSensor.GetAvatarPosition());
+            return BehaviourTreeStatus.Running;
         }
     }
 }

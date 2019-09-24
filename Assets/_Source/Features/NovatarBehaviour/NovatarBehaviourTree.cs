@@ -2,6 +2,9 @@
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
 using _Source.Features.NovatarBehaviour.Behaviours;
+using _Source.Features.NovatarBehaviour.Data;
+using _Source.Features.NovatarBehaviour.Nodes;
+using _Source.Features.NovatarBehaviour.Sensors;
 using _Source.Util;
 using FluentBehaviourTree;
 using UniRx;
@@ -14,9 +17,17 @@ namespace _Source.Features.NovatarBehaviour
     {
         public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, MovementController, NovatarBehaviourTree> { }
 
+        [Inject] private readonly RangeSensor.Factory _rangeSensorFactory;
+
+        [Inject] private readonly FollowAvatarNode.Factory _followAvatarNodeFactory;
+        [Inject] private readonly IdleTimeoutNode.Factory _idleTimeoutNodeFactory;
+        [Inject] private readonly FirstTouchNode.Factory _firstTouchNodeFactory;
+        [Inject] private readonly SwitchEntityStateNode.Factory _switchEntityStateNodeFactory;
+
         private readonly INovatar _novatarEntity;
         private readonly INovatarStateModel _novatarStateModel;
         private readonly MovementController _movementController;
+        private readonly BehaviourTreeConfig _behaviourTreeConfig;
         private readonly SpawningBehaviour.Factory _spawningBehaviourFactory;
         private readonly TelemetryBehaviour.Factory _telemetryBehaviourFactory;
         private readonly UnacquaintedBehaviour.Factory _unacquaintedBehaviourFactory;
@@ -31,6 +42,7 @@ namespace _Source.Features.NovatarBehaviour
             INovatar novatarEntity,
             INovatarStateModel novatarStateModel,
             MovementController movementController,
+            BehaviourTreeConfig behaviourTreeConfig,
             SpawningBehaviour.Factory spawningBehaviourFactory,
             TelemetryBehaviour.Factory telemetryBehaviourFactory,
             UnacquaintedBehaviour.Factory unacquaintedBehaviourFactory,
@@ -42,6 +54,7 @@ namespace _Source.Features.NovatarBehaviour
             _novatarEntity = novatarEntity;
             _novatarStateModel = novatarStateModel;
             _movementController = movementController;
+            _behaviourTreeConfig = behaviourTreeConfig;
             _spawningBehaviourFactory = spawningBehaviourFactory;
             _telemetryBehaviourFactory = telemetryBehaviourFactory;
             _unacquaintedBehaviourFactory = unacquaintedBehaviourFactory;
@@ -104,8 +117,31 @@ namespace _Source.Features.NovatarBehaviour
                     _movementController)
                 .Build();
 
+            var rangeSensor = _rangeSensorFactory.Create(_novatarEntity);
+
+            var unacquaintedIdleTimeOutNode = _idleTimeoutNodeFactory.Create(
+                    _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds);
+
+            var followNode = _followAvatarNodeFactory.Create(
+                rangeSensor,
+                _movementController);
+
+            var unacquaintedFirstTouchNode = _firstTouchNodeFactory.Create(
+                _novatarEntity,
+                _novatarStateModel,
+                rangeSensor);
+
+            var toNeutralStateNode = _switchEntityStateNodeFactory.Create(
+                _novatarEntity,
+                EntityState.Neutral);
+
+            Observable.EveryLateUpdate()
+                .Where(_ => !_pauseStateModel.IsPaused.Value && _novatarStateModel.IsAlive.Value)
+                .Subscribe(_ => rangeSensor.UpdateSensorReadings())
+                .AddTo(Disposer);
+
             return new BehaviourTreeBuilder()
-                .Parallel(nameof(NovatarBehaviourTree), 20, 20)
+                .Parallel(nameof(NovatarBehaviourTree), 100, 100)
                     .Splice(telemetryBehaviour)
                     .Selector("RelationshipTreeSelector")
                         .Sequence(nameof(spawningBehaviour))
@@ -114,7 +150,13 @@ namespace _Source.Features.NovatarBehaviour
                             .End()
                         .Sequence(nameof(unacquaintedBehaviour))
                             .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Unacquainted))
-                            .Splice(unacquaintedBehaviour)
+                            .Selector("")
+                                .Do("", followNode.Tick)
+                                .Do("", unacquaintedFirstTouchNode.Tick)
+                                .Sequence("")
+                                    .Do("", unacquaintedIdleTimeOutNode.Tick)
+                                    .Do("", toNeutralStateNode.Tick)
+                                .End()
                             .End()
                         .Sequence(nameof(neutralBehaviour))
                             .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Neutral))

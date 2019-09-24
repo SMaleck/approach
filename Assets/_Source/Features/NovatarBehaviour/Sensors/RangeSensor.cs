@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using _Source.Entities;
-using _Source.Entities.Avatar;
+﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
+using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.Sensors
@@ -42,6 +37,11 @@ namespace _Source.Features.NovatarBehaviour.Sensors
         public bool IsInTouchRange()
         {
             return _sqrDistanceToAvatar <= _novatarEntity.SqrTargetReachedThreshold;
+        }
+
+        public Vector3 GetAvatarPosition()
+        {
+            return _avatarEntity.Position;
         }
     }
 }

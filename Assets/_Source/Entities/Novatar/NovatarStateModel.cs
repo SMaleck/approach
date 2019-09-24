@@ -19,18 +19,24 @@ namespace _Source.Entities.Novatar
         public IReadOnlyReactiveProperty<Vector3> SpawnPosition => _spawnPosition;
 
         private readonly ReactiveProperty<float> _currentDistanceToAvatar;
-        public IReadOnlyReactiveProperty<float> CurrentDistanceToAvatar => _currentDistanceToAvatar;        
+        public IReadOnlyReactiveProperty<float> CurrentDistanceToAvatar => _currentDistanceToAvatar;
 
         private readonly Subject<Unit> _onReset;
         public IOptimizedObservable<Unit> OnReset => _onReset;
+
+        private readonly Subject<Unit> _onResetIdleTimeouts;
+        public IOptimizedObservable<Unit> OnResetIdleTimeouts => _onReset;
+
 
         public NovatarStateModel()
         {
             _isAlive = new ReactiveProperty<bool>().AddTo(Disposer);
             _spawnPosition = new ReactiveProperty<Vector3>().AddTo(Disposer);
             _currentEntityState = new ReactiveProperty<EntityState>().AddTo(Disposer);
-            _currentDistanceToAvatar = new ReactiveProperty<float>().AddTo(Disposer);            
+            _currentDistanceToAvatar = new ReactiveProperty<float>().AddTo(Disposer);
+
             _onReset = new Subject<Unit>().AddTo(Disposer);
+            _onResetIdleTimeouts = new Subject<Unit>().AddTo(Disposer);
         }
 
         public void SetCurrentEntityState(EntityState value)
@@ -46,7 +52,7 @@ namespace _Source.Entities.Novatar
         public void SetSpawnPosition(Vector3 value)
         {
             _spawnPosition.Value = value;
-        }        
+        }
 
         public void SetCurrentDistanceToAvatar(float value)
         {
@@ -56,6 +62,11 @@ namespace _Source.Entities.Novatar
         public void PublishOnReset()
         {
             _onReset.OnNext(Unit.Default);
+        }
+
+        public void PublishOnResetIdleTimeouts()
+        {
+            _onResetIdleTimeouts.OnNext(Unit.Default);
         }
     }
 }

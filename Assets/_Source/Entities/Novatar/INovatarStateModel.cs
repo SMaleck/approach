@@ -10,5 +10,6 @@ namespace _Source.Entities.Novatar
         IReadOnlyReactiveProperty<float> CurrentDistanceToAvatar { get; }
         IReadOnlyReactiveProperty<Vector3> SpawnPosition { get; }        
         IOptimizedObservable<Unit> OnReset { get; }
+        IOptimizedObservable<Unit> OnResetIdleTimeouts { get; }
     }
 }

@@ -20,7 +20,7 @@ namespace _Source.Installation
         [Inject] private AvatarConfig _avatarConfig;
         [Inject] private MovementModel.Factory _movementModelFactory;
         [Inject] private MovementComponent.Factory _movementComponentFactory;
-        [Inject] private UserInputController.Factory _userInputControllerFactory;        
+        [Inject] private UserInputController.Factory _userInputControllerFactory;
 
         [Inject] private HudView.Factory _hudViewFactory;
         [Inject] private PauseView.Factory _pauseViewFactory;
