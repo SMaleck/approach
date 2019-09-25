@@ -59,7 +59,8 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
             Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarFacade, NovatarFacade.Factory>();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, ISensorySystem, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+            Container.BindFactory<NodeGenerator, NodeGenerator.Factory>(); 
             Container.BindFactory<INovatar, INovatarStateModel, MovementController, SpawningBehaviour, SpawningBehaviour.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, TelemetryBehaviour, TelemetryBehaviour.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, MovementController, UnacquaintedBehaviour, UnacquaintedBehaviour.Factory>();
@@ -67,10 +68,13 @@ namespace _Source.Installation
             Container.BindFactory<INovatar, INovatarStateModel, MovementController, FriendBehaviour, FriendBehaviour.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, MovementController, EnemyBehaviour, EnemyBehaviour.Factory>();
 
+            Container.BindFactory<INovatar, INovatarStateModel, SensorySystem, SensorySystem.Factory>();
             Container.BindFactory<INovatar, RangeSensor, RangeSensor.Factory>();
-            Container.BindFactory<RangeSensor, MovementController, FollowAvatarNode, FollowAvatarNode.Factory>();
+
+            Container.BindFactory<ISensorySystem, MovementController, FollowAvatarNode, FollowAvatarNode.Factory>();
             Container.BindFactory<double, IdleTimeoutNode, IdleTimeoutNode.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, RangeSensor, FirstTouchNode, FirstTouchNode.Factory>();
+            Container.BindFactory<double, double, IdleTimeoutRandomNode, IdleTimeoutRandomNode.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, ISensorySystem, FirstTouchNode, FirstTouchNode.Factory>();
             Container.BindFactory<INovatar, EntityState, SwitchEntityStateNode, SwitchEntityStateNode.Factory>();
 
             Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();

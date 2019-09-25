@@ -4,7 +4,7 @@ using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.Nodes
 {
-    public class SwitchEntityStateNode : IBehaviourTreeNode
+    public class SwitchEntityStateNode : AbstractNode
     {
         public class Factory : PlaceholderFactory<INovatar, EntityState, SwitchEntityStateNode> { }
 
@@ -19,7 +19,7 @@ namespace _Source.Features.NovatarBehaviour.Nodes
             _targetState = targetState;
         }
 
-        public BehaviourTreeStatus Tick(TimeData time)
+        public override BehaviourTreeStatus Tick(TimeData time)
         {
             _novatarEntity.SwitchToEntityState(_targetState);
             return BehaviourTreeStatus.Success;

@@ -5,7 +5,7 @@ using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.Sensors
 {
-    public class RangeSensor
+    public class RangeSensor : ISensor
     {
         public class Factory : PlaceholderFactory<INovatar, RangeSensor> { }
 

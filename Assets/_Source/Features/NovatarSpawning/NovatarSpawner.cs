@@ -2,6 +2,7 @@
 using _Source.Entities.Novatar;
 using _Source.Features.Movement;
 using _Source.Features.NovatarBehaviour;
+using _Source.Features.NovatarBehaviour.Sensors;
 using _Source.Features.NovatarSpawning.Data;
 using _Source.Features.ScreenSize;
 using _Source.Util;
@@ -24,6 +25,7 @@ namespace _Source.Features.NovatarSpawning
         private readonly MovementModel.Factory _movementModelFactory;
         private readonly MovementController.Factory _movementControllerFactory;
         private readonly MovementComponent.Factory _movementComponentFactory;
+        private readonly SensorySystem.Factory _sensorySystemFactory;
         private readonly ScreenSizeController _screenSizeController;
 
         private readonly List<IEntityPoolItem<IMonoEntity>> _novatarPool;
@@ -38,6 +40,7 @@ namespace _Source.Features.NovatarSpawning
             MovementModel.Factory movementModelFactory,
             MovementController.Factory movementControllerFactory,
             MovementComponent.Factory movementComponentFactory,
+            SensorySystem.Factory sensorySystemFactory,
             ScreenSizeController screenSizeController)
         {
             _novatarSpawnerConfig = novatarSpawnerConfig;
@@ -49,6 +52,7 @@ namespace _Source.Features.NovatarSpawning
             _movementModelFactory = movementModelFactory;
             _movementControllerFactory = movementControllerFactory;
             _movementComponentFactory = movementComponentFactory;
+            _sensorySystemFactory = sensorySystemFactory;
             _screenSizeController = screenSizeController;
 
             _novatarPool = new List<IEntityPoolItem<IMonoEntity>>();
@@ -91,11 +95,16 @@ namespace _Source.Features.NovatarSpawning
             var novatarStateModel = _novatarStateModelFactory
                 .Create()
                 .AddTo(Disposer);
-                        
+
             var novatarFacade = _novatarFacadeFactory.Create(
                     novatarEntity,
                     novatarStateModel)
                 .AddTo(Disposer);
+
+            var sensorySystem = _sensorySystemFactory
+                .Create(novatarFacade, novatarStateModel)
+                .AddTo(Disposer);
+            sensorySystem.Initialize();
 
             var novatarMovementModel = _movementModelFactory
                 .Create(_novatarConfig.MovementConfig)
@@ -110,7 +119,7 @@ namespace _Source.Features.NovatarSpawning
                 .AddTo(Disposer);
 
             _novatarBehaviourTreeFactory
-                .Create(novatarFacade, novatarStateModel, novatarMovementController)
+                .Create(novatarFacade, novatarStateModel, sensorySystem, novatarMovementController)
                 .AddTo(Disposer)
                 .Initialize();
 

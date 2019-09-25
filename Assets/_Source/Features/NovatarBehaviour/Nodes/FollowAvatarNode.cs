@@ -7,31 +7,31 @@ namespace _Source.Features.NovatarBehaviour.Nodes
 {
     public class FollowAvatarNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<RangeSensor, MovementController, FollowAvatarNode> { }
+        public class Factory : PlaceholderFactory<ISensorySystem, MovementController, FollowAvatarNode> { }
 
-        private readonly RangeSensor _rangeSensor;
+        private readonly ISensorySystem _sensorySystem;
         private readonly MovementController _movementController;
 
         public FollowAvatarNode(
-            RangeSensor rangeSensor,
+            ISensorySystem sensorySystem,
             MovementController movementController)
         {
-            _rangeSensor = rangeSensor;
+            _sensorySystem = sensorySystem;
             _movementController = movementController;
         }
 
         public override BehaviourTreeStatus Tick(TimeData time)
         {
-            if (!_rangeSensor.IsInFollowRange())
+            if (!_sensorySystem.IsInFollowRange())
             {
                 return BehaviourTreeStatus.Failure;
             }
-            if (_rangeSensor.IsInTouchRange())
+            if (_sensorySystem.IsInTouchRange())
             {
                 return BehaviourTreeStatus.Success;
             }
 
-            _movementController.MoveToTarget(_rangeSensor.GetAvatarPosition());
+            _movementController.MoveToTarget(_sensorySystem.GetAvatarPosition());
             return BehaviourTreeStatus.Running;
         }
     }
