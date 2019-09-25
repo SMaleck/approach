@@ -6,7 +6,6 @@ using _Source.Features.GameRound;
 using _Source.Features.Movement;
 using _Source.Features.Movement.Data;
 using _Source.Features.NovatarBehaviour;
-using _Source.Features.NovatarBehaviour.Behaviours;
 using _Source.Features.NovatarBehaviour.Nodes;
 using _Source.Features.NovatarBehaviour.Sensors;
 using _Source.Features.NovatarSpawning;

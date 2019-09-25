@@ -5,12 +5,9 @@
         float SqrRange { get; }
         float SqrTargetReachedThreshold { get; }
 
-        void SwitchToEntityState(EntityState entityState);
-        void SetCurrentDistanceToAvatar(float value);
         void Deactivate();
-
-        float GetSquaredDistanceTo(IMonoEntity otherEntity);
-
+        void SwitchToEntityState(EntityState entityState);
+        
         void TurnLightsOn();
         void ResetIdleTimeouts();
     }

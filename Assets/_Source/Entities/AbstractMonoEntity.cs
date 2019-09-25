@@ -18,22 +18,5 @@ namespace _Source.Entities
         {
             return $"{gameObject.name} | POS {Position.ToString()}";
         }
-
-        public float GetSquaredDistanceTo(IMonoEntity otherEntity)
-        {
-            return GetSquaredDistanceTo(otherEntity.Position);
-        }
-
-        public float GetSquaredDistanceTo(Vector3 targetPosition)
-        {
-            var distance = Position - targetPosition;
-
-            return distance.sqrMagnitude;
-        }
-
-        public void Translate(float x, float y, float z)
-        {
-            transform.Translate(x, y, z);
-        }
     }
 }

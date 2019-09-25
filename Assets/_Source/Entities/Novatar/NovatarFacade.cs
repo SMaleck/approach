@@ -73,11 +73,6 @@ namespace _Source.Entities.Novatar
             _novatarStateModel.SetCurrentEntityState(entityState);
         }
 
-        public void SetCurrentDistanceToAvatar(float value)
-        {
-            _novatarStateModel.SetCurrentDistanceToAvatar(value);
-        }
-
         public void Deactivate()
         {
             _novatarStateModel.SetIsAlive(false);
@@ -98,11 +93,6 @@ namespace _Source.Entities.Novatar
         public void ResetIdleTimeouts()
         {
             _novatarStateModel.PublishOnResetIdleTimeouts();
-        }
-
-        public float GetSquaredDistanceTo(IMonoEntity otherEntity)
-        {
-            return _novatarEntity.GetSquaredDistanceTo(otherEntity);
         }
 
         public void TurnLightsOn()
