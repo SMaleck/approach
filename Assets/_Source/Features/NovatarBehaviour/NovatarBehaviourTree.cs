@@ -29,7 +29,6 @@ namespace _Source.Features.NovatarBehaviour
         [Inject] private readonly SpawningBehaviour.Factory _spawningBehaviourFactory;
         [Inject] private readonly TelemetryBehaviour.Factory _telemetryBehaviourFactory;
         [Inject] private readonly NeutralBehaviour.Factory _neutralBehaviourFactory;
-        [Inject] private readonly FriendBehaviour.Factory _friendBehaviourFactory;
         [Inject] private readonly EnemyBehaviour.Factory _enemyBehaviourFactory;
 
         private readonly INovatar _novatarEntity;

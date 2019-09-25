@@ -63,9 +63,7 @@ namespace _Source.Installation
             Container.BindFactory<NodeGenerator, NodeGenerator.Factory>(); 
             Container.BindFactory<INovatar, INovatarStateModel, MovementController, SpawningBehaviour, SpawningBehaviour.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, TelemetryBehaviour, TelemetryBehaviour.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, MovementController, UnacquaintedBehaviour, UnacquaintedBehaviour.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, MovementController, NeutralBehaviour, NeutralBehaviour.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, MovementController, FriendBehaviour, FriendBehaviour.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, MovementController, EnemyBehaviour, EnemyBehaviour.Factory>();
 
             Container.BindFactory<INovatar, INovatarStateModel, SensorySystem, SensorySystem.Factory>();
