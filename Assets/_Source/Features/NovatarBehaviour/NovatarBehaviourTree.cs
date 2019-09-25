@@ -1,7 +1,6 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
-using _Source.Features.NovatarBehaviour.Behaviours;
 using _Source.Features.NovatarBehaviour.Data;
 using _Source.Features.NovatarBehaviour.Nodes;
 using _Source.Features.NovatarBehaviour.Sensors;
@@ -25,11 +24,6 @@ namespace _Source.Features.NovatarBehaviour
         [Inject] private readonly IdleTimeoutNode.Factory _idleTimeoutNodeFactory;
         [Inject] private readonly FirstTouchNode.Factory _firstTouchNodeFactory;
         [Inject] private readonly SwitchEntityStateNode.Factory _switchEntityStateNodeFactory;
-
-        [Inject] private readonly SpawningBehaviour.Factory _spawningBehaviourFactory;
-        [Inject] private readonly TelemetryBehaviour.Factory _telemetryBehaviourFactory;
-        [Inject] private readonly NeutralBehaviour.Factory _neutralBehaviourFactory;
-        [Inject] private readonly EnemyBehaviour.Factory _enemyBehaviourFactory;
 
         private readonly INovatar _novatarEntity;
         private readonly INovatarStateModel _novatarStateModel;
@@ -85,54 +79,41 @@ namespace _Source.Features.NovatarBehaviour
                 _sensorySystem,
                 _movementController);
 
-            var spawningBehaviour = _spawningBehaviourFactory
-                .Create(
-                    _novatarEntity,
-                    _novatarStateModel,
-                    _movementController)
-                .Build();
-
-            var telemetryBehaviour = _telemetryBehaviourFactory
-                .Create(
-                    _novatarEntity,
-                    _novatarStateModel)
-                .Build();
-
-            var neutralBehaviour = _neutralBehaviourFactory
-                .Create(
-                    _novatarEntity,
-                    _novatarStateModel,
-                    _movementController)
-                .Build();
-
-            var enemyBehaviour = _enemyBehaviourFactory
-                .Create(
-                    _novatarEntity,
-                    _novatarStateModel,
-                    _movementController)
-                .Build();
-
             var unacquaintedRandomTimeoutNode = nodeGenerator.CreateIdleTimeoutRandomNode(
                 _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds,
                 _behaviourTreeConfig.UnacquaintedConfig.TimeBasedSwitchChance);
 
             var unacquaintedFirstTouchNode = nodeGenerator.CreateFirstTouchNode();
 
-            var followAvatarNode = nodeGenerator.CreateFollowAvatarNode();
-
             var toNeutralStateNode = nodeGenerator.CreateSwitchEntityStateNode(
                 EntityState.Neutral);
+
+            var toUnacquaintedStateNode = nodeGenerator.CreateSwitchEntityStateNode(
+                EntityState.Unacquainted);
 
             var friendTimeoutNode = nodeGenerator.CreateIdleTimeoutNode(
                 _behaviourTreeConfig.MaxSecondsToFallBehind);
 
+            var enemyTimeoutNode = nodeGenerator.CreateIdleTimeoutNode(
+                _behaviourTreeConfig.EnemyLeavingTimeoutSeconds);
+
+            var followAvatarNode = nodeGenerator.CreateFollowAvatarNode();
+            var deactivateSelfNode = nodeGenerator.CreateDeactivateSelfNode();
+            var leaveScreenNode = nodeGenerator.CreateLeaveScreenNode();
+            var damageAvatarNode = nodeGenerator.CreateDamageAvatarNode();
+            var lightSwitchNode = nodeGenerator.CreateLightSwitchNode();
+            var enterScreenNode = nodeGenerator.CreateEnterScreenNode();
+
             var tree = new BehaviourTreeBuilder()
                 .Parallel(nameof(NovatarBehaviourTree), 100, 100)
-                    .Splice(telemetryBehaviour)
                     .Selector("RelationshipTreeSelector")
                         .Sequence(EntityState.Spawning.ToString())
                             .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Spawning))
-                            .Splice(spawningBehaviour)
+                            .Sequence("Sequence")
+                                .Do(nameof(LightSwitchNode), lightSwitchNode.Tick)
+                                .Do(nameof(EnterScreenNode), enterScreenNode.Tick)
+                                .Do(nameof(SwitchEntityStateNode), toUnacquaintedStateNode.Tick)
+                                .End()
                             .End()
                         .Sequence(EntityState.Unacquainted.ToString())
                             .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Unacquainted))
@@ -149,7 +130,10 @@ namespace _Source.Features.NovatarBehaviour
                             .End()
                         .Sequence(EntityState.Neutral.ToString())
                             .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Neutral))
-                            .Splice(neutralBehaviour)
+                            .Sequence("Sequence")
+                                .Do(nameof(LeaveScreenNode), leaveScreenNode.Tick)
+                                .Do(nameof(DeactivateSelfNode), deactivateSelfNode.Tick)
+                                .End()
                             .End()
                         .Sequence(EntityState.Friend.ToString())
                             .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Friend))
@@ -163,7 +147,14 @@ namespace _Source.Features.NovatarBehaviour
                             .End()
                         .Sequence(EntityState.Enemy.ToString())
                             .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Enemy))
-                            .Splice(enemyBehaviour)
+                            .Selector("Selector")
+                                .Sequence("Sequence")
+                                    .Do(nameof(DamageAvatarNode), damageAvatarNode.Tick)
+                                    .Do(nameof(IdleTimeoutNode), enemyTimeoutNode.Tick)
+                                    .Do(nameof(SwitchEntityStateNode), toNeutralStateNode.Tick)
+                                    .End()
+                                .Do(nameof(FollowAvatarNode), followAvatarNode.Tick)
+                                .End()
                             .End()
                     .End()
                 .End()

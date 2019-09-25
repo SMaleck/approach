@@ -59,21 +59,22 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
             Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarFacade, NovatarFacade.Factory>();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, ISensorySystem, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
-            Container.BindFactory<NodeGenerator, NodeGenerator.Factory>(); 
-            Container.BindFactory<INovatar, INovatarStateModel, MovementController, SpawningBehaviour, SpawningBehaviour.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, TelemetryBehaviour, TelemetryBehaviour.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, MovementController, NeutralBehaviour, NeutralBehaviour.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, MovementController, EnemyBehaviour, EnemyBehaviour.Factory>();
 
             Container.BindFactory<INovatar, INovatarStateModel, SensorySystem, SensorySystem.Factory>();
             Container.BindFactory<INovatar, RangeSensor, RangeSensor.Factory>();
 
+            Container.BindFactory<INovatar, INovatarStateModel, ISensorySystem, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+            Container.BindFactory<NodeGenerator, NodeGenerator.Factory>();
             Container.BindFactory<INovatar, ISensorySystem, MovementController, FollowAvatarNode, FollowAvatarNode.Factory>();
             Container.BindFactory<double, IdleTimeoutNode, IdleTimeoutNode.Factory>();
             Container.BindFactory<double, double, IdleTimeoutRandomNode, IdleTimeoutRandomNode.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, ISensorySystem, FirstTouchNode, FirstTouchNode.Factory>();
             Container.BindFactory<INovatar, EntityState, SwitchEntityStateNode, SwitchEntityStateNode.Factory>();
+            Container.BindFactory<INovatar, DeactivateSelfNode, DeactivateSelfNode.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, MovementController, LeaveScreenNode, LeaveScreenNode.Factory>();
+            Container.BindFactory<ISensorySystem, DamageAvatarNode, DamageAvatarNode.Factory>();
+            Container.BindFactory<INovatar, LightSwitchNode, LightSwitchNode.Factory>();
+            Container.BindFactory<INovatar, INovatarStateModel, MovementController, EnterScreenNode, EnterScreenNode.Factory>();
 
             Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
 

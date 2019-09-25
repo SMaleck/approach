@@ -16,6 +16,11 @@ namespace _Source.Features.NovatarBehaviour
         [Inject] private readonly IdleTimeoutRandomNode.Factory _idleTimeoutRandomNodeFactory;
         [Inject] private readonly FirstTouchNode.Factory _firstTouchNodeFactory;
         [Inject] private readonly SwitchEntityStateNode.Factory _switchEntityStateNodeFactory;
+        [Inject] private readonly DeactivateSelfNode.Factory _deactivateSelfNodeFactory;
+        [Inject] private readonly LeaveScreenNode.Factory _leaveScreenNodeFactory;
+        [Inject] private readonly DamageAvatarNode.Factory _damageAvatarNodeFactory;
+        [Inject] private readonly LightSwitchNode.Factory _lightSwitchNodeFactory;
+        [Inject] private readonly EnterScreenNode.Factory _enterScreenNodeFactory;
 
         private INovatar _novatarEntity;
         private INovatarStateModel _novatarStateModel;
@@ -84,6 +89,55 @@ namespace _Source.Features.NovatarBehaviour
             var node = _switchEntityStateNodeFactory.Create(
                 _novatarEntity,
                 targetEntityState);
+            GeneratedNodes.Add(node);
+
+            return node;
+        }
+
+        public DeactivateSelfNode CreateDeactivateSelfNode()
+        {
+            var node = _deactivateSelfNodeFactory.Create(
+                _novatarEntity);
+            GeneratedNodes.Add(node);
+
+            return node;
+        }
+
+        public LeaveScreenNode CreateLeaveScreenNode()
+        {
+            var node = _leaveScreenNodeFactory.Create(
+                _novatarEntity,
+                _novatarStateModel,
+                _movementController);
+            GeneratedNodes.Add(node);
+
+            return node;
+        }
+
+        public DamageAvatarNode CreateDamageAvatarNode()
+        {
+            var node = _damageAvatarNodeFactory.Create(
+                _sensorySystem);
+            GeneratedNodes.Add(node);
+
+            return node;
+        }
+
+        public LightSwitchNode CreateLightSwitchNode()
+        {
+            var node = _lightSwitchNodeFactory.Create(
+                _novatarEntity);
+            GeneratedNodes.Add(node);
+
+            return node;
+        }
+
+        public EnterScreenNode CreateEnterScreenNode()
+        {
+            var node = _enterScreenNodeFactory.Create(
+                _novatarEntity,
+                _novatarStateModel,
+                _movementController);
             GeneratedNodes.Add(node);
 
             return node;
