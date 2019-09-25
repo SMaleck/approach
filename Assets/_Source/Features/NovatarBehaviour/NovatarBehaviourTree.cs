@@ -106,13 +106,6 @@ namespace _Source.Features.NovatarBehaviour
                     _movementController)
                 .Build();
 
-            var friendBehaviour = _friendBehaviourFactory
-                .Create(
-                    _novatarEntity,
-                    _novatarStateModel,
-                    _movementController)
-                .Build();
-
             var enemyBehaviour = _enemyBehaviourFactory
                 .Create(
                     _novatarEntity,
@@ -126,10 +119,13 @@ namespace _Source.Features.NovatarBehaviour
 
             var unacquaintedFirstTouchNode = nodeGenerator.CreateFirstTouchNode();
 
-            var followNode = nodeGenerator.CreateFollowAvatarNode();
+            var followAvatarNode = nodeGenerator.CreateFollowAvatarNode();
 
             var toNeutralStateNode = nodeGenerator.CreateSwitchEntityStateNode(
                 EntityState.Neutral);
+
+            var friendTimeoutNode = nodeGenerator.CreateIdleTimeoutNode(
+                _behaviourTreeConfig.MaxSecondsToFallBehind);
 
             var tree = new BehaviourTreeBuilder()
                 .Parallel(nameof(NovatarBehaviourTree), 100, 100)
@@ -142,20 +138,29 @@ namespace _Source.Features.NovatarBehaviour
                         .Sequence(EntityState.Unacquainted.ToString())
                             .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Unacquainted))
                             .Selector("Selector")
-                                .Do(nameof(FollowAvatarNode), followNode.Tick)
-                                .Do(nameof(FirstTouchNode), unacquaintedFirstTouchNode.Tick)
+                                .Sequence("Sequence")
+                                    .Do(nameof(FollowAvatarNode), followAvatarNode.Tick)
+                                    .Do(nameof(FirstTouchNode), unacquaintedFirstTouchNode.Tick)
+                                    .End()
                                 .Sequence("Sequence")
                                     .Do(nameof(IdleTimeoutRandomNode), unacquaintedRandomTimeoutNode.Tick)
                                     .Do(nameof(SwitchEntityStateNode), toNeutralStateNode.Tick)
+                                    .End()
                                 .End()
-                            .End().End()
+                            .End()
                         .Sequence(EntityState.Neutral.ToString())
                             .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Neutral))
                             .Splice(neutralBehaviour)
                             .End()
                         .Sequence(EntityState.Friend.ToString())
                             .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Friend))
-                            .Splice(friendBehaviour)
+                            .Selector("Selector")
+                                .Do(nameof(FollowAvatarNode), followAvatarNode.Tick)
+                                .Sequence("Sequence")
+                                    .Do(nameof(IdleTimeoutNode), friendTimeoutNode.Tick)
+                                    .Do(nameof(SwitchEntityStateNode), toNeutralStateNode.Tick)
+                                    .End()
+                                .End()
                             .End()
                         .Sequence(EntityState.Enemy.ToString())
                             .Condition(nameof(IsEntityState), t => IsEntityState(EntityState.Enemy))
@@ -169,10 +174,18 @@ namespace _Source.Features.NovatarBehaviour
                 .OfType<IResettableNode>()
                 .ToList();
 
-            _resettableTimeoutNodes = nodeGenerator.GeneratedNodes
+
+            var timeoutNodes = nodeGenerator.GeneratedNodes
                 .OfType<IdleTimeoutNode>()
-                .Cast<IResettableNode>()
-                .ToList();
+                .Cast<IResettableNode>();
+
+            var timeoutRandomNodes = nodeGenerator.GeneratedNodes
+                .OfType<IdleTimeoutRandomNode>()
+                .Cast<IResettableNode>();
+
+            _resettableTimeoutNodes = new List<IResettableNode>();
+            _resettableTimeoutNodes.AddRange(timeoutNodes);
+            _resettableTimeoutNodes.AddRange(timeoutRandomNodes);
 
             return tree;
         }

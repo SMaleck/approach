@@ -25,7 +25,7 @@ namespace _Source.Entities.Novatar
         public IOptimizedObservable<Unit> OnReset => _onReset;
 
         private readonly Subject<Unit> _onResetIdleTimeouts;
-        public IOptimizedObservable<Unit> OnResetIdleTimeouts => _onReset;
+        public IOptimizedObservable<Unit> OnResetIdleTimeouts => _onResetIdleTimeouts;
 
 
         public NovatarStateModel()

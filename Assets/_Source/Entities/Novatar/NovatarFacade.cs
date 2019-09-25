@@ -95,6 +95,11 @@ namespace _Source.Entities.Novatar
             _novatarStateModel.SetIsAlive(true);
         }
 
+        public void ResetIdleTimeouts()
+        {
+            _novatarStateModel.PublishOnResetIdleTimeouts();
+        }
+
         public float GetSquaredDistanceTo(IMonoEntity otherEntity)
         {
             return _novatarEntity.GetSquaredDistanceTo(otherEntity);

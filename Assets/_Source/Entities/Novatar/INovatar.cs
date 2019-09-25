@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace _Source.Entities.Novatar
+﻿namespace _Source.Entities.Novatar
 {
     public interface INovatar : IMonoEntity
     {
@@ -14,5 +12,6 @@ namespace _Source.Entities.Novatar
         float GetSquaredDistanceTo(IMonoEntity otherEntity);
 
         void TurnLightsOn();
+        void ResetIdleTimeouts();
     }
 }

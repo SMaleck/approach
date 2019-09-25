@@ -71,7 +71,7 @@ namespace _Source.Installation
             Container.BindFactory<INovatar, INovatarStateModel, SensorySystem, SensorySystem.Factory>();
             Container.BindFactory<INovatar, RangeSensor, RangeSensor.Factory>();
 
-            Container.BindFactory<ISensorySystem, MovementController, FollowAvatarNode, FollowAvatarNode.Factory>();
+            Container.BindFactory<INovatar, ISensorySystem, MovementController, FollowAvatarNode, FollowAvatarNode.Factory>();
             Container.BindFactory<double, IdleTimeoutNode, IdleTimeoutNode.Factory>();
             Container.BindFactory<double, double, IdleTimeoutRandomNode, IdleTimeoutRandomNode.Factory>();
             Container.BindFactory<INovatar, INovatarStateModel, ISensorySystem, FirstTouchNode, FirstTouchNode.Factory>();

@@ -42,6 +42,7 @@ namespace _Source.Features.NovatarBehaviour
         public FollowAvatarNode CreateFollowAvatarNode()
         {
             var node = _followAvatarNodeFactory.Create(
+                _novatarEntity,
                 _sensorySystem,
                 _movementController);
             GeneratedNodes.Add(node);

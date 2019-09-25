@@ -30,8 +30,7 @@ namespace _Source.Features.NovatarBehaviour.Sensors
 
         public bool IsInFollowRange()
         {
-            var isInRange = _sqrDistanceToAvatar <= _novatarEntity.SqrRange;
-            return isInRange && !IsInTouchRange();
+            return _sqrDistanceToAvatar <= _novatarEntity.SqrRange;
         }
 
         public bool IsInTouchRange()
