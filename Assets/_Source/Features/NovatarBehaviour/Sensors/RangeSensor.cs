@@ -14,6 +14,7 @@ namespace _Source.Features.NovatarBehaviour.Sensors
         private readonly IAvatar _avatarEntity;
 
         private readonly float _sqrFollowRange;
+        private readonly float _sqrInteractionRange;
         private readonly float _sqrTouchRange;
         private float _sqrDistanceToAvatar;
         
@@ -26,6 +27,7 @@ namespace _Source.Features.NovatarBehaviour.Sensors
             _avatarEntity = avatarEntity;
 
             _sqrFollowRange = Mathf.Pow(rangeSensorConfig.FollowRange, 2);
+            _sqrInteractionRange = Mathf.Pow(rangeSensorConfig.InteractionRange, 2);
             _sqrTouchRange = Mathf.Pow(rangeSensorConfig.TouchRange, 2);
         }
 
@@ -38,6 +40,11 @@ namespace _Source.Features.NovatarBehaviour.Sensors
         public bool IsInFollowRange()
         {
             return _sqrDistanceToAvatar <= _sqrFollowRange;
+        }
+
+        public bool IsInInteractionRange()
+        {
+            return _sqrDistanceToAvatar <= _sqrInteractionRange;
         }
 
         public bool IsInTouchRange()

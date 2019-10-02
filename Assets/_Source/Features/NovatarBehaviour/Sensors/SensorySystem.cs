@@ -59,6 +59,12 @@ namespace _Source.Features.NovatarBehaviour.Sensors
             return _rangeSensor.IsInFollowRange();
         }
 
+        // ToDo Handle Following up to this point and to TouchRange only if needed
+        public bool IsInInteractionRange()
+        {
+            return _rangeSensor.IsInInteractionRange();
+        }
+
         public bool IsInTouchRange()
         {
             return _rangeSensor.IsInTouchRange();

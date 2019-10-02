@@ -6,6 +6,7 @@ namespace _Source.Features.NovatarBehaviour.Sensors
     {
         Vector3 GetAvatarPosition();
         bool IsInFollowRange();
+        bool IsInInteractionRange();
         bool IsInTouchRange();
     }
 }
