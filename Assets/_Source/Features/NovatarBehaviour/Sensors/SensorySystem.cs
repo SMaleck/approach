@@ -16,6 +16,7 @@ namespace _Source.Features.NovatarBehaviour.Sensors
 
         private readonly INovatar _novatarEntity;
         private readonly INovatarStateModel _novatarStateModel;
+        private readonly NovatarConfig _novatarConfig;
         private readonly IPauseStateModel _pauseStateModel;
 
         private readonly List<ISensor> _sensors;
@@ -24,10 +25,12 @@ namespace _Source.Features.NovatarBehaviour.Sensors
         public SensorySystem(
             INovatar novatarEntity,
             INovatarStateModel novatarStateModel,
+            NovatarConfig novatarConfig,
             IPauseStateModel pauseStateModel)
         {
             _novatarEntity = novatarEntity;
             _novatarStateModel = novatarStateModel;
+            _novatarConfig = novatarConfig;
             _pauseStateModel = pauseStateModel;
 
             _sensors = new List<ISensor>();
@@ -35,7 +38,9 @@ namespace _Source.Features.NovatarBehaviour.Sensors
 
         public void Initialize()
         {
-            _rangeSensor = _rangeSensorFactory.Create(_novatarEntity);
+            _rangeSensor = _rangeSensorFactory.Create(
+                _novatarEntity, 
+                _novatarConfig.RangeSensorConfig);
             _sensors.Add(_rangeSensor);
 
             Observable.EveryLateUpdate()

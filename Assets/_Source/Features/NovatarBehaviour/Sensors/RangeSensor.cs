@@ -1,5 +1,6 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
+using _Source.Features.NovatarBehaviour.Sensors.Data;
 using UnityEngine;
 using Zenject;
 
@@ -7,19 +8,25 @@ namespace _Source.Features.NovatarBehaviour.Sensors
 {
     public class RangeSensor : ISensor
     {
-        public class Factory : PlaceholderFactory<INovatar, RangeSensor> { }
+        public class Factory : PlaceholderFactory<INovatar, RangeSensorConfig, RangeSensor> { }
 
         private readonly INovatar _novatarEntity;
         private readonly IAvatar _avatarEntity;
 
+        private readonly float _sqrFollowRange;
+        private readonly float _sqrTouchRange;
         private float _sqrDistanceToAvatar;
-
+        
         public RangeSensor(
             INovatar novatarEntity,
+            RangeSensorConfig rangeSensorConfig,
             IAvatar avatarEntity)
         {
             _novatarEntity = novatarEntity;
             _avatarEntity = avatarEntity;
+
+            _sqrFollowRange = Mathf.Pow(rangeSensorConfig.FollowRange, 2);
+            _sqrTouchRange = Mathf.Pow(rangeSensorConfig.TouchRange, 2);
         }
 
         public void UpdateSensorReadings()
@@ -30,12 +37,12 @@ namespace _Source.Features.NovatarBehaviour.Sensors
 
         public bool IsInFollowRange()
         {
-            return _sqrDistanceToAvatar <= _novatarEntity.SqrRange;
+            return _sqrDistanceToAvatar <= _sqrFollowRange;
         }
 
         public bool IsInTouchRange()
         {
-            return _sqrDistanceToAvatar <= _novatarEntity.SqrTargetReachedThreshold;
+            return _sqrDistanceToAvatar <= _sqrTouchRange;
         }
 
         public Vector3 GetAvatarPosition()

@@ -27,10 +27,7 @@ namespace _Source.Entities.Novatar
         public Quaternion Rotation => _novatarEntity.Rotation;
         public Vector3 Size => _novatarEntity.Size;
         public string ToDebugString() => _novatarEntity.ToDebugString();
-
-        public float SqrRange => Mathf.Pow(_novatarConfig.Range, 2);
-        public float SqrTargetReachedThreshold => Mathf.Pow(_novatarConfig.TargetReachedThreshold, 2);
-
+        
         private readonly SerialDisposable _tweenDisposer;
         private readonly Tween _lightsOnTween;
 

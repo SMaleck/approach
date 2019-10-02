@@ -8,6 +8,7 @@ using _Source.Features.Movement.Data;
 using _Source.Features.NovatarBehaviour;
 using _Source.Features.NovatarBehaviour.Nodes;
 using _Source.Features.NovatarBehaviour.Sensors;
+using _Source.Features.NovatarBehaviour.Sensors.Data;
 using _Source.Features.NovatarSpawning;
 using _Source.Features.ScreenSize;
 using _Source.Features.UiHud;
@@ -60,7 +61,7 @@ namespace _Source.Installation
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
 
             Container.BindFactory<INovatar, INovatarStateModel, SensorySystem, SensorySystem.Factory>();
-            Container.BindFactory<INovatar, RangeSensor, RangeSensor.Factory>();
+            Container.BindFactory<INovatar, RangeSensorConfig, RangeSensor, RangeSensor.Factory>();
 
             Container.BindFactory<INovatar, INovatarStateModel, ISensorySystem, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
             Container.BindFactory<NodeGenerator, NodeGenerator.Factory>();

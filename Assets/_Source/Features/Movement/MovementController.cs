@@ -22,11 +22,6 @@ namespace _Source.Features.Movement
             _entity = entity;
         }
 
-        public bool IsMoving()
-        {
-            return _movementModel.HasMoveIntention || _movementModel.HasTurnIntention;
-        }
-
         public void MoveToTarget(Vector3 targetPosition)
         {
             var turnIntention = GetTurnIntention(targetPosition);

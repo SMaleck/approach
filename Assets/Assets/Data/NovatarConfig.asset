@@ -22,6 +22,9 @@ MonoBehaviour:
     _movementDeadZoneMagnitude: 0.01
     _turnSpeed: 10
     _turnDeadZoneAngle: 1
+  _rangeSensorConfig:
+    _followRange: 5
+    _touchRange: 0.8
   _range: 5
   _targetReachedThreshold: 0.8
   _touchDamage: 1

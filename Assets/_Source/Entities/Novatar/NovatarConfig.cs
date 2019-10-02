@@ -1,5 +1,6 @@
 ﻿using _Source.App;
 using _Source.Features.Movement.Data;
+using _Source.Features.NovatarBehaviour.Sensors.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,13 +28,9 @@ namespace _Source.Entities.Novatar
         [SerializeField] private MovementConfig _movementConfig;
         public MovementConfig MovementConfig => _movementConfig;
 
-        [SerializeField] private float _range;
-        public float Range => _range;
-
-        [Range(0.001f, 5)]
-        [SerializeField] private float _targetReachedThreshold;
-        public float TargetReachedThreshold => _targetReachedThreshold;
-
+        [Header("Sensory System")]
+        [SerializeField] private RangeSensorConfig _rangeSensorConfig;
+        public RangeSensorConfig RangeSensorConfig => _rangeSensorConfig;
 
         [Header("Damage")]
         [SerializeField] private double _touchDamage;
