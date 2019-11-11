@@ -25,16 +25,18 @@ namespace Assets.Editor.CiBuild
 
         public static void Run()
         {
-            Debug.Log("Starting Android Build...");
-
-            Debug.Log($"Path: {AndroidBuildPath}");
-            Debug.Log("Scenes:");
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("Starting Android Build...");
+            stringBuilder.AppendLine($"Path: {AndroidBuildPath}");
+            stringBuilder.AppendLine("Scenes:");
             foreach (var scene in BuildScenes)
             {
-                Debug.Log(scene);
+                stringBuilder.AppendLine(scene);
             }
 
-            InstallPackages();
+            Debug.Log(stringBuilder.ToString());
+
+            RunBuild();
         }
 
         private static void RunBuild()
@@ -46,22 +48,6 @@ namespace Assets.Editor.CiBuild
                 BuildOptions.None);
 
             Debug.Log("...Android Build DONE!");
-            EditorApplication.Exit(0);
-        }
-
-        static void InstallPackages()
-        {
-            _installPackagesRequest = Client.Add("com.unity.textmeshpro@1.4.1");
-            EditorApplication.update += Progress;
-        }
-
-        static void Progress()
-        {
-            if (_installPackagesRequest.IsCompleted)
-            {
-                EditorApplication.update -= Progress;
-                RunBuild();
-            }
         }
     }
 }
