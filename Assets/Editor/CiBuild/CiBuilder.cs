@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEditor;
+using UnityEditor.PackageManager;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 namespace Assets.Editor.CiBuild
@@ -19,6 +21,8 @@ namespace Assets.Editor.CiBuild
 
         private const string AndroidBuildPath = "androidBuild";
 
+        private static AddRequest _installPackagesRequest;
+
         public static void Run()
         {
             Debug.Log("Starting Android Build...");
@@ -30,14 +34,34 @@ namespace Assets.Editor.CiBuild
                 Debug.Log(scene);
             }
 
+            InstallPackages();
+        }
+
+        private static void RunBuild()
+        {
             BuildPipeline.BuildPlayer(
-                BuildScenes, 
-                AndroidBuildPath, 
-                BuildTarget.Android, 
+                BuildScenes,
+                AndroidBuildPath,
+                BuildTarget.Android,
                 BuildOptions.None);
-            
+
             Debug.Log("...Android Build DONE!");
             EditorApplication.Exit(0);
+        }
+
+        static void InstallPackages()
+        {
+            _installPackagesRequest = Client.Add("com.unity.textmeshpro@1.4.1");
+            EditorApplication.update += Progress;
+        }
+
+        static void Progress()
+        {
+            if (_installPackagesRequest.IsCompleted)
+            {
+                EditorApplication.update -= Progress;
+                RunBuild();
+            }
         }
     }
 }
