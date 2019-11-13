@@ -1,5 +1,7 @@
-﻿using Assets.Editor.CiBuild.Config;
+﻿using System;
+using Assets.Editor.CiBuild.Config;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 namespace Assets.Editor.CiBuild
@@ -36,8 +38,17 @@ namespace Assets.Editor.CiBuild
             var buildOptions = BuildConfig.GetBuildPlayerOptions();
             Debug.Log(buildOptions);
 
-            BuildPipeline.BuildPlayer(buildOptions);
+            var buildReport = BuildPipeline.BuildPlayer(buildOptions);
+            
             LogHeader("Android Build DONE!");
+            LogBuildReport(buildReport);
+        }
+
+        private static void LogBuildReport(BuildReport buildReport)
+        {
+            var exitCode = buildReport.summary.result;
+            Debug.Log(exitCode.ToString());
+            EditorApplication.Exit((int)exitCode - 1);
         }
 
         private static void LogHeader(object payload)
