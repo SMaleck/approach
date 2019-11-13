@@ -68,7 +68,7 @@ namespace Assets.Editor.CiBuild
         {
             var projectRootPath = Directory.GetParent(Application.dataPath).FullName;
             var configFilePath = Path.Combine(projectRootPath, BuildConfigFileName);
-            if (File.Exists(configFilePath))
+            if (!File.Exists(configFilePath))
             {
                 Debug.LogWarning($"No such config file: {configFilePath}");
                 return default(BuildConfig);
