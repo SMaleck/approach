@@ -39,8 +39,8 @@ namespace Assets.Editor.CiBuild
         {
             Debug.Log("\n----------- Setting Android Environment");
 
-            EditorPrefs.SetString("AndroidSdkRoot", "/opt/tools/android");
-            EditorPrefs.SetString("AndroidNdkRoot", "/opt/ndk");
+            EditorPrefs.SetString("AndroidSdkRoot", "/opt/platform/");
+            EditorPrefs.SetString("AndroidNdkRoot", "/opt/ndk/");
         }
 
         private static void RunBuild()
