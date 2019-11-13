@@ -1,13 +1,13 @@
 ﻿using System.IO;
 using System.Text;
+using Assets.Editor.CiBuild.Config;
 using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Editor.CiBuild
 {
-    public static class CiBuilder
+    public static class Builder
     {
-        private const string BuildConfigFileName = "build_config.json";
         private static BuildConfig BuildConfig;
 
         private static readonly string[] BuildScenes =
@@ -20,23 +20,25 @@ namespace Assets.Editor.CiBuild
         private const string ApkName = "approach.apk";
         private const string AndroidBuildPath = "androidBuild";
 
+        static Builder()
+        {
+            Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
+        }
+
         public static void Run()
         {
-            Debug.Log("\n\n----------- Starting Build Script\n");
+            LogHeader("Starting Build Script");
 
-            Prepare();
+            Setup();
             LogSetup();
             RunBuild();
         }
 
-        private static void Prepare()
+        private static void Setup()
         {
-            Debug.Log("\n\n----------- Preparing Environment\n");
+            LogHeader("Preparing Environment");
 
-            Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
-
-            BuildConfig = GetBuildConfig();
-
+            BuildConfig = BuildConfigReader.Read();
             EditorPrefs.SetString("AndroidSdkRoot", BuildConfig.AndroidSdkRoot);
             EditorPrefs.SetString("AndroidNdkRoot", BuildConfig.AndroidNdkRoot);
         }
@@ -53,7 +55,7 @@ namespace Assets.Editor.CiBuild
 
         private static void RunBuild()
         {
-            Debug.Log("\n----------- Starting BuildPipeline for Android");
+            LogHeader("Starting BuildPipeline for Android");
 
             BuildPipeline.BuildPlayer(
                 BuildScenes,
@@ -61,25 +63,12 @@ namespace Assets.Editor.CiBuild
                 BuildTarget.Android,
                 BuildOptions.None);
 
-            Debug.Log("\n\n...Android Build DONE!\n\n");
+            LogHeader("Android Build DONE!");
         }
 
-        private static BuildConfig GetBuildConfig()
+        private static void LogHeader(object payload)
         {
-            var projectRootPath = Directory.GetParent(Application.dataPath).FullName;
-            var configFilePath = Path.Combine(projectRootPath, BuildConfigFileName);
-            if (!File.Exists(configFilePath))
-            {
-                Debug.LogWarning($"No such config file: {configFilePath}");
-                return default(BuildConfig);
-            }
-
-            var jsonContent = File.ReadAllText(configFilePath);
-
-            Debug.Log($"Read BuildConfig file from: {configFilePath}");
-            Debug.Log(jsonContent);
-
-            return JsonUtility.FromJson<BuildConfig>(jsonContent);
+            Debug.Log($"\n\n----------------- {payload}\n");
         }
     }
 }

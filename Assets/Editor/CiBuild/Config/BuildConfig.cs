@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.Editor.CiBuild
+namespace Assets.Editor.CiBuild.Config
 {
     [Serializable]
     public class BuildConfig
