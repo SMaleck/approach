@@ -19,7 +19,7 @@ namespace Assets.Editor.CiBuild
         public static void Run()
         {
             var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("\n\n----------- BUILD SCRIPT -----------\n");
+            stringBuilder.AppendLine("\n\n----------- Starting Build Script\n");
             stringBuilder.AppendLine("Starting Android Build...");
             stringBuilder.AppendLine($"APK Path: {ApkName}");
             stringBuilder.AppendLine("Scenes:");
@@ -29,14 +29,24 @@ namespace Assets.Editor.CiBuild
             }
 
             stringBuilder.AppendLine("----------- -----------");
-
             Debug.Log(stringBuilder.ToString());
 
+            SetAndroidEnvironment();
             RunBuild();
+        }
+
+        private static void SetAndroidEnvironment()
+        {
+            Debug.Log("\n----------- Setting Android Environment");
+
+            EditorPrefs.SetString("AndroidSdkRoot", "/opt/tools/android");
+            EditorPrefs.SetString("AndroidNdkRoot", "/opt/ndk");
         }
 
         private static void RunBuild()
         {
+            Debug.Log("\n----------- Starting BuildPipeline");
+
             BuildPipeline.BuildPlayer(
                 BuildScenes,
                 ApkName,
