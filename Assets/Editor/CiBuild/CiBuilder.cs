@@ -16,7 +16,7 @@ namespace Assets.Editor.CiBuild
         private const string ApkName = "approach.apk";
         private const string AndroidBuildPath = "androidBuild";
 
-        private const string AndroidSdkRoot = "/opt/tools/";
+        private const string AndroidSdkRoot = "/opt/android-sdk/";
         private const string AndroidNdkRoot = "/opt/ndk/";
 
         public static void Run()
