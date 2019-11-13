@@ -1,5 +1,8 @@
-﻿namespace Assets.Editor.CiBuild
+﻿using System;
+
+namespace Assets.Editor.CiBuild
 {
+    [Serializable]
     public class BuildConfig
     {
         public string AndroidSdkRoot;
