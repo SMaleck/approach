@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace Assets.Editor.CiBuild
 {
     public static class CiBuilder
     {
+        private const string BuildConfigFileName = "build_config.json";
+        private static BuildConfig BuildConfig;
+
         private static readonly string[] BuildScenes =
         {
             "Assets/InitScene.unity",
@@ -15,9 +19,6 @@ namespace Assets.Editor.CiBuild
 
         private const string ApkName = "approach.apk";
         private const string AndroidBuildPath = "androidBuild";
-
-        private const string AndroidSdkRoot = "/opt/android-sdk/";
-        private const string AndroidNdkRoot = "/opt/ndk/";
 
         public static void Run()
         {
@@ -34,8 +35,10 @@ namespace Assets.Editor.CiBuild
 
             Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
 
-            EditorPrefs.SetString("AndroidSdkRoot", AndroidSdkRoot);
-            EditorPrefs.SetString("AndroidNdkRoot", AndroidNdkRoot);
+            BuildConfig = GetBuildConfig();
+
+            EditorPrefs.SetString("AndroidSdkRoot", BuildConfig.AndroidSdkRoot);
+            EditorPrefs.SetString("AndroidNdkRoot", BuildConfig.AndroidNdkRoot);
         }
 
         private static void LogSetup()
@@ -46,9 +49,6 @@ namespace Assets.Editor.CiBuild
             {
                 Debug.Log(scene);
             }
-
-            Debug.Log($"AndroidSdkRoot: {AndroidSdkRoot}");
-            Debug.Log($"AndroidNdkRoot: {AndroidNdkRoot}");
         }
 
         private static void RunBuild()
@@ -62,6 +62,24 @@ namespace Assets.Editor.CiBuild
                 BuildOptions.None);
 
             Debug.Log("\n\n...Android Build DONE!\n\n");
+        }
+
+        private static BuildConfig GetBuildConfig()
+        {
+            var projectRootPath = Directory.GetParent(Application.dataPath).FullName;
+            var configFilePath = Path.Combine(projectRootPath, BuildConfigFileName);
+            if (File.Exists(configFilePath))
+            {
+                Debug.LogWarning($"No such config file: {configFilePath}");
+                return default(BuildConfig);
+            }
+
+            var jsonContent = File.ReadAllText(configFilePath);
+
+            Debug.Log($"Read BuildConfig file from: {configFilePath}");
+            Debug.Log(jsonContent);
+
+            return JsonUtility.FromJson<BuildConfig>(jsonContent);
         }
     }
 }
