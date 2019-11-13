@@ -28,6 +28,8 @@ namespace Assets.Editor.CiBuild
                 stringBuilder.AppendLine(scene);
             }
 
+            stringBuilder.AppendLine("----------- -----------");
+
             Debug.Log(stringBuilder.ToString());
 
             RunBuild();
@@ -41,7 +43,7 @@ namespace Assets.Editor.CiBuild
                 BuildTarget.Android,
                 BuildOptions.None);
 
-            Debug.Log("\n\n...Android Build DONE!");
+            Debug.Log("\n\n...Android Build DONE!\n\n");
         }
     }
 }
