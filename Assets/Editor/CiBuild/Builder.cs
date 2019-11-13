@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Text;
-using Assets.Editor.CiBuild.Config;
+﻿using Assets.Editor.CiBuild.Config;
 using UnityEditor;
 using UnityEngine;
 
@@ -41,6 +39,7 @@ namespace Assets.Editor.CiBuild
             BuildConfig = BuildConfigReader.Read();
             EditorPrefs.SetString("AndroidSdkRoot", BuildConfig.AndroidSdkRoot);
             EditorPrefs.SetString("AndroidNdkRoot", BuildConfig.AndroidNdkRoot);
+            EditorPrefs.SetString("JdkPath", BuildConfig.JavaRoot);
         }
 
         private static void LogSetup()

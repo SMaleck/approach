@@ -7,5 +7,6 @@ namespace Assets.Editor.CiBuild.Config
     {
         public string AndroidSdkRoot;
         public string AndroidNdkRoot;
+        public string JavaRoot;
     }
 }
