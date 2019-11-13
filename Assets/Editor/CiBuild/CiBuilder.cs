@@ -16,36 +16,44 @@ namespace Assets.Editor.CiBuild
         private const string ApkName = "approach.apk";
         private const string AndroidBuildPath = "androidBuild";
 
+        private const string AndroidSdkRoot = "/opt/platform/";
+        private const string AndroidNdkRoot = "/opt/platform/";
+
         public static void Run()
         {
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("\n\n----------- Starting Build Script\n");
-            stringBuilder.AppendLine("Starting Android Build...");
-            stringBuilder.AppendLine($"APK Path: {ApkName}");
-            stringBuilder.AppendLine("Scenes:");
-            foreach (var scene in BuildScenes)
-            {
-                stringBuilder.AppendLine(scene);
-            }
+            Debug.Log("\n\n----------- Starting Build Script\n");
 
-            stringBuilder.AppendLine("----------- -----------");
-            Debug.Log(stringBuilder.ToString());
-
-            SetAndroidEnvironment();
+            Prepare();
+            LogSetup();
             RunBuild();
         }
 
-        private static void SetAndroidEnvironment()
+        private static void Prepare()
         {
-            Debug.Log("\n----------- Setting Android Environment");
+            Debug.Log("\n\n----------- Preparing Environment\n");
 
-            EditorPrefs.SetString("AndroidSdkRoot", "/opt/platform/");
-            EditorPrefs.SetString("AndroidNdkRoot", "/opt/ndk/");
+            Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
+
+            EditorPrefs.SetString("AndroidSdkRoot", AndroidSdkRoot);
+            EditorPrefs.SetString("AndroidNdkRoot", AndroidNdkRoot);
+        }
+
+        private static void LogSetup()
+        {
+            Debug.Log($"APK Path: {ApkName}");
+            Debug.Log("Scenes:");
+            foreach (var scene in BuildScenes)
+            {
+                Debug.Log(scene);
+            }
+
+            Debug.Log($"AndroidSdkRoot: {AndroidSdkRoot}");
+            Debug.Log($"AndroidNdkRoot: {AndroidNdkRoot}");
         }
 
         private static void RunBuild()
         {
-            Debug.Log("\n----------- Starting BuildPipeline");
+            Debug.Log("\n----------- Starting BuildPipeline for Android");
 
             BuildPipeline.BuildPlayer(
                 BuildScenes,
