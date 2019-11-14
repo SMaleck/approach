@@ -10,9 +10,9 @@ namespace Assets.Editor.CiBuild.Config
         private const string ApkName = "approach.apk";
         private static readonly string[] BuildScenes =
         {
-            "Assets/InitScene.unity",
-            "Assets/TitleScene.unity" ,
-            "Assets/GameScene.unity"
+            "Assets/Scenes/InitScene.unity",
+            "Assets/Scenes/TitleScene.unity" ,
+            "Assets/Scenes/GameScene.unity"
         };
 
         public static EnvironmentConfig ReadEnvironmentConfig()
