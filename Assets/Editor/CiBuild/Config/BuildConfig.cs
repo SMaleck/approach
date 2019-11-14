@@ -9,12 +9,6 @@ namespace Assets.Editor.CiBuild.Config
     {
         private const string EnvironmentConfigFileName = "build_config.json";
         private const string ApkName = "approach.apk";
-        private static readonly string[] BuildScenes =
-        {
-            "Assets/Scenes/InitScene.unity",
-            "Assets/Scenes/TitleScene.unity" ,
-            "Assets/Scenes/GameScene.unity"
-        };
 
         public static EnvironmentConfig ReadEnvironmentConfig()
         {
@@ -36,22 +30,28 @@ namespace Assets.Editor.CiBuild.Config
 
         public static BuildPlayerOptions GetBuildPlayerOptions()
         {
+            Debug.Log("\n\n----------------- Generating Build Options\n");
+
+            Debug.Log($"APK Name: {ApkName}");
+            Debug.Log("Scenes:");
+            var scenePaths = GetScenePaths();
+            scenePaths.ToList().ForEach(Debug.Log);
+
             return new BuildPlayerOptions()
             {
-                scenes = BuildScenes,
+                scenes = scenePaths,
                 locationPathName = ApkName,
                 target = BuildTarget.Android,
                 options = BuildOptions.None
             };
         }
 
-        public static void LogBuildOptions()
+        private static string[] GetScenePaths()
         {
-            Debug.Log("\n-------- Build Options --------");
-            Debug.Log($"APK Name: {ApkName}");
-            Debug.Log("Scenes:");
-            BuildScenes.ToList().ForEach(Debug.Log);
-            Debug.Log("-------- Build Options --------\n");
+            return EditorBuildSettings.scenes
+                .ToList()
+                .Select(scene => scene.path)
+                .ToArray();
         }
     }
 }

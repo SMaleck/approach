@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Editor.CiBuild.Config;
+﻿using Assets.Editor.CiBuild.Config;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
@@ -28,7 +27,7 @@ namespace Assets.Editor.CiBuild
             var environmentConfig = BuildConfig.ReadEnvironmentConfig();
             EditorPrefs.SetString("AndroidSdkRoot", environmentConfig.AndroidSdkRoot);
             EditorPrefs.SetString("AndroidNdkRoot", environmentConfig.AndroidNdkRoot);
-            //EditorPrefs.SetString("JdkPath", environmentConfig.JavaRoot);
+            EditorPrefs.SetString("JdkPath", environmentConfig.JavaRoot);
         }
 
         private static void RunBuild()
@@ -36,10 +35,8 @@ namespace Assets.Editor.CiBuild
             LogHeader("Starting BuildPipeline for Android");
 
             var buildOptions = BuildConfig.GetBuildPlayerOptions();
-            BuildConfig.LogBuildOptions();
-
             var buildReport = BuildPipeline.BuildPlayer(buildOptions);
-            
+
             LogHeader("Android Build DONE!");
             LogBuildReport(buildReport);
         }
@@ -47,7 +44,7 @@ namespace Assets.Editor.CiBuild
         private static void LogBuildReport(BuildReport buildReport)
         {
             var exitCode = buildReport.summary.result;
-            LogHeader(exitCode.ToString());
+            LogHeader($"BuildReport Result: {exitCode.ToString()}");
         }
 
         private static void LogHeader(object payload)
