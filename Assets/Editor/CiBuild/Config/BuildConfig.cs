@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -42,6 +43,15 @@ namespace Assets.Editor.CiBuild.Config
                 target = BuildTarget.Android,
                 options = BuildOptions.None
             };
+        }
+
+        public static void LogBuildOptions()
+        {
+            Debug.Log("\n-------- Build Options --------");
+            Debug.Log($"APK Name: {ApkName}");
+            Debug.Log("Scenes:");
+            BuildScenes.ToList().ForEach(Debug.Log);
+            Debug.Log("-------- Build Options --------\n");
         }
     }
 }

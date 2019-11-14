@@ -36,7 +36,7 @@ namespace Assets.Editor.CiBuild
             LogHeader("Starting BuildPipeline for Android");
 
             var buildOptions = BuildConfig.GetBuildPlayerOptions();
-            Debug.Log(buildOptions);
+            BuildConfig.LogBuildOptions();
 
             var buildReport = BuildPipeline.BuildPlayer(buildOptions);
             
