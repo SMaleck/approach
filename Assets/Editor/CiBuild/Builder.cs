@@ -25,7 +25,7 @@ namespace Assets.Editor.CiBuild
         {
             LogHeader("Preparing Environment");
 
-            var environmentConfig = Config.BuildConfig.ReadEnvironmentConfig();
+            var environmentConfig = BuildConfig.ReadEnvironmentConfig();
             EditorPrefs.SetString("AndroidSdkRoot", environmentConfig.AndroidSdkRoot);
             EditorPrefs.SetString("AndroidNdkRoot", environmentConfig.AndroidNdkRoot);
             EditorPrefs.SetString("JdkPath", environmentConfig.JavaRoot);
@@ -47,8 +47,7 @@ namespace Assets.Editor.CiBuild
         private static void LogBuildReport(BuildReport buildReport)
         {
             var exitCode = buildReport.summary.result;
-            Debug.Log(exitCode.ToString());
-            EditorApplication.Exit((int)exitCode - 1);
+            LogHeader(exitCode.ToString());
         }
 
         private static void LogHeader(object payload)
