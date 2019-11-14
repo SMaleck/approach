@@ -7,7 +7,7 @@ namespace Assets.Editor.CiBuild.Config
     public static class BuildConfig
     {
         private const string EnvironmentConfigFileName = "build_config.json";
-        private const string ApkName = "./approach.apk";
+        private const string ApkName = "approach.apk";
         private static readonly string[] BuildScenes =
         {
             "Assets/InitScene.unity",

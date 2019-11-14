@@ -20,11 +20,6 @@ namespace _Source.Features.NovatarBehaviour
 
         [Inject] private readonly NodeGenerator.Factory _nodeGeneratorFactory;
 
-        [Inject] private readonly FollowAvatarNode.Factory _followAvatarNodeFactory;
-        [Inject] private readonly IdleTimeoutNode.Factory _idleTimeoutNodeFactory;
-        [Inject] private readonly FirstTouchNode.Factory _firstTouchNodeFactory;
-        [Inject] private readonly SwitchEntityStateNode.Factory _switchEntityStateNodeFactory;
-
         private readonly INovatar _novatarEntity;
         private readonly INovatarStateModel _novatarStateModel;
         private readonly ISensorySystem _sensorySystem;

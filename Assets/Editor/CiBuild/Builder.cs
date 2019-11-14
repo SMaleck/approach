@@ -28,7 +28,7 @@ namespace Assets.Editor.CiBuild
             var environmentConfig = BuildConfig.ReadEnvironmentConfig();
             EditorPrefs.SetString("AndroidSdkRoot", environmentConfig.AndroidSdkRoot);
             EditorPrefs.SetString("AndroidNdkRoot", environmentConfig.AndroidNdkRoot);
-            EditorPrefs.SetString("JdkPath", environmentConfig.JavaRoot);
+            //EditorPrefs.SetString("JdkPath", environmentConfig.JavaRoot);
         }
 
         private static void RunBuild()
