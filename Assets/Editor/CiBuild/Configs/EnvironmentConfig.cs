@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.Editor.CiBuild.Config
+namespace Assets.Editor.CiBuild.Configs
 {
     [Serializable]
     public class EnvironmentConfig
