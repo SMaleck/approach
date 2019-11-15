@@ -11,17 +11,20 @@ namespace Assets.Editor.CiBuild.BuildStrategies
 
         public static BuildReport RunBuild()
         {
-            BuildLogger.LogHeader("Starting BuildPipeline for ANDROID");
+            BuildLogger.LogSeparator("Starting BuildPipeline for ANDROID");
 
             Setup();
 
             var buildOptions = GetBuildPlayerOptions();
+
+            BuildLogger.LogSeparator("Running BuildPlayer");
+
             return BuildPipeline.BuildPlayer(buildOptions);
         }
 
         private static void Setup()
         {
-            BuildLogger.LogHeader("Setting up build environment");
+            BuildLogger.LogSeparator("Setting up build environment");
 
             var environmentConfig = BuildConfig.ReadEnvironmentConfig();
             EditorPrefs.SetString("AndroidSdkRoot", environmentConfig.AndroidSdkRoot);

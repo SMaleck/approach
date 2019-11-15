@@ -13,6 +13,9 @@ namespace Assets.Editor.CiBuild.BuildStrategies
             BuildLogger.LogHeader("Starting BuildPipeline for WEBGL");
 
             var buildOptions = GetBuildPlayerOptions();
+
+            BuildLogger.LogSeparator("Running BuildPlayer");
+
             return BuildPipeline.BuildPlayer(buildOptions);
         }
 
