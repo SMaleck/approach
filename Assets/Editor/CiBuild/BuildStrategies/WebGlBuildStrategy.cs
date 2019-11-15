@@ -6,7 +6,7 @@ namespace Assets.Editor.CiBuild.BuildStrategies
 {
     public static class WebGlBuildStrategy
     {
-        private const string BuildArtifactPath = "/builds/approach_webGl/";
+        private const string BuildArtifactPath = "builds/approach_webGl/";
 
         public static BuildReport RunBuild()
         {

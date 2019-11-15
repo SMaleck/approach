@@ -7,7 +7,7 @@ namespace Assets.Editor.CiBuild.BuildStrategies
 {
     public static class AndroidBuildStrategy
     {
-        private const string ApkName = "/builds/approach.apk";
+        private const string ApkName = "builds/approach.apk";
 
         public static BuildReport RunBuild()
         {
