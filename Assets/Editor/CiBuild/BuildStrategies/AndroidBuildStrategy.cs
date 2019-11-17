@@ -7,8 +7,6 @@ namespace Assets.Editor.CiBuild.BuildStrategies
 {
     public static class AndroidBuildStrategy
     {
-        private const string ApkName = "builds/approach.apk";
-
         public static BuildReport RunBuild()
         {
             BuildLogger.LogSeparator("Starting BuildPipeline for ANDROID");
@@ -36,15 +34,16 @@ namespace Assets.Editor.CiBuild.BuildStrategies
         {
             BuildLogger.LogSeparator("Generating Build Options");
 
+            var projectConfig = BuildConfig.ReadProjectConfig();
             var scenePaths = BuildUtils.GetScenePaths();
 
-            BuildLogger.Log($"APK Name: {ApkName}");
+            BuildLogger.Log($"APK Name: {projectConfig.AndroidBuildName}");
             BuildLogger.LogArray("Scenes:", scenePaths);
 
             return new BuildPlayerOptions()
             {
                 scenes = scenePaths,
-                locationPathName = ApkName,
+                locationPathName = projectConfig.AndroidBuildName,
                 target = BuildTarget.Android,
                 options = BuildOptions.None
             };

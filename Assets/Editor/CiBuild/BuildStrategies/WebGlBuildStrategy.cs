@@ -1,4 +1,5 @@
-﻿using Assets.Editor.CiBuild.Utility;
+﻿using Assets.Editor.CiBuild.Configs;
+using Assets.Editor.CiBuild.Utility;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 
@@ -6,8 +7,6 @@ namespace Assets.Editor.CiBuild.BuildStrategies
 {
     public static class WebGlBuildStrategy
     {
-        private const string BuildArtifactPath = "builds/approach_webGl/";
-
         public static BuildReport RunBuild()
         {
             BuildLogger.LogHeader("Starting BuildPipeline for WEBGL");
@@ -23,15 +22,16 @@ namespace Assets.Editor.CiBuild.BuildStrategies
         {
             BuildLogger.LogSeparator("Generating Build Options");
 
+            var projectConfig = BuildConfig.ReadProjectConfig();
             var scenePaths = BuildUtils.GetScenePaths();
 
-            BuildLogger.Log($"BuildArtifactPath: {BuildArtifactPath}");
+            BuildLogger.Log($"BuildArtifactPath: {projectConfig.WebGlBuildName}");
             BuildLogger.LogArray("Scenes:", scenePaths);
 
             return new BuildPlayerOptions()
             {
                 scenes = scenePaths,
-                locationPathName = BuildArtifactPath,
+                locationPathName = projectConfig.WebGlBuildName,
                 target = BuildTarget.WebGL,
                 options = BuildOptions.None
             };

@@ -5,12 +5,10 @@ namespace Assets.Editor.CiBuild.Configs
 {
     public static class BuildConfig
     {
-        private const string EnvironmentConfigFileName = "build_config.json";
-
         public static EnvironmentConfig ReadEnvironmentConfig()
         {
             var projectRootPath = Directory.GetParent(Application.dataPath).FullName;
-            var configFilePath = Path.Combine(projectRootPath, EnvironmentConfigFileName);
+            var configFilePath = Path.Combine(projectRootPath, EnvironmentConfig.FileName);
             if (!File.Exists(configFilePath))
             {
                 Debug.LogWarning($"No such config file: {configFilePath}");
@@ -19,10 +17,28 @@ namespace Assets.Editor.CiBuild.Configs
 
             var jsonContent = File.ReadAllText(configFilePath);
 
-            Debug.Log($"Read BuildConfig file from: {configFilePath}");
+            Debug.Log($"Read EnvironmentConfig file from: {configFilePath}");
             Debug.Log(jsonContent);
 
             return JsonUtility.FromJson<EnvironmentConfig>(jsonContent);
+        }
+
+        public static ProjectConfig ReadProjectConfig()
+        {
+            var projectRootPath = Directory.GetParent(Application.dataPath).FullName;
+            var configFilePath = Path.Combine(projectRootPath, ProjectConfig.FileName);
+            if (!File.Exists(configFilePath))
+            {
+                Debug.LogWarning($"No such config file: {configFilePath}");
+                return default(ProjectConfig);
+            }
+
+            var jsonContent = File.ReadAllText(configFilePath);
+
+            Debug.Log($"Read ProjectConfig file from: {configFilePath}");
+            Debug.Log(jsonContent);
+
+            return JsonUtility.FromJson<ProjectConfig>(jsonContent);
         }
     }
 }
