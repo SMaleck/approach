@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 10
+    serializedVersion: 12
     m_Resolution: 2
     m_BakeResolution: 10
     m_AtlasSize: 512
@@ -62,6 +62,7 @@ LightmapSettings:
     m_AOMaxDistance: 1
     m_CompAOExponent: 1
     m_CompAOExponentDirect: 0
+    m_ExtractAmbientOcclusion: 0
     m_Padding: 2
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
@@ -76,10 +77,16 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 256
     m_PVRBounces: 2
+    m_PVREnvironmentSampleCount: 256
+    m_PVREnvironmentReferencePointCount: 2048
+    m_PVRFilteringMode: 2
+    m_PVRDenoiserTypeDirect: 0
+    m_PVRDenoiserTypeIndirect: 0
+    m_PVRDenoiserTypeAO: 0
     m_PVRFilterTypeDirect: 0
     m_PVRFilterTypeIndirect: 0
     m_PVRFilterTypeAO: 0
-    m_PVRFilteringMode: 1
+    m_PVREnvironmentMIS: 0
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
@@ -87,7 +94,9 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaDirect: 0.5
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
-    m_ShowResolutionOverlay: 1
+    m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -214,9 +223,10 @@ Camera:
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_GateFitMode: 2
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
@@ -251,13 +261,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: 0.08949388, y: -0.37735584, z: 0.03666762, w: 0.92100435}
-  m_LocalPosition: {x: 6.8, y: 2.72, z: -3.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.1, y: 1.5, z: -6.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 11.1, y: -44.56, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1247809551
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +295,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247809551}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_HorizontalAxis: Horizontal
@@ -304,7 +314,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247809551}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -619905303, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
@@ -339,7 +349,7 @@ PrefabInstance:
     - target: {fileID: 9105761261365866959, guid: abb01a1fe25f44646b2507ff9c4275c3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.68
       objectReference: {fileID: 0}
     - target: {fileID: 9105761261365866959, guid: abb01a1fe25f44646b2507ff9c4275c3,
         type: 3}
@@ -349,27 +359,27 @@ PrefabInstance:
     - target: {fileID: 9105761261365866959, guid: abb01a1fe25f44646b2507ff9c4275c3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.87
+      value: -1.66
       objectReference: {fileID: 0}
     - target: {fileID: 9105761261365866959, guid: abb01a1fe25f44646b2507ff9c4275c3,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.61776024
+      value: 0.41782045
       objectReference: {fileID: 0}
     - target: {fileID: 9105761261365866959, guid: abb01a1fe25f44646b2507ff9c4275c3,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.34405273
+      value: 0.5704613
       objectReference: {fileID: 0}
     - target: {fileID: 9105761261365866959, guid: abb01a1fe25f44646b2507ff9c4275c3,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.34405273
+      value: -0.5704613
       objectReference: {fileID: 0}
     - target: {fileID: 9105761261365866959, guid: abb01a1fe25f44646b2507ff9c4275c3,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.61776024
+      value: 0.41782045
       objectReference: {fileID: 0}
     - target: {fileID: 9105761261365866959, guid: abb01a1fe25f44646b2507ff9c4275c3,
         type: 3}
@@ -384,12 +394,12 @@ PrefabInstance:
     - target: {fileID: 9105761261365866959, guid: abb01a1fe25f44646b2507ff9c4275c3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 58.23
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9105761261365866959, guid: abb01a1fe25f44646b2507ff9c4275c3,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -107.56
       objectReference: {fileID: 0}
     - target: {fileID: 9105761261365866959, guid: abb01a1fe25f44646b2507ff9c4275c3,
         type: 3}
