@@ -4,6 +4,8 @@ using UniRx;
 
 namespace _Source.Features.GameRound
 {
+    // ToDo V1 Make this depend on a max time as well
+    // ToDo V1 Track amount of Relationships and show result
     public class GameRoundController : AbstractDisposable
     {
         private readonly GameRoundModel _gameRoundModel;

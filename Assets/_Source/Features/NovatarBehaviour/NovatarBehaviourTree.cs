@@ -14,6 +14,10 @@ using Zenject;
 
 namespace _Source.Features.NovatarBehaviour
 {
+    // ToDo V1 Move around on the playing field, increase leave time
+    // ToDo V1 Sometimes move towards player
+    // ToDo V1 FRIENDS: Absorb enemies
+    // ToDo V1 FRIENDS: Leave when health is low
     public class NovatarBehaviourTree : AbstractDisposable, IInitializable
     {
         public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, ISensorySystem, MovementController, NovatarBehaviourTree> { }

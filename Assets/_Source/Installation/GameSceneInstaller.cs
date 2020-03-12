@@ -1,6 +1,7 @@
 ﻿using _Source.Entities;
 using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
+using _Source.Features.AvatarRelationships;
 using _Source.Features.Cheats;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
@@ -52,6 +53,9 @@ namespace _Source.Installation
 
             Container.BindInterfacesAndSelfTo<GameRoundModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<GameRoundController>().AsSingleNonLazy();
+
+            Container.BindInterfacesAndSelfTo<RelationshipStatsModel>().AsSingleNonLazy();
+            Container.BindInterfacesAndSelfTo<RelationshipStatsController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<ScreenSizeModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<ScreenSizeController>().AsSingleNonLazy();
