@@ -6,7 +6,6 @@ using _Source.Features.NovatarBehaviour.Sensors;
 using _Source.Features.NovatarSpawning.Data;
 using _Source.Features.ScreenSize;
 using _Source.Util;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
@@ -56,24 +55,19 @@ namespace _Source.Features.NovatarSpawning
             _screenSizeController = screenSizeController;
 
             _novatarPool = new List<IEntityPoolItem<IMonoEntity>>();
-
-            Observable.Interval(TimeSpan.FromSeconds(_novatarSpawnerConfig.SpawnIntervalSeconds))
-                .Subscribe(_ => Spawn())
-                .AddTo(Disposer);
         }
 
         public void Spawn()
         {
-            var activeItemCount = _novatarPool.Count(item => !item.IsFree);
-            if (activeItemCount >= _novatarSpawnerConfig.MaxActiveSpawns)
-            {
-                return;
-            }
-
             var novatarPoolItem = GetFreeEntity();
 
             var spawnPosition = GetSpawnPosition(novatarPoolItem.Entity);
             novatarPoolItem.Reset(spawnPosition);
+        }
+
+        public int GetActiveNovatarCount()
+        {
+            return _novatarPool.Count(item => !item.IsFree);
         }
 
         private IEntityPoolItem<IMonoEntity> GetFreeEntity()

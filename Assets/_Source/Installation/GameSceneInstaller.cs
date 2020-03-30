@@ -61,6 +61,7 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<ScreenSizeController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
+            Container.BindInterfacesAndSelfTo<SpawningOrchestrator>().AsSingleNonLazy();
             Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarFacade, NovatarFacade.Factory>();
             Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
 
