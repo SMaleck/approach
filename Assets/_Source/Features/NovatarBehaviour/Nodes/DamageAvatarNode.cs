@@ -1,7 +1,7 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour.Sensors;
-using FluentBehaviourTree;
+using BehaviourTreeSystem;
 using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.Nodes

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace FluentBehaviourTree
+﻿namespace BehaviourTreeSystem
 {
     /// <summary>
     /// Interface for behaviour tree nodes.

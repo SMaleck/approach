@@ -1,7 +1,7 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
-using FluentBehaviourTree;
+using BehaviourTreeSystem;
 using UnityEngine;
 using Zenject;
 

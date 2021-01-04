@@ -1,4 +1,4 @@
-﻿using FluentBehaviourTree;
+﻿using BehaviourTreeSystem;
 using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.Nodes

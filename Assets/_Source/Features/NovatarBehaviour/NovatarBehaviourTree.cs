@@ -5,7 +5,7 @@ using _Source.Features.NovatarBehaviour.Data;
 using _Source.Features.NovatarBehaviour.Nodes;
 using _Source.Features.NovatarBehaviour.Sensors;
 using _Source.Util;
-using FluentBehaviourTree;
+using BehaviourTreeSystem;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;

@@ -1,5 +1,5 @@
 ﻿using _Source.Util;
-using FluentBehaviourTree;
+using BehaviourTreeSystem;
 
 namespace _Source.Features.NovatarBehaviour.Nodes
 {

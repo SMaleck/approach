@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace FluentBehaviourTree
+namespace BehaviourTreeSystem
 {
     /// <summary>
     /// Decorator node that inverts the success/failure of its child.

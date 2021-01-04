@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace FluentBehaviourTree
+namespace BehaviourTreeSystem
 {
     /// <summary>
-    /// Selects the first node that succeeds. Tries successive nodes until it finds one that doesn't fail.
+    /// Runs child nodes in sequence, until one fails.
     /// </summary>
-    public class SelectorNode : IParentBehaviourTreeNode
+    public class SequenceNode : IParentBehaviourTreeNode
     {
         /// <summary>
-        /// The name of the node.
+        /// Name of the node.
         /// </summary>
         private string name;
 
         /// <summary>
         /// List of child nodes.
         /// </summary>
-        private List<IBehaviourTreeNode> children = new List<IBehaviourTreeNode>(); //todo: optimization, bake this to an array.
+        private List<IBehaviourTreeNode> children = new List<IBehaviourTreeNode>(); //todo: this could be optimized as a baked array.
 
-        public SelectorNode(string name)
+        public SequenceNode(string name)
         {
             this.name = name;
         }
@@ -30,17 +27,17 @@ namespace FluentBehaviourTree
             foreach (var child in children)
             {
                 var childStatus = child.Tick(time);
-                if (childStatus != BehaviourTreeStatus.Failure)
+                if (childStatus != BehaviourTreeStatus.Success)
                 {
                     return childStatus;
                 }
             }
 
-            return BehaviourTreeStatus.Failure;
+            return BehaviourTreeStatus.Success;
         }
 
         /// <summary>
-        /// Add a child node to the selector.
+        /// Add a child to the sequence.
         /// </summary>
         public void AddChild(IBehaviourTreeNode child)
         {

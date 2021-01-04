@@ -1,5 +1,5 @@
 ﻿using _Source.Entities.Novatar;
-using FluentBehaviourTree;
+using BehaviourTreeSystem;
 using Zenject;
 
 namespace _Source.Features.NovatarBehaviour.Nodes

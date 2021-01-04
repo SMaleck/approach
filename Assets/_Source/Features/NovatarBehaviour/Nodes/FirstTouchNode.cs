@@ -1,7 +1,7 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour.Data;
 using _Source.Features.NovatarBehaviour.Sensors;
-using FluentBehaviourTree;
+using BehaviourTreeSystem;
 using System.Linq;
 using Zenject;
 
