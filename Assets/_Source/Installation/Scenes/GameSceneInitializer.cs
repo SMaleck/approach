@@ -1,4 +1,5 @@
 ﻿using _Source.Entities.Avatar;
+using _Source.Features.ActorEntities.Avatar.Config;
 using _Source.Features.Movement;
 using _Source.Features.UiHud;
 using _Source.Features.UiScreens;

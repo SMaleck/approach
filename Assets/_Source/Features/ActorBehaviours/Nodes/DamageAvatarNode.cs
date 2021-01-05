@@ -1,6 +1,7 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Sensors;
+using _Source.Features.ActorEntities.Novatar.Config;
 using BehaviourTreeSystem;
 using Zenject;
 

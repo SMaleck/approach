@@ -5,6 +5,7 @@ using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.NovatarSpawning.Data;
 using _Source.Features.ActorBehaviours.Sensors;
 using _Source.Features.ActorEntities.Novatar;
+using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using _Source.Util;

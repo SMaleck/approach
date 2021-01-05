@@ -4,6 +4,7 @@ using _Source.Features.GameRound;
 using _Source.Features.ScreenSize;
 using _Source.Util;
 using System;
+using _Source.Features.ActorEntities.Avatar.Config;
 using UniRx;
 using UnityEngine;
 using Zenject;

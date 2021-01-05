@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Source.Entities.Novatar;
+using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;

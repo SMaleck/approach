@@ -1,12 +1,13 @@
-﻿using _Source.App;
-using _Source.Features.ActorBehaviours.Sensors.Data;
-using _Source.Features.Movement.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Source.App;
+using _Source.Entities.Novatar;
+using _Source.Features.ActorBehaviours.Sensors.Data;
+using _Source.Features.Movement.Data;
 using UnityEngine;
 
-namespace _Source.Entities.Novatar
+namespace _Source.Features.ActorEntities.Novatar.Config
 {
     [CreateAssetMenu(fileName = nameof(NovatarConfig), menuName = Constants.ConfigRootPath + "/" + nameof(NovatarConfig))]
     public class NovatarConfig : ScriptableObject
