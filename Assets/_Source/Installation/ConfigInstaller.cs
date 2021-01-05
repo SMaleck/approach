@@ -2,7 +2,6 @@
 using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Data;
-using _Source.Features.ActorBehaviours.NovatarSpawning.Data;
 using _Source.Features.ActorEntities.Avatar.Config;
 using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Features.Movement.Data;

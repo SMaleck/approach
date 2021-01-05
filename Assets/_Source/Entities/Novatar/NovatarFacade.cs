@@ -1,5 +1,4 @@
-﻿using _Source.Features.ActorBehaviours.NovatarSpawning;
-using _Source.Features.ActorEntities.Novatar.Config;
+﻿using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Util;

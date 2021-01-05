@@ -1,10 +1,10 @@
 ﻿using System;
-using _Source.Features.ActorBehaviours.NovatarSpawning.Data;
+using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Util;
 using UniRx;
 using Zenject;
 
-namespace _Source.Features.ActorBehaviours.NovatarSpawning
+namespace _Source.Features.ActorEntities.Novatar
 {
     public class SpawningOrchestrator : AbstractDisposable, IInitializable
     {

@@ -16,15 +16,15 @@ namespace _Source.Entities.Installation
             Container.BindPrefabFactory<AvatarEntity, AvatarEntity.Factory>();
             Container.BindPrefabFactory<NovatarEntity, NovatarEntity.Factory>();
 
+            Container.BindFactory<AvatarEntity, AvatarFacade, AvatarFacade.Factory>().AsSingle();
+            Container.BindFactory<NovatarEntity, IActorStateModel, NovatarFacade, NovatarFacade.Factory>().AsSingle();
+
             // ToDo find better way
             var actorStateModel = _avatarStateFactory.Create();
 
             Container.BindInterfacesTo<ActorStateModel>()
                 .FromInstance(actorStateModel)
                 .AsSingle();
-
-            Container.BindFactory<AvatarEntity, AvatarFacade, AvatarFacade.Factory>().AsSingle();
-            Container.BindFactory<NovatarEntity, IActorStateModel, NovatarFacade, NovatarFacade.Factory>().AsSingle();
         }
     }
 }

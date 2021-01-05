@@ -1,11 +1,9 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Nodes;
-using _Source.Features.ActorBehaviours.NovatarSpawning;
 using _Source.Features.ActorBehaviours.Sensors;
 using _Source.Features.ActorBehaviours.Sensors.Data;
 using _Source.Features.Actors;
 using _Source.Features.Movement;
-using _Source.Util;
 using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Installation
@@ -14,23 +12,20 @@ namespace _Source.Features.ActorBehaviours.Installation
     {
         public override void InstallBindings()
         {
-            Container.BindFactory<INovatar, IActorStateModel, SensorySystem, SensorySystem.Factory>();
-            Container.BindFactory<INovatar, RangeSensorConfig, RangeSensor, RangeSensor.Factory>();
+            Container.BindFactory<INovatar, IActorStateModel, SensorySystem, SensorySystem.Factory>().AsSingle();
+            Container.BindFactory<INovatar, RangeSensorConfig, RangeSensor, RangeSensor.Factory>().AsSingle();
 
-            Container.BindFactory<NodeGenerator, NodeGenerator.Factory>();
-            Container.BindFactory<INovatar, ISensorySystem, MovementController, FollowAvatarNode, FollowAvatarNode.Factory>();
-            Container.BindFactory<double, IdleTimeoutNode, IdleTimeoutNode.Factory>();
-            Container.BindFactory<double, double, IdleTimeoutRandomNode, IdleTimeoutRandomNode.Factory>();
-            Container.BindFactory<INovatar, IActorStateModel, ISensorySystem, FirstTouchNode, FirstTouchNode.Factory>();
-            Container.BindFactory<INovatar, EntityState, SwitchEntityStateNode, SwitchEntityStateNode.Factory>();
-            Container.BindFactory<INovatar, DeactivateSelfNode, DeactivateSelfNode.Factory>();
-            Container.BindFactory<INovatar, IActorStateModel, MovementController, LeaveScreenNode, LeaveScreenNode.Factory>();
-            Container.BindFactory<ISensorySystem, DamageAvatarNode, DamageAvatarNode.Factory>();
-            Container.BindFactory<INovatar, LightSwitchNode, LightSwitchNode.Factory>();
-            Container.BindFactory<INovatar, IActorStateModel, MovementController, EnterScreenNode, EnterScreenNode.Factory>();
-
-            Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
-            Container.BindInterfacesAndSelfTo<SpawningOrchestrator>().AsSingleNonLazy();
+            Container.BindFactory<NodeGenerator, NodeGenerator.Factory>().AsSingle();
+            Container.BindFactory<INovatar, ISensorySystem, MovementController, FollowAvatarNode, FollowAvatarNode.Factory>().AsSingle();
+            Container.BindFactory<double, IdleTimeoutNode, IdleTimeoutNode.Factory>().AsSingle();
+            Container.BindFactory<double, double, IdleTimeoutRandomNode, IdleTimeoutRandomNode.Factory>().AsSingle();
+            Container.BindFactory<INovatar, IActorStateModel, ISensorySystem, FirstTouchNode, FirstTouchNode.Factory>().AsSingle();
+            Container.BindFactory<INovatar, EntityState, SwitchEntityStateNode, SwitchEntityStateNode.Factory>().AsSingle();
+            Container.BindFactory<INovatar, DeactivateSelfNode, DeactivateSelfNode.Factory>().AsSingle();
+            Container.BindFactory<INovatar, IActorStateModel, MovementController, LeaveScreenNode, LeaveScreenNode.Factory>().AsSingle();
+            Container.BindFactory<ISensorySystem, DamageAvatarNode, DamageAvatarNode.Factory>().AsSingle();
+            Container.BindFactory<INovatar, LightSwitchNode, LightSwitchNode.Factory>().AsSingle();
+            Container.BindFactory<INovatar, IActorStateModel, MovementController, EnterScreenNode, EnterScreenNode.Factory>().AsSingle();
         }
     }
 }

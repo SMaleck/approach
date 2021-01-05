@@ -1,6 +1,6 @@
 ﻿using _Source.Util;
 using System;
-using _Source.Features.ActorBehaviours.NovatarSpawning;
+using _Source.Features.ActorEntities.Novatar;
 using UniRx;
 using UnityEngine;
 

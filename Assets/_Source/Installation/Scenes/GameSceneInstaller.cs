@@ -32,8 +32,9 @@ namespace _Source.Installation.Scenes
 
             ActorsInstaller.Install(Container);
             ActorEntitiesInstaller.Install(Container);
-            EntitiesInstaller.Install(Container);
             ActorBehavioursInstaller.Install(Container);
+            EntitiesInstaller.Install(Container);
+            NovatarSpawningInstaller.Install(Container);
 
             Container.BindPrefabFactory<HudView, HudView.Factory>();
             Container.BindPrefabFactory<PauseView, PauseView.Factory>();
