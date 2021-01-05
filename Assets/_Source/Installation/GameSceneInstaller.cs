@@ -1,4 +1,5 @@
 ﻿using _Source.Entities;
+using _Source.Entities.Actors.Installation;
 using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
 using _Source.Features.AvatarRelationships;
@@ -84,6 +85,8 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<GameSceneInitializer>().AsSingleNonLazy();
+
+            ActorsInstaller.Install(Container);
         }
     }
 }
