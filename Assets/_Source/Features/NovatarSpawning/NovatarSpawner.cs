@@ -1,4 +1,5 @@
 ﻿using _Source.Entities;
+using _Source.Entities.ActorEntities.Novatar;
 using _Source.Entities.Novatar;
 using _Source.Features.Movement;
 using _Source.Features.NovatarBehaviour;
@@ -19,7 +20,7 @@ namespace _Source.Features.NovatarSpawning
         private readonly NovatarConfig _novatarConfig;
         private readonly NovatarFacade.Factory _novatarFacadeFactory;
         private readonly NovatarEntity.Factory _novatarEntityFactory;
-        private readonly NovatarStateModel.Factory _novatarStateModelFactory;
+        private readonly NovatarStateFactory _novatarStateFactory;
         private readonly NovatarBehaviourTree.Factory _novatarBehaviourTreeFactory;
         private readonly MovementModel.Factory _movementModelFactory;
         private readonly MovementController.Factory _movementControllerFactory;
@@ -34,7 +35,7 @@ namespace _Source.Features.NovatarSpawning
             NovatarConfig novatarConfig,
             NovatarFacade.Factory novatarFacadeFactory,
             NovatarEntity.Factory novatarEntityFactory,
-            NovatarStateModel.Factory novatarStateModelFactory,
+            NovatarStateFactory novatarStateFactory,
             NovatarBehaviourTree.Factory novatarBehaviourTreeFactory,
             MovementModel.Factory movementModelFactory,
             MovementController.Factory movementControllerFactory,
@@ -46,7 +47,7 @@ namespace _Source.Features.NovatarSpawning
             _novatarConfig = novatarConfig;
             _novatarFacadeFactory = novatarFacadeFactory;
             _novatarEntityFactory = novatarEntityFactory;
-            _novatarStateModelFactory = novatarStateModelFactory;
+            _novatarStateFactory = novatarStateFactory;
             _novatarBehaviourTreeFactory = novatarBehaviourTreeFactory;
             _movementModelFactory = movementModelFactory;
             _movementControllerFactory = movementControllerFactory;
@@ -86,17 +87,15 @@ namespace _Source.Features.NovatarSpawning
             var novatarEntity = _novatarEntityFactory.Create(
                 _novatarConfig.NovatarPrefab);
 
-            var novatarStateModel = _novatarStateModelFactory
-                .Create()
-                .AddTo(Disposer);
+            var actorStateModel = _novatarStateFactory.Create();
 
             var novatarFacade = _novatarFacadeFactory.Create(
                     novatarEntity,
-                    novatarStateModel)
+                    actorStateModel)
                 .AddTo(Disposer);
 
             var sensorySystem = _sensorySystemFactory
-                .Create(novatarFacade, novatarStateModel)
+                .Create(novatarFacade, actorStateModel)
                 .AddTo(Disposer);
             sensorySystem.Initialize();
 
@@ -113,7 +112,7 @@ namespace _Source.Features.NovatarSpawning
                 .AddTo(Disposer);
 
             _novatarBehaviourTreeFactory
-                .Create(novatarFacade, novatarStateModel, sensorySystem, novatarMovementController)
+                .Create(novatarFacade, actorStateModel, sensorySystem, novatarMovementController)
                 .AddTo(Disposer)
                 .Initialize();
 

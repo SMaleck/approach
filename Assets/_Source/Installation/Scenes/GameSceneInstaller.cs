@@ -1,17 +1,17 @@
 ﻿using _Source.Entities;
+using _Source.Entities.ActorEntities.Installation;
+using _Source.Entities.Actors;
 using _Source.Entities.Actors.Installation;
-using _Source.Entities.Avatar;
+using _Source.Entities.Installation;
 using _Source.Entities.Novatar;
+using _Source.Features.ActorBehaviours.Installation;
 using _Source.Features.AvatarRelationships;
 using _Source.Features.Cheats;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
 using _Source.Features.Movement.Data;
 using _Source.Features.NovatarBehaviour;
-using _Source.Features.NovatarBehaviour.Nodes;
 using _Source.Features.NovatarBehaviour.Sensors;
-using _Source.Features.NovatarBehaviour.Sensors.Data;
-using _Source.Features.NovatarSpawning;
 using _Source.Features.ScreenSize;
 using _Source.Features.UiHud;
 using _Source.Features.UiScreens;
@@ -39,12 +39,6 @@ namespace _Source.Installation
 
             Container.BindInterfacesAndSelfTo<ViewManagementController>().AsSingleNonLazy();
 
-            Container.BindPrefabFactory<AvatarEntity, AvatarEntity.Factory>();
-            Container.BindPrefabFactory<NovatarEntity, NovatarEntity.Factory>();
-
-            Container.BindInterfacesAndSelfTo<AvatarStateModel>().AsSingleNonLazy();
-            Container.BindFactory<AvatarEntity, AvatarFacade, AvatarFacade.Factory>();
-
             Container.BindFactory<IMovementData, MovementModel, MovementModel.Factory>();
             Container.BindFactory<MovementModel, IMonoEntity, MovementController, MovementController.Factory>();
 
@@ -61,32 +55,15 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<ScreenSizeModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<ScreenSizeController>().AsSingleNonLazy();
 
-            Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingleNonLazy();
-            Container.BindInterfacesAndSelfTo<SpawningOrchestrator>().AsSingleNonLazy();
-            Container.BindFactory<NovatarEntity, NovatarStateModel, NovatarFacade, NovatarFacade.Factory>();
-            Container.BindFactory<NovatarStateModel, NovatarStateModel.Factory>();
-
-            Container.BindFactory<INovatar, INovatarStateModel, SensorySystem, SensorySystem.Factory>();
-            Container.BindFactory<INovatar, RangeSensorConfig, RangeSensor, RangeSensor.Factory>();
-
-            Container.BindFactory<INovatar, INovatarStateModel, ISensorySystem, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
-            Container.BindFactory<NodeGenerator, NodeGenerator.Factory>();
-            Container.BindFactory<INovatar, ISensorySystem, MovementController, FollowAvatarNode, FollowAvatarNode.Factory>();
-            Container.BindFactory<double, IdleTimeoutNode, IdleTimeoutNode.Factory>();
-            Container.BindFactory<double, double, IdleTimeoutRandomNode, IdleTimeoutRandomNode.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, ISensorySystem, FirstTouchNode, FirstTouchNode.Factory>();
-            Container.BindFactory<INovatar, EntityState, SwitchEntityStateNode, SwitchEntityStateNode.Factory>();
-            Container.BindFactory<INovatar, DeactivateSelfNode, DeactivateSelfNode.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, MovementController, LeaveScreenNode, LeaveScreenNode.Factory>();
-            Container.BindFactory<ISensorySystem, DamageAvatarNode, DamageAvatarNode.Factory>();
-            Container.BindFactory<INovatar, LightSwitchNode, LightSwitchNode.Factory>();
-            Container.BindFactory<INovatar, INovatarStateModel, MovementController, EnterScreenNode, EnterScreenNode.Factory>();
+            Container.BindFactory<INovatar, IActorStateModel, ISensorySystem, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
 
             Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
-
             Container.BindInterfacesAndSelfTo<GameSceneInitializer>().AsSingleNonLazy();
 
             ActorsInstaller.Install(Container);
+            ActorEntitiesInstaller.Install(Container);
+            ActorBehavioursInstaller.Install(Container);
+            EntitiesInstaller.Install(Container);
         }
     }
 }

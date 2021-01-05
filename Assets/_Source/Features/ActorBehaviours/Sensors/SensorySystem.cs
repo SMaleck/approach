@@ -1,4 +1,6 @@
-﻿using _Source.Entities.Novatar;
+﻿using _Source.Entities.Actors;
+using _Source.Entities.Actors.DataComponents;
+using _Source.Entities.Novatar;
 using _Source.Features.GameRound;
 using _Source.Util;
 using System.Collections.Generic;
@@ -10,41 +12,41 @@ namespace _Source.Features.NovatarBehaviour.Sensors
 {
     public class SensorySystem : AbstractDisposable, ISensorySystem, IInitializable
     {
-        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, SensorySystem> { }
+        public class Factory : PlaceholderFactory<INovatar, IActorStateModel, SensorySystem> { }
 
         [Inject] private readonly RangeSensor.Factory _rangeSensorFactory;
 
         private readonly INovatar _novatarEntity;
-        private readonly INovatarStateModel _novatarStateModel;
         private readonly NovatarConfig _novatarConfig;
         private readonly IPauseStateModel _pauseStateModel;
 
+        private readonly HealthDataComponent _healthDataComponent;
         private readonly List<ISensor> _sensors;
         private RangeSensor _rangeSensor;
-        
+
         public SensorySystem(
             INovatar novatarEntity,
-            INovatarStateModel novatarStateModel,
+            IActorStateModel actorStateModel,
             NovatarConfig novatarConfig,
             IPauseStateModel pauseStateModel)
         {
             _novatarEntity = novatarEntity;
-            _novatarStateModel = novatarStateModel;
             _novatarConfig = novatarConfig;
             _pauseStateModel = pauseStateModel;
 
+            _healthDataComponent = actorStateModel.Get<HealthDataComponent>();
             _sensors = new List<ISensor>();
         }
 
         public void Initialize()
         {
             _rangeSensor = _rangeSensorFactory.Create(
-                _novatarEntity, 
+                _novatarEntity,
                 _novatarConfig.RangeSensorConfig);
             _sensors.Add(_rangeSensor);
 
             Observable.EveryLateUpdate()
-                .Where(_ => !_pauseStateModel.IsPaused.Value && _novatarStateModel.IsAlive.Value)
+                .Where(_ => !_pauseStateModel.IsPaused.Value && _healthDataComponent.IsAlive.Value)
                 .Subscribe(_ => _sensors.ForEach(sensor => sensor.UpdateSensorReadings()))
                 .AddTo(Disposer);
         }

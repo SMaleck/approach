@@ -31,6 +31,18 @@ namespace _Source.Entities.Actors.DataComponents
             _health.Value = value;
         }
 
+        public void SetIsAlive(bool value)
+        {
+            if (IsAlive.Value && !value)
+            {
+                _health.Value = 0;
+            }
+            else if (!IsAlive.Value && value)
+            {
+                _health.Value = _healthData.MaxHealth;
+            }
+        }
+
         public void Reset()
         {
             SetHealth(_healthData.MaxHealth);

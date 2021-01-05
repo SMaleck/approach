@@ -1,4 +1,6 @@
-﻿using _Source.Entities.Novatar;
+﻿using _Source.Entities.Actors;
+using _Source.Entities.Actors.DataComponents;
+using _Source.Entities.Novatar;
 using _Source.Features.NovatarBehaviour.Data;
 using _Source.Features.NovatarBehaviour.Sensors;
 using BehaviourTreeSystem;
@@ -9,23 +11,25 @@ namespace _Source.Features.NovatarBehaviour.Nodes
 {
     public class FirstTouchNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, ISensorySystem, FirstTouchNode> { }
+        public class Factory : PlaceholderFactory<INovatar, IActorStateModel, ISensorySystem, FirstTouchNode> { }
 
         private readonly INovatar _novatarEntity;
-        private readonly INovatarStateModel _novatarStateModel;
         private readonly ISensorySystem _sensorySystem;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
+        private readonly RelationshipDataComponent _relationshipDataComponent;
+
         public FirstTouchNode(
             INovatar novatarEntity,
-            INovatarStateModel novatarStateModel,
+            IActorStateModel actorStateModel,
             ISensorySystem sensorySystem,
             BehaviourTreeConfig behaviourTreeConfig)
         {
             _novatarEntity = novatarEntity;
-            _novatarStateModel = novatarStateModel;
             _sensorySystem = sensorySystem;
             _behaviourTreeConfig = behaviourTreeConfig;
+
+            _relationshipDataComponent = actorStateModel.Get<RelationshipDataComponent>();
         }
 
         public override BehaviourTreeStatus Tick(TimeData time)
@@ -57,7 +61,7 @@ namespace _Source.Features.NovatarBehaviour.Nodes
                 randomNumber -= switchChance.WeightedChance;
             }
 
-            return _novatarStateModel.CurrentEntityState.Value;
+            return _relationshipDataComponent.Relationship.Value;
         }
     }
 }

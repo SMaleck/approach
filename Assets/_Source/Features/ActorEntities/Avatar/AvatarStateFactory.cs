@@ -1,19 +1,17 @@
 ﻿using _Source.Entities.ActorEntities.Avatar.Data;
 using _Source.Entities.Actors;
 using _Source.Entities.Actors.DataComponents;
-using _Source.Util;
-using Zenject;
 
 namespace _Source.Entities.ActorEntities.Avatar
 {
-    public class AvatarSpawner : AbstractDisposable, IInitializable
+    public class AvatarStateFactory
     {
         private readonly AvatarData _data;
         private readonly ActorStateModel.Factory _actorStateModelFactory;
         private readonly HealthDataComponent.Factory _healthDataComponentFactory;
         private readonly SurvivalDataComponent.Factory _survivalDataComponentFactory;
 
-        public AvatarSpawner(
+        public AvatarStateFactory(
             AvatarData data,
             ActorStateModel.Factory actorStateModelFactory,
             HealthDataComponent.Factory healthDataComponentFactory,
@@ -25,14 +23,9 @@ namespace _Source.Entities.ActorEntities.Avatar
             _survivalDataComponentFactory = survivalDataComponentFactory;
         }
 
-        public void Initialize()
+        private IActorStateModel Create()
         {
-            Spawn();
-        }
-
-        private void Spawn()
-        {
-            var actorStateModel = _actorStateModelFactory.Create()
+            return _actorStateModelFactory.Create()
                 .Attach(_healthDataComponentFactory.Create(_data))
                 .Attach(_survivalDataComponentFactory.Create());
         }

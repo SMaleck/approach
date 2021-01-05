@@ -1,4 +1,6 @@
-﻿using _Source.Entities.Novatar;
+﻿using _Source.Entities.Actors;
+using _Source.Entities.Actors.DataComponents;
+using _Source.Entities.Novatar;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
 using _Source.Features.NovatarBehaviour.Data;
@@ -20,12 +22,12 @@ namespace _Source.Features.NovatarBehaviour
     // ToDo V1 FRIENDS: Leave when health is low
     public class NovatarBehaviourTree : AbstractDisposable, IInitializable
     {
-        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, ISensorySystem, MovementController, NovatarBehaviourTree> { }
+        public class Factory : PlaceholderFactory<INovatar, IActorStateModel, ISensorySystem, MovementController, NovatarBehaviourTree> { }
 
         [Inject] private readonly NodeGenerator.Factory _nodeGeneratorFactory;
 
         private readonly INovatar _novatarEntity;
-        private readonly INovatarStateModel _novatarStateModel;
+        private readonly IActorStateModel _actorStateModel;
         private readonly ISensorySystem _sensorySystem;
         private readonly MovementController _movementController;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
@@ -37,14 +39,14 @@ namespace _Source.Features.NovatarBehaviour
 
         public NovatarBehaviourTree(
             INovatar novatarEntity,
-            INovatarStateModel novatarStateModel,
+            IActorStateModel actorStateModel,
             ISensorySystem sensorySystem,
             MovementController movementController,
             BehaviourTreeConfig behaviourTreeConfig,
             IPauseStateModel pauseStateModel)
         {
             _novatarEntity = novatarEntity;
-            _novatarStateModel = novatarStateModel;
+            _actorStateModel = actorStateModel;
             _sensorySystem = sensorySystem;
             _movementController = movementController;
             _behaviourTreeConfig = behaviourTreeConfig;
@@ -55,16 +57,18 @@ namespace _Source.Features.NovatarBehaviour
         {
             _behaviourTree = CreateTree();
 
+            var healthDataComponent = _actorStateModel.Get<HealthDataComponent>();
+
             Observable.EveryLateUpdate()
-                .Where(_ => !_pauseStateModel.IsPaused.Value && _novatarStateModel.IsAlive.Value)
+                .Where(_ => !_pauseStateModel.IsPaused.Value && healthDataComponent.IsAlive.Value)
                 .Subscribe(_ => _behaviourTree.Tick(new TimeData(Time.deltaTime)))
                 .AddTo(Disposer);
 
-            _novatarStateModel.OnReset
+            _actorStateModel.OnReset
                 .Subscribe(_ => ResetNodes())
                 .AddTo(Disposer);
 
-            _novatarStateModel.OnResetIdleTimeouts
+            _actorStateModel.OnResetIdleTimeouts
                 .Subscribe(_ => ResetTimeoutNodes())
                 .AddTo(Disposer);
         }
@@ -74,7 +78,7 @@ namespace _Source.Features.NovatarBehaviour
             var nodeGenerator = _nodeGeneratorFactory.Create();
             nodeGenerator.SetupForNovatar(
                 _novatarEntity,
-                _novatarStateModel,
+                _actorStateModel,
                 _sensorySystem,
                 _movementController);
 
@@ -181,7 +185,8 @@ namespace _Source.Features.NovatarBehaviour
 
         private bool IsEntityState(EntityState status)
         {
-            return _novatarStateModel.CurrentEntityState.Value == status;
+            var _relationshipDataComponent = _actorStateModel.Get<RelationshipDataComponent>();
+            return _relationshipDataComponent.Relationship.Value == status;
         }
 
         private void ResetNodes()

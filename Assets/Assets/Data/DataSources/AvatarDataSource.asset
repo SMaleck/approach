@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea46cebee65f375458a743757e0e6c65, type: 3}
   m_Name: AvatarDataSource
   m_EditorClassIdentifier: 
-  _maxHealth: 0
-  _moveSpeed: 0
+  _maxHealth: 3
+  _moveSpeed: 1

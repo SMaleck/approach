@@ -3,6 +3,7 @@ using _Source.Features.Movement;
 using _Source.Features.NovatarBehaviour.Nodes;
 using _Source.Features.NovatarBehaviour.Sensors;
 using System.Collections.Generic;
+using _Source.Entities.Actors;
 using Zenject;
 
 namespace _Source.Features.NovatarBehaviour
@@ -23,21 +24,20 @@ namespace _Source.Features.NovatarBehaviour
         [Inject] private readonly EnterScreenNode.Factory _enterScreenNodeFactory;
 
         private INovatar _novatarEntity;
-        private INovatarStateModel _novatarStateModel;
+        private IActorStateModel _actorStateModel;
         private ISensorySystem _sensorySystem;
         private MovementController _movementController;
 
         public List<AbstractNode> GeneratedNodes { get; private set; }
 
-
         public void SetupForNovatar(
             INovatar novatarEntity,
-            INovatarStateModel novatarStateModel,
+            IActorStateModel actorStateModel,
             ISensorySystem sensorySystem,
             MovementController movementController)
         {
             _novatarEntity = novatarEntity;
-            _novatarStateModel = novatarStateModel;
+            _actorStateModel = actorStateModel;
             _sensorySystem = sensorySystem;
             _movementController = movementController;
 
@@ -77,7 +77,7 @@ namespace _Source.Features.NovatarBehaviour
         {
             var node = _firstTouchNodeFactory.Create(
                 _novatarEntity,
-                _novatarStateModel,
+                _actorStateModel,
                 _sensorySystem);
             GeneratedNodes.Add(node);
 
@@ -107,7 +107,7 @@ namespace _Source.Features.NovatarBehaviour
         {
             var node = _leaveScreenNodeFactory.Create(
                 _novatarEntity,
-                _novatarStateModel,
+                _actorStateModel,
                 _movementController);
             GeneratedNodes.Add(node);
 
@@ -136,7 +136,7 @@ namespace _Source.Features.NovatarBehaviour
         {
             var node = _enterScreenNodeFactory.Create(
                 _novatarEntity,
-                _novatarStateModel,
+                _actorStateModel,
                 _movementController);
             GeneratedNodes.Add(node);
 

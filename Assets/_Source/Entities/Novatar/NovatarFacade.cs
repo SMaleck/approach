@@ -1,7 +1,8 @@
-﻿using _Source.Features.NovatarSpawning;
+﻿using _Source.Entities.Actors;
+using _Source.Entities.Actors.DataComponents;
+using _Source.Features.NovatarSpawning;
 using _Source.Util;
 using DG.Tweening;
-using System.Linq;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -11,10 +12,10 @@ namespace _Source.Entities.Novatar
     // ToDo NovatarFacade became a bit of an ugly amalgamation of Features, split this up
     public class NovatarFacade : AbstractDisposable, INovatar, IEntityPoolItem<IMonoEntity>
     {
-        public class Factory : PlaceholderFactory<NovatarEntity, NovatarStateModel, NovatarFacade> { }
+        public class Factory : PlaceholderFactory<NovatarEntity, IActorStateModel, NovatarFacade> { }
 
         private readonly NovatarEntity _novatarEntity;
-        private readonly NovatarStateModel _novatarStateModel;
+        private readonly IActorStateModel _actorStateModel;
         private readonly NovatarConfig _novatarConfig;
 
         public IMonoEntity Entity => this;
@@ -27,20 +28,28 @@ namespace _Source.Entities.Novatar
         public Quaternion Rotation => _novatarEntity.Rotation;
         public Vector3 Size => _novatarEntity.Size;
         public string ToDebugString() => _novatarEntity.ToDebugString();
-        
+
         private readonly SerialDisposable _tweenDisposer;
         private readonly Tween _lightsOnTween;
 
+        private readonly HealthDataComponent _healthDataComponent;
+        private readonly OriginDataComponent _originDataComponent;
+        private readonly RelationshipDataComponent _relationshipDataComponent;
+
         public NovatarFacade(
             NovatarEntity novatarEntity,
-            NovatarStateModel novatarStateModel,
+            IActorStateModel actorStateModel,
             NovatarConfig novatarConfig)
         {
             _novatarEntity = novatarEntity;
-            _novatarStateModel = novatarStateModel;
+            _actorStateModel = actorStateModel;
             _novatarConfig = novatarConfig;
 
-            _novatarStateModel.IsAlive
+            _healthDataComponent = _actorStateModel.Get<HealthDataComponent>();
+            _originDataComponent = _actorStateModel.Get<OriginDataComponent>();
+            _relationshipDataComponent = _actorStateModel.Get<RelationshipDataComponent>();
+
+            _healthDataComponent.IsAlive
                 .Subscribe(isAlive =>
                 {
                     _novatarEntity.SetActive(isAlive);
@@ -48,11 +57,11 @@ namespace _Source.Entities.Novatar
                 })
                 .AddTo(Disposer);
 
-            _novatarStateModel.SpawnPosition
+            _originDataComponent.SpawnPosition
                 .Subscribe(_novatarEntity.SetPosition)
                 .AddTo(Disposer);
 
-            _novatarStateModel.CurrentEntityState
+            _relationshipDataComponent.Relationship
                 .Where(_ => IsActive)
                 .Pairwise()
                 .Subscribe(OnRelationshipSwitched)
@@ -67,29 +76,27 @@ namespace _Source.Entities.Novatar
 
         public void SwitchToEntityState(EntityState entityState)
         {
-            _novatarStateModel.SetCurrentEntityState(entityState);
+            _relationshipDataComponent.SetRelationship(entityState);
         }
 
         public void Deactivate()
         {
-            _novatarStateModel.SetIsAlive(false);
+            _healthDataComponent.SetIsAlive(false);
         }
 
         public void Reset(Vector3 spawnPosition)
         {
-            _novatarStateModel.SetCurrentEntityState(EntityState.Spawning);
-            _novatarStateModel.SetSpawnPosition(spawnPosition);
+            _relationshipDataComponent.SetRelationship(EntityState.Spawning);
+            _originDataComponent.SetSpawnPosition(spawnPosition);
 
             UpdateLightColor(true);
 
-            _novatarStateModel.PublishOnReset();
-
-            _novatarStateModel.SetIsAlive(true);
+            _actorStateModel.Reset();
         }
 
         public void ResetIdleTimeouts()
         {
-            _novatarStateModel.PublishOnResetIdleTimeouts();
+            _actorStateModel.PublishOnResetIdleTimeouts();
         }
 
         public void TurnLightsOn()
@@ -113,7 +120,7 @@ namespace _Source.Entities.Novatar
 
         private void UpdateLightColor(bool forceInstant = false)
         {
-            var relationship = _novatarStateModel.CurrentEntityState.Value;
+            var relationship = _relationshipDataComponent.Relationship.Value;
             var lightColor = _novatarConfig.GetLightColor(relationship);
 
             if (forceInstant)

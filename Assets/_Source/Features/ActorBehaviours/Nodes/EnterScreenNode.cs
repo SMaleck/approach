@@ -1,4 +1,6 @@
-﻿using _Source.Entities.Novatar;
+﻿using _Source.Entities.Actors;
+using _Source.Entities.Actors.DataComponents;
+using _Source.Entities.Novatar;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using BehaviourTreeSystem;
@@ -9,25 +11,26 @@ namespace _Source.Features.NovatarBehaviour.Nodes
 {
     public class EnterScreenNode : AbstractNode, IResettableNode
     {
-        public class Factory : PlaceholderFactory<INovatar, INovatarStateModel, MovementController, EnterScreenNode> { }
+        public class Factory : PlaceholderFactory<INovatar, IActorStateModel, MovementController, EnterScreenNode> { }
 
         private readonly INovatar _novatarEntity;
-        private readonly INovatarStateModel _novatarStateModel;
         private readonly MovementController _movementController;
         private readonly ScreenSizeModel _screenSizeModel;
 
+        private readonly OriginDataComponent _originDataComponent;
         private Vector3 _movementTarget;
 
         public EnterScreenNode(
             INovatar novatarEntity,
-            INovatarStateModel novatarStateModel,
+            IActorStateModel actorStateModel,
             MovementController movementController,
             ScreenSizeModel screenSizeModel)
         {
             _novatarEntity = novatarEntity;
-            _novatarStateModel = novatarStateModel;
             _movementController = movementController;
             _screenSizeModel = screenSizeModel;
+
+            _originDataComponent = actorStateModel.Get<OriginDataComponent>();
         }
 
         public override BehaviourTreeStatus Tick(TimeData time)
@@ -43,7 +46,7 @@ namespace _Source.Features.NovatarBehaviour.Nodes
 
         public void Reset()
         {
-            var spawnPosition = _novatarStateModel.SpawnPosition.Value;
+            var spawnPosition = _originDataComponent.SpawnPosition.Value;
 
             // This is correct when spawning at the bottom edge
             var lookRotation = 0;

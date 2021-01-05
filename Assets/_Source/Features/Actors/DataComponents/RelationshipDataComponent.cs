@@ -1,5 +1,4 @@
-﻿using _Source.Entities.Actors.Data;
-using _Source.Entities.Novatar;
+﻿using _Source.Entities.Novatar;
 using _Source.Util;
 using UniRx;
 using Zenject;
@@ -13,7 +12,7 @@ namespace _Source.Entities.Actors.DataComponents
         private readonly ReactiveProperty<EntityState> _relationship;
         public IReadOnlyReactiveProperty<EntityState> Relationship => _relationship;
 
-        public RelationshipDataComponent(IHealthData healthData)
+        public RelationshipDataComponent()
         {
             _relationship = new ReactiveProperty<EntityState>()
                 .AddTo(Disposer);

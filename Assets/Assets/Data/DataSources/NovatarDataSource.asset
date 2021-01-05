@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9294b089bd2e9d4439252b0eb49c317e, type: 3}
   m_Name: NovatarDataSource
   m_EditorClassIdentifier: 
-  _maxHealth: 0
-  _moveSpeed: 0
+  _maxHealth: 1
+  _moveSpeed: 1
