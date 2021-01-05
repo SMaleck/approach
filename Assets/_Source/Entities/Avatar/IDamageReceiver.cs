@@ -2,6 +2,6 @@
 {
     public interface IDamageReceiver
     {
-        void ReceiveDamage(double damageAmount);
+        void ReceiveDamage(int damageAmount);
     }
 }

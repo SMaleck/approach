@@ -8,12 +8,12 @@ namespace _Source.Features.Actors.Installation
     {
         public override void InstallBindings()
         {
-            Container.BindFactory<ActorStateModel, ActorStateModel.Factory>().AsSingle().NonLazy();
+            Container.BindFactory<ActorStateModel, ActorStateModel.Factory>().AsSingle();
 
-            Container.BindFactory<IHealthData, HealthDataComponent, HealthDataComponent.Factory>().AsSingle().NonLazy();
-            Container.BindFactory<RelationshipDataComponent, RelationshipDataComponent.Factory>().AsSingle().NonLazy();
-            Container.BindFactory<OriginDataComponent, OriginDataComponent.Factory>().AsSingle().NonLazy();
-            Container.BindFactory<SurvivalDataComponent, SurvivalDataComponent.Factory>().AsSingle().NonLazy();
+            Container.BindFactory<IHealthData, HealthDataComponent, HealthDataComponent.Factory>().AsSingle();
+            Container.BindFactory<RelationshipDataComponent, RelationshipDataComponent.Factory>().AsSingle();
+            Container.BindFactory<OriginDataComponent, OriginDataComponent.Factory>().AsSingle();
+            Container.BindFactory<SurvivalDataComponent, SurvivalDataComponent.Factory>().AsSingle();
         }
     }
 }

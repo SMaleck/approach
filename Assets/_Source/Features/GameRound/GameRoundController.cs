@@ -1,4 +1,5 @@
-﻿using _Source.Entities.Avatar;
+﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using _Source.Util;
 using UniRx;
 
@@ -12,11 +13,12 @@ namespace _Source.Features.GameRound
 
         public GameRoundController(
             GameRoundModel gameRoundModel,
-            AvatarStateModel survivalStatsModel)
+            IActorStateModel actorStateModel)
         {
             _gameRoundModel = gameRoundModel;
 
-            survivalStatsModel.IsAlive
+            var healthDataComponent = actorStateModel.Get<HealthDataComponent>();
+            healthDataComponent.IsAlive
                 .Where(isAlive => !isAlive)
                 .Take(1)
                 .Subscribe(_ => gameRoundModel.PublishOnRoundEnded())

@@ -30,6 +30,11 @@ namespace _Source.Installation.Scenes
         {
             Container.BindInstance(_sceneCamera);
 
+            ActorsInstaller.Install(Container);
+            ActorEntitiesInstaller.Install(Container);
+            EntitiesInstaller.Install(Container);
+            ActorBehavioursInstaller.Install(Container);
+
             Container.BindPrefabFactory<HudView, HudView.Factory>();
             Container.BindPrefabFactory<PauseView, PauseView.Factory>();
             Container.BindPrefabFactory<SurvivalStatsView, SurvivalStatsView.Factory>();
@@ -59,11 +64,6 @@ namespace _Source.Installation.Scenes
 
             Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<GameSceneInitializer>().AsSingleNonLazy();
-
-            ActorsInstaller.Install(Container);
-            ActorEntitiesInstaller.Install(Container);
-            ActorBehavioursInstaller.Install(Container);
-            EntitiesInstaller.Install(Container);
         }
     }
 }

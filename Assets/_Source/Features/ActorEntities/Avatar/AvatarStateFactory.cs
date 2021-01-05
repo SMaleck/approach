@@ -23,7 +23,7 @@ namespace _Source.Features.ActorEntities.Avatar
             _survivalDataComponentFactory = survivalDataComponentFactory;
         }
 
-        private IActorStateModel Create()
+        public IActorStateModel Create()
         {
             return _actorStateModelFactory.Create()
                 .Attach(_healthDataComponentFactory.Create(_data))

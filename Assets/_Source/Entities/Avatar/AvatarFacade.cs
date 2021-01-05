@@ -1,4 +1,6 @@
-﻿using _Source.Features.GameRound;
+﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
+using _Source.Features.GameRound;
 using _Source.Features.ScreenSize;
 using _Source.Util;
 using System;
@@ -14,7 +16,6 @@ namespace _Source.Entities.Avatar
 
         private readonly AvatarEntity _avatarEntity;
         private readonly AvatarConfig _avatarConfig;
-        private readonly AvatarStateModel _avatarStateModel;
         private readonly ScreenSizeModel _screenSizeModel;
         private readonly IPauseStateModel _pauseStateModel;
 
@@ -26,20 +27,25 @@ namespace _Source.Entities.Avatar
         public Vector3 Size => _avatarEntity.Size;
         public string ToDebugString() => _avatarEntity.ToDebugString();
 
+        private readonly SurvivalDataComponent _survivalDataComponent;
+        private readonly HealthDataComponent _healthDataComponent;
+
         public AvatarFacade(
             AvatarEntity avatarEntity,
             AvatarConfig avatarConfig,
-            AvatarStateModel avatarStateModel,
+            IActorStateModel actorStateModel,
             ScreenSizeModel screenSizeModel,
             IPauseStateModel pauseStateModel)
         {
             _avatarEntity = avatarEntity;
             _avatarConfig = avatarConfig;
-            _avatarStateModel = avatarStateModel;
             _screenSizeModel = screenSizeModel;
             _pauseStateModel = pauseStateModel;
 
-            _avatarStateModel.SetStartedAt(DateTime.Now);
+            _survivalDataComponent = actorStateModel.Get<SurvivalDataComponent>();
+            _healthDataComponent = actorStateModel.Get<HealthDataComponent>();
+
+            _survivalDataComponent.SetStartedAt(DateTime.Now);
 
             Observable.Interval(TimeSpan.FromSeconds(1))
                 .Where(_ => !_pauseStateModel.IsPaused.Value)
@@ -51,17 +57,17 @@ namespace _Source.Entities.Avatar
                 .Subscribe(_ => OnUpdate())
                 .AddTo(Disposer);
 
-            _avatarStateModel.Health
+            _healthDataComponent.Health
                 .Subscribe(OnHealthChanged)
                 .AddTo(Disposer);
         }
 
-        public void ReceiveDamage(double damageAmount)
+        public void ReceiveDamage(int damageAmount)
         {
-            var currentHealth = _avatarStateModel.Health.Value;
+            var currentHealth = _healthDataComponent.Health.Value;
             var newHealth = Math.Max(0, currentHealth - damageAmount);
 
-            _avatarStateModel.SetHealth(newHealth);
+            _healthDataComponent.SetHealth(newHealth);
         }
 
         private void OnUpdate()
@@ -79,11 +85,11 @@ namespace _Source.Entities.Avatar
 
         private void OnTimePassed()
         {
-            var timePassed = DateTime.Now - _avatarStateModel.StartedAt.Value;
-            _avatarStateModel.SetSurvivalSeconds(timePassed.TotalSeconds);
+            var timePassed = DateTime.Now - _survivalDataComponent.StartedAt.Value;
+            _survivalDataComponent.SetSurvivalSeconds(timePassed.TotalSeconds);
         }
 
-        private void OnHealthChanged(double health)
+        private void OnHealthChanged(int health)
         {
             var relativeHealth = health / _avatarConfig.Health;
             _avatarEntity.HeadLight.intensity = _avatarConfig.MaxLightIntensity * (float)relativeHealth;
