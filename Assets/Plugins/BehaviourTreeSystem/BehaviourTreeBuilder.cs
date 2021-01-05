@@ -27,9 +27,10 @@ namespace BehaviourTreeSystem
         /// <summary>
         /// Create an action node.
         /// </summary>
-        public BehaviourTreeBuilder Do(string name, Func<TimeData, BehaviourTreeStatus> fn)
+        public BehaviourTreeBuilder Do(Func<TimeData, BehaviourTreeStatus> fn)
         {
             AssertCanAddLeaf();
+            var name = _idGenerator.GetId(typeof(ActionNode));
 
             var actionNode = new ActionNode(name, fn);
             _parentNodeStack.Peek().AddChild(actionNode);
@@ -39,17 +40,18 @@ namespace BehaviourTreeSystem
         /// <summary>
         /// Like an action node... but the function can return true/false and is mapped to success/failure.
         /// </summary>
-        public BehaviourTreeBuilder Condition(string name, Func<TimeData, bool> fn)
+        public BehaviourTreeBuilder Condition(Func<TimeData, bool> fn)
         {
-            return Do(name, t => fn(t) ? BehaviourTreeStatus.Success : BehaviourTreeStatus.Failure);
+            return Do(t => fn(t) ? BehaviourTreeStatus.Success : BehaviourTreeStatus.Failure);
         }
 
         /// <summary>
         /// Create an inverter node that inverts the success/failure of its children.
         /// </summary>
-        public BehaviourTreeBuilder Inverter(string name)
+        public BehaviourTreeBuilder Inverter()
         {
             AssertCanModify();
+            var name = _idGenerator.GetId(typeof(InverterNode));
 
             var inverterNode = new InverterNode(name);
 
@@ -65,9 +67,10 @@ namespace BehaviourTreeSystem
         /// <summary>
         /// Create a sequence node.
         /// </summary>
-        public BehaviourTreeBuilder Sequence(string name)
+        public BehaviourTreeBuilder Sequence()
         {
             AssertCanModify();
+            var name = _idGenerator.GetId(typeof(SequenceNode));
 
             var sequenceNode = new SequenceNode(name);
 
@@ -83,9 +86,10 @@ namespace BehaviourTreeSystem
         /// <summary>
         /// Create a parallel node.
         /// </summary>
-        public BehaviourTreeBuilder Parallel(string name, int numRequiredToFail, int numRequiredToSucceed)
+        public BehaviourTreeBuilder Parallel(int numRequiredToFail, int numRequiredToSucceed)
         {
             AssertCanModify();
+            var name = _idGenerator.GetId(typeof(ParallelNode));
 
             var parallelNode = new ParallelNode(name, numRequiredToFail, numRequiredToSucceed);
 
@@ -101,9 +105,10 @@ namespace BehaviourTreeSystem
         /// <summary>
         /// Create a selector node.
         /// </summary>
-        public BehaviourTreeBuilder Selector(string name)
+        public BehaviourTreeBuilder Selector()
         {
             AssertCanModify();
+            var name = _idGenerator.GetId(typeof(SelectorNode));
 
             var selectorNode = new SelectorNode(name);
 

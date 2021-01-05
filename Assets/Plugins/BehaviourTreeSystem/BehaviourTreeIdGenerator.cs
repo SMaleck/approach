@@ -15,10 +15,9 @@ namespace BehaviourTreeSystem
             _nodeTypeCounts = new Dictionary<Type, int>();
         }
 
-        public string GetId(IBehaviourTreeNode node)
+        public string GetId(Type nodeType)
         {
-            var nodeType = node.GetType();
-            if (!_nodeTypeCounts.ContainsKey(node.GetType()))
+            if (!_nodeTypeCounts.ContainsKey(nodeType))
             {
                 _nodeTypeCounts.Add(nodeType, 0);
             }
