@@ -23,10 +23,12 @@ namespace _Source.Entities.Actors
             _dataComponents = new Dictionary<Type, IDataComponent>();
         }
 
-        public void Attach(IDataComponent dataComponent)
+        public ActorStateModel Attach(IDataComponent dataComponent)
         {
             _dataComponents.Add(dataComponent.GetType(), dataComponent);
             dataComponent.AddTo(Disposer);
+
+            return this;
         }
 
         public void Reset()

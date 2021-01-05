@@ -16,6 +16,8 @@ MonoBehaviour:
     type: 3}
   _movementConfig:
     _useDirectMovement: 1
+    _moveTargetReachedAccuracy: 0
+    _moveTargetTouchedAccuracy: 0
     _movementSpeed: 5
     _movementDeadZoneMagnitude: 0.01
     _turnSpeed: 5

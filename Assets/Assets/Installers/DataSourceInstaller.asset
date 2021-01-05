@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf58e24954ed0b740b9729f2aeca4a92, type: 3}
+  m_Name: DataSourceInstaller
+  m_EditorClassIdentifier: 
+  _avatarDataSource: {fileID: 11400000, guid: 0b54558104e924244bd2dff577004946, type: 2}
+  _novatarDataSource: {fileID: 11400000, guid: 3ba2cfff5e2739d4e88d4629cd1869f0, type: 2}

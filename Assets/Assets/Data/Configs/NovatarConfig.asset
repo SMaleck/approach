@@ -24,9 +24,8 @@ MonoBehaviour:
     _turnDeadZoneAngle: 1
   _rangeSensorConfig:
     _followRange: 5
+    _interactionRange: 0
     _touchRange: 0.8
-  _range: 5
-  _targetReachedThreshold: 0.8
   _touchDamage: 1
   _relationshipVisualsConfigs:
   - _relationship: 0

@@ -15,6 +15,8 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<SceneManagementController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<ProjectInitializer>().AsSingleNonLazy();
+
+            DataInstaller.Install(Container);
         }
     }
 }
