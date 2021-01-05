@@ -1,13 +1,13 @@
-﻿using _Source.Entities.Actors;
-using _Source.Entities.Actors.DataComponents;
+﻿using System.Linq;
 using _Source.Entities.Novatar;
-using _Source.Features.NovatarBehaviour.Data;
-using _Source.Features.NovatarBehaviour.Sensors;
+using _Source.Features.ActorBehaviours.Data;
+using _Source.Features.ActorBehaviours.Sensors;
+using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using BehaviourTreeSystem;
-using System.Linq;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour.Nodes
+namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class FirstTouchNode : AbstractNode
     {

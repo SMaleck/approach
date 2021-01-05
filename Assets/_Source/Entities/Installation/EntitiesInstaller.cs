@@ -1,6 +1,6 @@
-﻿using _Source.Entities.Actors;
-using _Source.Entities.Avatar;
+﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
+using _Source.Features.Actors;
 using _Source.Util;
 using Zenject;
 

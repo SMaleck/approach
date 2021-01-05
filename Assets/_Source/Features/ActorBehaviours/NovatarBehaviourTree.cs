@@ -1,20 +1,20 @@
-﻿using _Source.Entities.Actors;
-using _Source.Entities.Actors.DataComponents;
+﻿using System.Collections.Generic;
+using System.Linq;
 using _Source.Entities.Novatar;
+using _Source.Features.ActorBehaviours.Data;
+using _Source.Features.ActorBehaviours.Nodes;
+using _Source.Features.ActorBehaviours.Sensors;
+using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
-using _Source.Features.NovatarBehaviour.Data;
-using _Source.Features.NovatarBehaviour.Nodes;
-using _Source.Features.NovatarBehaviour.Sensors;
 using _Source.Util;
 using BehaviourTreeSystem;
-using System.Collections.Generic;
-using System.Linq;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour
+namespace _Source.Features.ActorBehaviours
 {
     // ToDo V1 Move around on the playing field, increase leave time
     // ToDo V1 Sometimes move towards player

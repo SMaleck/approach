@@ -1,10 +1,9 @@
-﻿using _Source.Entities.Actors;
-using _Source.Entities.Novatar;
+﻿using _Source.Entities.Novatar;
+using _Source.Features.ActorBehaviours.Nodes;
+using _Source.Features.ActorBehaviours.Sensors;
+using _Source.Features.ActorBehaviours.Sensors.Data;
+using _Source.Features.Actors;
 using _Source.Features.Movement;
-using _Source.Features.NovatarBehaviour;
-using _Source.Features.NovatarBehaviour.Nodes;
-using _Source.Features.NovatarBehaviour.Sensors;
-using _Source.Features.NovatarBehaviour.Sensors.Data;
 using _Source.Features.NovatarSpawning;
 using _Source.Util;
 using Zenject;

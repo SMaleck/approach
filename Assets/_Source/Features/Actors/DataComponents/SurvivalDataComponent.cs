@@ -1,9 +1,9 @@
-﻿using _Source.Util;
-using System;
+﻿using System;
+using _Source.Util;
 using UniRx;
 using Zenject;
 
-namespace _Source.Entities.Actors.DataComponents
+namespace _Source.Features.Actors.DataComponents
 {
     public class SurvivalDataComponent : AbstractDisposableFeature, IResettableDataComponent
     {

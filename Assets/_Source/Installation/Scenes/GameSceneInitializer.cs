@@ -8,7 +8,7 @@ using _Source.Installation.Data;
 using UniRx;
 using Zenject;
 
-namespace _Source.Installation
+namespace _Source.Installation.Scenes
 {
     public class GameSceneInitializer : AbstractSceneInitializer, IInitializable
     {

@@ -1,6 +1,6 @@
 ﻿using BehaviourTreeSystem;
 
-namespace _Source.Features.NovatarBehaviour.Nodes
+namespace _Source.Features.ActorBehaviours.Nodes
 {
     public abstract class AbstractNode : IBehaviourTreeNode
     {

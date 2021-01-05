@@ -1,11 +1,11 @@
-﻿using _Source.Entities.Actors.DataComponents;
-using _Source.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using _Source.Features.Actors.DataComponents;
+using _Source.Util;
 using UniRx;
 using Zenject;
 
-namespace _Source.Entities.Actors
+namespace _Source.Features.Actors
 {
     public class ActorStateModel : AbstractDisposableFeature, IActorStateModel
     {

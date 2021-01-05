@@ -1,5 +1,5 @@
-﻿using _Source.Entities.Actors;
-using _Source.Entities.Actors.DataComponents;
+﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using _Source.Features.NovatarSpawning;
 using _Source.Util;
 using DG.Tweening;

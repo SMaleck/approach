@@ -1,4 +1,4 @@
-﻿namespace _Source.Entities.Actors.Data
+﻿namespace _Source.Features.Actors.Data
 {
     public interface IHealthData
     {

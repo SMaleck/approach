@@ -1,12 +1,12 @@
-﻿using _Source.Entities.Novatar;
+﻿using System.Collections.Generic;
+using _Source.Entities.Novatar;
+using _Source.Features.ActorBehaviours.Nodes;
+using _Source.Features.ActorBehaviours.Sensors;
+using _Source.Features.Actors;
 using _Source.Features.Movement;
-using _Source.Features.NovatarBehaviour.Nodes;
-using _Source.Features.NovatarBehaviour.Sensors;
-using System.Collections.Generic;
-using _Source.Entities.Actors;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour
+namespace _Source.Features.ActorBehaviours
 {
     public class NodeGenerator
     {

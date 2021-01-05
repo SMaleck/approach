@@ -1,8 +1,8 @@
-﻿using _Source.Entities.Actors.DataComponents;
-using System;
+﻿using System;
+using _Source.Features.Actors.DataComponents;
 using UniRx;
 
-namespace _Source.Entities.Actors
+namespace _Source.Features.Actors
 {
     public interface IActorStateModel
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _Source.Features.NovatarBehaviour.Sensors.Data
+namespace _Source.Features.ActorBehaviours.Sensors.Data
 {
     [Serializable]
     public class RangeSensorConfig

@@ -2,7 +2,7 @@
 using _Source.Features.ViewManagement;
 using _Source.Util;
 
-namespace _Source.Installation
+namespace _Source.Installation.Scenes
 {
     public class TitleSceneInstaller : AbstractSceneInstaller
     {

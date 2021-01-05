@@ -1,10 +1,10 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
-using _Source.Features.NovatarBehaviour.Sensors;
+using _Source.Features.ActorBehaviours.Sensors;
 using BehaviourTreeSystem;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour.Nodes
+namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class DamageAvatarNode : AbstractNode, IResettableNode
     {

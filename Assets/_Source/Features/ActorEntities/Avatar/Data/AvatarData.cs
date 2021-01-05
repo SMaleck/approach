@@ -1,6 +1,6 @@
-﻿using _Source.Entities.Actors.Data;
+﻿using _Source.Features.Actors.Data;
 
-namespace _Source.Entities.ActorEntities.Avatar.Data
+namespace _Source.Features.ActorEntities.Avatar.Data
 {
     public class AvatarData : IHealthData 
     {

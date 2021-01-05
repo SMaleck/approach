@@ -1,9 +1,9 @@
-﻿using _Source.Entities.Actors.Data;
+﻿using _Source.Features.Actors.Data;
 using _Source.Util;
 using UniRx;
 using Zenject;
 
-namespace _Source.Entities.Actors.DataComponents
+namespace _Source.Features.Actors.DataComponents
 {
     public class HealthDataComponent : AbstractDisposableFeature, IResettableDataComponent
     {

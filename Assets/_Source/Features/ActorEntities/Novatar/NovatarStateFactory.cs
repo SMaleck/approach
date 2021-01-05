@@ -1,8 +1,8 @@
-﻿using _Source.Entities.ActorEntities.Novatar.Data;
-using _Source.Entities.Actors;
-using _Source.Entities.Actors.DataComponents;
+﻿using _Source.Features.ActorEntities.Novatar.Data;
+using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 
-namespace _Source.Entities.ActorEntities.Novatar
+namespace _Source.Features.ActorEntities.Novatar
 {
     public class NovatarStateFactory
     {

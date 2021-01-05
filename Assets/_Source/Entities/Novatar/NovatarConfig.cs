@@ -1,9 +1,9 @@
 ﻿using _Source.App;
 using _Source.Features.Movement.Data;
-using _Source.Features.NovatarBehaviour.Sensors.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Source.Features.ActorBehaviours.Sensors.Data;
 using UnityEngine;
 
 namespace _Source.Entities.Novatar

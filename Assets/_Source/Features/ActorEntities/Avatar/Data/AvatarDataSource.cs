@@ -1,7 +1,7 @@
 ﻿using _Source.App;
 using UnityEngine;
 
-namespace _Source.Entities.ActorEntities.Avatar.Data
+namespace _Source.Features.ActorEntities.Avatar.Data
 {
     [CreateAssetMenu(menuName = Constants.DataMenu + nameof(AvatarDataSource), fileName = nameof(AvatarDataSource))]
     public class AvatarDataSource : ScriptableObject

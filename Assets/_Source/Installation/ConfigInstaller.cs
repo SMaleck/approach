@@ -1,8 +1,8 @@
 ﻿using _Source.App;
 using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
+using _Source.Features.ActorBehaviours.Data;
 using _Source.Features.Movement.Data;
-using _Source.Features.NovatarBehaviour.Data;
 using _Source.Features.NovatarSpawning.Data;
 using _Source.Features.UserInput.Data;
 using _Source.Installation.Data;

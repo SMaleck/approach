@@ -1,6 +1,6 @@
 ﻿using _Source.App;
-using _Source.Entities.ActorEntities.Avatar.Data;
-using _Source.Entities.ActorEntities.Novatar.Data;
+using _Source.Features.ActorEntities.Avatar.Data;
+using _Source.Features.ActorEntities.Novatar.Data;
 using UnityEngine;
 using Zenject;
 

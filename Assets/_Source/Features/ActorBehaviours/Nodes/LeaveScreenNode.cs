@@ -1,12 +1,12 @@
-﻿using _Source.Entities.Actors;
-using _Source.Entities.Actors.DataComponents;
-using _Source.Entities.Novatar;
+﻿using _Source.Entities.Novatar;
+using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using BehaviourTreeSystem;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour.Nodes
+namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class LeaveScreenNode : AbstractNode
     {

@@ -1,8 +1,8 @@
-﻿using _Source.Entities.ActorEntities.Avatar.Data;
-using _Source.Entities.Actors;
-using _Source.Entities.Actors.DataComponents;
+﻿using _Source.Features.ActorEntities.Avatar.Data;
+using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 
-namespace _Source.Entities.ActorEntities.Avatar
+namespace _Source.Features.ActorEntities.Avatar
 {
     public class AvatarStateFactory
     {

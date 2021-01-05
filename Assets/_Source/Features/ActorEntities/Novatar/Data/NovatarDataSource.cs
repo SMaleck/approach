@@ -1,7 +1,7 @@
 ﻿using _Source.App;
 using UnityEngine;
 
-namespace _Source.Entities.ActorEntities.Novatar.Data
+namespace _Source.Features.ActorEntities.Novatar.Data
 {
     [CreateAssetMenu(menuName = Constants.DataMenu + nameof(NovatarDataSource), fileName = nameof(NovatarDataSource))]
     public class NovatarDataSource : ScriptableObject

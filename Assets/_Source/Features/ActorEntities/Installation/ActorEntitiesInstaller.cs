@@ -1,8 +1,8 @@
-﻿using _Source.Entities.ActorEntities.Avatar;
-using _Source.Entities.ActorEntities.Novatar;
+﻿using _Source.Features.ActorEntities.Avatar;
+using _Source.Features.ActorEntities.Novatar;
 using Zenject;
 
-namespace _Source.Entities.ActorEntities.Installation
+namespace _Source.Features.ActorEntities.Installation
 {
     public class ActorEntitiesInstaller : Installer<ActorEntitiesInstaller>
     {

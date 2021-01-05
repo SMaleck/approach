@@ -1,14 +1,14 @@
 ﻿using _Source.Entities;
-using _Source.Entities.ActorEntities.Novatar;
 using _Source.Entities.Novatar;
 using _Source.Features.Movement;
-using _Source.Features.NovatarBehaviour;
-using _Source.Features.NovatarBehaviour.Sensors;
 using _Source.Features.NovatarSpawning.Data;
 using _Source.Features.ScreenSize;
 using _Source.Util;
 using System.Collections.Generic;
 using System.Linq;
+using _Source.Features.ActorBehaviours;
+using _Source.Features.ActorBehaviours.Sensors;
+using _Source.Features.ActorEntities.Novatar;
 using UniRx;
 using UnityEngine;
 

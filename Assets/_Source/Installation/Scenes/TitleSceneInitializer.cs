@@ -3,7 +3,7 @@ using _Source.Features.ViewManagement;
 using _Source.Installation.Data;
 using Zenject;
 
-namespace _Source.Installation
+namespace _Source.Installation.Scenes
 {
     public class TitleSceneInitializer : AbstractSceneInitializer, IInitializable
     {

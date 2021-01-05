@@ -1,6 +1,6 @@
-﻿using _Source.Entities.Actors.Data;
+﻿using _Source.Features.Actors.Data;
 
-namespace _Source.Entities.ActorEntities.Novatar.Data
+namespace _Source.Features.ActorEntities.Novatar.Data
 {
     public class NovatarData : IHealthData 
     {

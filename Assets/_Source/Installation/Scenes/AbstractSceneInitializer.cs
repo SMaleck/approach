@@ -1,7 +1,7 @@
 ﻿using UniRx;
 using Zenject;
 
-namespace _Source.Installation
+namespace _Source.Installation.Scenes
 {
     public class AbstractSceneInitializer
     {

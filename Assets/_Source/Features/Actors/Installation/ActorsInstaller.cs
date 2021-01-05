@@ -1,8 +1,8 @@
-﻿using _Source.Entities.Actors.Data;
-using _Source.Entities.Actors.DataComponents;
+﻿using _Source.Features.Actors.Data;
+using _Source.Features.Actors.DataComponents;
 using Zenject;
 
-namespace _Source.Entities.Actors.Installation
+namespace _Source.Features.Actors.Installation
 {
     public class ActorsInstaller : Installer<ActorsInstaller>
     {

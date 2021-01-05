@@ -1,14 +1,14 @@
-﻿using _Source.Entities.Actors;
-using _Source.Entities.Actors.DataComponents;
+﻿using System.Collections.Generic;
 using _Source.Entities.Novatar;
+using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
 using _Source.Util;
-using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour.Sensors
+namespace _Source.Features.ActorBehaviours.Sensors
 {
     public class SensorySystem : AbstractDisposable, ISensorySystem, IInitializable
     {

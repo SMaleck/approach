@@ -1,7 +1,7 @@
 ﻿using BehaviourTreeSystem;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour.Nodes
+namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class IdleTimeoutNode : AbstractNode, IResettableNode
     {

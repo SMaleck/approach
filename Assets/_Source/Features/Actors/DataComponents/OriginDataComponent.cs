@@ -3,7 +3,7 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Entities.Actors.DataComponents
+namespace _Source.Features.Actors.DataComponents
 {
     public class OriginDataComponent : AbstractDisposableFeature, IDataComponent
     {

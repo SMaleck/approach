@@ -1,10 +1,10 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Entities.Novatar;
-using _Source.Features.NovatarBehaviour.Sensors.Data;
+using _Source.Features.ActorBehaviours.Sensors.Data;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Features.NovatarBehaviour.Sensors
+namespace _Source.Features.ActorBehaviours.Sensors
 {
     public class RangeSensor : ISensor
     {

@@ -1,4 +1,4 @@
-﻿namespace _Source.Features.NovatarBehaviour.Sensors
+﻿namespace _Source.Features.ActorBehaviours.Sensors
 {
     public interface ISensor
     {
