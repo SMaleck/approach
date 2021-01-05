@@ -1,9 +1,9 @@
-﻿namespace BehaviourTreeSystem
+﻿namespace BehaviourTreeSystem.StructuralNodes
 {
     /// <summary>
     /// Structural Node the manages execution of downstream nodes
     /// </summary>
-    public interface IParentBehaviourTreeNode : IBehaviourTreeNode
+    public interface IStructuralBehaviourTreeNode : IBehaviourTreeNode
     {
         void AddChild(IBehaviourTreeNode child);
     }

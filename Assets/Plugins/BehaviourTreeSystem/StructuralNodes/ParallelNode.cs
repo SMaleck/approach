@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace BehaviourTreeSystem
+namespace BehaviourTreeSystem.StructuralNodes
 {
     /// <summary>
     /// Runs childs nodes in parallel.
     /// </summary>
-    public class ParallelNode : IParentBehaviourTreeNode
+    public class ParallelNode : IStructuralBehaviourTreeNode
     {
         private readonly string name;
         private readonly List<IBehaviourTreeNode> children;

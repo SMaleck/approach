@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BehaviourTreeSystem
+namespace BehaviourTreeSystem.LeafNodes
 {
     /// <summary>
     /// A behaviour tree leaf node for running an action.

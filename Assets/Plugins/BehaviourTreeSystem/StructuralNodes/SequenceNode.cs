@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 
-namespace BehaviourTreeSystem
+namespace BehaviourTreeSystem.StructuralNodes
 {
     /// <summary>
-    /// Selects the first node that succeeds. Tries successive nodes until it finds one that doesn't fail.
+    /// Runs child nodes in sequence, until one fails.
     /// </summary>
-    public class SelectorNode : IParentBehaviourTreeNode
+    public class SequenceNode : IStructuralBehaviourTreeNode
     {
         private readonly string name;
         private readonly List<IBehaviourTreeNode> children;
 
-        public SelectorNode(string name)
+        public SequenceNode(string name)
         {
             this.name = name;
             children = new List<IBehaviourTreeNode>();
@@ -21,13 +21,13 @@ namespace BehaviourTreeSystem
             foreach (var child in children)
             {
                 var childStatus = child.Tick(time);
-                if (childStatus != BehaviourTreeStatus.Failure)
+                if (childStatus != BehaviourTreeStatus.Success)
                 {
                     return childStatus;
                 }
             }
 
-            return BehaviourTreeStatus.Failure;
+            return BehaviourTreeStatus.Success;
         }
 
         public void AddChild(IBehaviourTreeNode child)

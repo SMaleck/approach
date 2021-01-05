@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace BehaviourTreeSystem
+namespace BehaviourTreeSystem.DecoratorNodes
 {
     /// <summary>
     /// Decorator node that inverts the success/failure of its child.
     /// </summary>
-    public class InverterNode : IParentBehaviourTreeNode // ToDo Add actual decorator interface, that doesn't work with AddChild
+    public class InverterNode : IDecoratorBehaviourTreeNode // ToDo Add actual decorator interface, that doesn't work with AddChild
     {
         private readonly string name;
         private IBehaviourTreeNode childNode;

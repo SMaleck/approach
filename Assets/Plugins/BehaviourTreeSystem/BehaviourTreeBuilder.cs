@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BehaviourTreeSystem.DecoratorNodes;
+using BehaviourTreeSystem.LeafNodes;
+using BehaviourTreeSystem.StructuralNodes;
+using System;
 using System.Collections.Generic;
 
 namespace BehaviourTreeSystem
@@ -9,13 +12,13 @@ namespace BehaviourTreeSystem
     /// </summary>
     public class BehaviourTreeBuilder
     {
-        private readonly Stack<IParentBehaviourTreeNode> parentNodeStack;
+        private readonly Stack<IStructuralBehaviourTreeNode> parentNodeStack;
         private IBehaviourTreeNode curNode;
         private bool _isBuilt;
 
         public BehaviourTreeBuilder()
         {
-            parentNodeStack = new Stack<IParentBehaviourTreeNode>();
+            parentNodeStack = new Stack<IStructuralBehaviourTreeNode>();
         }
 
         /// <summary>
