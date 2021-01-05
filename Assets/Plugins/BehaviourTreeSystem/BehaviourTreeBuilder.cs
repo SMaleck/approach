@@ -5,28 +5,25 @@ namespace BehaviourTreeSystem
 {
     /// <summary>
     /// Fluent API for building a behaviour tree.
+    /// Modified, but originally based on https://github.com/ashleydavis/Fluent-Behaviour-Tree
     /// </summary>
     public class BehaviourTreeBuilder
     {
-        /// <summary>
-        /// Last node created.
-        /// </summary>
-        private IBehaviourTreeNode curNode = null;
+        private readonly Stack<IParentBehaviourTreeNode> parentNodeStack;
+        private IBehaviourTreeNode curNode;
+        private bool _isBuilt;
 
-        /// <summary>
-        /// Stack node nodes that we are build via the fluent API.
-        /// </summary>
-        private Stack<IParentBehaviourTreeNode> parentNodeStack = new Stack<IParentBehaviourTreeNode>();
+        public BehaviourTreeBuilder()
+        {
+            parentNodeStack = new Stack<IParentBehaviourTreeNode>();
+        }
 
         /// <summary>
         /// Create an action node.
         /// </summary>
         public BehaviourTreeBuilder Do(string name, Func<TimeData, BehaviourTreeStatus> fn)
         {
-            if (parentNodeStack.Count <= 0)
-            {
-                throw new ApplicationException("Can't create an unnested ActionNode, it must be a leaf node.");
-            }
+            AssertCanAddLeaf();
 
             var actionNode = new ActionNode(name, fn);
             parentNodeStack.Peek().AddChild(actionNode);
@@ -46,6 +43,8 @@ namespace BehaviourTreeSystem
         /// </summary>
         public BehaviourTreeBuilder Inverter(string name)
         {
+            AssertCanModify();
+
             var inverterNode = new InverterNode(name);
 
             if (parentNodeStack.Count > 0)
@@ -62,6 +61,8 @@ namespace BehaviourTreeSystem
         /// </summary>
         public BehaviourTreeBuilder Sequence(string name)
         {
+            AssertCanModify();
+
             var sequenceNode = new SequenceNode(name);
 
             if (parentNodeStack.Count > 0)
@@ -78,6 +79,8 @@ namespace BehaviourTreeSystem
         /// </summary>
         public BehaviourTreeBuilder Parallel(string name, int numRequiredToFail, int numRequiredToSucceed)
         {
+            AssertCanModify();
+
             var parallelNode = new ParallelNode(name, numRequiredToFail, numRequiredToSucceed);
 
             if (parentNodeStack.Count > 0)
@@ -94,6 +97,8 @@ namespace BehaviourTreeSystem
         /// </summary>
         public BehaviourTreeBuilder Selector(string name)
         {
+            AssertCanModify();
+
             var selectorNode = new SelectorNode(name);
 
             if (parentNodeStack.Count > 0)
@@ -110,15 +115,7 @@ namespace BehaviourTreeSystem
         /// </summary>
         public BehaviourTreeBuilder Splice(IBehaviourTreeNode subTree)
         {
-            if (subTree == null)
-            {
-                throw new ArgumentNullException("subTree");
-            }
-
-            if (parentNodeStack.Count <= 0)
-            {
-                throw new ApplicationException("Can't splice an unnested sub-tree, there must be a parent-tree.");
-            }
+            AssertCanSplice(subTree);
 
             parentNodeStack.Peek().AddChild(subTree);
             return this;
@@ -129,10 +126,9 @@ namespace BehaviourTreeSystem
         /// </summary>
         public IBehaviourTreeNode Build()
         {
-            if (curNode == null)
-            {
-                throw new ApplicationException("Can't create a behaviour tree with zero nodes");
-            }
+            AssertCanBuild();
+
+            _isBuilt = true;
             return curNode;
         }
 
@@ -143,6 +139,50 @@ namespace BehaviourTreeSystem
         {
             curNode = parentNodeStack.Pop();
             return this;
+        }
+
+        private void AssertCanModify()
+        {
+            if (_isBuilt)
+            {
+                throw new ApplicationException("Cannot modify or builkd already built tree");
+            }
+        }
+
+        private void AssertCanAddLeaf()
+        {
+            AssertCanModify();
+
+            if (parentNodeStack.Count <= 0)
+            {
+                throw new ApplicationException("Can't create an unnested ActionNode, it must be a leaf node.");
+            }
+
+        }
+
+        private void AssertCanSplice(IBehaviourTreeNode subTree)
+        {
+            AssertCanModify();
+
+            if (subTree == null)
+            {
+                throw new ArgumentNullException("subTree");
+            }
+
+            if (parentNodeStack.Count <= 0)
+            {
+                throw new ApplicationException("Can't splice an unnested sub-tree, there must be a parent-tree.");
+            }
+        }
+
+        private void AssertCanBuild()
+        {
+            AssertCanModify();
+
+            if (curNode == null)
+            {
+                throw new ApplicationException("Can't create a behaviour tree with zero nodes");
+            }
         }
     }
 }

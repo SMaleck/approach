@@ -17,7 +17,7 @@ namespace _Source.Features.NovatarBehaviour.Nodes
 
         public override BehaviourTreeStatus Tick(TimeData time)
         {
-            _timePassed += time.deltaTime;
+            _timePassed += time.DeltaTimeSeconds;
 
             return _timePassed > _timeoutSeconds
                 ? BehaviourTreeStatus.Success

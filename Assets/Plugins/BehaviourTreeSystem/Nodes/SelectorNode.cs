@@ -7,19 +7,13 @@ namespace BehaviourTreeSystem
     /// </summary>
     public class SelectorNode : IParentBehaviourTreeNode
     {
-        /// <summary>
-        /// The name of the node.
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// List of child nodes.
-        /// </summary>
-        private List<IBehaviourTreeNode> children = new List<IBehaviourTreeNode>(); //todo: optimization, bake this to an array.
+        private readonly string name;
+        private readonly List<IBehaviourTreeNode> children;
 
         public SelectorNode(string name)
         {
             this.name = name;
+            children = new List<IBehaviourTreeNode>();
         }
 
         public BehaviourTreeStatus Tick(TimeData time)
@@ -36,9 +30,6 @@ namespace BehaviourTreeSystem
             return BehaviourTreeStatus.Failure;
         }
 
-        /// <summary>
-        /// Add a child node to the selector.
-        /// </summary>
         public void AddChild(IBehaviourTreeNode child)
         {
             children.Add(child);

@@ -5,16 +5,9 @@ namespace BehaviourTreeSystem
     /// <summary>
     /// Decorator node that inverts the success/failure of its child.
     /// </summary>
-    public class InverterNode : IParentBehaviourTreeNode
+    public class InverterNode : IParentBehaviourTreeNode // ToDo Add actual decorator interface, that doesn't work with AddChild
     {
-        /// <summary>
-        /// Name of the node.
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// The child to be inverted.
-        /// </summary>
+        private readonly string name;
         private IBehaviourTreeNode childNode;
 
         public InverterNode(string name)
@@ -44,9 +37,6 @@ namespace BehaviourTreeSystem
             }
         }
 
-        /// <summary>
-        /// Add a child to the parent node.
-        /// </summary>
         public void AddChild(IBehaviourTreeNode child)
         {
             if (this.childNode != null)

@@ -7,19 +7,13 @@ namespace BehaviourTreeSystem
     /// </summary>
     public class SequenceNode : IParentBehaviourTreeNode
     {
-        /// <summary>
-        /// Name of the node.
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// List of child nodes.
-        /// </summary>
-        private List<IBehaviourTreeNode> children = new List<IBehaviourTreeNode>(); //todo: this could be optimized as a baked array.
+        private readonly string name;
+        private readonly List<IBehaviourTreeNode> children;
 
         public SequenceNode(string name)
         {
             this.name = name;
+            children = new List<IBehaviourTreeNode>();
         }
 
         public BehaviourTreeStatus Tick(TimeData time)
@@ -36,9 +30,6 @@ namespace BehaviourTreeSystem
             return BehaviourTreeStatus.Success;
         }
 
-        /// <summary>
-        /// Add a child to the sequence.
-        /// </summary>
         public void AddChild(IBehaviourTreeNode child)
         {
             children.Add(child);

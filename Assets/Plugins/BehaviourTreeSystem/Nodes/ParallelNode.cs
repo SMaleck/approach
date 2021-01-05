@@ -7,15 +7,8 @@ namespace BehaviourTreeSystem
     /// </summary>
     public class ParallelNode : IParentBehaviourTreeNode
     {
-        /// <summary>
-        /// Name of the node.
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// List of child nodes.
-        /// </summary>
-        private List<IBehaviourTreeNode> children = new List<IBehaviourTreeNode>();
+        private readonly string name;
+        private readonly List<IBehaviourTreeNode> children;
 
         /// <summary>
         /// Number of child failures required to terminate with failure.
@@ -32,6 +25,8 @@ namespace BehaviourTreeSystem
             this.name = name;
             this.numRequiredToFail = numRequiredToFail;
             this.numRequiredToSucceed = numRequiredToSucceed;
+            
+            children = new List<IBehaviourTreeNode>();
         }
 
         public BehaviourTreeStatus Tick(TimeData time)

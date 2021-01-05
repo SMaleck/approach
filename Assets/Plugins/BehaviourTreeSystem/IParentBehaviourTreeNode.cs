@@ -1,13 +1,10 @@
 ﻿namespace BehaviourTreeSystem
 {
     /// <summary>
-    /// Interface for behaviour tree nodes.
+    /// Structural Node the manages execution of downstream nodes
     /// </summary>
     public interface IParentBehaviourTreeNode : IBehaviourTreeNode
     {
-        /// <summary>
-        /// Add a child to the parent node.
-        /// </summary>
         void AddChild(IBehaviourTreeNode child);
     }
 }
