@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Source.Features.NovatarSpawning
+namespace _Source.Features.ActorBehaviours.NovatarSpawning
 {
     public interface IEntityPoolItem<T>
     {

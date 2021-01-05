@@ -1,6 +1,6 @@
-﻿using _Source.Features.Actors;
+﻿using _Source.Features.ActorBehaviours.NovatarSpawning;
+using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
-using _Source.Features.NovatarSpawning;
 using _Source.Util;
 using DG.Tweening;
 using UniRx;
