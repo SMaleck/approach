@@ -30,7 +30,7 @@ namespace _Source.Features.NovatarSpawning
         private bool CanSpawn()
         {
             var activeCount = _novatarSpawner.GetActiveNovatarCount();
-            return activeCount >= _novatarSpawnerConfig.MaxActiveSpawns;
+            return activeCount < _novatarSpawnerConfig.MaxActiveSpawns;
         }
     }
 }

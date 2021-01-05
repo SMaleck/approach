@@ -12,13 +12,16 @@ namespace BehaviourTreeSystem
     /// </summary>
     public class BehaviourTreeBuilder
     {
-        private readonly Stack<IStructuralBehaviourTreeNode> parentNodeStack;
-        private IBehaviourTreeNode curNode;
+        private readonly BehaviourTreeIdGenerator _idGenerator;
+        private readonly Stack<IStructuralBehaviourTreeNode> _parentNodeStack;
+
+        private IBehaviourTreeNode _curNode;
         private bool _isBuilt;
 
         public BehaviourTreeBuilder()
         {
-            parentNodeStack = new Stack<IStructuralBehaviourTreeNode>();
+            _idGenerator = new BehaviourTreeIdGenerator();
+            _parentNodeStack = new Stack<IStructuralBehaviourTreeNode>();
         }
 
         /// <summary>
@@ -29,7 +32,7 @@ namespace BehaviourTreeSystem
             AssertCanAddLeaf();
 
             var actionNode = new ActionNode(name, fn);
-            parentNodeStack.Peek().AddChild(actionNode);
+            _parentNodeStack.Peek().AddChild(actionNode);
             return this;
         }
 
@@ -50,12 +53,12 @@ namespace BehaviourTreeSystem
 
             var inverterNode = new InverterNode(name);
 
-            if (parentNodeStack.Count > 0)
+            if (_parentNodeStack.Count > 0)
             {
-                parentNodeStack.Peek().AddChild(inverterNode);
+                _parentNodeStack.Peek().AddChild(inverterNode);
             }
 
-            parentNodeStack.Push(inverterNode);
+            _parentNodeStack.Push(inverterNode);
             return this;
         }
 
@@ -68,12 +71,12 @@ namespace BehaviourTreeSystem
 
             var sequenceNode = new SequenceNode(name);
 
-            if (parentNodeStack.Count > 0)
+            if (_parentNodeStack.Count > 0)
             {
-                parentNodeStack.Peek().AddChild(sequenceNode);
+                _parentNodeStack.Peek().AddChild(sequenceNode);
             }
 
-            parentNodeStack.Push(sequenceNode);
+            _parentNodeStack.Push(sequenceNode);
             return this;
         }
 
@@ -86,12 +89,12 @@ namespace BehaviourTreeSystem
 
             var parallelNode = new ParallelNode(name, numRequiredToFail, numRequiredToSucceed);
 
-            if (parentNodeStack.Count > 0)
+            if (_parentNodeStack.Count > 0)
             {
-                parentNodeStack.Peek().AddChild(parallelNode);
+                _parentNodeStack.Peek().AddChild(parallelNode);
             }
 
-            parentNodeStack.Push(parallelNode);
+            _parentNodeStack.Push(parallelNode);
             return this;
         }
 
@@ -104,12 +107,12 @@ namespace BehaviourTreeSystem
 
             var selectorNode = new SelectorNode(name);
 
-            if (parentNodeStack.Count > 0)
+            if (_parentNodeStack.Count > 0)
             {
-                parentNodeStack.Peek().AddChild(selectorNode);
+                _parentNodeStack.Peek().AddChild(selectorNode);
             }
 
-            parentNodeStack.Push(selectorNode);
+            _parentNodeStack.Push(selectorNode);
             return this;
         }
 
@@ -120,7 +123,7 @@ namespace BehaviourTreeSystem
         {
             AssertCanSplice(subTree);
 
-            parentNodeStack.Peek().AddChild(subTree);
+            _parentNodeStack.Peek().AddChild(subTree);
             return this;
         }
 
@@ -132,7 +135,7 @@ namespace BehaviourTreeSystem
             AssertCanBuild();
 
             _isBuilt = true;
-            return curNode;
+            return _curNode;
         }
 
         /// <summary>
@@ -140,7 +143,7 @@ namespace BehaviourTreeSystem
         /// </summary>
         public BehaviourTreeBuilder End()
         {
-            curNode = parentNodeStack.Pop();
+            _curNode = _parentNodeStack.Pop();
             return this;
         }
 
@@ -156,7 +159,7 @@ namespace BehaviourTreeSystem
         {
             AssertCanModify();
 
-            if (parentNodeStack.Count <= 0)
+            if (_parentNodeStack.Count <= 0)
             {
                 throw new ApplicationException("Can't create an unnested ActionNode, it must be a leaf node.");
             }
@@ -172,7 +175,7 @@ namespace BehaviourTreeSystem
                 throw new ArgumentNullException("subTree");
             }
 
-            if (parentNodeStack.Count <= 0)
+            if (_parentNodeStack.Count <= 0)
             {
                 throw new ApplicationException("Can't splice an unnested sub-tree, there must be a parent-tree.");
             }
@@ -182,7 +185,7 @@ namespace BehaviourTreeSystem
         {
             AssertCanModify();
 
-            if (curNode == null)
+            if (_curNode == null)
             {
                 throw new ApplicationException("Can't create a behaviour tree with zero nodes");
             }
