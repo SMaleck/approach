@@ -1,24 +1,26 @@
-﻿using System.Collections.Generic;
-using _Source.Entities.Novatar;
-using _Source.Features.ActorEntities.Novatar.Config;
+﻿using _Source.Entities;
+using _Source.Entities.Avatar;
+using _Source.Features.ActorEntities.Novatar.Data;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
 using _Source.Util;
+using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Features.ActorBehaviours.Sensors
+namespace _Source.Features.ActorSensors
 {
     public class SensorySystem : AbstractDisposable, ISensorySystem, IInitializable
     {
-        public class Factory : PlaceholderFactory<INovatar, IActorStateModel, SensorySystem> { }
+        public class Factory : PlaceholderFactory<IMonoEntity, IActorStateModel, SensorySystem> { }
 
         [Inject] private readonly RangeSensor.Factory _rangeSensorFactory;
 
-        private readonly INovatar _novatarEntity;
-        private readonly NovatarConfig _novatarConfig;
+        private readonly IMonoEntity _ownerEntity;
+        private readonly IAvatar _avatarEntity;
+        private readonly NovatarData _novatarData;
         private readonly IPauseStateModel _pauseStateModel;
 
         private readonly HealthDataComponent _healthDataComponent;
@@ -26,13 +28,15 @@ namespace _Source.Features.ActorBehaviours.Sensors
         private RangeSensor _rangeSensor;
 
         public SensorySystem(
-            INovatar novatarEntity,
+            IMonoEntity ownerEntity,
             IActorStateModel actorStateModel,
-            NovatarConfig novatarConfig,
+            IAvatar avatarEntity, // ToDo V0 Don't get implicitly
+            NovatarData novatarData,
             IPauseStateModel pauseStateModel)
         {
-            _novatarEntity = novatarEntity;
-            _novatarConfig = novatarConfig;
+            _ownerEntity = ownerEntity;
+            _avatarEntity = avatarEntity;
+            _novatarData = novatarData;
             _pauseStateModel = pauseStateModel;
 
             _healthDataComponent = actorStateModel.Get<HealthDataComponent>();
@@ -42,8 +46,10 @@ namespace _Source.Features.ActorBehaviours.Sensors
         public void Initialize()
         {
             _rangeSensor = _rangeSensorFactory.Create(
-                _novatarEntity,
-                _novatarConfig.RangeSensorConfig);
+                _novatarData,
+                _ownerEntity,
+                _avatarEntity);
+
             _sensors.Add(_rangeSensor);
 
             Observable.EveryLateUpdate()

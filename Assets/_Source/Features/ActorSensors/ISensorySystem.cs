@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Source.Features.ActorBehaviours.Sensors
+namespace _Source.Features.ActorSensors
 {
     public interface ISensorySystem
     {

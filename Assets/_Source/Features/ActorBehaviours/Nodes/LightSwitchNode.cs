@@ -1,37 +1,29 @@
-﻿using _Source.Entities.Novatar;
+﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using BehaviourTreeSystem;
 using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Nodes
 {
-    public class LightSwitchNode : AbstractNode, IResettableNode
+    public class LightSwitchNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<INovatar, LightSwitchNode> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, LightSwitchNode> { }
 
-        private readonly INovatar _novatarEntity;
+        private readonly LightDataComponent _lightDataComponent;
 
-        private bool _isLightOn;
-
-        public LightSwitchNode(
-            INovatar novatarEntity)
+        public LightSwitchNode(IActorStateModel actorStateModel)
         {
-            _novatarEntity = novatarEntity;
+            _lightDataComponent = actorStateModel.Get<LightDataComponent>();
         }
 
         public override BehaviourTreeStatus Tick(TimeData time)
         {
-            if (!_isLightOn)
+            if (!_lightDataComponent.IsOn.Value)
             {
-                _novatarEntity.TurnLightsOn();
-                _isLightOn = true;
+                _lightDataComponent.TurnLightsOn();
             }
 
             return BehaviourTreeStatus.Success;
-        }
-
-        public void Reset()
-        {
-            _isLightOn = false;
         }
     }
 }

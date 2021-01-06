@@ -1,4 +1,5 @@
-﻿using _Source.Entities.Novatar;
+﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using BehaviourTreeSystem;
 using Zenject;
 
@@ -6,18 +7,18 @@ namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class DeactivateSelfNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<INovatar, DeactivateSelfNode> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, DeactivateSelfNode> { }
 
-        private readonly INovatar _novatarEntity;
+        private readonly HealthDataComponent _healthDataComponent;
 
-        public DeactivateSelfNode(INovatar novatarEntity)
+        public DeactivateSelfNode(IActorStateModel actorStateModel)
         {
-            _novatarEntity = novatarEntity;
+            _healthDataComponent = actorStateModel.Get<HealthDataComponent>();
         }
 
         public override BehaviourTreeStatus Tick(TimeData time)
         {
-            _novatarEntity.Deactivate();
+            _healthDataComponent.SetIsAlive(false);
             return BehaviourTreeStatus.Success;
         }
     }

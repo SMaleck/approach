@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _Source.Features.Actors.Data
+namespace _Source.Features.Movement.Data
 {
     [Serializable]
     public class MovementDataSource

@@ -1,5 +1,5 @@
-﻿using _Source.Entities.Novatar;
-using _Source.Features.ActorBehaviours.Sensors;
+﻿using _Source.Features.Actors;
+using _Source.Features.ActorSensors;
 using _Source.Features.Movement;
 using BehaviourTreeSystem;
 using Zenject;
@@ -8,18 +8,18 @@ namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class FollowAvatarNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<INovatar , ISensorySystem, MovementController, FollowAvatarNode> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, ISensorySystem, MovementController, FollowAvatarNode> { }
 
-        private readonly INovatar _novatarEntity;
+        private readonly IActorStateModel _actorStateModel;
         private readonly ISensorySystem _sensorySystem;
         private readonly MovementController _movementController;
 
         public FollowAvatarNode(
-            INovatar novatarEntity,
+            IActorStateModel actorStateModel,
             ISensorySystem sensorySystem,
             MovementController movementController)
         {
-            _novatarEntity = novatarEntity;
+            _actorStateModel = actorStateModel;
             _sensorySystem = sensorySystem;
             _movementController = movementController;
         }
@@ -35,7 +35,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
                 return BehaviourTreeStatus.Success;
             }
 
-            _novatarEntity.ResetIdleTimeouts();
+            _actorStateModel.ResetIdleTimeouts();
             _movementController.MoveToTarget(_sensorySystem.GetAvatarPosition());
 
             return BehaviourTreeStatus.Running;

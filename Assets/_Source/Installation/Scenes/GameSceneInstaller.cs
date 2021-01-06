@@ -2,6 +2,7 @@
 using _Source.Features.ActorBehaviours.Installation;
 using _Source.Features.ActorEntities.Installation;
 using _Source.Features.Actors.Installation;
+using _Source.Features.ActorSensors.Installation;
 using _Source.Features.AvatarRelationships;
 using _Source.Features.Cheats;
 using _Source.Features.GameRound;
@@ -27,6 +28,7 @@ namespace _Source.Installation.Scenes
 
             ActorsInstaller.Install(Container);
             ActorEntitiesInstaller.Install(Container);
+            ActorSensorsInstaller.Install(Container);
             ActorBehavioursInstaller.Install(Container);
             EntitiesInstaller.Install(Container);
             NovatarSpawningInstaller.Install(Container);

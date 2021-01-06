@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Data;
-using _Source.Features.ActorBehaviours.Sensors;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.ActorSensors;
 using BehaviourTreeSystem;
 using Zenject;
 
@@ -11,21 +11,18 @@ namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class FirstTouchNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<INovatar, IActorStateModel, ISensorySystem, FirstTouchNode> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, ISensorySystem, FirstTouchNode> { }
 
-        private readonly INovatar _novatarEntity;
         private readonly ISensorySystem _sensorySystem;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
         private readonly RelationshipDataComponent _relationshipDataComponent;
 
         public FirstTouchNode(
-            INovatar novatarEntity,
             IActorStateModel actorStateModel,
             ISensorySystem sensorySystem,
             BehaviourTreeConfig behaviourTreeConfig)
         {
-            _novatarEntity = novatarEntity;
             _sensorySystem = sensorySystem;
             _behaviourTreeConfig = behaviourTreeConfig;
 
@@ -40,7 +37,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
             }
 
             EntityState nextStatus = GetWeightedRandomRelationshipStatus();
-            _novatarEntity.SwitchToEntityState(nextStatus);
+            _relationshipDataComponent.SetRelationship(nextStatus);
 
             return BehaviourTreeStatus.Success;
         }

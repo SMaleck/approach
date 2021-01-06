@@ -1,5 +1,6 @@
 ﻿using _Source.App;
 using _Source.Features.Actors.Data;
+using _Source.Features.Movement.Data;
 using UnityEngine;
 
 namespace _Source.Features.ActorEntities.Avatar.Data

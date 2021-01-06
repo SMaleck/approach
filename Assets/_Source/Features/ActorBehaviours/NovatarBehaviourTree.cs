@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using _Source.Entities.Novatar;
+﻿using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Data;
 using _Source.Features.ActorBehaviours.Nodes;
-using _Source.Features.ActorBehaviours.Sensors;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
 using _Source.Util;
 using BehaviourTreeSystem;
+using System.Collections.Generic;
+using System.Linq;
+using _Source.Features.ActorSensors;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -22,11 +22,10 @@ namespace _Source.Features.ActorBehaviours
     // ToDo V1 FRIENDS: Leave when health is low
     public class NovatarBehaviourTree : AbstractDisposable, IInitializable
     {
-        public class Factory : PlaceholderFactory<INovatar, IActorStateModel, ISensorySystem, MovementController, NovatarBehaviourTree> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, ISensorySystem, MovementController, NovatarBehaviourTree> { }
 
         [Inject] private readonly NodeGenerator.Factory _nodeGeneratorFactory;
 
-        private readonly INovatar _novatarEntity;
         private readonly IActorStateModel _actorStateModel;
         private readonly ISensorySystem _sensorySystem;
         private readonly MovementController _movementController;
@@ -38,14 +37,12 @@ namespace _Source.Features.ActorBehaviours
         private List<IResettableNode> _resettableTimeoutNodes;
 
         public NovatarBehaviourTree(
-            INovatar novatarEntity,
             IActorStateModel actorStateModel,
             ISensorySystem sensorySystem,
             MovementController movementController,
             BehaviourTreeConfig behaviourTreeConfig,
             IPauseStateModel pauseStateModel)
         {
-            _novatarEntity = novatarEntity;
             _actorStateModel = actorStateModel;
             _sensorySystem = sensorySystem;
             _movementController = movementController;
@@ -77,7 +74,6 @@ namespace _Source.Features.ActorBehaviours
         {
             var nodeGenerator = _nodeGeneratorFactory.Create();
             nodeGenerator.SetupForNovatar(
-                _novatarEntity,
                 _actorStateModel,
                 _sensorySystem,
                 _movementController);

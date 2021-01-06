@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using _Source.Entities;
+﻿using _Source.Entities;
 using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours;
-using _Source.Features.ActorBehaviours.Sensors;
 using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using _Source.Util;
+using System.Collections.Generic;
+using System.Linq;
+using _Source.Features.ActorSensors;
 using UniRx;
 using UnityEngine;
 
@@ -111,7 +111,7 @@ namespace _Source.Features.ActorEntities.Novatar
                 .AddTo(Disposer);
 
             _novatarBehaviourTreeFactory
-                .Create(novatarFacade, actorStateModel, sensorySystem, novatarMovementController)
+                .Create(actorStateModel, sensorySystem, novatarMovementController)
                 .AddTo(Disposer)
                 .Initialize();
 

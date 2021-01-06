@@ -22,3 +22,7 @@ MonoBehaviour:
     _movementDeadZoneMagnitude: 0.01
     _turnSpeed: 30
     _turnDeadZoneAngle: 1
+  _rangeSensorDataSource:
+    _followRange: 5
+    _interactionRange: 0
+    _touchRange: 0.8

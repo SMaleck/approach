@@ -1,6 +1,5 @@
 ﻿using _Source.App;
 using _Source.Entities.Novatar;
-using _Source.Features.ActorBehaviours.Sensors.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +22,6 @@ namespace _Source.Features.ActorEntities.Novatar.Config
 
         [SerializeField] private NovatarEntity _novatarPrefab;
         public NovatarEntity NovatarPrefab => _novatarPrefab;
-
-        [Header("Sensory System")]
-        [SerializeField] private RangeSensorConfig _rangeSensorConfig;
-        public RangeSensorConfig RangeSensorConfig => _rangeSensorConfig;
 
         [Header("Visuals")]
         [SerializeField] private List<RelationshipVisualsConfig> _relationshipVisualsConfigs;

@@ -1,7 +1,7 @@
 ﻿using _Source.Entities.Avatar;
-using _Source.Features.ActorBehaviours.Sensors;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.ActorSensors;
 using BehaviourTreeSystem;
 using Zenject;
 

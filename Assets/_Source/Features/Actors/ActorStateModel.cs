@@ -14,8 +14,6 @@ namespace _Source.Features.Actors
         private readonly Dictionary<Type, IDataComponent> _dataComponents;
         private readonly List<IResettableDataComponent> _resettableDataComponents;
 
-        public IDataComponent this[Type type] => _dataComponents[type];
-
         private readonly Subject<Unit> _onReset;
         public IObservable<Unit> OnReset => _onReset;
 
@@ -45,7 +43,17 @@ namespace _Source.Features.Actors
 
         public T Get<T>() where T : class, IDataComponent
         {
-            return this[typeof(T)] as T;
+            if (TryGet<T>(out var component))
+            {
+                return component as T;
+            }
+            
+            throw new KeyNotFoundException($"No component of type [{(typeof(T).Name)}] found");
+        }
+
+        public bool TryGet<T>(out IDataComponent component) where T : class, IDataComponent
+        {
+            return _dataComponents.TryGetValue(typeof(T), out component);
         }
 
         public void Reset()
@@ -54,7 +62,7 @@ namespace _Source.Features.Actors
             _onReset.OnNext(Unit.Default);
         }
 
-        public void PublishOnResetIdleTimeouts()
+        public void ResetIdleTimeouts()
         {
             _onResetIdleTimeouts.OnNext(Unit.Default);
         }

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using _Source.Entities.Novatar;
+﻿using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Nodes;
-using _Source.Features.ActorBehaviours.Sensors;
 using _Source.Features.Actors;
 using _Source.Features.Movement;
+using System.Collections.Generic;
+using _Source.Features.ActorSensors;
 using Zenject;
 
 namespace _Source.Features.ActorBehaviours
@@ -23,7 +23,6 @@ namespace _Source.Features.ActorBehaviours
         [Inject] private readonly LightSwitchNode.Factory _lightSwitchNodeFactory;
         [Inject] private readonly EnterScreenNode.Factory _enterScreenNodeFactory;
 
-        private INovatar _novatarEntity;
         private IActorStateModel _actorStateModel;
         private ISensorySystem _sensorySystem;
         private MovementController _movementController;
@@ -31,12 +30,10 @@ namespace _Source.Features.ActorBehaviours
         public List<AbstractNode> GeneratedNodes { get; private set; }
 
         public void SetupForNovatar(
-            INovatar novatarEntity,
             IActorStateModel actorStateModel,
             ISensorySystem sensorySystem,
             MovementController movementController)
         {
-            _novatarEntity = novatarEntity;
             _actorStateModel = actorStateModel;
             _sensorySystem = sensorySystem;
             _movementController = movementController;
@@ -47,7 +44,7 @@ namespace _Source.Features.ActorBehaviours
         public FollowAvatarNode CreateFollowAvatarNode()
         {
             var node = _followAvatarNodeFactory.Create(
-                _novatarEntity,
+                _actorStateModel,
                 _sensorySystem,
                 _movementController);
             GeneratedNodes.Add(node);
@@ -76,7 +73,6 @@ namespace _Source.Features.ActorBehaviours
         public FirstTouchNode CreateFirstTouchNode()
         {
             var node = _firstTouchNodeFactory.Create(
-                _novatarEntity,
                 _actorStateModel,
                 _sensorySystem);
             GeneratedNodes.Add(node);
@@ -87,7 +83,7 @@ namespace _Source.Features.ActorBehaviours
         public SwitchEntityStateNode CreateSwitchEntityStateNode(EntityState targetEntityState)
         {
             var node = _switchEntityStateNodeFactory.Create(
-                _novatarEntity,
+                _actorStateModel,
                 targetEntityState);
             GeneratedNodes.Add(node);
 
@@ -97,7 +93,7 @@ namespace _Source.Features.ActorBehaviours
         public DeactivateSelfNode CreateDeactivateSelfNode()
         {
             var node = _deactivateSelfNodeFactory.Create(
-                _novatarEntity);
+                _actorStateModel);
             GeneratedNodes.Add(node);
 
             return node;
@@ -106,7 +102,6 @@ namespace _Source.Features.ActorBehaviours
         public LeaveScreenNode CreateLeaveScreenNode()
         {
             var node = _leaveScreenNodeFactory.Create(
-                _novatarEntity,
                 _actorStateModel,
                 _movementController);
             GeneratedNodes.Add(node);
@@ -127,7 +122,7 @@ namespace _Source.Features.ActorBehaviours
         public LightSwitchNode CreateLightSwitchNode()
         {
             var node = _lightSwitchNodeFactory.Create(
-                _novatarEntity);
+                _actorStateModel);
             GeneratedNodes.Add(node);
 
             return node;
@@ -136,7 +131,6 @@ namespace _Source.Features.ActorBehaviours
         public EnterScreenNode CreateEnterScreenNode()
         {
             var node = _enterScreenNodeFactory.Create(
-                _novatarEntity,
                 _actorStateModel,
                 _movementController);
             GeneratedNodes.Add(node);

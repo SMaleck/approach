@@ -9,32 +9,35 @@ using Zenject;
 
 namespace _Source.Entities.Novatar
 {
-    // ToDo NovatarFacade became a bit of an ugly amalgamation of Features, split this up
-    public class NovatarFacade : AbstractDisposable, INovatar, IEntityPoolItem<IMonoEntity>
+    public class NovatarFacade : AbstractDisposable, IMonoEntity, IEntityPoolItem<IMonoEntity>
     {
         public class Factory : PlaceholderFactory<NovatarEntity, IActorStateModel, NovatarFacade> { }
 
         private readonly NovatarEntity _novatarEntity;
-        private readonly IActorStateModel _actorStateModel;
         private readonly NovatarConfig _novatarConfig;
+
+        private readonly IActorStateModel _actorStateModel;
+        private readonly HealthDataComponent _healthDataComponent;
+        private readonly OriginDataComponent _originDataComponent;
+        private readonly RelationshipDataComponent _relationshipDataComponent;
+        private readonly LightDataComponent _lightDataComponent;
+
+        private readonly SerialDisposable _tweenDisposer;
+        private readonly Tween _lightsOnTween;
 
         public IMonoEntity Entity => this;
 
         public Transform LocomotionTarget => _novatarEntity.LocomotionTarget;
         public Transform RotationTarget => _novatarEntity.RotationTarget;
 
+        // ToDo V0 Most properties below should probably go into another data component
         public bool IsActive => _novatarEntity.IsActive;
         public Vector3 Position => _novatarEntity.Position;
         public Quaternion Rotation => _novatarEntity.Rotation;
         public Vector3 Size => _novatarEntity.Size;
         public string ToDebugString() => _novatarEntity.ToDebugString();
 
-        private readonly SerialDisposable _tweenDisposer;
-        private readonly Tween _lightsOnTween;
-
-        private readonly HealthDataComponent _healthDataComponent;
-        private readonly OriginDataComponent _originDataComponent;
-        private readonly RelationshipDataComponent _relationshipDataComponent;
+        public bool IsFree { get; private set; }
 
         public NovatarFacade(
             NovatarEntity novatarEntity,
@@ -48,13 +51,13 @@ namespace _Source.Entities.Novatar
             _healthDataComponent = _actorStateModel.Get<HealthDataComponent>();
             _originDataComponent = _actorStateModel.Get<OriginDataComponent>();
             _relationshipDataComponent = _actorStateModel.Get<RelationshipDataComponent>();
+            _lightDataComponent = _actorStateModel.Get<LightDataComponent>();
+            
+            _actorStateModel.Get<TransformDataComponent>()
+                .SetMonoEntity(this);
 
             _healthDataComponent.IsAlive
-                .Subscribe(isAlive =>
-                {
-                    _novatarEntity.SetActive(isAlive);
-                    IsFree = !isAlive;
-                })
+                .Subscribe(OnIsAliveChanged)
                 .AddTo(Disposer);
 
             _originDataComponent.SpawnPosition
@@ -67,21 +70,12 @@ namespace _Source.Entities.Novatar
                 .Subscribe(OnRelationshipSwitched)
                 .AddTo(Disposer);
 
+            _lightDataComponent.OnLightsSwitchedOn
+                .Subscribe(_ => _lightsOnTween.Restart())
+                .AddTo(Disposer);
+
             _tweenDisposer = new SerialDisposable().AddTo(Disposer);
-
             _lightsOnTween = CreateLightsOnTween();
-        }
-
-        public bool IsFree { get; private set; }
-
-        public void SwitchToEntityState(EntityState entityState)
-        {
-            _relationshipDataComponent.SetRelationship(entityState);
-        }
-
-        public void Deactivate()
-        {
-            _healthDataComponent.SetIsAlive(false);
         }
 
         public void Reset(Vector3 spawnPosition)
@@ -94,14 +88,10 @@ namespace _Source.Entities.Novatar
             _actorStateModel.Reset();
         }
 
-        public void ResetIdleTimeouts()
+        private void OnIsAliveChanged(bool isAlive)
         {
-            _actorStateModel.PublishOnResetIdleTimeouts();
-        }
-
-        public void TurnLightsOn()
-        {
-            _lightsOnTween.Restart();
+            _novatarEntity.SetActive(isAlive);
+            IsFree = !isAlive;
         }
 
         private void OnRelationshipSwitched(Pair<EntityState> relationshipPair)
@@ -157,7 +147,7 @@ namespace _Source.Entities.Novatar
                 .SetEase(Ease.InOutCubic);
         }
 
-        public Tween CreateLightsOnTween()
+        private Tween CreateLightsOnTween()
         {
             _novatarEntity.HeadLight.intensity = 0;
 

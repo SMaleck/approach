@@ -1,37 +1,23 @@
 ﻿using _Source.Features.ActorEntities.Avatar.Data;
 using _Source.Features.Actors;
-using _Source.Features.Actors.DataComponents;
 
 namespace _Source.Features.ActorEntities.Avatar
 {
-    public class AvatarStateFactory
+    public class AvatarStateFactory : AbstractActorStateFactory
     {
         private readonly AvatarData _data;
-        private readonly ActorStateModel.Factory _actorStateModelFactory;
-        private readonly HealthDataComponent.Factory _healthDataComponentFactory;
-        private readonly MovementDataComponent.Factory _movementDataComponentFactory;
-        private readonly SurvivalDataComponent.Factory _survivalDataComponentFactory;
 
-        public AvatarStateFactory(
-            AvatarData data,
-            ActorStateModel.Factory actorStateModelFactory,
-            HealthDataComponent.Factory healthDataComponentFactory,
-            MovementDataComponent.Factory movementDataComponentFactory,
-            SurvivalDataComponent.Factory survivalDataComponentFactory)
+        public AvatarStateFactory(AvatarData data)
         {
             _data = data;
-            _actorStateModelFactory = actorStateModelFactory;
-            _healthDataComponentFactory = healthDataComponentFactory;
-            _movementDataComponentFactory = movementDataComponentFactory;
-            _survivalDataComponentFactory = survivalDataComponentFactory;
         }
 
         public IActorStateModel Create()
         {
-            return _actorStateModelFactory.Create()
-                .Attach(_healthDataComponentFactory.Create(_data))
-                .Attach(_movementDataComponentFactory.Create(_data))
-                .Attach(_survivalDataComponentFactory.Create());
+            return ActorStateModelFactory.Create()
+                .Attach(HealthDataComponentFactory.Create(_data))
+                .Attach(MovementDataComponentFactory.Create(_data))
+                .Attach(SurvivalDataComponentFactory.Create());
         }
     }
 }

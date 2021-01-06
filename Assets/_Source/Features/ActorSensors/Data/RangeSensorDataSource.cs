@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _Source.Features.ActorBehaviours.Sensors.Data
+namespace _Source.Features.ActorSensors.Data
 {
     [Serializable]
-    public class RangeSensorConfig
+    public class RangeSensorDataSource
     {
         [SerializeField] private float _followRange;
         public float FollowRange => _followRange;
