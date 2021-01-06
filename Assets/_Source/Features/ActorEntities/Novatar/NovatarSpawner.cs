@@ -1,15 +1,15 @@
 ﻿using _Source.Entities;
 using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours;
+using _Source.Features.ActorEntities.Avatar;
 using _Source.Features.ActorEntities.Novatar.Config;
+using _Source.Features.ActorEntities.Novatar.Data;
+using _Source.Features.ActorSensors;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using _Source.Util;
 using System.Collections.Generic;
 using System.Linq;
-using _Source.Features.ActorEntities.Novatar.Data;
-using _Source.Features.Actors;
-using _Source.Features.ActorSensors;
 using UniRx;
 using UnityEngine;
 
@@ -29,7 +29,7 @@ namespace _Source.Features.ActorEntities.Novatar
         private readonly MovementComponent.Factory _movementComponentFactory;
         private readonly SensorySystem.Factory _sensorySystemFactory;
         private readonly ScreenSizeController _screenSizeController;
-        private readonly IActorStateModel _avatarActorStateModel;
+        private readonly IAvatarLocator _avatarLocator;
 
         private readonly List<IEntityPoolItem<IMonoEntity>> _novatarPool;
 
@@ -46,7 +46,7 @@ namespace _Source.Features.ActorEntities.Novatar
             MovementComponent.Factory movementComponentFactory,
             SensorySystem.Factory sensorySystemFactory,
             ScreenSizeController screenSizeController,
-            IActorStateModel avatarActorStateModel) // ToDo V0 Don't get implicitly
+            IAvatarLocator avatarLocator)
         {
             _novatarSpawnerConfig = novatarSpawnerConfig;
             _novatarConfig = novatarConfig;
@@ -60,7 +60,7 @@ namespace _Source.Features.ActorEntities.Novatar
             _movementComponentFactory = movementComponentFactory;
             _sensorySystemFactory = sensorySystemFactory;
             _screenSizeController = screenSizeController;
-            _avatarActorStateModel = avatarActorStateModel;
+            _avatarLocator = avatarLocator;
 
             _novatarPool = new List<IEntityPoolItem<IMonoEntity>>();
         }
@@ -102,7 +102,7 @@ namespace _Source.Features.ActorEntities.Novatar
                 .AddTo(Disposer);
 
             var sensorySystem = _sensorySystemFactory
-                .Create(actorStateModel, _avatarActorStateModel, _novatarData)
+                .Create(actorStateModel, _avatarLocator.AvatarActorStateModel, _novatarData)
                 .AddTo(Disposer);
             sensorySystem.Initialize();
 

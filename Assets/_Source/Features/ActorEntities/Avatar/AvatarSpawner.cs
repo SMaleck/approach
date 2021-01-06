@@ -1,4 +1,5 @@
-﻿using _Source.Entities.Avatar;
+﻿using _Source.Entities;
+using _Source.Entities.Avatar;
 using _Source.Features.ActorEntities.Avatar.Config;
 using _Source.Features.Actors;
 using _Source.Features.Movement;
@@ -9,36 +10,38 @@ using Zenject;
 
 namespace _Source.Features.ActorEntities.Avatar
 {
-    public class AvatarSpawner : AbstractDisposable, IInitializable
+    public class AvatarSpawner : AbstractDisposable, IInitializable, IAvatarLocator
     {
-        private readonly DiContainer _sceneContainer;
-        private readonly IActorStateModel _avatarActorStateModel;
-
-        [Inject] private AvatarEntity.Factory _avatarFactory;
+        [Inject] private readonly AvatarStateFactory _avatarStateFactory;
+        [Inject] private AvatarEntity.Factory _avatarEntityFactory;
         [Inject] private AvatarFacade.Factory _avatarFacadeFactory;
         [Inject] private AvatarConfig _avatarConfig;
         [Inject] private MovementModel.Factory _movementModelFactory;
         [Inject] private MovementComponent.Factory _movementComponentFactory;
         [Inject] private UserInputController.Factory _userInputControllerFactory;
 
-        // ToDo V0 Do not inject, use service locator pattern instead
-        public AvatarSpawner(
-            [InjectLocal] DiContainer sceneContainer,
-            IActorStateModel avatarActorStateModel)
-        {
-            _sceneContainer = sceneContainer;
-            _avatarActorStateModel = avatarActorStateModel;
-        }
+        // ToDo V0 This can probably be exposed cleaner
+        // IDamageReceiver should be handled differently, potentially accessed via trigger volumes from WorldSpace
+
+        public IActorStateModel AvatarActorStateModel { get; private set; }
+        public IMonoEntity AvatarMonoEntity { get; private set; }
+        public IDamageReceiver AvatarDamageReceiver { get; private set; }
 
         public void Initialize()
         {
-            var avatar = _avatarFactory.Create(_avatarConfig.AvatarPrefab);
+            AvatarActorStateModel = _avatarStateFactory.Create();
+
+            var avatarEntity = _avatarEntityFactory
+                .Create(_avatarConfig.AvatarPrefab);
 
             var avatarFacade = _avatarFacadeFactory
-                .Create(avatar);
+                .Create(avatarEntity, AvatarActorStateModel);
+
+            AvatarMonoEntity = avatarFacade;
+            AvatarDamageReceiver = avatarFacade;
 
             var movementModel = _movementModelFactory
-                .Create(_avatarActorStateModel)
+                .Create(AvatarActorStateModel)
                 .AddTo(Disposer);
 
             _userInputControllerFactory
@@ -48,9 +51,6 @@ namespace _Source.Features.ActorEntities.Avatar
             _movementComponentFactory
                 .Create(avatarFacade, movementModel)
                 .AddTo(Disposer);
-
-            _sceneContainer.BindInterfacesAndSelfTo<AvatarFacade>()
-                .FromInstance(avatarFacade);
         }
     }
 }

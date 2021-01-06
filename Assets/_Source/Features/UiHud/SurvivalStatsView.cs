@@ -1,4 +1,4 @@
-﻿using _Source.Features.Actors;
+﻿using _Source.Features.ActorEntities.Avatar;
 using _Source.Features.Actors.DataComponents;
 using _Source.Services.Texts;
 using _Source.Util;
@@ -16,18 +16,21 @@ namespace _Source.Features.UiHud
         [SerializeField] private TextMeshProUGUI _survivalTimeText;
         [SerializeField] private TextMeshProUGUI _healthText;
 
+        private IAvatarLocator _avatarLocator;
         private SurvivalDataComponent _survivalDataComponent;
         private HealthDataComponent _healthDataComponent;
 
         [Inject]
-        private void Inject(IActorStateModel actorStateModel)
+        private void Inject(IAvatarLocator avatarLocator)
         {
-            _survivalDataComponent = actorStateModel.Get<SurvivalDataComponent>();
-            _healthDataComponent = actorStateModel.Get<HealthDataComponent>();
+            _avatarLocator = avatarLocator;
         }
 
         public void Initialize()
         {
+            _survivalDataComponent = _avatarLocator.AvatarActorStateModel.Get<SurvivalDataComponent>();
+            _healthDataComponent = _avatarLocator.AvatarActorStateModel.Get<HealthDataComponent>();
+
             _survivalDataComponent.SurvivalSeconds
                 .Subscribe(OnSurvivalSecondsChanged)
                 .AddTo(Disposer);

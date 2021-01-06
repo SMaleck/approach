@@ -13,7 +13,7 @@ namespace _Source.Entities.Avatar
 {
     public class AvatarFacade : AbstractDisposableFeature, IMonoEntity, IDamageReceiver
     {
-        public class Factory : PlaceholderFactory<AvatarEntity, AvatarFacade> { }
+        public class Factory : PlaceholderFactory<AvatarEntity, IActorStateModel , AvatarFacade> { }
 
         private readonly AvatarEntity _avatarEntity;
         private readonly AvatarConfig _avatarConfig;
@@ -33,8 +33,8 @@ namespace _Source.Entities.Avatar
 
         public AvatarFacade(
             AvatarEntity avatarEntity,
-            AvatarConfig avatarConfig,
             IActorStateModel actorStateModel,
+            AvatarConfig avatarConfig,
             ScreenSizeModel screenSizeModel,
             IPauseStateModel pauseStateModel)
         {

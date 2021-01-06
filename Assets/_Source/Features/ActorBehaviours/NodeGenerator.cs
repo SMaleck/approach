@@ -3,6 +3,7 @@ using _Source.Features.ActorBehaviours.Nodes;
 using _Source.Features.Actors;
 using _Source.Features.Movement;
 using System.Collections.Generic;
+using _Source.Features.ActorEntities.Avatar;
 using _Source.Features.ActorSensors;
 using Zenject;
 
