@@ -1,17 +1,12 @@
-﻿using _Source.Entities;
-using _Source.Entities.Installation;
-using _Source.Entities.Novatar;
-using _Source.Features.ActorBehaviours;
+﻿using _Source.Entities.Installation;
 using _Source.Features.ActorBehaviours.Installation;
-using _Source.Features.ActorBehaviours.Sensors;
 using _Source.Features.ActorEntities.Installation;
-using _Source.Features.Actors;
 using _Source.Features.Actors.Installation;
 using _Source.Features.AvatarRelationships;
 using _Source.Features.Cheats;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
-using _Source.Features.Movement.Data;
+using _Source.Features.Movement.Installation;
 using _Source.Features.ScreenSize;
 using _Source.Features.UiHud;
 using _Source.Features.UiScreens;
@@ -35,6 +30,7 @@ namespace _Source.Installation.Scenes
             ActorBehavioursInstaller.Install(Container);
             EntitiesInstaller.Install(Container);
             NovatarSpawningInstaller.Install(Container);
+            MovementInstaller.Install(Container);
 
             Container.BindPrefabFactory<HudView, HudView.Factory>();
             Container.BindPrefabFactory<PauseView, PauseView.Factory>();
@@ -45,10 +41,6 @@ namespace _Source.Installation.Scenes
 
             Container.BindInterfacesAndSelfTo<ViewManagementController>().AsSingleNonLazy();
 
-            Container.BindFactory<IMovementData, MovementModel, MovementModel.Factory>();
-            Container.BindFactory<MovementModel, IMonoEntity, MovementController, MovementController.Factory>();
-
-            Container.BindFactory<IMonoEntity, IMovementModel, MovementComponent, MovementComponent.Factory>();
             Container.BindInterfacesAndSelfTo<VirtualJoystickModel>().AsSingleNonLazy();
             Container.BindFactory<MovementModel, UserInputController, UserInputController.Factory>();
 
@@ -60,8 +52,6 @@ namespace _Source.Installation.Scenes
 
             Container.BindInterfacesAndSelfTo<ScreenSizeModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<ScreenSizeController>().AsSingleNonLazy();
-
-            Container.BindFactory<INovatar, IActorStateModel, ISensorySystem, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
 
             Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<GameSceneInitializer>().AsSingleNonLazy();

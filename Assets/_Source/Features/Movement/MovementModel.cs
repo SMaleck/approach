@@ -1,4 +1,5 @@
-﻿using _Source.Features.Movement.Data;
+﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using _Source.Util;
 using UniRx;
 using UnityEngine;
@@ -8,33 +9,30 @@ namespace _Source.Features.Movement
 {
     public class MovementModel : AbstractDisposable, IMovementModel
     {
-        public class Factory : PlaceholderFactory<IMovementData, MovementModel> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, MovementModel> { }
 
+        private readonly MovementDataComponent _movementDataComponent;
 
-        private readonly IMovementData _movementData;
+        public bool UseDirectMovement => _movementDataComponent.UseDirectMovement;
 
-        public bool UseDirectMovement => _movementData.UseDirectMovement;
-
-        public bool HasMoveIntention => _moveIntention.Value.magnitude > _movementData.MovementDeadZoneMagnitude;
+        public bool HasMoveIntention => _moveIntention.Value.magnitude > _movementDataComponent.MovementDeadZoneMagnitude;
 
         private readonly ReactiveProperty<Vector2> _moveIntention;
         public IReadOnlyReactiveProperty<Vector2> MoveIntention => _moveIntention;
 
-
-        public bool HasTurnIntention => _turnIntention.Value.eulerAngles.z > _movementData.TurnDeadZoneAngle;
+        public bool HasTurnIntention => _turnIntention.Value.eulerAngles.z > _movementDataComponent.TurnDeadZoneAngle;
 
         private readonly ReactiveProperty<Quaternion> _turnIntention;
         public IReadOnlyReactiveProperty<Quaternion> TurnIntention => _turnIntention;
 
+        public float MoveSpeed => _movementDataComponent.MovementSpeed;
+        public float TurnSpeed => _movementDataComponent.TurnSpeed;
+        public float MoveTargetReachedAccuracy => _movementDataComponent.MoveTargetReachedAccuracy;
 
-        public float MoveSpeed => _movementData.MovementSpeed;
-        public float TurnSpeed => _movementData.TurnSpeed;
-        public float MoveTargetReachedAccuracy => _movementData.MoveTargetReachedAccuracy;
-
-
-        public MovementModel(IMovementData movementData)
+        public MovementModel(IActorStateModel actorStateModel)
         {
-            _movementData = movementData;
+            _movementDataComponent = actorStateModel.Get<MovementDataComponent>();
+
             _moveIntention = new ReactiveProperty<Vector2>(Vector2.zero).AddTo(Disposer);
             _turnIntention = new ReactiveProperty<Quaternion>(Quaternion.identity).AddTo(Disposer);
         }
@@ -47,7 +45,7 @@ namespace _Source.Features.Movement
 
         public void SetMovementIntention(Vector2 moveTarget)
         {
-            var isAboveDeadZone = moveTarget.magnitude > _movementData.MovementDeadZoneMagnitude;
+            var isAboveDeadZone = moveTarget.magnitude > _movementDataComponent.MovementDeadZoneMagnitude;
             moveTarget = isAboveDeadZone ? moveTarget : Vector2.zero;
 
             _moveIntention.Value = Vector2.ClampMagnitude(moveTarget, 1);
@@ -55,7 +53,7 @@ namespace _Source.Features.Movement
 
         public void SetTurnIntention(Quaternion rotation)
         {
-            var isAboveDeadZone = rotation.eulerAngles.z > _movementData.TurnDeadZoneAngle;
+            var isAboveDeadZone = rotation.eulerAngles.z > _movementDataComponent.TurnDeadZoneAngle;
             rotation = isAboveDeadZone ? rotation : Quaternion.identity;
 
             _turnIntention.Value = rotation;

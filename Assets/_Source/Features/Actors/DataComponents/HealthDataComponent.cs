@@ -5,7 +5,7 @@ using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class HealthDataComponent : AbstractDisposableFeature, IResettableDataComponent
+    public class HealthDataComponent : AbstractDisposable, IResettableDataComponent
     {
         public class Factory : PlaceholderFactory<IHealthData, HealthDataComponent> { }
 

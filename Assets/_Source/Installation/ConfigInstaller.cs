@@ -1,10 +1,7 @@
 ﻿using _Source.App;
-using _Source.Entities.Avatar;
-using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Data;
 using _Source.Features.ActorEntities.Avatar.Config;
 using _Source.Features.ActorEntities.Novatar.Config;
-using _Source.Features.Movement.Data;
 using _Source.Features.UserInput.Data;
 using _Source.Installation.Data;
 using UnityEngine;
@@ -25,7 +22,6 @@ namespace _Source.Installation
         public override void InstallBindings()
         {
             Container.BindInstance(_avatarConfig);
-            Container.BindInstance<IMovementData>(_avatarConfig.MovementConfig);
             Container.BindInstance(_novatarConfig);
             Container.BindInstance(_viewPrefabsConfig);
             Container.BindInstance(_novatarSpawnerConfig);

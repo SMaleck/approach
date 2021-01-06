@@ -1,4 +1,4 @@
-﻿namespace _Source.Features.Movement.Data
+﻿namespace _Source.Features.Actors.Data
 {
     public interface IMovementData
     {

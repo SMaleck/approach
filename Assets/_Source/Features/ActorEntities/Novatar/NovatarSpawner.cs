@@ -99,7 +99,7 @@ namespace _Source.Features.ActorEntities.Novatar
             sensorySystem.Initialize();
 
             var novatarMovementModel = _movementModelFactory
-                .Create(_novatarConfig.MovementConfig)
+                .Create(actorStateModel)
                 .AddTo(Disposer);
 
             var novatarMovementController = _movementControllerFactory

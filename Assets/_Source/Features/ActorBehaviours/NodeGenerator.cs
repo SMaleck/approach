@@ -117,7 +117,8 @@ namespace _Source.Features.ActorBehaviours
         public DamageAvatarNode CreateDamageAvatarNode()
         {
             var node = _damageAvatarNodeFactory.Create(
-                _sensorySystem);
+                _sensorySystem,
+                _actorStateModel);
             GeneratedNodes.Add(node);
 
             return node;

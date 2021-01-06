@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using _Source.App;
+﻿using _Source.App;
 using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Sensors.Data;
-using _Source.Features.Movement.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace _Source.Features.ActorEntities.Novatar.Config
 {
-    [CreateAssetMenu(fileName = nameof(NovatarConfig), menuName = Constants.ConfigRootPath + "/" + nameof(NovatarConfig))]
+    [CreateAssetMenu(fileName = nameof(NovatarConfig), menuName = Constants.ConfigMenu + nameof(NovatarConfig))]
     public class NovatarConfig : ScriptableObject
     {
         [Serializable]
@@ -25,17 +24,9 @@ namespace _Source.Features.ActorEntities.Novatar.Config
         [SerializeField] private NovatarEntity _novatarPrefab;
         public NovatarEntity NovatarPrefab => _novatarPrefab;
 
-        [Header("Movement")]
-        [SerializeField] private MovementConfig _movementConfig;
-        public MovementConfig MovementConfig => _movementConfig;
-
         [Header("Sensory System")]
         [SerializeField] private RangeSensorConfig _rangeSensorConfig;
         public RangeSensorConfig RangeSensorConfig => _rangeSensorConfig;
-
-        [Header("Damage")]
-        [SerializeField] private int _touchDamage;
-        public int TouchDamage => _touchDamage;
 
         [Header("Visuals")]
         [SerializeField] private List<RelationshipVisualsConfig> _relationshipVisualsConfigs;

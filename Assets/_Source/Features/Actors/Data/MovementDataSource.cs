@@ -1,10 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _Source.Features.Movement.Data
+namespace _Source.Features.Actors.Data
 {
     [Serializable]
-    public class MovementConfig : IMovementData
+    public class MovementDataSource
     {
         [SerializeField] private bool _useDirectMovement;
         public bool UseDirectMovement => _useDirectMovement;
@@ -24,7 +24,7 @@ namespace _Source.Features.Movement.Data
         [SerializeField] private float _movementDeadZoneMagnitude;
         public float MovementDeadZoneMagnitude => _movementDeadZoneMagnitude;
 
-        [Range(0.1f, 10)]
+        [Range(0.1f, 50)]
         [SerializeField] private float _turnSpeed;
         public float TurnSpeed => _turnSpeed;
 

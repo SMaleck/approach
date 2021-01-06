@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace _Source.Installation.Data
 {
-    [CreateAssetMenu(fileName = nameof(ViewPrefabsConfig), menuName = Constants.ConfigRootPath + "/" + nameof(ViewPrefabsConfig))]
+    [CreateAssetMenu(fileName = nameof(ViewPrefabsConfig), menuName = Constants.ConfigMenu + nameof(ViewPrefabsConfig))]
     public class ViewPrefabsConfig : ScriptableObject
     {
         [Header("Global Views")]

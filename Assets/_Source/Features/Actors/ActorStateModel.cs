@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using _Source.Features.Actors.DataComponents;
+﻿using _Source.Features.Actors.DataComponents;
 using _Source.Util;
+using System;
+using System.Collections.Generic;
 using UniRx;
 using Zenject;
 

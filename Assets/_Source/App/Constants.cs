@@ -4,10 +4,10 @@
     {
         public const string MenuBase = "Approach";
 
-        public const string ConfigRootPath = "Approach";
-        public const string PrefsKeyLanguage = "LanguagePref";
-        
         public const string DataMenu = MenuBase + "/Data/";
+        public const string ConfigMenu = MenuBase + "/Config/";
         public const string InstallersMenu = MenuBase + "/Installer/";
+
+        public const string PrefsKeyLanguage = "LanguagePref";
     }
 }

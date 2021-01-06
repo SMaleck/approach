@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _Source.Features.ActorEntities.Novatar.Config
 {
-    [CreateAssetMenu(fileName = nameof(NovatarSpawnerConfig), menuName = Constants.ConfigRootPath + "/" + nameof(NovatarSpawnerConfig))]
+    [CreateAssetMenu(fileName = nameof(NovatarSpawnerConfig), menuName = Constants.ConfigMenu + nameof(NovatarSpawnerConfig))]
     public class NovatarSpawnerConfig : ScriptableObject
     {
         [Range(0.1f, 20)]

@@ -11,6 +11,8 @@ namespace _Source.Features.Actors.Installation
             Container.BindFactory<ActorStateModel, ActorStateModel.Factory>().AsSingle();
 
             Container.BindFactory<IHealthData, HealthDataComponent, HealthDataComponent.Factory>().AsSingle();
+            Container.BindFactory<IDamageData, DamageDataComponent, DamageDataComponent.Factory>().AsSingle();
+            Container.BindFactory<IMovementData, MovementDataComponent, MovementDataComponent.Factory>().AsSingle();
             Container.BindFactory<RelationshipDataComponent, RelationshipDataComponent.Factory>().AsSingle();
             Container.BindFactory<OriginDataComponent, OriginDataComponent.Factory>().AsSingle();
             Container.BindFactory<SurvivalDataComponent, SurvivalDataComponent.Factory>().AsSingle();

@@ -23,9 +23,11 @@ namespace _Source.Features.ActorBehaviours.Installation
             Container.BindFactory<INovatar, EntityState, SwitchEntityStateNode, SwitchEntityStateNode.Factory>().AsSingle();
             Container.BindFactory<INovatar, DeactivateSelfNode, DeactivateSelfNode.Factory>().AsSingle();
             Container.BindFactory<INovatar, IActorStateModel, MovementController, LeaveScreenNode, LeaveScreenNode.Factory>().AsSingle();
-            Container.BindFactory<ISensorySystem, DamageAvatarNode, DamageAvatarNode.Factory>().AsSingle();
+            Container.BindFactory<ISensorySystem, IActorStateModel, DamageAvatarNode, DamageAvatarNode.Factory>().AsSingle();
             Container.BindFactory<INovatar, LightSwitchNode, LightSwitchNode.Factory>().AsSingle();
             Container.BindFactory<INovatar, IActorStateModel, MovementController, EnterScreenNode, EnterScreenNode.Factory>().AsSingle();
+
+            Container.BindFactory<INovatar, IActorStateModel, ISensorySystem, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
         }
     }
 }

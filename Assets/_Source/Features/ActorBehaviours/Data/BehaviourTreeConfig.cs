@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using _Source.App;
+﻿using _Source.App;
 using _Source.Entities.Novatar;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace _Source.Features.ActorBehaviours.Data
 {
-    [CreateAssetMenu(fileName = nameof(BehaviourTreeConfig), menuName = Constants.ConfigRootPath + "/" + nameof(BehaviourTreeConfig))]
+    [CreateAssetMenu(fileName = nameof(BehaviourTreeConfig), menuName = Constants.ConfigMenu + nameof(BehaviourTreeConfig))]
     public class BehaviourTreeConfig : ScriptableObject
     {
         [Serializable]

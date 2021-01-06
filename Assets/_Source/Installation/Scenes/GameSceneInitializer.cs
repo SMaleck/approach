@@ -1,5 +1,6 @@
 ﻿using _Source.Entities.Avatar;
 using _Source.Features.ActorEntities.Avatar.Config;
+using _Source.Features.Actors;
 using _Source.Features.Movement;
 using _Source.Features.UiHud;
 using _Source.Features.UiScreens;
@@ -30,15 +31,19 @@ namespace _Source.Installation.Scenes
         [Inject] private RoundEndedView.Factory _roundEndedViewFactory;
         [Inject] private VirtualJoystickView.Factory _virtualJoystickViewFactory;
 
+        // ToDo V0 Do not inject, use service locator pattern instead
+        [Inject] private IActorStateModel _avatarActorStateModel;
+
         public void Initialize()
         {
+            // ToDo V0 Move to AvatarSpawner
             var avatar = _avatarFactory.Create(_avatarConfig.AvatarPrefab);
 
             var avatarFacade = _avatarFacadeFactory.Create(avatar);
             avatarFacade.AddTo(SceneDisposer);
 
             var movementModel = _movementModelFactory
-                .Create(_avatarConfig.MovementConfig)
+                .Create(_avatarActorStateModel)
                 .AddTo(SceneDisposer);
 
             _userInputControllerFactory

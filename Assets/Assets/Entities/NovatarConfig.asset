@@ -26,7 +26,6 @@ MonoBehaviour:
     _followRange: 5
     _interactionRange: 0
     _touchRange: 0.8
-  _touchDamage: 1
   _relationshipVisualsConfigs:
   - _relationship: 0
     _lightColor: {r: 1, g: 1, b: 1, a: 1}

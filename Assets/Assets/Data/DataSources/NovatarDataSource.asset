@@ -13,4 +13,12 @@ MonoBehaviour:
   m_Name: NovatarDataSource
   m_EditorClassIdentifier: 
   _maxHealth: 1
-  _moveSpeed: 1
+  _touchDamage: 1
+  _movementDataSource:
+    _useDirectMovement: 0
+    _moveTargetReachedAccuracy: 0.1
+    _moveTargetTouchedAccuracy: 0.8
+    _movementSpeed: 2.5
+    _movementDeadZoneMagnitude: 0.01
+    _turnSpeed: 30
+    _turnDeadZoneAngle: 1
