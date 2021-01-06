@@ -61,8 +61,8 @@ namespace _Source.Entities.Avatar
                 .Subscribe(_ => OnUpdate())
                 .AddTo(Disposer);
 
-            _healthDataComponent.Health
-                .Subscribe(OnHealthChanged)
+            _healthDataComponent.RelativeHealth
+                .Subscribe(OnRelativeHealthChanged)
                 .AddTo(Disposer);
         }
 
@@ -93,9 +93,8 @@ namespace _Source.Entities.Avatar
             _survivalDataComponent.SetSurvivalSeconds(timePassed.TotalSeconds);
         }
 
-        private void OnHealthChanged(int health)
+        private void OnRelativeHealthChanged(double relativeHealth)
         {
-            var relativeHealth = health / _avatarConfig.Health;
             _avatarEntity.HeadLight.intensity = _avatarConfig.MaxLightIntensity * (float)relativeHealth;
         }
     }

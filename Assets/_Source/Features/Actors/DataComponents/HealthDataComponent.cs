@@ -14,12 +14,18 @@ namespace _Source.Features.Actors.DataComponents
         private readonly ReactiveProperty<int> _health;
         public IReadOnlyReactiveProperty<int> Health => _health;
 
+        public IReadOnlyReactiveProperty<double> RelativeHealth { get; }
+
         public IReadOnlyReactiveProperty<bool> IsAlive { get; }
 
         public HealthDataComponent(IHealthData healthData)
         {
             _healthData = healthData;
             _health = new ReactiveProperty<int>(healthData.MaxHealth).AddTo(Disposer);
+
+            RelativeHealth = _health.Select(health => (double)health / (double)_healthData.MaxHealth)
+                .ToReadOnlyReactiveProperty()
+                .AddTo(Disposer);
 
             IsAlive = _health.Select(health => health > 0)
                 .ToReadOnlyReactiveProperty()

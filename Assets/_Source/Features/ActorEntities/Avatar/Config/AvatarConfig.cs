@@ -10,11 +10,6 @@ namespace _Source.Features.ActorEntities.Avatar.Config
         [SerializeField] private AvatarEntity _avatarPrefab;
         public AvatarEntity AvatarPrefab => _avatarPrefab;
 
-        // ToDo V0 Remove
-        [Header("Health")]
-        [SerializeField] private double _health;
-        public double Health => _health;
-
         [SerializeField] private float _maxLightIntensity;
         public float MaxLightIntensity => _maxLightIntensity;
     }
