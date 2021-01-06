@@ -65,7 +65,7 @@ namespace _Source.Features.ActorSensors
             return _rangeSensor.IsInFollowRange();
         }
 
-        // ToDo Handle Following up to this point and to TouchRange only if needed
+        // ToDo V1 Handle Following up to this point and to TouchRange only if needed
         public bool IsInInteractionRange()
         {
             return _rangeSensor.IsInInteractionRange();

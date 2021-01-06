@@ -59,7 +59,7 @@ namespace _Source.Features.UserInput
             var inputVector = new Vector2(horizontalAxis, verticalAxis);
             _movementModel.SetMovementIntention(inputVector);
 
-            // ToDo V2.Zero is a quick hack, need the actual values of the entity
+            // ToDo V1 Vector2.Zero is a quick hack, need the actual values of the entity
             var heading = inputVector - Vector2.zero;
             var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
             _movementModel.SetTurnIntention(lookRotation);
@@ -88,7 +88,7 @@ namespace _Source.Features.UserInput
 
                 _movementModel.SetMovementIntention(smoothedDragDirection);
 
-                // ToDo V2.Zero is a quick hack, need the actual values of the entity
+                // ToDo V1 Vector2.Zero is a quick hack, need the actual values of the entity
                 var heading = smoothedDragDirection - Vector2.zero;
                 var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
                 _movementModel.SetTurnIntention(lookRotation);
