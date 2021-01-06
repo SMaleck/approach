@@ -19,7 +19,7 @@ namespace _Source.Entities.Installation
             Container.BindFactory<AvatarEntity, AvatarFacade, AvatarFacade.Factory>().AsSingle();
             Container.BindFactory<NovatarEntity, IActorStateModel, NovatarFacade, NovatarFacade.Factory>().AsSingle();
 
-            // ToDo find better way
+            // ToDo V0 Find better way
             var actorStateModel = _avatarStateFactory.Create();
 
             Container.BindInterfacesTo<ActorStateModel>()

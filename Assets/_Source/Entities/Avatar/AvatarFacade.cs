@@ -1,17 +1,17 @@
-﻿using _Source.Features.Actors;
+﻿using _Source.Features.ActorEntities.Avatar.Config;
+using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
 using _Source.Features.ScreenSize;
 using _Source.Util;
 using System;
-using _Source.Features.ActorEntities.Avatar.Config;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
 namespace _Source.Entities.Avatar
 {
-    public class AvatarFacade : AbstractDisposable, IAvatar, IDamageReceiver
+    public class AvatarFacade : AbstractDisposableFeature, IAvatar, IDamageReceiver
     {
         public class Factory : PlaceholderFactory<AvatarEntity, AvatarFacade> { }
 
@@ -47,6 +47,9 @@ namespace _Source.Entities.Avatar
             _healthDataComponent = actorStateModel.Get<HealthDataComponent>();
 
             _survivalDataComponent.SetStartedAt(DateTime.Now);
+
+            actorStateModel.Get<TransformDataComponent>()
+                .SetMonoEntity(this);
 
             Observable.Interval(TimeSpan.FromSeconds(1))
                 .Where(_ => !_pauseStateModel.IsPaused.Value)

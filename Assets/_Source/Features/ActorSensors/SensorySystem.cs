@@ -1,8 +1,6 @@
-﻿using _Source.Entities;
-using _Source.Entities.Avatar;
-using _Source.Features.ActorEntities.Novatar.Data;
-using _Source.Features.Actors;
+﻿using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.ActorSensors.Data;
 using _Source.Features.GameRound;
 using _Source.Util;
 using System.Collections.Generic;
@@ -14,13 +12,13 @@ namespace _Source.Features.ActorSensors
 {
     public class SensorySystem : AbstractDisposable, ISensorySystem, IInitializable
     {
-        public class Factory : PlaceholderFactory<IMonoEntity, IActorStateModel, SensorySystem> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, IActorStateModel, IRangeSensorData, SensorySystem> { }
 
         [Inject] private readonly RangeSensor.Factory _rangeSensorFactory;
 
-        private readonly IMonoEntity _ownerEntity;
-        private readonly IAvatar _avatarEntity;
-        private readonly NovatarData _novatarData;
+        private readonly IActorStateModel _ownerActorStateModel;
+        private readonly IActorStateModel _targetActorStateModel;
+        private readonly IRangeSensorData _rangeSensorData;
         private readonly IPauseStateModel _pauseStateModel;
 
         private readonly HealthDataComponent _healthDataComponent;
@@ -28,27 +26,26 @@ namespace _Source.Features.ActorSensors
         private RangeSensor _rangeSensor;
 
         public SensorySystem(
-            IMonoEntity ownerEntity,
-            IActorStateModel actorStateModel,
-            IAvatar avatarEntity, // ToDo V0 Don't get implicitly
-            NovatarData novatarData,
+            IActorStateModel ownerActorStateModel,
+            IActorStateModel targetActorStateModel,
+            IRangeSensorData rangeSensorData,
             IPauseStateModel pauseStateModel)
         {
-            _ownerEntity = ownerEntity;
-            _avatarEntity = avatarEntity;
-            _novatarData = novatarData;
+            _ownerActorStateModel = ownerActorStateModel;
+            _targetActorStateModel = targetActorStateModel;
+            _rangeSensorData = rangeSensorData;
             _pauseStateModel = pauseStateModel;
 
-            _healthDataComponent = actorStateModel.Get<HealthDataComponent>();
+            _healthDataComponent = _ownerActorStateModel.Get<HealthDataComponent>();
             _sensors = new List<ISensor>();
         }
 
         public void Initialize()
         {
             _rangeSensor = _rangeSensorFactory.Create(
-                _novatarData,
-                _ownerEntity,
-                _avatarEntity);
+                _ownerActorStateModel,
+                _targetActorStateModel,
+                _rangeSensorData);
 
             _sensors.Add(_rangeSensor);
 

@@ -7,7 +7,6 @@ namespace _Source.Util
     {
         protected CompositeDisposable Disposer = new CompositeDisposable();
 
-
         public void Dispose(CompositeDisposable disposer)
         {
             if (disposer == null)
@@ -19,14 +18,12 @@ namespace _Source.Util
             disposer.Dispose();
             GC.SuppressFinalize(this);
         }
-
-
+        
         public void Dispose()
         {
             Dispose(Disposer);
         }
-
-
+        
         protected virtual void OnDispose() { }
     }
 }

@@ -1,13 +1,8 @@
-﻿using _Source.Entities.Avatar;
-using _Source.Features.ActorEntities.Avatar.Config;
-using _Source.Features.Actors;
-using _Source.Features.Movement;
-using _Source.Features.UiHud;
+﻿using _Source.Features.UiHud;
 using _Source.Features.UiScreens;
 using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
 using _Source.Installation.Data;
-using UniRx;
 using Zenject;
 
 namespace _Source.Installation.Scenes
@@ -17,13 +12,6 @@ namespace _Source.Installation.Scenes
         [Inject] private ViewPrefabsConfig _viewPrefabsConfig;
         [Inject] private IViewManagementRegistrar _viewManagementRegistrar;
 
-        [Inject] private AvatarEntity.Factory _avatarFactory;
-        [Inject] private AvatarFacade.Factory _avatarFacadeFactory;
-        [Inject] private AvatarConfig _avatarConfig;
-        [Inject] private MovementModel.Factory _movementModelFactory;
-        [Inject] private MovementComponent.Factory _movementComponentFactory;
-        [Inject] private UserInputController.Factory _userInputControllerFactory;
-
         [Inject] private HudView.Factory _hudViewFactory;
         [Inject] private PauseView.Factory _pauseViewFactory;
         [Inject] private SettingsView.Factory _settingsViewFactory;
@@ -31,32 +19,8 @@ namespace _Source.Installation.Scenes
         [Inject] private RoundEndedView.Factory _roundEndedViewFactory;
         [Inject] private VirtualJoystickView.Factory _virtualJoystickViewFactory;
 
-        // ToDo V0 Do not inject, use service locator pattern instead
-        [Inject] private IActorStateModel _avatarActorStateModel;
-
         public void Initialize()
         {
-            // ToDo V0 Move to AvatarSpawner
-            var avatar = _avatarFactory.Create(_avatarConfig.AvatarPrefab);
-
-            var avatarFacade = _avatarFacadeFactory.Create(avatar);
-            avatarFacade.AddTo(SceneDisposer);
-
-            var movementModel = _movementModelFactory
-                .Create(_avatarActorStateModel)
-                .AddTo(SceneDisposer);
-
-            _userInputControllerFactory
-                .Create(movementModel)
-                .AddTo(SceneDisposer);
-
-            _movementComponentFactory
-                .Create(avatarFacade, movementModel)
-                .AddTo(SceneDisposer);
-
-            SceneContainer.BindInterfacesAndSelfTo<AvatarFacade>()
-                .FromInstance(avatarFacade);
-
             _hudViewFactory
                 .Create(_viewPrefabsConfig.HudViewPrefab)
                 .Initialize();

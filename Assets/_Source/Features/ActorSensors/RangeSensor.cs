@@ -1,4 +1,5 @@
-﻿using _Source.Entities;
+﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using _Source.Features.ActorSensors.Data;
 using UnityEngine;
 using Zenject;
@@ -7,10 +8,10 @@ namespace _Source.Features.ActorSensors
 {
     public class RangeSensor : ISensor
     {
-        public class Factory : PlaceholderFactory<IRangeSensorData, IMonoEntity, IMonoEntity, RangeSensor> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, IActorStateModel, IRangeSensorData, RangeSensor> { }
 
-        private readonly IMonoEntity _ownerEntity;
-        private readonly IMonoEntity _targetEntity;
+        private readonly TransformDataComponent _ownerTransformData;
+        private readonly TransformDataComponent _targetTransformData;
 
         private readonly float _sqrFollowRange;
         private readonly float _sqrInteractionRange;
@@ -18,12 +19,12 @@ namespace _Source.Features.ActorSensors
         private float _sqrDistanceToAvatar;
 
         public RangeSensor(
-            IRangeSensorData data,
-            IMonoEntity ownerEntity,
-            IMonoEntity targetEntity)
+            IActorStateModel ownerActor,
+            IActorStateModel targetActor,
+            IRangeSensorData data)
         {
-            _ownerEntity = ownerEntity;
-            _targetEntity = targetEntity;
+            _ownerTransformData = ownerActor.Get<TransformDataComponent>();
+            _targetTransformData = targetActor.Get<TransformDataComponent>();
 
             _sqrFollowRange = Mathf.Pow(data.FollowRange, 2);
             _sqrInteractionRange = Mathf.Pow(data.InteractionRange, 2);
@@ -32,7 +33,7 @@ namespace _Source.Features.ActorSensors
 
         public void UpdateSensorReadings()
         {
-            var distance = _ownerEntity.Position - _targetEntity.Position;
+            var distance = _ownerTransformData.Position - _targetTransformData.Position;
             _sqrDistanceToAvatar = distance.sqrMagnitude;
         }
 
@@ -53,7 +54,7 @@ namespace _Source.Features.ActorSensors
 
         public Vector3 GetAvatarPosition()
         {
-            return _targetEntity.Position;
+            return _targetTransformData.Position;
         }
     }
 }
