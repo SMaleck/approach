@@ -11,7 +11,7 @@ using Zenject;
 
 namespace _Source.Entities.Avatar
 {
-    public class AvatarFacade : AbstractDisposableFeature, IAvatar, IDamageReceiver
+    public class AvatarFacade : AbstractDisposableFeature, IMonoEntity, IDamageReceiver
     {
         public class Factory : PlaceholderFactory<AvatarEntity, AvatarFacade> { }
 
