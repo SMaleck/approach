@@ -10,7 +10,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
 {
     // ToDo V0 This should just execute an attack, but actual damage delivery should be handled differently
     // Currently this can only damage the avatar and IDamageReceiver is being injected, this makes it impossible to be used the other way around
-    public class DamageAvatarNode : AbstractNode, IResettableNode
+    public class DamageAvatarNode : AbstractNode
     {
         public class Factory : PlaceholderFactory<ISensorySystem, IActorStateModel, DamageAvatarNode> { }
 
@@ -19,7 +19,6 @@ namespace _Source.Features.ActorBehaviours.Nodes
         private IDamageReceiver DamageReceiver => _avatarLocator.AvatarDamageReceiver;
 
         private readonly DamageDataComponent _damageDataComponent;
-        private bool _hasDamagedAvatar;
 
         public DamageAvatarNode(
             ISensorySystem sensorySystem,
@@ -34,7 +33,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
 
         public override BehaviourTreeStatus Tick(TimeData time)
         {
-            if (_hasDamagedAvatar)
+            if (_damageDataComponent.HasDeliveredDamage)
             {
                 return BehaviourTreeStatus.Success;
             }
@@ -43,18 +42,12 @@ namespace _Source.Features.ActorBehaviours.Nodes
             {
                 var damage = _damageDataComponent.Damage;
                 DamageReceiver.ReceiveDamage(damage);
-
-                _hasDamagedAvatar = true;
+                _damageDataComponent.IncrementHitCount();
 
                 return BehaviourTreeStatus.Success;
             }
 
             return BehaviourTreeStatus.Failure;
-        }
-
-        public void Reset()
-        {
-            _hasDamagedAvatar = false;
         }
     }
 }
