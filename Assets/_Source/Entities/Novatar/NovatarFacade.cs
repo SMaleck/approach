@@ -1,4 +1,5 @@
-﻿using _Source.Features.ActorEntities.Novatar.Config;
+﻿using System;
+using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Util;
@@ -48,6 +49,8 @@ namespace _Source.Entities.Novatar
             _actorStateModel = actorStateModel;
             _novatarConfig = novatarConfig;
 
+            _novatarEntity.Setup(_actorStateModel);
+
             _healthDataComponent = _actorStateModel.Get<HealthDataComponent>();
             _originDataComponent = _actorStateModel.Get<OriginDataComponent>();
             _relationshipDataComponent = _actorStateModel.Get<RelationshipDataComponent>();
@@ -92,6 +95,11 @@ namespace _Source.Entities.Novatar
         {
             _novatarEntity.SetActive(isAlive);
             IsFree = !isAlive;
+
+            if (isAlive)
+            {
+                _novatarEntity.StartEntity(new CompositeDisposable());
+            }
         }
 
         private void OnRelationshipSwitched(Pair<EntityState> relationshipPair)
@@ -168,6 +176,14 @@ namespace _Source.Entities.Novatar
         {
             _novatarEntity.HeadLight.color = color;
             _novatarEntity.HeadLight.intensity = intensity;
+        }
+
+        // ToDo V0 remove IMonoEntity interface from this
+        public IActorStateModel ActorStateModel { get; }
+
+        public void Setup(IActorStateModel actorStateModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }

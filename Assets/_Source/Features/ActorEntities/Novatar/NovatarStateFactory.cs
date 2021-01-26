@@ -21,7 +21,8 @@ namespace _Source.Features.ActorEntities.Novatar
                 .Attach(OriginDataComponentFactory.Create())
                 .Attach(LightDataComponentFactory.Create())
                 .Attach(RelationshipDataComponentFactory.Create())
-                .Attach(TransformDataComponentFactory.Create());
+                .Attach(TransformDataComponentFactory.Create())
+                .Attach(SensorDataComponentFactory.Create());
         }
     }
 }

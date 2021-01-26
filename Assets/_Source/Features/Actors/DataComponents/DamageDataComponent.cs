@@ -4,7 +4,7 @@ using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class DamageDataComponent : AbstractDisposable, IDataComponent, IResettableDataComponent
+    public class DamageDataComponent : AbstractDisposable, IResettableDataComponent
     {
         public class Factory : PlaceholderFactory<IDamageData, DamageDataComponent> { }
 

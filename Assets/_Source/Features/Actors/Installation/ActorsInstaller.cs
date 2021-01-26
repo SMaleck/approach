@@ -18,6 +18,7 @@ namespace _Source.Features.Actors.Installation
             Container.BindFactory<SurvivalDataComponent, SurvivalDataComponent.Factory>().AsSingle();
             Container.BindFactory<LightDataComponent, LightDataComponent.Factory>().AsSingle();
             Container.BindFactory<TransformDataComponent, TransformDataComponent.Factory>().AsSingle();
+            Container.BindFactory<SensorDataComponent, SensorDataComponent.Factory>().AsSingle();
         }
     }
 }

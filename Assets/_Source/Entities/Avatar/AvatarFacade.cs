@@ -22,10 +22,12 @@ namespace _Source.Entities.Avatar
 
         public Transform LocomotionTarget => _avatarEntity.LocomotionTarget;
         public Transform RotationTarget => _avatarEntity.RotationTarget;
+        
         public bool IsActive => _avatarEntity.IsActive;
         public Vector3 Position => _avatarEntity.Position;
         public Quaternion Rotation => _avatarEntity.Rotation;
         public Vector3 Size => _avatarEntity.Size;
+
         public string ToDebugString() => _avatarEntity.ToDebugString();
 
         private readonly SurvivalDataComponent _survivalDataComponent;
@@ -42,6 +44,8 @@ namespace _Source.Entities.Avatar
             _avatarConfig = avatarConfig;
             _screenSizeModel = screenSizeModel;
             _pauseStateModel = pauseStateModel;
+
+            avatarEntity.Setup(actorStateModel);
 
             _survivalDataComponent = actorStateModel.Get<SurvivalDataComponent>();
             _healthDataComponent = actorStateModel.Get<HealthDataComponent>();
@@ -64,6 +68,8 @@ namespace _Source.Entities.Avatar
             _healthDataComponent.RelativeHealth
                 .Subscribe(OnRelativeHealthChanged)
                 .AddTo(Disposer);
+
+            avatarEntity.StartEntity(this.Disposer);
         }
 
         public void ReceiveDamage(int damageAmount)
@@ -96,6 +102,14 @@ namespace _Source.Entities.Avatar
         private void OnRelativeHealthChanged(double relativeHealth)
         {
             _avatarEntity.HeadLight.intensity = _avatarConfig.MaxLightIntensity * (float)relativeHealth;
+        }
+
+        // ToDo V0 remove IMonoEntity interface from this
+        public IActorStateModel ActorStateModel { get; }
+
+        public void Setup(IActorStateModel actorStateModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }

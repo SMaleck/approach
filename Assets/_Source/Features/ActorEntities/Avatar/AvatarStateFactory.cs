@@ -18,7 +18,8 @@ namespace _Source.Features.ActorEntities.Avatar
                 .Attach(HealthDataComponentFactory.Create(_data))
                 .Attach(MovementDataComponentFactory.Create(_data))
                 .Attach(SurvivalDataComponentFactory.Create())
-                .Attach(TransformDataComponentFactory.Create());
+                .Attach(TransformDataComponentFactory.Create())
+                .Attach(SensorDataComponentFactory.Create());
         }
     }
 }

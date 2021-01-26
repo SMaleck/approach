@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using _Source.Features.Actors;
+using UnityEngine;
 
 namespace _Source.Entities
 {
@@ -13,6 +14,9 @@ namespace _Source.Entities
         Transform LocomotionTarget { get; }
         Transform RotationTarget { get; }
 
+        IActorStateModel ActorStateModel { get; }
+
+        void Setup(IActorStateModel actorStateModel);
         string ToDebugString();
     }
 }

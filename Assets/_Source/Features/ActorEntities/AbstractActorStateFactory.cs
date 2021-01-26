@@ -15,5 +15,6 @@ namespace _Source.Features.ActorEntities
         [Inject] protected readonly LightDataComponent.Factory LightDataComponentFactory;
         [Inject] protected readonly SurvivalDataComponent.Factory SurvivalDataComponentFactory;
         [Inject] protected readonly TransformDataComponent.Factory TransformDataComponentFactory;
+        [Inject] protected readonly SensorDataComponent.Factory SensorDataComponentFactory;
     }
 }
