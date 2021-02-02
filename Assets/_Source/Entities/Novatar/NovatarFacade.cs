@@ -32,6 +32,7 @@ namespace _Source.Entities.Novatar
         public Transform RotationTarget => _novatarEntity.RotationTarget;
 
         // ToDo V0 Most properties below should probably go into another data component
+        public string Name => _novatarEntity.Name;
         public bool IsActive => _novatarEntity.IsActive;
         public Vector3 Position => _novatarEntity.Position;
         public Quaternion Rotation => _novatarEntity.Rotation;

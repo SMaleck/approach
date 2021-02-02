@@ -1,15 +1,17 @@
-﻿using System;
-using _Source.Features.ActorEntities.Novatar.Config;
+﻿using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Util;
+using System;
 using UniRx;
 using Zenject;
 
 namespace _Source.Features.ActorEntities.Novatar
 {
-    public class SpawningOrchestrator : AbstractDisposable, IInitializable
+    public class SpawningOrchestrator : AbstractDisposable, IInitializable, IDebugNovatarSpawner
     {
         private readonly NovatarSpawnerConfig _novatarSpawnerConfig;
         private readonly NovatarSpawner _novatarSpawner;
+
+        private bool _isEnabled = true;
 
         public SpawningOrchestrator(
             NovatarSpawnerConfig novatarSpawnerConfig,
@@ -30,7 +32,24 @@ namespace _Source.Features.ActorEntities.Novatar
         private bool CanSpawn()
         {
             var activeCount = _novatarSpawner.GetActiveNovatarCount();
-            return activeCount < _novatarSpawnerConfig.MaxActiveSpawns;
+
+            return _isEnabled &&
+                   activeCount < _novatarSpawnerConfig.MaxActiveSpawns;
+        }
+
+        void IDebugNovatarSpawner.Spawn()
+        {
+            _novatarSpawner.Spawn();
+        }
+
+        void IDebugNovatarSpawner.Pause()
+        {
+            _isEnabled = false;
+        }
+
+        void IDebugNovatarSpawner.Resume()
+        {
+            _isEnabled = true;
         }
     }
 }

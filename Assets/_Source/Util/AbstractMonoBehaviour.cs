@@ -4,7 +4,9 @@ namespace _Source.Util
 {
     public class AbstractMonoBehaviour : MonoBehaviour
     {
-        public bool IsActive => isActiveAndEnabled;
+        public virtual string Name => gameObject.name;
+        public virtual bool IsActive => isActiveAndEnabled;
+
         public Vector3 Position => transform.position;
         public Vector3 LocalPosition => transform.localPosition;
         public Quaternion Rotation => transform.rotation;

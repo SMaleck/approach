@@ -5,6 +5,7 @@ namespace _Source.Entities
 {
     public interface IMonoEntity
     {
+        string Name { get; }
         bool IsActive { get; }
 
         Vector3 Position { get; }

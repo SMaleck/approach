@@ -18,6 +18,7 @@ namespace _Source.Entities.Components
 
         protected override void OnStart()
         {
+            UnityEngine.Debug.LogWarning($"START");
             _distanceProbe.OnTriggerEnterAsObservable()
                 .Subscribe(OnEnter)
                 .AddTo(Disposer);
@@ -30,6 +31,7 @@ namespace _Source.Entities.Components
         private void OnEnter(Collider enteredEntity)
         {
             var entity = enteredEntity.GetComponentInParent<IMonoEntity>();
+            UnityEngine.Debug.LogWarning($"ENTER {entity?.Name}");
             if (entity != null)
             {
                 _sensorDataComponent.Add(entity.ActorStateModel);
@@ -39,6 +41,7 @@ namespace _Source.Entities.Components
         private void OnExit(Collider exitedEntity)
         {
             var entity = exitedEntity.GetComponentInParent<IMonoEntity>();
+            UnityEngine.Debug.LogWarning($"EXIT {entity?.Name}");
             if (entity != null)
             {
                 _sensorDataComponent.Remove(entity.ActorStateModel);

@@ -1,10 +1,10 @@
-﻿using _Source.Entities.Installation;
+﻿using _Source.Debug.Installation;
+using _Source.Entities.Installation;
 using _Source.Features.ActorBehaviours.Installation;
 using _Source.Features.ActorEntities.Installation;
 using _Source.Features.Actors.Installation;
 using _Source.Features.ActorSensors.Installation;
 using _Source.Features.AvatarRelationships;
-using _Source.Features.Cheats;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
 using _Source.Features.Movement.Installation;
@@ -55,7 +55,8 @@ namespace _Source.Installation.Scenes
             Container.BindInterfacesAndSelfTo<ScreenSizeModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<ScreenSizeController>().AsSingleNonLazy();
 
-            Container.BindInterfacesAndSelfTo<CheatController>().AsSingleNonLazy();
+            DebugInstaller.Install(Container);
+
             Container.BindInterfacesAndSelfTo<GameSceneInitializer>().AsSingleNonLazy();
         }
     }

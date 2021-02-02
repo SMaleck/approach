@@ -22,7 +22,8 @@ namespace _Source.Entities.Avatar
 
         public Transform LocomotionTarget => _avatarEntity.LocomotionTarget;
         public Transform RotationTarget => _avatarEntity.RotationTarget;
-        
+
+        public string Name => _avatarEntity.Name;
         public bool IsActive => _avatarEntity.IsActive;
         public Vector3 Position => _avatarEntity.Position;
         public Quaternion Rotation => _avatarEntity.Rotation;
