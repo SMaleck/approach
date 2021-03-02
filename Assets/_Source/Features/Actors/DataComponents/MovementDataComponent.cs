@@ -1,10 +1,9 @@
 ﻿using _Source.Features.Actors.Data;
-using _Source.Util;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class MovementDataComponent : AbstractDisposable, IDataComponent
+    public class MovementDataComponent : AbstractDataComponent, IDataComponent
     {
         public class Factory : PlaceholderFactory<IMovementData, MovementDataComponent> { }
 

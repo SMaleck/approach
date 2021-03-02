@@ -1,4 +1,5 @@
 ﻿using _Source.Features.Actors;
+using UniRx;
 using UnityEngine;
 
 namespace _Source.Entities
@@ -16,6 +17,7 @@ namespace _Source.Entities
         Transform RotationTarget { get; }
 
         IActorStateModel ActorStateModel { get; }
+        CompositeDisposable EntityDisposer { get; }
 
         void Setup(IActorStateModel actorStateModel);
         string ToDebugString();

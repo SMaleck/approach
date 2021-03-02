@@ -1,11 +1,10 @@
 ﻿using System;
-using _Source.Util;
 using UniRx;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class SurvivalDataComponent : AbstractDisposable, IResettableDataComponent
+    public class SurvivalDataComponent : AbstractDataComponent, IResettableDataComponent
     {
         public class Factory : PlaceholderFactory<SurvivalDataComponent> { }
 

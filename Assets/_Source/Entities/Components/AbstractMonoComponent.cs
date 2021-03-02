@@ -4,33 +4,35 @@ using UnityEngine;
 
 namespace _Source.Entities.Components
 {
-    // ToDo V0 Disposal structure is not great here
     public class AbstractMonoComponent : MonoBehaviour, IMonoComponent
     {
-        protected IActorStateModel ActorStateModel;
-        protected CompositeDisposable Disposer;
+        private readonly CompositeDisposable _disposer = new CompositeDisposable();
 
-        public void Setup(IActorStateModel actorStateModel)
+        protected IMonoEntity Entity;
+        protected IActorStateModel ActorStateModel => Entity.ActorStateModel;
+
+        // This gets disposed & reset on each lifecycle, so this Component is being reset with it
+        protected CompositeDisposable Disposer => Entity.EntityDisposer;
+
+        public void Setup(IMonoEntity entity)
         {
-            ActorStateModel = ActorStateModel ?? actorStateModel;
-            
+            Entity = Entity ?? entity;
+
             OnSetup();
         }
 
-        protected virtual void OnSetup() { }
-
-        public void StartLifeCycle(CompositeDisposable disposer)
+        public void StartLifeCycle()
         {
-            if (Disposer != null && !Disposer.IsDisposed)
-            {
-                Disposer.Dispose();
-            }
-
-            Disposer = disposer;
-
             OnStart();
         }
 
+        public void StopLifeCycle()
+        {
+            OnEnd();
+        }
+
+        protected virtual void OnSetup() { }
         protected virtual void OnStart() { }
+        protected virtual void OnEnd() { }
     }
 }

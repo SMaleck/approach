@@ -1,11 +1,10 @@
-﻿using _Source.Util;
-using System;
+﻿using System;
 using UniRx;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class LightDataComponent : AbstractDisposable, IResettableDataComponent
+    public class LightDataComponent : AbstractDataComponent, IResettableDataComponent
     {
         public class Factory : PlaceholderFactory<LightDataComponent> { }
 

@@ -1,11 +1,10 @@
 ﻿using _Source.Features.Actors.Data;
-using _Source.Util;
 using UniRx;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class HealthDataComponent : AbstractDisposable, IResettableDataComponent
+    public class HealthDataComponent : AbstractDataComponent, IResettableDataComponent
     {
         public class Factory : PlaceholderFactory<IHealthData, HealthDataComponent> { }
 

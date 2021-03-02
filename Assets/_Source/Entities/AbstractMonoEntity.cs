@@ -20,6 +20,7 @@ namespace _Source.Entities
         public Transform RotationTarget => _rotationTarget;
 
         private SerialDisposable _serialDisposable;
+        public CompositeDisposable EntityDisposer { get; private set; }
         public IActorStateModel ActorStateModel { get; private set; }
         public HealthDataComponent HealthDataComponent { get; private set; }
 
@@ -33,7 +34,7 @@ namespace _Source.Entities
             HealthDataComponent = ActorStateModel.Get<HealthDataComponent>();
 
             Components = GetComponents<IMonoComponent>();
-            Components?.ForEach(e => e.Setup(ActorStateModel));
+            Components?.ForEach(e => e.Setup(this));
 
             TickableComponents = Components?.OfType<ITickableMonoComponent>().ToArray();
 
@@ -42,14 +43,22 @@ namespace _Source.Entities
 
         public void StartEntity(CompositeDisposable disposer)
         {
+            EntityDisposer = disposer;
             _serialDisposable.Disposable = disposer;
-            Components?.ForEach(e => e.StartLifeCycle(disposer));
+
+            Components?.ForEach(e => e.StartLifeCycle());
 
             // ToDo V0 This should probably be managed by the Facade
             HealthDataComponent.IsAlive
                 .IfFalse()
-                .Subscribe(_ => _serialDisposable.Disposable?.Dispose())
+                .Subscribe(_ => StopEntity())
                 .AddTo(disposer);
+        }
+
+        public void StopEntity()
+        {
+            _serialDisposable.Disposable?.Dispose();
+            Components?.ForEach(e => e.StopLifeCycle());
         }
 
         public string ToDebugString()

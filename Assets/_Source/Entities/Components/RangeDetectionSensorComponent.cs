@@ -1,6 +1,7 @@
 ﻿using _Source.Features.Actors.DataComponents;
 using UniRx;
 using UniRx.Triggers;
+using UnityEditor;
 using UnityEngine;
 
 namespace _Source.Entities.Components
@@ -18,7 +19,6 @@ namespace _Source.Entities.Components
 
         protected override void OnStart()
         {
-            UnityEngine.Debug.LogWarning($"START");
             _distanceProbe.OnTriggerEnterAsObservable()
                 .Subscribe(OnEnter)
                 .AddTo(Disposer);
@@ -31,8 +31,7 @@ namespace _Source.Entities.Components
         private void OnEnter(Collider enteredEntity)
         {
             var entity = enteredEntity.GetComponentInParent<IMonoEntity>();
-            UnityEngine.Debug.LogWarning($"ENTER {entity?.Name}");
-            if (entity != null)
+            if (entity != null && entity != Entity)
             {
                 _sensorDataComponent.Add(entity.ActorStateModel);
             }
@@ -41,7 +40,6 @@ namespace _Source.Entities.Components
         private void OnExit(Collider exitedEntity)
         {
             var entity = exitedEntity.GetComponentInParent<IMonoEntity>();
-            UnityEngine.Debug.LogWarning($"EXIT {entity?.Name}");
             if (entity != null)
             {
                 _sensorDataComponent.Remove(entity.ActorStateModel);
@@ -49,7 +47,7 @@ namespace _Source.Entities.Components
         }
 
         #region DEBUG
-
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(transform.position, ((SphereCollider)_distanceProbe).radius);
@@ -62,10 +60,10 @@ namespace _Source.Entities.Components
             {
                 var transformComponent = entity.Get<TransformDataComponent>();
                 Gizmos.DrawLine(transform.position, transformComponent.Position);
+                Handles.Label(transform.position, _sensorDataComponent.KnownEntities.Count.ToString(), EditorStyles.boldLabel);
             }
-
         }
-
-        #endregion
+#endif
+    #endregion
     }
 }

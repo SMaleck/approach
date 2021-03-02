@@ -1,11 +1,10 @@
 ﻿using _Source.Entities;
-using _Source.Util;
 using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class TransformDataComponent : AbstractDisposable, IDataComponent
+    public class TransformDataComponent : AbstractDataComponent, IDataComponent
     {
         public class Factory : PlaceholderFactory<TransformDataComponent> { }
 

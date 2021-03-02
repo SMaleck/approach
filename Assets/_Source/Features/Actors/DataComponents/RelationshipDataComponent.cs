@@ -1,11 +1,10 @@
 ﻿using _Source.Entities.Novatar;
-using _Source.Util;
 using UniRx;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class RelationshipDataComponent : AbstractDisposable, IResettableDataComponent
+    public class RelationshipDataComponent : AbstractDataComponent, IResettableDataComponent
     {
         public class Factory : PlaceholderFactory<RelationshipDataComponent> { }
 

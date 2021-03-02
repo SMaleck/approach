@@ -181,6 +181,7 @@ namespace _Source.Entities.Novatar
 
         // ToDo V0 remove IMonoEntity interface from this
         public IActorStateModel ActorStateModel { get; }
+        public CompositeDisposable EntityDisposer { get; }
 
         public void Setup(IActorStateModel actorStateModel)
         {

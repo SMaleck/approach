@@ -1,11 +1,10 @@
-﻿using _Source.Util;
-using UniRx;
+﻿using UniRx;
 using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class OriginDataComponent : AbstractDisposable, IDataComponent
+    public class OriginDataComponent : AbstractDataComponent, IDataComponent
     {
         public class Factory : PlaceholderFactory<OriginDataComponent> { }
 

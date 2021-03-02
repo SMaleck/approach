@@ -107,6 +107,7 @@ namespace _Source.Entities.Avatar
 
         // ToDo V0 remove IMonoEntity interface from this
         public IActorStateModel ActorStateModel { get; }
+        public CompositeDisposable EntityDisposer { get; }
 
         public void Setup(IActorStateModel actorStateModel)
         {

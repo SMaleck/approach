@@ -1,10 +1,9 @@
 ﻿using _Source.Features.Actors.Data;
-using _Source.Util;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class DamageDataComponent : AbstractDisposable, IResettableDataComponent
+    public class DamageDataComponent : AbstractDataComponent, IResettableDataComponent
     {
         public class Factory : PlaceholderFactory<IDamageData, DamageDataComponent> { }
 

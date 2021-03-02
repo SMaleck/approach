@@ -7,5 +7,6 @@ A small game in Unity, build to explore behaviour trees for game AI.
 * TextMeshPro
 * FluentBehaviourTree
 
-## *Color Codes*
+## Notes
+### *Color Codes*
 * **Electric Blue:** `#2EB9F7`
