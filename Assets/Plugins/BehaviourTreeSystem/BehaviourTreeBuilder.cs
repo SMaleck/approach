@@ -31,9 +31,21 @@ namespace BehaviourTreeSystem
         {
             AssertCanAddLeaf();
             var name = _idGenerator.GetId(typeof(ActionNode));
-
             var actionNode = new ActionNode(name, fn);
-            _parentNodeStack.Peek().AddChild(actionNode);
+
+            Do(actionNode);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add a created Action Node to the Tree
+        /// </summary>
+        public BehaviourTreeBuilder Do(IBehaviourTreeNode node)
+        {
+            AssertCanAddLeaf();
+
+            _parentNodeStack.Peek().AddChild(node);
             return this;
         }
 

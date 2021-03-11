@@ -5,7 +5,7 @@ namespace BehaviourTreeSystem
 {
     public class BehaviourTreeIdGenerator
     {
-        // ToDo Find a good wy of making this unique and auto-generated
+        // ToDo Find a good way of making this unique and auto-generated
         private string _treeId = "T";
 
         private readonly Dictionary<Type, int> _nodeTypeCounts;

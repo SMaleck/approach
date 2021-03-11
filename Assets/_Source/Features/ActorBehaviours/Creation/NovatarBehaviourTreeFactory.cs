@@ -14,41 +14,40 @@ namespace _Source.Features.ActorBehaviours.Creation
         [Inject] private readonly NodeGenerator.Factory _nodeGeneratorFactory;
         [Inject] private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
+        private NodeGenerator _nodeGenerator;
+
         public BehaviourTree Create(
             IActorStateModel model,
             ISensorySystem sensorySystem,
             MovementController movementController)
         {
-            var nodeGenerator = _nodeGeneratorFactory.Create(
+            _nodeGenerator = _nodeGeneratorFactory.Create(
                 model,
                 sensorySystem,
                 movementController);
 
-            var unacquaintedRandomTimeoutNode = nodeGenerator.CreateIdleTimeoutRandomNode(
+            var unacquaintedRandomTimeoutNode = _nodeGenerator.CreateIdleTimeoutRandomNode(
                 _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds,
                 _behaviourTreeConfig.UnacquaintedConfig.TimeBasedSwitchChance);
 
-            var unacquaintedFirstTouchNode = nodeGenerator.CreateFirstTouchNode();
+            var unacquaintedFirstTouchNode = _nodeGenerator.CreateFirstTouchNode();
 
-            var toNeutralStateNode = nodeGenerator.CreateSwitchEntityStateNode(
+            var toNeutralStateNode = _nodeGenerator.CreateSwitchEntityStateNode(
                 EntityState.Neutral);
 
-            var toUnacquaintedStateNode = nodeGenerator.CreateSwitchEntityStateNode(
+            var toUnacquaintedStateNode = _nodeGenerator.CreateSwitchEntityStateNode(
                 EntityState.Unacquainted);
 
-            var friendTimeoutNode = nodeGenerator.CreateIdleTimeoutNode(
+            var friendTimeoutNode = _nodeGenerator.CreateIdleTimeoutNode(
                 _behaviourTreeConfig.MaxSecondsToFallBehind);
 
-            var enemyTimeoutNode = nodeGenerator.CreateIdleTimeoutNode(
+            var enemyTimeoutNode = _nodeGenerator.CreateIdleTimeoutNode(
                 _behaviourTreeConfig.EnemyLeavingTimeoutSeconds);
 
-            var followAvatarNode = nodeGenerator.CreateFollowAvatarNode();
-            var deactivateSelfNode = nodeGenerator.CreateDeactivateSelfNode();
-            var leaveScreenNode = nodeGenerator.CreateLeaveScreenNode();
-            var damageAvatarNode = nodeGenerator.CreateDamageAvatarNode();
-            var lightSwitchNode = nodeGenerator.CreateLightSwitchNode();
-            var enterScreenNode = nodeGenerator.CreateEnterScreenNode();
-            var movementNode = nodeGenerator.CreateMovementNode();
+            var deactivateSelfNode = _nodeGenerator.CreateDeactivateSelfNode();
+            var leaveScreenNode = _nodeGenerator.CreateLeaveScreenNode();
+            var damageAvatarNode = _nodeGenerator.CreateDamageAvatarNode();
+            var lightSwitchNode = _nodeGenerator.CreateLightSwitchNode();
 
             // @formatter:off
             var startNode = new BehaviourTreeBuilder()
@@ -58,7 +57,7 @@ namespace _Source.Features.ActorBehaviours.Creation
                             .Condition(t => IsEntityState(model, EntityState.Spawning))
                             .Sequence()
                                 .Do(lightSwitchNode.Tick)
-                                .Do(enterScreenNode.Tick)
+                                .Do(EnterScreen())
                                 .Do(toUnacquaintedStateNode.Tick)
                                 .End()
                             .End()
@@ -66,8 +65,8 @@ namespace _Source.Features.ActorBehaviours.Creation
                             .Condition(t => IsEntityState(model, EntityState.Unacquainted))
                             .Selector()
                                 .Sequence()
-                                    .Do(followAvatarNode.Tick) // TODO Problem
-                                    .Do(movementNode.Tick)
+                                    .Do(FollowAvatar())
+                                    .Do(Move())
                                     .Do(unacquaintedFirstTouchNode.Tick)
                                     .End()
                                 .Sequence()
@@ -87,8 +86,8 @@ namespace _Source.Features.ActorBehaviours.Creation
                             .Condition(t => IsEntityState(model, EntityState.Friend))
                             .Selector()
                                 .Sequence()
-                                    .Do(followAvatarNode.Tick)
-                                    .Do(movementNode.Tick)
+                                    .Do(FollowAvatar())
+                                    .Do(Move())
                                     .End()
                                 .Sequence()
                                     .Do(friendTimeoutNode.Tick)
@@ -105,8 +104,8 @@ namespace _Source.Features.ActorBehaviours.Creation
                                     .Do(toNeutralStateNode.Tick)
                                     .End()
                                 .Sequence()
-                                    .Do(followAvatarNode.Tick)
-                                    .Do(movementNode.Tick)
+                                    .Do(FollowAvatar())
+                                    .Do(Move())
                                     .End()
                                 .End()
                             .End()
@@ -117,13 +116,28 @@ namespace _Source.Features.ActorBehaviours.Creation
 
             return new BehaviourTree(
                 startNode,
-                nodeGenerator.GetGeneratedNodes());
+                _nodeGenerator.GetGeneratedNodes());
         }
 
         private bool IsEntityState(IActorStateModel model, EntityState status)
         {
             var relationshipDataComponent = model.Get<RelationshipDataComponent>();
             return relationshipDataComponent.Relationship.Value == status;
+        }
+
+        private IBehaviourTreeNode EnterScreen()
+        {
+            return _nodeGenerator.CreateEnterScreenNode();
+        }
+
+        private IBehaviourTreeNode FollowAvatar()
+        {
+            return _nodeGenerator.CreateFollowAvatarNode();
+        }
+
+        private IBehaviourTreeNode Move()
+        {
+            return _nodeGenerator.CreateMovementNode();
         }
     }
 }
