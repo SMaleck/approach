@@ -11,8 +11,11 @@ namespace _Source.Features.ActorBehaviours.Installation
     {
         public override void InstallBindings()
         {
-            Container.BindFactory<NodeGenerator, NodeGenerator.Factory>().AsSingle();
-            Container.BindFactory<IActorStateModel, ISensorySystem, MovementController, FollowAvatarNode, FollowAvatarNode.Factory>().AsSingle();
+            Container.BindFactory<IActorStateModel, ISensorySystem, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+            Container.BindFactory<IActorStateModel, ISensorySystem, MovementController, NodeGenerator, NodeGenerator.Factory>().AsSingle();
+
+            // ------------------------------ NODE FACTORIES
+            Container.BindFactory<IActorStateModel, ISensorySystem, FollowAvatarNode, FollowAvatarNode.Factory>().AsSingle();
             Container.BindFactory<double, IdleTimeoutNode, IdleTimeoutNode.Factory>().AsSingle();
             Container.BindFactory<double, double, IdleTimeoutRandomNode, IdleTimeoutRandomNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, ISensorySystem, FirstTouchNode, FirstTouchNode.Factory>().AsSingle();
@@ -22,8 +25,7 @@ namespace _Source.Features.ActorBehaviours.Installation
             Container.BindFactory<ISensorySystem, IActorStateModel, DamageAvatarNode, DamageAvatarNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, LightSwitchNode, LightSwitchNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, MovementController, EnterScreenNode, EnterScreenNode.Factory>().AsSingle();
-
-            Container.BindFactory<IActorStateModel, ISensorySystem, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
+            Container.BindFactory<IActorStateModel, MovementController, MovementNode, MovementNode.Factory>().AsSingle();
         }
     }
 }

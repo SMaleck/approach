@@ -15,6 +15,7 @@ namespace _Source.Features.ActorEntities.Novatar
         public IActorStateModel Create()
         {
             return ActorStateModelFactory.Create()
+                .Attach(BlackBoardDataComponentFactory.Create())
                 .Attach(HealthDataComponentFactory.Create(_data))
                 .Attach(DamageDataComponentFactory.Create(_data))
                 .Attach(MovementDataComponentFactory.Create(_data))

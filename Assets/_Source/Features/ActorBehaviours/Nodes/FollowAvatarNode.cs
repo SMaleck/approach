@@ -1,6 +1,6 @@
 ﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using _Source.Features.ActorSensors;
-using _Source.Features.Movement;
 using BehaviourTreeSystem;
 using Zenject;
 
@@ -8,20 +8,20 @@ namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class FollowAvatarNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<IActorStateModel, ISensorySystem, MovementController, FollowAvatarNode> { }
+        // ToDo V0 Rename to better reflect what it is doing
+        public class Factory : PlaceholderFactory<IActorStateModel, ISensorySystem, FollowAvatarNode> { }
 
         private readonly IActorStateModel _actorStateModel;
         private readonly ISensorySystem _sensorySystem;
-        private readonly MovementController _movementController;
+        private readonly BlackBoardDataComponent _blackBoard;
 
         public FollowAvatarNode(
             IActorStateModel actorStateModel,
-            ISensorySystem sensorySystem,
-            MovementController movementController)
+            ISensorySystem sensorySystem)
         {
             _actorStateModel = actorStateModel;
             _sensorySystem = sensorySystem;
-            _movementController = movementController;
+            _blackBoard = _actorStateModel.Get<BlackBoardDataComponent>();
         }
 
         public override BehaviourTreeStatus Tick(TimeData time)
@@ -36,9 +36,9 @@ namespace _Source.Features.ActorBehaviours.Nodes
             }
 
             _actorStateModel.ResetIdleTimeouts();
-            _movementController.MoveToTarget(_sensorySystem.GetAvatarPosition());
+            _blackBoard.MovementTarget.Store(_sensorySystem.GetAvatarPosition());
 
-            return BehaviourTreeStatus.Running;
+            return BehaviourTreeStatus.Success;
         }
     }
 }

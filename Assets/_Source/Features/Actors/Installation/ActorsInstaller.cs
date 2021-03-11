@@ -10,6 +10,7 @@ namespace _Source.Features.Actors.Installation
         {
             Container.BindFactory<ActorStateModel, ActorStateModel.Factory>().AsSingle();
 
+            Container.BindFactory<BlackBoardDataComponent, BlackBoardDataComponent.Factory>().AsSingle();
             Container.BindFactory<IHealthData, HealthDataComponent, HealthDataComponent.Factory>().AsSingle();
             Container.BindFactory<IDamageData, DamageDataComponent, DamageDataComponent.Factory>().AsSingle();
             Container.BindFactory<IMovementData, MovementDataComponent, MovementDataComponent.Factory>().AsSingle();

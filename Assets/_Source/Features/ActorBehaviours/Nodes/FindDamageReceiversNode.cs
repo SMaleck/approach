@@ -1,4 +1,5 @@
 ﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using _Source.Features.ActorSensors;
 using BehaviourTreeSystem;
 using Zenject;
@@ -11,7 +12,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
 
         private readonly ISensorySystem _sensorySystem;
         private readonly IActorStateModel _actorStateModel;
-        private readonly BehaviourTreeBlackBoard _blackBoard;
+        private readonly BlackBoardDataComponent _blackBoard;
 
         public FindDamageReceiversNode(
             ISensorySystem sensorySystem, 
@@ -20,7 +21,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
             _sensorySystem = sensorySystem;
             _actorStateModel = actorStateModel;
 
-            _blackBoard = actorStateModel.Get<BehaviourTreeBlackBoard>();
+            _blackBoard = actorStateModel.Get<BlackBoardDataComponent>();
         }
 
         public override BehaviourTreeStatus Tick(TimeData time)

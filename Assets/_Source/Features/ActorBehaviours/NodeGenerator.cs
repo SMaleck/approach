@@ -11,7 +11,7 @@ namespace _Source.Features.ActorBehaviours
 {
     public class NodeGenerator
     {
-        public class Factory : PlaceholderFactory<NodeGenerator> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, ISensorySystem, MovementController, NodeGenerator> { }
 
         [Inject] private readonly FollowAvatarNode.Factory _followAvatarNodeFactory;
         [Inject] private readonly IdleTimeoutNode.Factory _idleTimeoutNodeFactory;
@@ -23,14 +23,15 @@ namespace _Source.Features.ActorBehaviours
         [Inject] private readonly DamageAvatarNode.Factory _damageAvatarNodeFactory;
         [Inject] private readonly LightSwitchNode.Factory _lightSwitchNodeFactory;
         [Inject] private readonly EnterScreenNode.Factory _enterScreenNodeFactory;
+        [Inject] private readonly MovementNode.Factory _movementNodeFactory;
 
-        private IActorStateModel _actorStateModel;
-        private ISensorySystem _sensorySystem;
-        private MovementController _movementController;
+        private readonly IActorStateModel _actorStateModel;
+        private readonly ISensorySystem _sensorySystem;
+        private readonly MovementController _movementController;
 
         public List<AbstractNode> GeneratedNodes { get; private set; }
 
-        public void SetupForNovatar(
+        public NodeGenerator(
             IActorStateModel actorStateModel,
             ISensorySystem sensorySystem,
             MovementController movementController)
@@ -46,8 +47,7 @@ namespace _Source.Features.ActorBehaviours
         {
             var node = _followAvatarNodeFactory.Create(
                 _actorStateModel,
-                _sensorySystem,
-                _movementController);
+                _sensorySystem);
             GeneratedNodes.Add(node);
 
             return node;
@@ -132,6 +132,16 @@ namespace _Source.Features.ActorBehaviours
         public EnterScreenNode CreateEnterScreenNode()
         {
             var node = _enterScreenNodeFactory.Create(
+                _actorStateModel,
+                _movementController);
+            GeneratedNodes.Add(node);
+
+            return node;
+        }
+
+        public MovementNode CreateMovementNode()
+        {
+            var node = _movementNodeFactory.Create(
                 _actorStateModel,
                 _movementController);
             GeneratedNodes.Add(node);

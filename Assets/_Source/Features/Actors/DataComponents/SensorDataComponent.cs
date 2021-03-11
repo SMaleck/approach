@@ -16,7 +16,7 @@ namespace _Source.Features.Actors.DataComponents
         private readonly List<IActorStateModel> _knownEntities;
         public IReadOnlyList<IActorStateModel> KnownEntities => _knownEntities;
 
-        private Dictionary<IActorStateModel, IDisposable> _lifetimeSubscriptions;
+        private readonly Dictionary<IActorStateModel, IDisposable> _lifetimeSubscriptions;
 
         public SensorDataComponent()
         {

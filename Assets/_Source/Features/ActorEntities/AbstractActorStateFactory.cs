@@ -7,6 +7,7 @@ namespace _Source.Features.ActorEntities
     public abstract class AbstractActorStateFactory
     {
         [Inject] protected readonly ActorStateModel.Factory ActorStateModelFactory;
+        [Inject] protected readonly BlackBoardDataComponent.Factory BlackBoardDataComponentFactory;
         [Inject] protected readonly HealthDataComponent.Factory HealthDataComponentFactory;
         [Inject] protected readonly DamageDataComponent.Factory DamageDataComponentFactory;
         [Inject] protected readonly MovementDataComponent.Factory MovementDataComponentFactory;

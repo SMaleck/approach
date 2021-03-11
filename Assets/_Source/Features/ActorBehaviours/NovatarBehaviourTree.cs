@@ -72,8 +72,7 @@ namespace _Source.Features.ActorBehaviours
 
         private IBehaviourTreeNode CreateTree()
         {
-            var nodeGenerator = _nodeGeneratorFactory.Create();
-            nodeGenerator.SetupForNovatar(
+            var nodeGenerator = _nodeGeneratorFactory.Create(
                 _actorStateModel,
                 _sensorySystem,
                 _movementController);
@@ -102,7 +101,9 @@ namespace _Source.Features.ActorBehaviours
             var damageAvatarNode = nodeGenerator.CreateDamageAvatarNode();
             var lightSwitchNode = nodeGenerator.CreateLightSwitchNode();
             var enterScreenNode = nodeGenerator.CreateEnterScreenNode();
+            var movementNode = nodeGenerator.CreateMovementNode();
 
+            // @formatter:off
             var tree = new BehaviourTreeBuilder()
                 .Parallel(100, 100)
                     .Selector()
@@ -118,7 +119,8 @@ namespace _Source.Features.ActorBehaviours
                             .Condition(t => IsEntityState(EntityState.Unacquainted))
                             .Selector()
                                 .Sequence()
-                                    .Do(followAvatarNode.Tick)
+                                    .Do(followAvatarNode.Tick) // TODO Problem
+                                    .Do(movementNode.Tick)
                                     .Do(unacquaintedFirstTouchNode.Tick)
                                     .End()
                                 .Sequence()
@@ -137,7 +139,10 @@ namespace _Source.Features.ActorBehaviours
                         .Sequence()
                             .Condition(t => IsEntityState(EntityState.Friend))
                             .Selector()
-                                .Do(followAvatarNode.Tick)
+                                .Sequence()
+                                    .Do(followAvatarNode.Tick)
+                                    .Do(movementNode.Tick)
+                                    .End()
                                 .Sequence()
                                     .Do(friendTimeoutNode.Tick)
                                     .Do(toNeutralStateNode.Tick)
@@ -152,17 +157,27 @@ namespace _Source.Features.ActorBehaviours
                                     .Do(enemyTimeoutNode.Tick)
                                     .Do(toNeutralStateNode.Tick)
                                     .End()
-                                .Do(followAvatarNode.Tick)
+                                .Sequence()
+                                    .Do(followAvatarNode.Tick)
+                                    .Do(movementNode.Tick)
+                                    .End()
                                 .End()
                             .End()
                     .End()
                 .End()
                 .Build();
+            // @formatter:on
 
+            AggregateNodes(nodeGenerator);
+
+            return tree;
+        }
+
+        private void AggregateNodes(NodeGenerator nodeGenerator)
+        {
             _resettableNodes = nodeGenerator.GeneratedNodes
                 .OfType<IResettableNode>()
                 .ToList();
-
 
             var timeoutNodes = nodeGenerator.GeneratedNodes
                 .OfType<IdleTimeoutNode>()
@@ -175,8 +190,6 @@ namespace _Source.Features.ActorBehaviours
             _resettableTimeoutNodes = new List<IResettableNode>();
             _resettableTimeoutNodes.AddRange(timeoutNodes);
             _resettableTimeoutNodes.AddRange(timeoutRandomNodes);
-
-            return tree;
         }
 
         private bool IsEntityState(EntityState status)
