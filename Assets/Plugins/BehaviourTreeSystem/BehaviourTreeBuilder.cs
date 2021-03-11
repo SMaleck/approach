@@ -156,7 +156,7 @@ namespace BehaviourTreeSystem
         {
             if (_isBuilt)
             {
-                throw new ApplicationException("Cannot modify or builkd already built tree");
+                throw new ApplicationException("Cannot modify or build already built tree");
             }
         }
 

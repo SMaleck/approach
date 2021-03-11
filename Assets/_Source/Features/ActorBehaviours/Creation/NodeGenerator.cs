@@ -1,13 +1,14 @@
-﻿using _Source.Entities.Novatar;
+﻿using System.Collections.Generic;
+using System.Linq;
+using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Nodes;
 using _Source.Features.Actors;
-using _Source.Features.Movement;
-using System.Collections.Generic;
-using _Source.Features.ActorEntities.Avatar;
 using _Source.Features.ActorSensors;
+using _Source.Features.Movement;
+using BehaviourTreeSystem;
 using Zenject;
 
-namespace _Source.Features.ActorBehaviours
+namespace _Source.Features.ActorBehaviours.Creation
 {
     public class NodeGenerator
     {
@@ -29,7 +30,7 @@ namespace _Source.Features.ActorBehaviours
         private readonly ISensorySystem _sensorySystem;
         private readonly MovementController _movementController;
 
-        public List<AbstractNode> GeneratedNodes { get; private set; }
+        private readonly List<AbstractNode> _generatedNodes;
 
         public NodeGenerator(
             IActorStateModel actorStateModel,
@@ -40,7 +41,14 @@ namespace _Source.Features.ActorBehaviours
             _sensorySystem = sensorySystem;
             _movementController = movementController;
 
-            GeneratedNodes = new List<AbstractNode>();
+            _generatedNodes = new List<AbstractNode>();
+        }
+
+        public IBehaviourTreeNode[] GetGeneratedNodes()
+        {
+            return _generatedNodes
+                .Cast<IBehaviourTreeNode>()
+                .ToArray();
         }
 
         public FollowAvatarNode CreateFollowAvatarNode()
@@ -48,7 +56,7 @@ namespace _Source.Features.ActorBehaviours
             var node = _followAvatarNodeFactory.Create(
                 _actorStateModel,
                 _sensorySystem);
-            GeneratedNodes.Add(node);
+            _generatedNodes.Add(node);
 
             return node;
         }
@@ -56,7 +64,7 @@ namespace _Source.Features.ActorBehaviours
         public IdleTimeoutNode CreateIdleTimeoutNode(double timeout)
         {
             var node = _idleTimeoutNodeFactory.Create(timeout);
-            GeneratedNodes.Add(node);
+            _generatedNodes.Add(node);
 
             return node;
         }
@@ -66,7 +74,7 @@ namespace _Source.Features.ActorBehaviours
             double randomChance)
         {
             var node = _idleTimeoutRandomNodeFactory.Create(timeout, randomChance);
-            GeneratedNodes.Add(node);
+            _generatedNodes.Add(node);
 
             return node;
         }
@@ -76,7 +84,7 @@ namespace _Source.Features.ActorBehaviours
             var node = _firstTouchNodeFactory.Create(
                 _actorStateModel,
                 _sensorySystem);
-            GeneratedNodes.Add(node);
+            _generatedNodes.Add(node);
 
             return node;
         }
@@ -86,7 +94,7 @@ namespace _Source.Features.ActorBehaviours
             var node = _switchEntityStateNodeFactory.Create(
                 _actorStateModel,
                 targetEntityState);
-            GeneratedNodes.Add(node);
+            _generatedNodes.Add(node);
 
             return node;
         }
@@ -95,7 +103,7 @@ namespace _Source.Features.ActorBehaviours
         {
             var node = _deactivateSelfNodeFactory.Create(
                 _actorStateModel);
-            GeneratedNodes.Add(node);
+            _generatedNodes.Add(node);
 
             return node;
         }
@@ -105,7 +113,7 @@ namespace _Source.Features.ActorBehaviours
             var node = _leaveScreenNodeFactory.Create(
                 _actorStateModel,
                 _movementController);
-            GeneratedNodes.Add(node);
+            _generatedNodes.Add(node);
 
             return node;
         }
@@ -115,7 +123,7 @@ namespace _Source.Features.ActorBehaviours
             var node = _damageAvatarNodeFactory.Create(
                 _sensorySystem,
                 _actorStateModel);
-            GeneratedNodes.Add(node);
+            _generatedNodes.Add(node);
 
             return node;
         }
@@ -124,7 +132,7 @@ namespace _Source.Features.ActorBehaviours
         {
             var node = _lightSwitchNodeFactory.Create(
                 _actorStateModel);
-            GeneratedNodes.Add(node);
+            _generatedNodes.Add(node);
 
             return node;
         }
@@ -134,7 +142,7 @@ namespace _Source.Features.ActorBehaviours
             var node = _enterScreenNodeFactory.Create(
                 _actorStateModel,
                 _movementController);
-            GeneratedNodes.Add(node);
+            _generatedNodes.Add(node);
 
             return node;
         }
@@ -144,7 +152,7 @@ namespace _Source.Features.ActorBehaviours
             var node = _movementNodeFactory.Create(
                 _actorStateModel,
                 _movementController);
-            GeneratedNodes.Add(node);
+            _generatedNodes.Add(node);
 
             return node;
         }

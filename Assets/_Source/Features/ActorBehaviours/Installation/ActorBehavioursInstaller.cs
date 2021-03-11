@@ -1,4 +1,5 @@
 ﻿using _Source.Entities.Novatar;
+using _Source.Features.ActorBehaviours.Creation;
 using _Source.Features.ActorBehaviours.Nodes;
 using _Source.Features.Actors;
 using _Source.Features.ActorSensors;
@@ -13,6 +14,7 @@ namespace _Source.Features.ActorBehaviours.Installation
         {
             Container.BindFactory<IActorStateModel, ISensorySystem, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
             Container.BindFactory<IActorStateModel, ISensorySystem, MovementController, NodeGenerator, NodeGenerator.Factory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<NovatarBehaviourTreeFactory>().AsSingle();
 
             // ------------------------------ NODE FACTORIES
             Container.BindFactory<IActorStateModel, ISensorySystem, FollowAvatarNode, FollowAvatarNode.Factory>().AsSingle();
