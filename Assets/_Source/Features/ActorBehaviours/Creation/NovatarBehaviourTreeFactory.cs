@@ -30,14 +30,6 @@ namespace _Source.Features.ActorBehaviours.Creation
                 _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds,
                 _behaviourTreeConfig.UnacquaintedConfig.TimeBasedSwitchChance);
 
-            var unacquaintedFirstTouchNode = _nodeGenerator.FirstTouch();
-
-            var toNeutralStateNode = _nodeGenerator.SwitchEntityState(
-                EntityState.Neutral);
-
-            var toUnacquaintedStateNode = _nodeGenerator.SwitchEntityState(
-                EntityState.Unacquainted);
-
             var friendTimeoutNode = _nodeGenerator.IdleTimeout(
                 _behaviourTreeConfig.MaxSecondsToFallBehind);
 
@@ -57,7 +49,7 @@ namespace _Source.Features.ActorBehaviours.Creation
                             .Sequence()
                                 .Do(lightSwitchNode.Tick)
                                 .Do(EnterScreen())
-                                .Do(toUnacquaintedStateNode.Tick)
+                                .Do(SwitchStateTo(EntityState.Unacquainted))
                                 .End()
                             .End()
                         .Sequence()
@@ -66,11 +58,11 @@ namespace _Source.Features.ActorBehaviours.Creation
                                 .Sequence()
                                     .Do(FollowAvatar())
                                     .Do(Move())
-                                    .Do(unacquaintedFirstTouchNode.Tick)
+                                    .Do(FirstTouch())
                                     .End()
                                 .Sequence()
                                     .Do(unacquaintedRandomTimeoutNode.Tick)
-                                    .Do(toNeutralStateNode.Tick)
+                                    .Do(SwitchStateTo(EntityState.Neutral))
                                     .End()
                                 .End()
                             .End()
@@ -90,7 +82,7 @@ namespace _Source.Features.ActorBehaviours.Creation
                                     .End()
                                 .Sequence()
                                     .Do(friendTimeoutNode.Tick)
-                                    .Do(toNeutralStateNode.Tick)
+                                    .Do(SwitchStateTo(EntityState.Neutral))
                                     .End()
                                 .End()
                             .End()
@@ -101,7 +93,7 @@ namespace _Source.Features.ActorBehaviours.Creation
                                     .Do(FindDamageReceiver())
                                     .Do(Damage())
                                     .Do(enemyTimeoutNode.Tick)
-                                    .Do(toNeutralStateNode.Tick)
+                                    .Do(SwitchStateTo(EntityState.Neutral))
                                     .End()
                                 .Sequence()
                                     .Do(FollowAvatar())
@@ -145,9 +137,19 @@ namespace _Source.Features.ActorBehaviours.Creation
             return _nodeGenerator.FindDamageReceiver();
         }
 
+        private IBehaviourTreeNode FirstTouch()
+        {
+            return _nodeGenerator.FirstTouch();
+        }
+
         private IBehaviourTreeNode Damage()
         {
             return _nodeGenerator.Damage();
+        }
+
+        private IBehaviourTreeNode SwitchStateTo(EntityState entityState)
+        {
+            return _nodeGenerator.SwitchEntityState(entityState);
         }
     }
 }
