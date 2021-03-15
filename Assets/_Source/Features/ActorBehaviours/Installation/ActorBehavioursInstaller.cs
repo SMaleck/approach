@@ -24,10 +24,11 @@ namespace _Source.Features.ActorBehaviours.Installation
             Container.BindFactory<IActorStateModel, EntityState, SwitchEntityStateNode, SwitchEntityStateNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, DeactivateSelfNode, DeactivateSelfNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, MovementController, LeaveScreenNode, LeaveScreenNode.Factory>().AsSingle();
-            Container.BindFactory<ISensorySystem, IActorStateModel, DamageAvatarNode, DamageAvatarNode.Factory>().AsSingle();
+            Container.BindFactory<IActorStateModel, DamageActorNode, DamageActorNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, LightSwitchNode, LightSwitchNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, MovementController, EnterScreenNode, EnterScreenNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, MovementController, MovementNode, MovementNode.Factory>().AsSingle();
+            Container.BindFactory<IActorStateModel, FindDamageReceiversNode, FindDamageReceiversNode.Factory>().AsSingle();
         }
     }
 }

@@ -1,10 +1,12 @@
-﻿using _Source.Features.Actors.Data;
+﻿using System;
+using _Source.Entities.Avatar;
+using _Source.Features.Actors.Data;
 using UniRx;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class HealthDataComponent : AbstractDataComponent, IResettableDataComponent
+    public class HealthDataComponent : AbstractDataComponent, IResettableDataComponent, IDamageReceiver
     {
         public class Factory : PlaceholderFactory<IHealthData, HealthDataComponent> { }
 
@@ -33,7 +35,7 @@ namespace _Source.Features.Actors.DataComponents
 
         public void SetHealth(int value)
         {
-            _health.Value = value;
+            _health.Value = Math.Max(0, value);
         }
 
         public void SetIsAlive(bool value)
@@ -51,6 +53,11 @@ namespace _Source.Features.Actors.DataComponents
         public void Reset()
         {
             SetHealth(_healthData.MaxHealth);
+        }
+
+        public void ReceiveDamage(int damageAmount)
+        {
+            SetHealth(_health.Value - damageAmount);
         }
     }
 }

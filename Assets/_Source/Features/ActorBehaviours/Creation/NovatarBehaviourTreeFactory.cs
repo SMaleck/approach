@@ -26,28 +26,27 @@ namespace _Source.Features.ActorBehaviours.Creation
                 sensorySystem,
                 movementController);
 
-            var unacquaintedRandomTimeoutNode = _nodeGenerator.CreateIdleTimeoutRandomNode(
+            var unacquaintedRandomTimeoutNode = _nodeGenerator.IdleTimeoutRandom(
                 _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds,
                 _behaviourTreeConfig.UnacquaintedConfig.TimeBasedSwitchChance);
 
-            var unacquaintedFirstTouchNode = _nodeGenerator.CreateFirstTouchNode();
+            var unacquaintedFirstTouchNode = _nodeGenerator.FirstTouch();
 
-            var toNeutralStateNode = _nodeGenerator.CreateSwitchEntityStateNode(
+            var toNeutralStateNode = _nodeGenerator.SwitchEntityState(
                 EntityState.Neutral);
 
-            var toUnacquaintedStateNode = _nodeGenerator.CreateSwitchEntityStateNode(
+            var toUnacquaintedStateNode = _nodeGenerator.SwitchEntityState(
                 EntityState.Unacquainted);
 
-            var friendTimeoutNode = _nodeGenerator.CreateIdleTimeoutNode(
+            var friendTimeoutNode = _nodeGenerator.IdleTimeout(
                 _behaviourTreeConfig.MaxSecondsToFallBehind);
 
-            var enemyTimeoutNode = _nodeGenerator.CreateIdleTimeoutNode(
+            var enemyTimeoutNode = _nodeGenerator.IdleTimeout(
                 _behaviourTreeConfig.EnemyLeavingTimeoutSeconds);
 
-            var deactivateSelfNode = _nodeGenerator.CreateDeactivateSelfNode();
-            var leaveScreenNode = _nodeGenerator.CreateLeaveScreenNode();
-            var damageAvatarNode = _nodeGenerator.CreateDamageAvatarNode();
-            var lightSwitchNode = _nodeGenerator.CreateLightSwitchNode();
+            var deactivateSelfNode = _nodeGenerator.DeactivateSelf();
+            var leaveScreenNode = _nodeGenerator.LeaveScreen();
+            var lightSwitchNode = _nodeGenerator.LightSwitch();
 
             // @formatter:off
             var startNode = new BehaviourTreeBuilder()
@@ -99,7 +98,8 @@ namespace _Source.Features.ActorBehaviours.Creation
                             .Condition(t => IsEntityState(model, EntityState.Enemy))
                             .Selector()
                                 .Sequence()
-                                    .Do(damageAvatarNode.Tick)
+                                    .Do(FindDamageReceiver())
+                                    .Do(Damage())
                                     .Do(enemyTimeoutNode.Tick)
                                     .Do(toNeutralStateNode.Tick)
                                     .End()
@@ -127,17 +127,27 @@ namespace _Source.Features.ActorBehaviours.Creation
 
         private IBehaviourTreeNode EnterScreen()
         {
-            return _nodeGenerator.CreateEnterScreenNode();
+            return _nodeGenerator.EnterScreen();
         }
 
         private IBehaviourTreeNode FollowAvatar()
         {
-            return _nodeGenerator.CreateFollowAvatarNode();
+            return _nodeGenerator.FollowAvatar();
         }
 
         private IBehaviourTreeNode Move()
         {
-            return _nodeGenerator.CreateMovementNode();
+            return _nodeGenerator.Movement();
+        }
+
+        private IBehaviourTreeNode FindDamageReceiver()
+        {
+            return _nodeGenerator.FindDamageReceiver();
+        }
+
+        private IBehaviourTreeNode Damage()
+        {
+            return _nodeGenerator.Damage();
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using _Source.Entities.Novatar;
+﻿using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Nodes;
 using _Source.Features.Actors;
 using _Source.Features.ActorSensors;
 using _Source.Features.Movement;
 using BehaviourTreeSystem;
+using System.Collections.Generic;
+using System.Linq;
 using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Creation
@@ -21,10 +21,11 @@ namespace _Source.Features.ActorBehaviours.Creation
         [Inject] private readonly SwitchEntityStateNode.Factory _switchEntityStateNodeFactory;
         [Inject] private readonly DeactivateSelfNode.Factory _deactivateSelfNodeFactory;
         [Inject] private readonly LeaveScreenNode.Factory _leaveScreenNodeFactory;
-        [Inject] private readonly DamageAvatarNode.Factory _damageAvatarNodeFactory;
+        [Inject] private readonly DamageActorNode.Factory _damageActorNodeFactory;
         [Inject] private readonly LightSwitchNode.Factory _lightSwitchNodeFactory;
         [Inject] private readonly EnterScreenNode.Factory _enterScreenNodeFactory;
         [Inject] private readonly MovementNode.Factory _movementNodeFactory;
+        [Inject] private readonly FindDamageReceiversNode.Factory _findDamageReceiversNodeFactory;
 
         private readonly IActorStateModel _actorStateModel;
         private readonly ISensorySystem _sensorySystem;
@@ -51,7 +52,7 @@ namespace _Source.Features.ActorBehaviours.Creation
                 .ToArray();
         }
 
-        public FollowAvatarNode CreateFollowAvatarNode()
+        public FollowAvatarNode FollowAvatar()
         {
             var node = _followAvatarNodeFactory.Create(_actorStateModel);
             _generatedNodes.Add(node);
@@ -59,7 +60,7 @@ namespace _Source.Features.ActorBehaviours.Creation
             return node;
         }
 
-        public IdleTimeoutNode CreateIdleTimeoutNode(double timeout)
+        public IdleTimeoutNode IdleTimeout(double timeout)
         {
             var node = _idleTimeoutNodeFactory.Create(timeout);
             _generatedNodes.Add(node);
@@ -67,7 +68,7 @@ namespace _Source.Features.ActorBehaviours.Creation
             return node;
         }
 
-        public IdleTimeoutRandomNode CreateIdleTimeoutRandomNode(
+        public IdleTimeoutRandomNode IdleTimeoutRandom(
             double timeout,
             double randomChance)
         {
@@ -77,7 +78,7 @@ namespace _Source.Features.ActorBehaviours.Creation
             return node;
         }
 
-        public FirstTouchNode CreateFirstTouchNode()
+        public FirstTouchNode FirstTouch()
         {
             var node = _firstTouchNodeFactory.Create(
                 _actorStateModel,
@@ -87,7 +88,7 @@ namespace _Source.Features.ActorBehaviours.Creation
             return node;
         }
 
-        public SwitchEntityStateNode CreateSwitchEntityStateNode(EntityState targetEntityState)
+        public SwitchEntityStateNode SwitchEntityState(EntityState targetEntityState)
         {
             var node = _switchEntityStateNodeFactory.Create(
                 _actorStateModel,
@@ -97,7 +98,7 @@ namespace _Source.Features.ActorBehaviours.Creation
             return node;
         }
 
-        public DeactivateSelfNode CreateDeactivateSelfNode()
+        public DeactivateSelfNode DeactivateSelf()
         {
             var node = _deactivateSelfNodeFactory.Create(
                 _actorStateModel);
@@ -106,7 +107,7 @@ namespace _Source.Features.ActorBehaviours.Creation
             return node;
         }
 
-        public LeaveScreenNode CreateLeaveScreenNode()
+        public LeaveScreenNode LeaveScreen()
         {
             var node = _leaveScreenNodeFactory.Create(
                 _actorStateModel,
@@ -116,17 +117,16 @@ namespace _Source.Features.ActorBehaviours.Creation
             return node;
         }
 
-        public DamageAvatarNode CreateDamageAvatarNode()
+        public DamageActorNode Damage()
         {
-            var node = _damageAvatarNodeFactory.Create(
-                _sensorySystem,
+            var node = _damageActorNodeFactory.Create(
                 _actorStateModel);
             _generatedNodes.Add(node);
 
             return node;
         }
 
-        public LightSwitchNode CreateLightSwitchNode()
+        public LightSwitchNode LightSwitch()
         {
             var node = _lightSwitchNodeFactory.Create(
                 _actorStateModel);
@@ -135,7 +135,7 @@ namespace _Source.Features.ActorBehaviours.Creation
             return node;
         }
 
-        public EnterScreenNode CreateEnterScreenNode()
+        public EnterScreenNode EnterScreen()
         {
             var node = _enterScreenNodeFactory.Create(
                 _actorStateModel,
@@ -145,11 +145,20 @@ namespace _Source.Features.ActorBehaviours.Creation
             return node;
         }
 
-        public MovementNode CreateMovementNode()
+        public MovementNode Movement()
         {
             var node = _movementNodeFactory.Create(
                 _actorStateModel,
                 _movementController);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public FindDamageReceiversNode FindDamageReceiver()
+        {
+            var node = _findDamageReceiversNodeFactory.Create(
+                _actorStateModel);
             _generatedNodes.Add(node);
 
             return node;
