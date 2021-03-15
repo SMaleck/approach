@@ -53,9 +53,7 @@ namespace _Source.Features.ActorBehaviours.Creation
 
         public FollowAvatarNode CreateFollowAvatarNode()
         {
-            var node = _followAvatarNodeFactory.Create(
-                _actorStateModel,
-                _sensorySystem);
+            var node = _followAvatarNodeFactory.Create(_actorStateModel);
             _generatedNodes.Add(node);
 
             return node;

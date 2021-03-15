@@ -3,7 +3,7 @@ using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class MovementDataComponent : AbstractDataComponent, IDataComponent
+    public class MovementDataComponent : AbstractDataComponent
     {
         public class Factory : PlaceholderFactory<IMovementData, MovementDataComponent> { }
 

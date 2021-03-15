@@ -15,6 +15,7 @@ namespace _Source.Features.ActorEntities.Avatar
         public IActorStateModel Create()
         {
             return ActorStateModelFactory.Create()
+                .Attach(EntityTypeDataComponentFactory.Create(EntityType.Avatar))
                 .Attach(HealthDataComponentFactory.Create(_data))
                 .Attach(MovementDataComponentFactory.Create(_data))
                 .Attach(SurvivalDataComponentFactory.Create())

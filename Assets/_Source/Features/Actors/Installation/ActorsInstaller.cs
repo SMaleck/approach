@@ -1,5 +1,6 @@
 ﻿using _Source.Features.Actors.Data;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.ActorSensors.Data;
 using Zenject;
 
 namespace _Source.Features.Actors.Installation
@@ -11,6 +12,7 @@ namespace _Source.Features.Actors.Installation
             Container.BindFactory<ActorStateModel, ActorStateModel.Factory>().AsSingle();
 
             Container.BindFactory<BlackBoardDataComponent, BlackBoardDataComponent.Factory>().AsSingle();
+            Container.BindFactory<EntityType, EntityTypeDataComponent, EntityTypeDataComponent.Factory>().AsSingle();
             Container.BindFactory<IHealthData, HealthDataComponent, HealthDataComponent.Factory>().AsSingle();
             Container.BindFactory<IDamageData, DamageDataComponent, DamageDataComponent.Factory>().AsSingle();
             Container.BindFactory<IMovementData, MovementDataComponent, MovementDataComponent.Factory>().AsSingle();

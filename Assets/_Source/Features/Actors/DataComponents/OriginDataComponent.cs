@@ -4,7 +4,7 @@ using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class OriginDataComponent : AbstractDataComponent, IDataComponent
+    public class OriginDataComponent : AbstractDataComponent
     {
         public class Factory : PlaceholderFactory<OriginDataComponent> { }
 

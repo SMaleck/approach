@@ -17,7 +17,7 @@ namespace _Source.Features.ActorBehaviours.Installation
             Container.BindInterfacesAndSelfTo<NovatarBehaviourTreeFactory>().AsSingle();
 
             // ------------------------------ NODE FACTORIES
-            Container.BindFactory<IActorStateModel, ISensorySystem, FollowAvatarNode, FollowAvatarNode.Factory>().AsSingle();
+            Container.BindFactory<IActorStateModel, FollowAvatarNode, FollowAvatarNode.Factory>().AsSingle();
             Container.BindFactory<double, IdleTimeoutNode, IdleTimeoutNode.Factory>().AsSingle();
             Container.BindFactory<double, double, IdleTimeoutRandomNode, IdleTimeoutRandomNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, ISensorySystem, FirstTouchNode, FirstTouchNode.Factory>().AsSingle();
