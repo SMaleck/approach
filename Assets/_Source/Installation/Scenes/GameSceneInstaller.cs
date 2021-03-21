@@ -53,7 +53,7 @@ namespace _Source.Installation.Scenes
             Container.BindInterfacesAndSelfTo<ScreenSizeModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<ScreenSizeController>().AsSingleNonLazy();
 
-            DebugInstaller.Install(Container);
+            FeatureDebugInstaller.Install(Container);
 
             Container.BindInterfacesAndSelfTo<GameSceneInitializer>().AsSingleNonLazy();
         }

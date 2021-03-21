@@ -1,4 +1,5 @@
-﻿using _Source.Features.SceneManagement;
+﻿using _Source.Debug.Installation;
+using _Source.Features.SceneManagement;
 using _Source.Util;
 using Zenject;
 
@@ -17,6 +18,7 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<ProjectInitializer>().AsSingleNonLazy();
 
             DataInstaller.Install(Container);
+            ProjectDebugInstaller.Install(Container);
         }
     }
 }

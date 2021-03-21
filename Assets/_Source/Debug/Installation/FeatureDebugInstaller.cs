@@ -2,7 +2,7 @@
 
 namespace _Source.Debug.Installation
 {
-    public class DebugInstaller : Installer<DebugInstaller>
+    public class FeatureDebugInstaller : Installer<FeatureDebugInstaller>
     {
         public override void InstallBindings()
         {
