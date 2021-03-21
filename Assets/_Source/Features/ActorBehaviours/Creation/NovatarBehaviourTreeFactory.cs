@@ -2,13 +2,17 @@
 using _Source.Features.ActorBehaviours.Data;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
-using _Source.Features.ActorSensors;
 using _Source.Features.Movement;
 using BehaviourTreeSystem;
 using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Creation
 {
+    // ToDo V0 FRIENDS: Calm down
+    // ToDo V1 Move around on the playing field, increase leave time
+    // ToDo V1 Sometimes move towards player
+    // ToDo V1 FRIENDS: Absorb enemies
+    // ToDo V1 FRIENDS: Leave when health is low
     public class NovatarBehaviourTreeFactory
     {
         [Inject] private readonly NodeGenerator.Factory _nodeGeneratorFactory;
@@ -18,27 +22,11 @@ namespace _Source.Features.ActorBehaviours.Creation
 
         public BehaviourTree Create(
             IActorStateModel model,
-            ISensorySystem sensorySystem,
             MovementController movementController)
         {
             _nodeGenerator = _nodeGeneratorFactory.Create(
                 model,
-                sensorySystem,
                 movementController);
-
-            var unacquaintedRandomTimeoutNode = _nodeGenerator.IdleTimeoutRandom(
-                _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds,
-                _behaviourTreeConfig.UnacquaintedConfig.TimeBasedSwitchChance);
-
-            var friendTimeoutNode = _nodeGenerator.IdleTimeout(
-                _behaviourTreeConfig.MaxSecondsToFallBehind);
-
-            var enemyTimeoutNode = _nodeGenerator.IdleTimeout(
-                _behaviourTreeConfig.EnemyLeavingTimeoutSeconds);
-
-            var deactivateSelfNode = _nodeGenerator.DeactivateSelf();
-            var leaveScreenNode = _nodeGenerator.LeaveScreen();
-            var lightSwitchNode = _nodeGenerator.LightSwitch();
 
             // @formatter:off
             var startNode = new BehaviourTreeBuilder()
@@ -47,7 +35,7 @@ namespace _Source.Features.ActorBehaviours.Creation
                         .Sequence()
                             .Condition(t => IsEntityState(model, EntityState.Spawning))
                             .Sequence()
-                                .Do(lightSwitchNode.Tick)
+                                .Do(LightSwitch())
                                 .Do(EnterScreen())
                                 .Do(SwitchStateTo(EntityState.Unacquainted))
                                 .End()
@@ -61,7 +49,7 @@ namespace _Source.Features.ActorBehaviours.Creation
                                     .Do(FirstTouch())
                                     .End()
                                 .Sequence()
-                                    .Do(unacquaintedRandomTimeoutNode.Tick)
+                                    .Do(UnacquaintedTimeout())
                                     .Do(SwitchStateTo(EntityState.Neutral))
                                     .End()
                                 .End()
@@ -69,8 +57,8 @@ namespace _Source.Features.ActorBehaviours.Creation
                         .Sequence()
                             .Condition(t => IsEntityState(model, EntityState.Neutral))
                             .Sequence()
-                                .Do(leaveScreenNode.Tick)
-                                .Do(deactivateSelfNode.Tick)
+                                .Do(LeaveScreen())
+                                .Do(Deactivate())
                                 .End()
                             .End()
                         .Sequence()
@@ -81,7 +69,7 @@ namespace _Source.Features.ActorBehaviours.Creation
                                     .Do(Move())
                                     .End()
                                 .Sequence()
-                                    .Do(friendTimeoutNode.Tick)
+                                    .Do(FriendTimeout())
                                     .Do(SwitchStateTo(EntityState.Neutral))
                                     .End()
                                 .End()
@@ -92,12 +80,10 @@ namespace _Source.Features.ActorBehaviours.Creation
                                 .Sequence()
                                     .Do(FindDamageReceiver())
                                     .Do(Damage())
-                                    .Do(enemyTimeoutNode.Tick)
-                                    .Do(SwitchStateTo(EntityState.Neutral))
                                     .End()
                                 .Sequence()
-                                    .Do(FollowAvatar())
-                                    .Do(Move())
+                                    .Do(EnemyTimeout())
+                                    .Do(SwitchStateTo(EntityState.Neutral))
                                     .End()
                                 .End()
                             .End()
@@ -111,15 +97,27 @@ namespace _Source.Features.ActorBehaviours.Creation
                 _nodeGenerator.GetGeneratedNodes());
         }
 
+        #region Convenience Methods
+
         private bool IsEntityState(IActorStateModel model, EntityState status)
         {
             var relationshipDataComponent = model.Get<RelationshipDataComponent>();
             return relationshipDataComponent.Relationship.Value == status;
         }
 
+        private IBehaviourTreeNode Deactivate()
+        {
+            return _nodeGenerator.DeactivateSelf();
+        }
+
         private IBehaviourTreeNode EnterScreen()
         {
             return _nodeGenerator.EnterScreen();
+        }
+
+        private IBehaviourTreeNode LeaveScreen()
+        {
+            return _nodeGenerator.LeaveScreen();
         }
 
         private IBehaviourTreeNode FollowAvatar()
@@ -147,9 +145,40 @@ namespace _Source.Features.ActorBehaviours.Creation
             return _nodeGenerator.Damage();
         }
 
+        private IBehaviourTreeNode LightSwitch()
+        {
+            return _nodeGenerator.LightSwitch();
+        }
+
         private IBehaviourTreeNode SwitchStateTo(EntityState entityState)
         {
             return _nodeGenerator.SwitchEntityState(entityState);
         }
+
+        private IBehaviourTreeNode IdleTimeout(double timeout)
+        {
+            return _nodeGenerator.IdleTimeout(timeout);
+        }
+
+        private IBehaviourTreeNode EnemyTimeout()
+        {
+            return IdleTimeout(
+                _behaviourTreeConfig.EnemyLeavingTimeoutSeconds);
+        }
+
+        private IBehaviourTreeNode FriendTimeout()
+        {
+            return IdleTimeout(
+                _behaviourTreeConfig.MaxSecondsToFallBehind);
+        }
+
+        private IBehaviourTreeNode UnacquaintedTimeout()
+        {
+            return _nodeGenerator.IdleTimeoutRandom(
+                _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds,
+                _behaviourTreeConfig.UnacquaintedConfig.TimeBasedSwitchChance);
+        }
+
+        #endregion
     }
 }

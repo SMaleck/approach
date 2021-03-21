@@ -1,45 +1,78 @@
-﻿using System.Linq;
-using _Source.Entities.Novatar;
+﻿using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Data;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
-using _Source.Features.ActorSensors;
 using BehaviourTreeSystem;
+using System.Linq;
 using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class FirstTouchNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<IActorStateModel, ISensorySystem, FirstTouchNode> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, FirstTouchNode> { }
 
-        private readonly ISensorySystem _sensorySystem;
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
+        private readonly TransformDataComponent _transformDataComponent;
+        private readonly SensorDataComponent _sensorDataComponent;
         private readonly RelationshipDataComponent _relationshipDataComponent;
 
         public FirstTouchNode(
             IActorStateModel actorStateModel,
-            ISensorySystem sensorySystem,
             BehaviourTreeConfig behaviourTreeConfig)
         {
-            _sensorySystem = sensorySystem;
             _behaviourTreeConfig = behaviourTreeConfig;
 
+            _transformDataComponent = actorStateModel.Get<TransformDataComponent>();
+            _sensorDataComponent = actorStateModel.Get<SensorDataComponent>();
             _relationshipDataComponent = actorStateModel.Get<RelationshipDataComponent>();
         }
 
         public override BehaviourTreeStatus Tick(TimeData time)
         {
-            if (!_sensorySystem.IsInTouchRange())
+            if (HasTouchedValidActor())
             {
-                return BehaviourTreeStatus.Failure;
+                RollRelationShip();
+                return BehaviourTreeStatus.Success;
             }
 
+            return BehaviourTreeStatus.Failure;
+        }
+
+        private bool HasTouchedValidActor()
+        {
+            if (_sensorDataComponent.KnowsAvatar &&
+                IsInTouchRange(_sensorDataComponent.Avatar))
+            {
+                return true;
+            }
+
+            if (_sensorDataComponent.KnownEntities
+                .Any(e => IsFriend(e) && IsInTouchRange(e)))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsFriend(IActorStateModel actor)
+        {
+            return actor.Get<RelationshipDataComponent>()?.Relationship.Value == EntityState.Friend;
+        }
+
+        private bool IsInTouchRange(IActorStateModel actor)
+        {
+            return _sensorDataComponent.IsInTouchRange(
+                _transformDataComponent,
+                actor.Get<TransformDataComponent>());
+        }
+
+        private void RollRelationShip()
+        {
             EntityState nextStatus = GetWeightedRandomRelationshipStatus();
             _relationshipDataComponent.SetRelationship(nextStatus);
-
-            return BehaviourTreeStatus.Success;
         }
 
         private EntityState GetWeightedRandomRelationshipStatus()

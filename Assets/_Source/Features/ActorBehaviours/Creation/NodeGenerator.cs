@@ -1,7 +1,6 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Nodes;
 using _Source.Features.Actors;
-using _Source.Features.ActorSensors;
 using _Source.Features.Movement;
 using BehaviourTreeSystem;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ namespace _Source.Features.ActorBehaviours.Creation
 {
     public class NodeGenerator
     {
-        public class Factory : PlaceholderFactory<IActorStateModel, ISensorySystem, MovementController, NodeGenerator> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, MovementController, NodeGenerator> { }
 
         [Inject] private readonly FollowAvatarNode.Factory _followAvatarNodeFactory;
         [Inject] private readonly IdleTimeoutNode.Factory _idleTimeoutNodeFactory;
@@ -28,18 +27,15 @@ namespace _Source.Features.ActorBehaviours.Creation
         [Inject] private readonly FindDamageReceiversNode.Factory _findDamageReceiversNodeFactory;
 
         private readonly IActorStateModel _actorStateModel;
-        private readonly ISensorySystem _sensorySystem;
         private readonly MovementController _movementController;
 
         private readonly List<AbstractNode> _generatedNodes;
 
         public NodeGenerator(
             IActorStateModel actorStateModel,
-            ISensorySystem sensorySystem,
             MovementController movementController)
         {
             _actorStateModel = actorStateModel;
-            _sensorySystem = sensorySystem;
             _movementController = movementController;
 
             _generatedNodes = new List<AbstractNode>();
@@ -81,8 +77,7 @@ namespace _Source.Features.ActorBehaviours.Creation
         public FirstTouchNode FirstTouch()
         {
             var node = _firstTouchNodeFactory.Create(
-                _actorStateModel,
-                _sensorySystem);
+                _actorStateModel);
             _generatedNodes.Add(node);
 
             return node;

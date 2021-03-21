@@ -22,12 +22,12 @@ namespace _Source.Features.ActorBehaviours.Nodes
         {
             if (_damageDataComponent.HasDeliveredDamage)
             {
-                return BehaviourTreeStatus.Success;
+                return BehaviourTreeStatus.Failure;
             }
 
             if (!_blackBoardDataComponent.DamageReceiver.HasValue)
             {
-                return BehaviourTreeStatus.Success;
+                return BehaviourTreeStatus.Failure;
             }
 
             var receiver = _blackBoardDataComponent.DamageReceiver.Consume();

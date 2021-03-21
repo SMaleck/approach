@@ -47,7 +47,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
 
         private bool IsFriend(IActorStateModel actor)
         {
-            return actor.Get<RelationshipDataComponent>().Relationship.Value == EntityState.Friend;
+            return actor.Get<RelationshipDataComponent>()?.Relationship.Value == EntityState.Friend;
         }
 
         private bool IsInTouchRange(IActorStateModel actor)

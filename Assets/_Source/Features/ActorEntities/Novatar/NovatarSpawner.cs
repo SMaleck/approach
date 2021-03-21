@@ -119,7 +119,7 @@ namespace _Source.Features.ActorEntities.Novatar
                 .AddTo(Disposer);
 
             _novatarBehaviourTreeFactory
-                .Create(actorStateModel, sensorySystem, novatarMovementController)
+                .Create(actorStateModel, novatarMovementController)
                 .AddTo(Disposer)
                 .Initialize();
 

@@ -1,4 +1,5 @@
-﻿using _Source.Features.Actors.DataComponents;
+﻿using _Source.App;
+using _Source.Features.Actors.DataComponents;
 using _Source.Util;
 using System;
 using System.Collections.Generic;
@@ -47,8 +48,9 @@ namespace _Source.Features.Actors
             {
                 return component as T;
             }
-            
-            throw new KeyNotFoundException($"No component of type [{(typeof(T).Name)}] found");
+
+            Logger.Warn($"No component of type [{(typeof(T).Name)}] found");
+            return null;
         }
 
         public bool TryGet<T>(out IDataComponent component) where T : class, IDataComponent

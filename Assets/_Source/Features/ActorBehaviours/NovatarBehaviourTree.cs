@@ -1,32 +1,26 @@
-﻿using _Source.Features.ActorBehaviours.Nodes;
+﻿using _Source.Features.ActorBehaviours.Creation;
+using _Source.Features.ActorBehaviours.Nodes;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
-using _Source.Features.ActorSensors;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
 using _Source.Util;
 using BehaviourTreeSystem;
 using System.Collections.Generic;
 using System.Linq;
-using _Source.Features.ActorBehaviours.Creation;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.ActorBehaviours
 {
-    // ToDo V1 Move around on the playing field, increase leave time
-    // ToDo V1 Sometimes move towards player
-    // ToDo V1 FRIENDS: Absorb enemies
-    // ToDo V1 FRIENDS: Leave when health is low
     public class NovatarBehaviourTree : AbstractDisposable, IInitializable
     {
-        public class Factory : PlaceholderFactory<IActorStateModel, ISensorySystem, MovementController, NovatarBehaviourTree> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, MovementController, NovatarBehaviourTree> { }
 
         [Inject] private readonly NovatarBehaviourTreeFactory _novatarBehaviourTreeFactory;
 
         private readonly IActorStateModel _actorStateModel;
-        private readonly ISensorySystem _sensorySystem;
         private readonly MovementController _movementController;
         private readonly IPauseStateModel _pauseStateModel;
 
@@ -36,12 +30,10 @@ namespace _Source.Features.ActorBehaviours
 
         public NovatarBehaviourTree(
             IActorStateModel actorStateModel,
-            ISensorySystem sensorySystem,
             MovementController movementController,
             IPauseStateModel pauseStateModel)
         {
             _actorStateModel = actorStateModel;
-            _sensorySystem = sensorySystem;
             _movementController = movementController;
             _pauseStateModel = pauseStateModel;
         }
@@ -70,7 +62,6 @@ namespace _Source.Features.ActorBehaviours
         {
             var behaviourTree = _novatarBehaviourTreeFactory.Create(
                 _actorStateModel,
-                _sensorySystem,
                 _movementController);
 
             AggregateNodes(behaviourTree.Nodes);
