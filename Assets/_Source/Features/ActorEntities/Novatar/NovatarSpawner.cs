@@ -4,7 +4,6 @@ using _Source.Features.ActorBehaviours;
 using _Source.Features.ActorEntities.Avatar;
 using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Features.ActorEntities.Novatar.Data;
-using _Source.Features.ActorSensors;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using _Source.Util;
@@ -12,22 +11,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 namespace _Source.Features.ActorEntities.Novatar
 {
     public class NovatarSpawner : AbstractDisposable
     {
+        [Inject] private readonly NovatarFacade.Factory _novatarFacadeFactory;
+        [Inject] private readonly NovatarEntity.Factory _novatarEntityFactory;
+        [Inject] private readonly NovatarStateFactory _novatarStateFactory;
+        [Inject] private readonly NovatarBehaviourTree.Factory _novatarBehaviourTreeFactory;
+        [Inject] private readonly MovementModel.Factory _movementModelFactory;
+        [Inject] private readonly MovementController.Factory _movementControllerFactory;
+        [Inject] private readonly MovementComponent.Factory _movementComponentFactory;
+
         private readonly NovatarSpawnerConfig _novatarSpawnerConfig;
         private readonly NovatarConfig _novatarConfig;
         private readonly NovatarData _novatarData;
-        private readonly NovatarFacade.Factory _novatarFacadeFactory;
-        private readonly NovatarEntity.Factory _novatarEntityFactory;
-        private readonly NovatarStateFactory _novatarStateFactory;
-        private readonly NovatarBehaviourTree.Factory _novatarBehaviourTreeFactory;
-        private readonly MovementModel.Factory _movementModelFactory;
-        private readonly MovementController.Factory _movementControllerFactory;
-        private readonly MovementComponent.Factory _movementComponentFactory;
-        private readonly SensorySystem.Factory _sensorySystemFactory;
         private readonly ScreenSizeController _screenSizeController;
         private readonly IAvatarLocator _avatarLocator;
 
@@ -37,28 +37,12 @@ namespace _Source.Features.ActorEntities.Novatar
             NovatarSpawnerConfig novatarSpawnerConfig,
             NovatarConfig novatarConfig,
             NovatarData novatarData,
-            NovatarFacade.Factory novatarFacadeFactory,
-            NovatarEntity.Factory novatarEntityFactory,
-            NovatarStateFactory novatarStateFactory,
-            NovatarBehaviourTree.Factory novatarBehaviourTreeFactory,
-            MovementModel.Factory movementModelFactory,
-            MovementController.Factory movementControllerFactory,
-            MovementComponent.Factory movementComponentFactory,
-            SensorySystem.Factory sensorySystemFactory,
             ScreenSizeController screenSizeController,
             IAvatarLocator avatarLocator)
         {
             _novatarSpawnerConfig = novatarSpawnerConfig;
             _novatarConfig = novatarConfig;
             _novatarData = novatarData;
-            _novatarFacadeFactory = novatarFacadeFactory;
-            _novatarEntityFactory = novatarEntityFactory;
-            _novatarStateFactory = novatarStateFactory;
-            _novatarBehaviourTreeFactory = novatarBehaviourTreeFactory;
-            _movementModelFactory = movementModelFactory;
-            _movementControllerFactory = movementControllerFactory;
-            _movementComponentFactory = movementComponentFactory;
-            _sensorySystemFactory = sensorySystemFactory;
             _screenSizeController = screenSizeController;
             _avatarLocator = avatarLocator;
 
@@ -100,11 +84,6 @@ namespace _Source.Features.ActorEntities.Novatar
                     novatarEntity,
                     actorStateModel)
                 .AddTo(Disposer);
-
-            var sensorySystem = _sensorySystemFactory
-                .Create(actorStateModel, _avatarLocator.AvatarActorStateModel, _novatarData)
-                .AddTo(Disposer);
-            sensorySystem.Initialize();
 
             var novatarMovementModel = _movementModelFactory
                 .Create(actorStateModel)

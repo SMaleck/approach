@@ -3,7 +3,6 @@ using _Source.Entities.Installation;
 using _Source.Features.ActorBehaviours.Installation;
 using _Source.Features.ActorEntities.Installation;
 using _Source.Features.Actors.Installation;
-using _Source.Features.ActorSensors.Installation;
 using _Source.Features.AvatarRelationships;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
@@ -28,7 +27,6 @@ namespace _Source.Installation.Scenes
 
             ActorsInstaller.Install(Container);
             ActorEntitiesInstaller.Install(Container);
-            ActorSensorsInstaller.Install(Container);
             ActorBehavioursInstaller.Install(Container);
             EntitiesInstaller.Install(Container);
             SpawningInstaller.Install(Container);

@@ -10,6 +10,7 @@ using Zenject;
 
 namespace _Source.Features.ActorSensors
 {
+    // ToDo V0 Remove ActorSensors namespace and content
     public class SensorySystem : AbstractDisposable, ISensorySystem, IInitializable
     {
         public class Factory : PlaceholderFactory<IActorStateModel, IActorStateModel, IRangeSensorData, SensorySystem> { }

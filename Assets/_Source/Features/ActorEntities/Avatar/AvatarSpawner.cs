@@ -1,5 +1,4 @@
-﻿using _Source.Entities;
-using _Source.Entities.Avatar;
+﻿using _Source.Entities.Avatar;
 using _Source.Features.ActorEntities.Avatar.Config;
 using _Source.Features.Actors;
 using _Source.Features.Movement;
@@ -21,11 +20,7 @@ namespace _Source.Features.ActorEntities.Avatar
         [Inject] private UserInputController.Factory _userInputControllerFactory;
 
         // ToDo V0 This can probably be exposed cleaner
-        // IDamageReceiver should be handled differently, potentially accessed via trigger volumes from WorldSpace
-
         public IActorStateModel AvatarActorStateModel { get; private set; }
-        public IMonoEntity AvatarMonoEntity { get; private set; }
-        public IDamageReceiver AvatarDamageReceiver { get; private set; }
 
         public void Initialize()
         {
@@ -36,9 +31,6 @@ namespace _Source.Features.ActorEntities.Avatar
 
             var avatarFacade = _avatarFacadeFactory
                 .Create(avatarEntity, AvatarActorStateModel);
-
-            AvatarMonoEntity = avatarFacade;
-            AvatarDamageReceiver = avatarFacade;
 
             var movementModel = _movementModelFactory
                 .Create(AvatarActorStateModel)
