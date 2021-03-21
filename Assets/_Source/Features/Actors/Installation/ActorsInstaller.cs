@@ -1,6 +1,5 @@
 ﻿using _Source.Features.Actors.Data;
 using _Source.Features.Actors.DataComponents;
-using _Source.Features.ActorSensors.Data;
 using Zenject;
 
 namespace _Source.Features.Actors.Installation

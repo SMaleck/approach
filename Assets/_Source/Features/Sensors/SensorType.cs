@@ -1,4 +1,4 @@
-﻿namespace _Source.Features.Actors.Sensors
+﻿namespace _Source.Features.Sensors
 {
     public enum SensorType
     {

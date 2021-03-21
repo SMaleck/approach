@@ -1,8 +1,8 @@
-﻿using _Source.Features.ActorSensors.Data;
-using _Source.Util;
+﻿using _Source.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Source.Features.Actors.Data;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -27,12 +27,12 @@ namespace _Source.Features.Actors.DataComponents
         private readonly float _sqrFollowRange;
         private readonly float _sqrTouchRange;
 
-        public SensorDataComponent(IRangeSensorData rangeData)
+        public SensorDataComponent(ISensorData sensorData)
         {
             _knownEntities = new List<IActorStateModel>();
             _lifetimeSubscriptions = new Dictionary<IActorStateModel, IDisposable>();
-            _sqrFollowRange = Mathf.Pow(rangeData.FollowRange, 2);
-            _sqrTouchRange = Mathf.Pow(rangeData.TouchRange, 2);
+            _sqrFollowRange = Mathf.Pow(sensorData.FollowRange, 2);
+            _sqrTouchRange = Mathf.Pow(sensorData.TouchRange, 2);
         }
 
         public void Add(IActorStateModel actor)

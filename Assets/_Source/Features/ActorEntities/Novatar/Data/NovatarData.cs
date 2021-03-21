@@ -1,9 +1,8 @@
 ﻿using _Source.Features.Actors.Data;
-using _Source.Features.ActorSensors.Data;
 
 namespace _Source.Features.ActorEntities.Novatar.Data
 {
-    public class NovatarData : IHealthData, IDamageData, IMovementData, IRangeSensorData
+    public class NovatarData : IHealthData, IDamageData, IMovementData, ISensorData
     {
         private readonly NovatarDataSource _dataSource;
 

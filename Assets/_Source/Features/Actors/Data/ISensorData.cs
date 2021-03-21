@@ -1,6 +1,6 @@
-﻿namespace _Source.Features.ActorSensors.Data
+﻿namespace _Source.Features.Actors.Data
 {
-    public interface IRangeSensorData
+    public interface ISensorData
     {
         float FollowRange { get; }
         float InteractionRange { get; }

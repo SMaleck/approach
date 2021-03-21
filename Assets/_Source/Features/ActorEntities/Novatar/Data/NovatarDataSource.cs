@@ -1,6 +1,6 @@
 ﻿using _Source.App;
-using _Source.Features.ActorSensors.Data;
 using _Source.Features.Movement.Data;
+using _Source.Features.Sensors.Data;
 using UnityEngine;
 
 namespace _Source.Features.ActorEntities.Novatar.Data

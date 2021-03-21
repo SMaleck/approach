@@ -2,7 +2,6 @@
 using _Source.Features.ActorBehaviours.Creation;
 using _Source.Features.ActorBehaviours.Nodes;
 using _Source.Features.Actors;
-using _Source.Features.ActorSensors;
 using _Source.Features.Movement;
 using Zenject;
 
