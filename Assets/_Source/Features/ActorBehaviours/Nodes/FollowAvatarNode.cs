@@ -1,5 +1,6 @@
 ﻿using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.Sensors;
 using BehaviourTreeSystem;
 using Zenject;
 
@@ -30,19 +31,16 @@ namespace _Source.Features.ActorBehaviours.Nodes
                 return BehaviourTreeStatus.Failure;
             }
 
-            var avatarTransform = _sensorDataComponent.Avatar.Get<TransformDataComponent>();
-            if (!_sensorDataComponent.IsInFollowRange(_transformDataComponent, avatarTransform))
-            {
-                return BehaviourTreeStatus.Failure;
-            }
             // ToDo V0 This should then not move. Works because the following MovementNode just moves to where we are
-            if (_sensorDataComponent.IsInTouchRange(_transformDataComponent, avatarTransform))
+            if (_sensorDataComponent.IsInRange(SensorType.Touch, _sensorDataComponent.Avatar))
             {
                 _blackBoard.MovementTarget.Store(_transformDataComponent.Position);
                 return BehaviourTreeStatus.Success;
             }
 
             _actorStateModel.ResetIdleTimeouts();
+
+            var avatarTransform = _sensorDataComponent.Avatar.Get<TransformDataComponent>();
             _blackBoard.MovementTarget.Store(avatarTransform.Position);
 
             return BehaviourTreeStatus.Success;

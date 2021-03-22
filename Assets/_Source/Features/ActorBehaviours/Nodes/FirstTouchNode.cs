@@ -2,6 +2,7 @@
 using _Source.Features.ActorBehaviours.Data;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.Sensors;
 using BehaviourTreeSystem;
 using System.Linq;
 using Zenject;
@@ -14,7 +15,6 @@ namespace _Source.Features.ActorBehaviours.Nodes
 
         private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
-        private readonly TransformDataComponent _transformDataComponent;
         private readonly SensorDataComponent _sensorDataComponent;
         private readonly RelationshipDataComponent _relationshipDataComponent;
 
@@ -24,7 +24,6 @@ namespace _Source.Features.ActorBehaviours.Nodes
         {
             _behaviourTreeConfig = behaviourTreeConfig;
 
-            _transformDataComponent = actorStateModel.Get<TransformDataComponent>();
             _sensorDataComponent = actorStateModel.Get<SensorDataComponent>();
             _relationshipDataComponent = actorStateModel.Get<RelationshipDataComponent>();
         }
@@ -42,14 +41,14 @@ namespace _Source.Features.ActorBehaviours.Nodes
 
         private bool HasTouchedValidActor()
         {
-            if (_sensorDataComponent.KnowsAvatar &&
-                IsInTouchRange(_sensorDataComponent.Avatar))
+            if (_sensorDataComponent.IsAvatarInRange(SensorType.Touch))
             {
                 return true;
             }
 
-            if (_sensorDataComponent.KnownEntities
-                .Any(e => IsFriend(e) && IsInTouchRange(e)))
+            if (_sensorDataComponent
+                .GetInRange(SensorType.Touch)
+                .Any(IsFriend))
             {
                 return true;
             }
@@ -60,13 +59,6 @@ namespace _Source.Features.ActorBehaviours.Nodes
         private bool IsFriend(IActorStateModel actor)
         {
             return actor.Get<RelationshipDataComponent>()?.Relationship.Value == EntityState.Friend;
-        }
-
-        private bool IsInTouchRange(IActorStateModel actor)
-        {
-            return _sensorDataComponent.IsInTouchRange(
-                _transformDataComponent,
-                actor.Get<TransformDataComponent>());
         }
 
         private void RollRelationShip()

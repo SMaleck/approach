@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1362777207899459468}
   - component: {fileID: 7616588745787026386}
   - component: {fileID: 4220120526230914207}
+  - component: {fileID: 7896766263575267588}
+  - component: {fileID: 6856558681594624683}
   - component: {fileID: 5099295660208934879}
   m_Layer: 9
   m_Name: prefab_novatar
@@ -32,6 +34,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1211718632928904694}
+  - {fileID: 4110693276458478199}
   - {fileID: 8803812276700591331}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -71,7 +74,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ff017e633a89846966996542fdaac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 0
   _distanceProbe: {fileID: 5099295660208934879}
+--- !u!114 &7896766263575267588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362777207899459457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2ff017e633a89846966996542fdaac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 1
+  _distanceProbe: {fileID: 5481947781034643230}
+--- !u!114 &6856558681594624683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362777207899459457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c13c977d11681344aaf4a4252f5517f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &5099295660208934879
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -286,7 +316,7 @@ Transform:
   m_Children:
   - {fileID: 9055028856172341394}
   m_Father: {fileID: 1362777207899459469}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6492748225327256640
 GameObject:
@@ -348,4 +378,48 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &7257688241905238515
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4110693276458478199}
+  - component: {fileID: 5481947781034643230}
+  m_Layer: 9
+  m_Name: probe_touch
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4110693276458478199
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7257688241905238515}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1362777207899459469}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &5481947781034643230
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7257688241905238515}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.7
   m_Center: {x: 0, y: 0, z: 0}

@@ -3,6 +3,6 @@
     public enum SensorType
     {
         Visual = 0,
-        Touch = 1,
+        Touch = 1
     }
 }
