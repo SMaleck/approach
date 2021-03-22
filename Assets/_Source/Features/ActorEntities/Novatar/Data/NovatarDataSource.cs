@@ -1,6 +1,5 @@
 ﻿using _Source.App;
 using _Source.Features.Movement.Data;
-using _Source.Features.Sensors.Data;
 using UnityEngine;
 
 namespace _Source.Features.ActorEntities.Novatar.Data
@@ -18,9 +17,5 @@ namespace _Source.Features.ActorEntities.Novatar.Data
         [Header("Movement System Data")]
         [SerializeField] private MovementDataSource _movementDataSource;
         public MovementDataSource MovementDataSource => _movementDataSource;
-
-        [Header("Sensory System Data")]
-        [SerializeField] private RangeSensorDataSource _rangeSensorDataSource;
-        public RangeSensorDataSource RangeSensorDataSource => _rangeSensorDataSource;
     }
 }

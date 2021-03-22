@@ -1,11 +1,9 @@
-﻿using _Source.Features.Actors.Data;
-using _Source.Features.Sensors;
+﻿using _Source.Features.Sensors;
 using _Source.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
-using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
@@ -59,11 +57,6 @@ namespace _Source.Features.Actors.DataComponents
         public IReadOnlyList<IActorStateModel> GetInRange(SensorType sensor)
         {
             return _storages[sensor].KnownEntities;
-        }
-
-        public bool IsInRange(SensorType sensor, IActorStateModel model)
-        {
-            return _storages[sensor].KnownEntities.Contains(model);
         }
 
         public bool IsAvatarInRange(SensorType sensor)
