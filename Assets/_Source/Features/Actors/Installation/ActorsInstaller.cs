@@ -1,5 +1,6 @@
 ﻿using _Source.Features.Actors.Data;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.Tokens;
 using Zenject;
 
 namespace _Source.Features.Actors.Installation
@@ -8,6 +9,10 @@ namespace _Source.Features.Actors.Installation
     {
         public override void InstallBindings()
         {
+            Container.BindInterfacesTo<IdGenerator>()
+                .AsSingle()
+                .WithArguments("E");
+
             Container.BindFactory<ActorStateModel, ActorStateModel.Factory>().AsSingle();
 
             Container.BindFactory<BlackBoardDataComponent, BlackBoardDataComponent.Factory>().AsSingle();
