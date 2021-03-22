@@ -18,19 +18,13 @@ namespace _Source.Features.Actors.DataComponents
         private readonly IReadOnlyDictionary<SensorType, SensorStorage> _storages;
         private readonly Dictionary<IActorStateModel, IDisposable> _lifetimeSubscriptions;
 
+        // Visual is always a greater range than touch, so we can guarantee this to be correct for both cases
         public bool KnowsAvatar => _storages[SensorType.Visual].KnowsAvatar;
         public IActorStateModel Avatar => _storages[SensorType.Visual].Avatar;
 
-        // ToDo V0 Should use the colliders instead
-        private readonly float _sqrFollowRange;
-        private readonly float _sqrTouchRange;
-
-        public SensorDataComponent(ISensorData sensorData)
+        public SensorDataComponent()
         {
             _lifetimeSubscriptions = new Dictionary<IActorStateModel, IDisposable>();
-
-            _sqrFollowRange = Mathf.Pow(sensorData.FollowRange, 2);
-            _sqrTouchRange = Mathf.Pow(sensorData.TouchRange, 2);
 
             _storages = EnumHelper<SensorType>.Iterator
                 .ToDictionary(e => e, e => new SensorStorage(e));
@@ -85,24 +79,6 @@ namespace _Source.Features.Actors.DataComponents
             _lifetimeSubscriptions.Values.ToArray()
                 .ForEach(e => e.Dispose());
             _lifetimeSubscriptions.Clear();
-        }
-
-        private bool IsInFollowRange(TransformDataComponent self, TransformDataComponent target)
-        {
-            var sqrDistance = GetSqrDistance(self, target);
-            return sqrDistance <= _sqrFollowRange;
-        }
-
-        private bool IsInTouchRange(TransformDataComponent self, TransformDataComponent target)
-        {
-            var sqrDistance = GetSqrDistance(self, target);
-            return sqrDistance <= _sqrTouchRange;
-        }
-
-        private float GetSqrDistance(TransformDataComponent self, TransformDataComponent target)
-        {
-            var distance = self.Position - target.Position;
-            return distance.sqrMagnitude;
         }
     }
 }

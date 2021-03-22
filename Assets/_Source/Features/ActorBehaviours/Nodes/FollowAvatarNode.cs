@@ -26,13 +26,13 @@ namespace _Source.Features.ActorBehaviours.Nodes
 
         public override BehaviourTreeStatus Tick(TimeData time)
         {
-            if (!_sensorDataComponent.KnowsAvatar)
+            if (!_sensorDataComponent.IsAvatarInRange(SensorType.Visual))
             {
                 return BehaviourTreeStatus.Failure;
             }
 
             // ToDo V0 This should then not move. Works because the following MovementNode just moves to where we are
-            if (_sensorDataComponent.IsInRange(SensorType.Touch, _sensorDataComponent.Avatar))
+            if (_sensorDataComponent.IsAvatarInRange(SensorType.Touch))
             {
                 _blackBoard.MovementTarget.Store(_transformDataComponent.Position);
                 return BehaviourTreeStatus.Success;
