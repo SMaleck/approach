@@ -13,10 +13,10 @@ namespace _Source.Features.ActorEntities
         Quaternion Rotation { get; }
         Vector3 Size { get; }
 
-        IActorStateModel ActorStateModel { get; }
-        CompositeDisposable EntityDisposer { get; }
+        IActorStateModel Actor { get; }
 
         void Setup(IActorStateModel actorStateModel);
-        string ToDebugString();
+        void StartEntity(CompositeDisposable disposer);
+        void StopEntity();
     }
 }

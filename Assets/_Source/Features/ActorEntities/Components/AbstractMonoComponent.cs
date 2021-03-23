@@ -6,28 +6,30 @@ namespace _Source.Features.ActorEntities.Components
 {
     public class AbstractMonoComponent : MonoBehaviour, IMonoComponent
     {
-        private readonly CompositeDisposable _disposer = new CompositeDisposable();
+        protected IActorStateModel Actor;
+        protected CompositeDisposable Disposer { get; private set; }
 
-        protected IMonoEntity Entity;
-        protected IActorStateModel ActorStateModel => Entity.ActorStateModel;
+        private bool _isSetup;
 
-        // This gets disposed & reset on each lifecycle, so this Component is being reset with it
-        protected CompositeDisposable Disposer => Entity.EntityDisposer;
-
-        public void Setup(IMonoEntity entity)
+        public void Setup(IActorStateModel actor)
         {
-            Entity = Entity ?? entity;
+            if (_isSetup) return;
+            _isSetup = true;
+
+            Actor = actor;
 
             OnSetup();
         }
 
-        public void StartLifeCycle()
+        public void StartComponent(CompositeDisposable disposer)
         {
+            Disposer = disposer;
             OnStart();
         }
 
-        public void StopLifeCycle()
+        public void StopComponent()
         {
+            Disposer?.Dispose();
             OnEnd();
         }
 

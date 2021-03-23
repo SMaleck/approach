@@ -49,7 +49,7 @@ namespace _Source.Features.Actors
                 return component as T;
             }
 
-            Logger.Warn($"No component of type [{(typeof(T).Name)}] found");
+            Logger.Warn($"No DataComponent of type [{(typeof(T).Name)}] found");
             return null;
         }
 

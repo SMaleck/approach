@@ -1,9 +1,12 @@
-﻿namespace _Source.Features.ActorEntities.Components
+﻿using _Source.Features.Actors;
+using UniRx;
+
+namespace _Source.Features.ActorEntities.Components
 {
     public interface IMonoComponent
     {
-        void Setup(IMonoEntity entity);
-        void StartLifeCycle();
-        void StopLifeCycle();
+        void Setup(IActorStateModel actor);
+        void StartComponent(CompositeDisposable disposer);
+        void StopComponent();
     }
 }

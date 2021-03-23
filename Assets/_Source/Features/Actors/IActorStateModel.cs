@@ -10,7 +10,9 @@ namespace _Source.Features.Actors
         IObservable<Unit> OnResetIdleTimeouts { get; }
 
         ActorStateModel Attach(IDataComponent dataComponent);
+
         T Get<T>() where T : class, IDataComponent;
+        bool TryGet<T>(out IDataComponent component) where T : class, IDataComponent;
 
         void Reset();
         void ResetIdleTimeouts();

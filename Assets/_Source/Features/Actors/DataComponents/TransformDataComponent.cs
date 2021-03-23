@@ -1,5 +1,4 @@
-﻿using _Source.Entities;
-using _Source.Features.ActorEntities;
+﻿using _Source.Features.ActorEntities;
 using UnityEngine;
 using Zenject;
 

@@ -101,6 +101,10 @@ namespace _Source.Features.ActorEntities.Novatar
             {
                 _entity.StartEntity(new CompositeDisposable());
             }
+            else
+            {
+                _entity.StopEntity();
+            }
         }
 
         private void OnRelationshipSwitched(Pair<EntityState> relationshipPair)

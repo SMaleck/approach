@@ -10,7 +10,7 @@ namespace _Source.Features.ActorEntities.Components
 
         protected override void OnSetup()
         {
-            _entityTypeDataComponent = ActorStateModel.Get<EntityTypeDataComponent>();
+            _entityTypeDataComponent = Actor.Get<EntityTypeDataComponent>();
         }
 
 #if UNITY_EDITOR

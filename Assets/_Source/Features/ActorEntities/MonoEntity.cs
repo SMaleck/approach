@@ -1,6 +1,5 @@
 ﻿using _Source.Features.ActorEntities.Components;
 using _Source.Features.Actors;
-using _Source.Features.Actors.DataComponents;
 using _Source.Util;
 using System.Linq;
 using UniRx;
@@ -13,9 +12,6 @@ namespace _Source.Features.ActorEntities
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, MonoEntity> { }
 
-        // ToDo Implement Size correctly, this only works implicitly
-        public Vector3 Size => Vector3.one;
-
         [SerializeField] private Transform _locomotionTarget;
         public Transform LocomotionTarget => _locomotionTarget;
 
@@ -25,59 +21,50 @@ namespace _Source.Features.ActorEntities
         [SerializeField] private Light _headLight;
         public Light HeadLight => _headLight;
 
-        private SerialDisposable _serialDisposable;
-        public CompositeDisposable EntityDisposer { get; private set; }
-        public IActorStateModel ActorStateModel { get; private set; }
-        public HealthDataComponent HealthDataComponent { get; private set; }
+        private bool _isSetup;
+        private bool _isActive;
 
-        public IMonoComponent[] Components { get; private set; }
-        public ITickableMonoComponent[] TickableComponents { get; private set; }
+        private IMonoComponent[] _components;
+        private ITickableMonoComponent[] _tickableComponents;
+
+        public IActorStateModel Actor { get; private set; }
+
+        // ToDo Implement Size correctly, this only works implicitly
+        public Vector3 Size => Vector3.one;
 
         // ToDo V2 Needed to get IDamageReceiver etc to other Actors via SensorySystem. Is that the best way? 
         public void Setup(IActorStateModel actorStateModel)
         {
-            ActorStateModel = ActorStateModel ?? actorStateModel;
-            HealthDataComponent = ActorStateModel.Get<HealthDataComponent>();
+            if (_isSetup) return;
+            _isSetup = true;
 
-            Components = GetComponents<IMonoComponent>();
-            Components?.ForEach(e => e.Setup(this));
+            Actor = actorStateModel;
 
-            TickableComponents = Components?.OfType<ITickableMonoComponent>().ToArray();
+            _components = GetComponents<IMonoComponent>();
+            _components?.ForEach(e => e.Setup(Actor));
 
-            _serialDisposable = new SerialDisposable().AddTo(Disposer);
+            _tickableComponents = _components?
+                .OfType<ITickableMonoComponent>()
+                .ToArray();
         }
 
         public void StartEntity(CompositeDisposable disposer)
         {
-            EntityDisposer = disposer;
-            _serialDisposable.Disposable = disposer;
-
-            Components?.ForEach(e => e.StartLifeCycle());
-
-            // ToDo V0 This should probably be managed by the Facade
-            HealthDataComponent.IsAlive
-                .IfFalse()
-                .Subscribe(_ => StopEntity())
-                .AddTo(disposer);
+            _isActive = true;
+            _components?.ForEach(e => e.StartComponent(disposer));
         }
 
         public void StopEntity()
         {
-            _serialDisposable.Disposable?.Dispose();
-            Components?.ForEach(e => e.StopLifeCycle());
-        }
-
-        public string ToDebugString()
-        {
-            return $"{gameObject.name} | POS {Position.ToString()}";
+            _isActive = false;
+            _components?.ForEach(e => e.StopComponent());
         }
 
         private void Update()
         {
-            if (HealthDataComponent != null &&
-                HealthDataComponent.IsAlive.Value)
+            if (_isActive)
             {
-                TickableComponents?.ForEach(e => e.Tick());
+                _tickableComponents?.ForEach(e => e.Tick());
             }
         }
     }

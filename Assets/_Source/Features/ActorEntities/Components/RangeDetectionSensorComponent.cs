@@ -1,7 +1,7 @@
-﻿using System;
-using _Source.Debug;
+﻿using _Source.Debug;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.Sensors;
+using System;
 using UniRx;
 using UniRx.Triggers;
 using UnityEditor;
@@ -18,7 +18,7 @@ namespace _Source.Features.ActorEntities.Components
 
         protected override void OnSetup()
         {
-            _sensorDataComponent = ActorStateModel.Get<SensorDataComponent>();
+            _sensorDataComponent = Actor.Get<SensorDataComponent>();
         }
 
         protected override void OnStart()
@@ -35,9 +35,9 @@ namespace _Source.Features.ActorEntities.Components
         private void OnEnter(Collider enteredEntity)
         {
             var entity = enteredEntity.GetComponentInParent<IMonoEntity>();
-            if (entity != null && entity != Entity)
+            if (entity != null && !IsSelf(entity))
             {
-                _sensorDataComponent.Add(entity.ActorStateModel, _type);
+                _sensorDataComponent.Add(entity.Actor, _type);
             }
         }
 
@@ -46,8 +46,13 @@ namespace _Source.Features.ActorEntities.Components
             var entity = exitedEntity.GetComponentInParent<IMonoEntity>();
             if (entity != null)
             {
-                _sensorDataComponent.Remove(entity.ActorStateModel, _type);
+                _sensorDataComponent.Remove(entity.Actor, _type);
             }
+        }
+
+        private bool IsSelf(IMonoEntity entity)
+        {
+            return entity?.Actor == Actor;
         }
 
 #if UNITY_EDITOR

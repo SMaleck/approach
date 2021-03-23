@@ -69,6 +69,11 @@ namespace _Source.Features.ActorEntities.Avatar
                 .AddTo(Disposer);
 
             entity.StartEntity(this.Disposer);
+
+            _healthDataComponent.IsAlive
+                .IfFalse()
+                .Subscribe(_ => entity.StopEntity())
+                .AddTo(Disposer);
         }
 
         private void OnUpdate()
