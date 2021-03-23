@@ -1,5 +1,4 @@
-﻿using _Source.Entities;
-using _Source.Features.GameRound;
+﻿using _Source.Features.GameRound;
 using _Source.Util;
 using UniRx;
 using UnityEngine;
@@ -9,18 +8,18 @@ namespace _Source.Features.Movement
 {
     public class MovementComponent : AbstractDisposable
     {
-        public class Factory : PlaceholderFactory<IMonoEntity, IMovementModel, MovementComponent> { }
+        public class Factory : PlaceholderFactory<IMovableEntity, IMovementModel, MovementComponent> { }
 
-        private readonly IMonoEntity _monoEntity;
+        private readonly IMovableEntity _entity;
         private readonly IMovementModel _movementModel;
         private readonly IPauseStateModel _pauseStateModel;
 
         public MovementComponent(
-            IMonoEntity monoEntity,
+            IMovableEntity entity,
             IMovementModel movementModel,
             IPauseStateModel pauseStateModel)
         {
-            _monoEntity = monoEntity;
+            _entity = entity;
             _movementModel = movementModel;
             _pauseStateModel = pauseStateModel;
 
@@ -48,7 +47,7 @@ namespace _Source.Features.Movement
             var timeAdjustedSpeed = _movementModel.MoveSpeed.AsTimeAdjusted();
             var translateTarget = _movementModel.MoveIntention.Value * timeAdjustedSpeed;
 
-            _monoEntity.LocomotionTarget.Translate(translateTarget);
+            _entity.LocomotionTarget.Translate(translateTarget);
         }
 
         private void HandleTurnIntention()
@@ -61,11 +60,11 @@ namespace _Source.Features.Movement
             var turnRotation = _movementModel.TurnIntention.Value;
 
             var rotation = Quaternion.Slerp(
-                _monoEntity.RotationTarget.rotation,
+                _entity.RotationTarget.rotation,
                 turnRotation,
                 _movementModel.TurnSpeed.AsTimeAdjusted());
 
-            _monoEntity.RotationTarget.rotation = rotation;
+            _entity.RotationTarget.rotation = rotation;
         }
     }
 }

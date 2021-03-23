@@ -2,6 +2,7 @@
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
+using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using _Source.Util;
 using System;
@@ -11,9 +12,9 @@ using Zenject;
 
 namespace _Source.Entities.Avatar
 {
-    public class AvatarFacade : AbstractDisposableFeature, IMonoEntity, IDamageReceiver
+    public class AvatarFacade : AbstractDisposableFeature, IDamageReceiver, IMovableEntity
     {
-        public class Factory : PlaceholderFactory<AvatarEntity, IActorStateModel , AvatarFacade> { }
+        public class Factory : PlaceholderFactory<AvatarEntity, IActorStateModel, AvatarFacade> { }
 
         private readonly AvatarEntity _avatarEntity;
         private readonly AvatarConfig _avatarConfig;
@@ -24,12 +25,8 @@ namespace _Source.Entities.Avatar
         public Transform RotationTarget => _avatarEntity.RotationTarget;
 
         public string Name => _avatarEntity.Name;
-        public bool IsActive => _avatarEntity.IsActive;
         public Vector3 Position => _avatarEntity.Position;
         public Quaternion Rotation => _avatarEntity.Rotation;
-        public Vector3 Size => _avatarEntity.Size;
-
-        public string ToDebugString() => _avatarEntity.ToDebugString();
 
         private readonly SurvivalDataComponent _survivalDataComponent;
         private readonly HealthDataComponent _healthDataComponent;
@@ -54,7 +51,7 @@ namespace _Source.Entities.Avatar
             _survivalDataComponent.SetStartedAt(DateTime.Now);
 
             actorStateModel.Get<TransformDataComponent>()
-                .SetMonoEntity(this);
+                .SetMonoEntity(_avatarEntity);
 
             Observable.Interval(TimeSpan.FromSeconds(1))
                 .Where(_ => !_pauseStateModel.IsPaused.Value)
@@ -103,15 +100,6 @@ namespace _Source.Entities.Avatar
         private void OnRelativeHealthChanged(double relativeHealth)
         {
             _avatarEntity.HeadLight.intensity = _avatarConfig.MaxLightIntensity * (float)relativeHealth;
-        }
-
-        // ToDo V0 remove IMonoEntity interface from this
-        public IActorStateModel ActorStateModel { get; }
-        public CompositeDisposable EntityDisposer { get; }
-
-        public void Setup(IActorStateModel actorStateModel)
-        {
-            throw new NotImplementedException();
         }
     }
 }

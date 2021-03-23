@@ -13,9 +13,6 @@ namespace _Source.Entities
         Quaternion Rotation { get; }
         Vector3 Size { get; }
 
-        Transform LocomotionTarget { get; }
-        Transform RotationTarget { get; }
-
         IActorStateModel ActorStateModel { get; }
         CompositeDisposable EntityDisposer { get; }
 

@@ -1,7 +1,7 @@
-﻿using System;
-using _Source.Features.ActorEntities.Novatar.Config;
+﻿using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.Movement;
 using _Source.Util;
 using DG.Tweening;
 using UniRx;
@@ -10,7 +10,7 @@ using Zenject;
 
 namespace _Source.Entities.Novatar
 {
-    public class NovatarFacade : AbstractDisposable, IMonoEntity, IEntityPoolItem<IMonoEntity>
+    public class NovatarFacade : AbstractDisposable, IEntityPoolItem<IMonoEntity>, IMovableEntity
     {
         public class Factory : PlaceholderFactory<NovatarEntity, IActorStateModel, NovatarFacade> { }
 
@@ -26,7 +26,7 @@ namespace _Source.Entities.Novatar
         private readonly SerialDisposable _tweenDisposer;
         private readonly Tween _lightsOnTween;
 
-        public IMonoEntity Entity => this;
+        public IMonoEntity Entity => _novatarEntity;
 
         public Transform LocomotionTarget => _novatarEntity.LocomotionTarget;
         public Transform RotationTarget => _novatarEntity.RotationTarget;
@@ -36,8 +36,6 @@ namespace _Source.Entities.Novatar
         public bool IsActive => _novatarEntity.IsActive;
         public Vector3 Position => _novatarEntity.Position;
         public Quaternion Rotation => _novatarEntity.Rotation;
-        public Vector3 Size => _novatarEntity.Size;
-        public string ToDebugString() => _novatarEntity.ToDebugString();
 
         public bool IsFree { get; private set; }
 
@@ -56,9 +54,9 @@ namespace _Source.Entities.Novatar
             _originDataComponent = _actorStateModel.Get<OriginDataComponent>();
             _relationshipDataComponent = _actorStateModel.Get<RelationshipDataComponent>();
             _lightDataComponent = _actorStateModel.Get<LightDataComponent>();
-            
+
             _actorStateModel.Get<TransformDataComponent>()
-                .SetMonoEntity(this);
+                .SetMonoEntity(_novatarEntity);
 
             _healthDataComponent.IsAlive
                 .Subscribe(OnIsAliveChanged)
@@ -177,15 +175,6 @@ namespace _Source.Entities.Novatar
         {
             _novatarEntity.HeadLight.color = color;
             _novatarEntity.HeadLight.intensity = intensity;
-        }
-
-        // ToDo V0 remove IMonoEntity interface from this
-        public IActorStateModel ActorStateModel { get; }
-        public CompositeDisposable EntityDisposer { get; }
-
-        public void Setup(IActorStateModel actorStateModel)
-        {
-            throw new NotImplementedException();
         }
     }
 }

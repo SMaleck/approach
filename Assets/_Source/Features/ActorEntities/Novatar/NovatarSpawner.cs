@@ -1,9 +1,7 @@
 ﻿using _Source.Entities;
 using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours;
-using _Source.Features.ActorEntities.Avatar;
 using _Source.Features.ActorEntities.Novatar.Config;
-using _Source.Features.ActorEntities.Novatar.Data;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using _Source.Util;
@@ -27,24 +25,18 @@ namespace _Source.Features.ActorEntities.Novatar
 
         private readonly NovatarSpawnerConfig _novatarSpawnerConfig;
         private readonly NovatarConfig _novatarConfig;
-        private readonly NovatarData _novatarData;
         private readonly ScreenSizeController _screenSizeController;
-        private readonly IAvatarLocator _avatarLocator;
 
         private readonly List<IEntityPoolItem<IMonoEntity>> _novatarPool;
 
         public NovatarSpawner(
             NovatarSpawnerConfig novatarSpawnerConfig,
             NovatarConfig novatarConfig,
-            NovatarData novatarData,
-            ScreenSizeController screenSizeController,
-            IAvatarLocator avatarLocator)
+            ScreenSizeController screenSizeController)
         {
             _novatarSpawnerConfig = novatarSpawnerConfig;
             _novatarConfig = novatarConfig;
-            _novatarData = novatarData;
             _screenSizeController = screenSizeController;
-            _avatarLocator = avatarLocator;
 
             _novatarPool = new List<IEntityPoolItem<IMonoEntity>>();
         }
@@ -85,20 +77,20 @@ namespace _Source.Features.ActorEntities.Novatar
                     actorStateModel)
                 .AddTo(Disposer);
 
-            var novatarMovementModel = _movementModelFactory
+            var movementModel = _movementModelFactory
                 .Create(actorStateModel)
                 .AddTo(Disposer);
 
-            var novatarMovementController = _movementControllerFactory
-                .Create(novatarMovementModel, novatarFacade)
+            var movementController = _movementControllerFactory
+                .Create(movementModel, novatarFacade)
                 .AddTo(Disposer);
 
             _movementComponentFactory
-                .Create(novatarFacade, novatarMovementModel)
+                .Create(novatarFacade, movementModel)
                 .AddTo(Disposer);
 
             _novatarBehaviourTreeFactory
-                .Create(actorStateModel, novatarMovementController)
+                .Create(actorStateModel, movementController)
                 .AddTo(Disposer)
                 .Initialize();
 

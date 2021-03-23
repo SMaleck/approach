@@ -7,16 +7,16 @@ namespace _Source.Features.Movement
 {
     public class MovementController : AbstractDisposable
     {
-        public class Factory : PlaceholderFactory<MovementModel, IMonoEntity, MovementController> { }
+        public class Factory : PlaceholderFactory<MovementModel, IMovableEntity, MovementController> { }
 
         private static readonly Vector3 V3Forward = new Vector3(0, 1, 0);
 
         private readonly MovementModel _movementModel;
-        private readonly IMonoEntity _entity;
+        private readonly IMovableEntity _entity;
 
         public MovementController(
             MovementModel movementModel,
-            IMonoEntity entity)
+            IMovableEntity entity)
         {
             _movementModel = movementModel;
             _entity = entity;
