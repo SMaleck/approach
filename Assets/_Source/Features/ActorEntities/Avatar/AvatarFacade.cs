@@ -13,6 +13,10 @@ using Zenject;
 namespace _Source.Features.ActorEntities.Avatar
 {
     // ToDo V0 Get IMovableEntity to not be implemented on this
+    // ToDo V0 No/AvatarFacade should be reduced in scope to a container
+    // ToDo V0 Create HeadLamp MonoComponent to handle light
+    // ToDo V0 Create Movement MonoComponent to handle movement
+    // ToDo V0 Position clamping can also be done in  MonoComponent
     public class AvatarFacade : AbstractDisposableFeature, IMovableEntity
     {
         public class Factory : PlaceholderFactory<MonoEntity, IActorStateModel, AvatarFacade> { }

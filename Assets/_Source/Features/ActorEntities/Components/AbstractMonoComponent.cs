@@ -30,11 +30,11 @@ namespace _Source.Features.ActorEntities.Components
         public void StopComponent()
         {
             Disposer?.Dispose();
-            OnEnd();
+            OnStop();
         }
 
         protected virtual void OnSetup() { }
         protected virtual void OnStart() { }
-        protected virtual void OnEnd() { }
+        protected virtual void OnStop() { }
     }
 }
