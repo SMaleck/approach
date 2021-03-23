@@ -32,63 +32,13 @@ namespace _Source.Features.ActorBehaviours.Creation
             var startNode = new BehaviourTreeBuilder()
                 .Parallel(100, 100)
                     .Selector()
-                        .Sequence()
-                            .Condition(t => IsEntityState(model, EntityState.Spawning))
-                            .Sequence()
-                                .Do(LightSwitch())
-                                .Do(EnterScreen())
-                                .Do(SwitchStateTo(EntityState.Unacquainted))
-                                .End()
-                            .End()
-                        .Sequence()
-                            .Condition(t => IsEntityState(model, EntityState.Unacquainted))
-                            .Selector()
-                                .Sequence()
-                                    .Do(FollowAvatar())
-                                    .Do(Move())
-                                    .Do(FirstTouch())
-                                    .End()
-                                .Sequence()
-                                    .Do(UnacquaintedTimeout())
-                                    .Do(SwitchStateTo(EntityState.Neutral))
-                                    .End()
-                                .End()
-                            .End()
-                        .Sequence()
-                            .Condition(t => IsEntityState(model, EntityState.Neutral))
-                            .Sequence()
-                                .Do(LeaveScreen())
-                                .Do(Deactivate())
-                                .End()
-                            .End()
-                        .Sequence()
-                            .Condition(t => IsEntityState(model, EntityState.Friend))
-                            .Selector()
-                                .Sequence()
-                                    .Do(FollowAvatar())
-                                    .Do(Move())
-                                    .End()
-                                .Sequence()
-                                    .Do(FriendTimeout())
-                                    .Do(SwitchStateTo(EntityState.Neutral))
-                                    .End()
-                                .End()
-                            .End()
-                        .Sequence()
-                            .Condition(t => IsEntityState(model, EntityState.Enemy))
-                            .Selector()
-                                .Sequence()
-                                    .Do(FindDamageReceiver())
-                                    .Do(Damage())
-                                    .End()
-                                .Sequence()
-                                    .Do(EnemyTimeout())
-                                    .Do(SwitchStateTo(EntityState.Neutral))
-                                    .End()
-                                .End()
-                            .End()
+                        .Splice(SpawningTree(model))
+                        .Splice(UnacquaintedTree(model))
+                        .Splice(NeutralTree(model))
+                        .Splice(FriendTree(model))
+                        .Splice(EnemyTree(model))
+                        .End()
                     .End()
-                .End()
                 .Build();
             // @formatter:on
 
@@ -96,6 +46,105 @@ namespace _Source.Features.ActorBehaviours.Creation
                 startNode,
                 _nodeGenerator.GetGeneratedNodes());
         }
+
+        #region SubTrees
+
+        private IBehaviourTreeNode SpawningTree(IActorStateModel model)
+        {
+            // @formatter:off
+            return new BehaviourTreeBuilder()
+                .Sequence()
+                    .Condition(t => IsEntityState(model, EntityState.Spawning))
+                    .Sequence()
+                        .Do(LightSwitch())
+                        .Do(EnterScreen())
+                        .Do(SwitchStateTo(EntityState.Unacquainted))
+                        .End()
+                    .End()
+                .Build();
+            // @formatter:on
+        }
+
+        private IBehaviourTreeNode UnacquaintedTree(IActorStateModel model)
+        {
+            // @formatter:off
+            return new BehaviourTreeBuilder()
+                .Sequence()
+                    .Condition(t => IsEntityState(model, EntityState.Unacquainted))
+                    .Selector()
+                        .Sequence()
+                            .Do(FollowAvatar())
+                            .Do(Move())
+                            .Do(FirstTouch())
+                            .End()
+                        .Sequence()
+                            .Do(UnacquaintedTimeout())
+                            .Do(SwitchStateTo(EntityState.Neutral))
+                            .End()
+                        .End()
+                    .End()
+                .Build();
+            // @formatter:on
+        }
+
+        private IBehaviourTreeNode NeutralTree(IActorStateModel model)
+        {
+            // @formatter:off
+            return new BehaviourTreeBuilder()
+                .Sequence()
+                    .Condition(t => IsEntityState(model, EntityState.Neutral))
+                    .Sequence()
+                        .Do(LeaveScreen())
+                        .Do(Deactivate())
+                        .End()
+                    .End()
+                .Build();
+            // @formatter:on
+        }
+
+        private IBehaviourTreeNode FriendTree(IActorStateModel model)
+        {
+            // @formatter:off
+            return new BehaviourTreeBuilder()
+                .Sequence()
+                    .Condition(t => IsEntityState(model, EntityState.Friend))
+                    .Selector()
+                        .Sequence()
+                            .Do(FollowAvatar())
+                            .Do(Move())
+                            .End()
+                        .Sequence()
+                            .Do(FriendTimeout())
+                            .Do(SwitchStateTo(EntityState.Neutral))
+                            .End()
+                        .End()
+                    .End()
+                .Build();
+            // @formatter:on
+        }
+
+        private IBehaviourTreeNode EnemyTree(IActorStateModel model)
+        {
+            // @formatter:off
+            return new BehaviourTreeBuilder()
+                .Sequence()
+                    .Condition(t => IsEntityState(model, EntityState.Enemy))
+                    .Selector()
+                        .Sequence()
+                            .Do(FindDamageReceiver())
+                            .Do(Damage())
+                            .End()
+                        .Sequence()
+                            .Do(EnemyTimeout())
+                            .Do(SwitchStateTo(EntityState.Neutral))
+                            .End()
+                        .End()
+                    .End()
+                .Build();
+            // @formatter:on
+        }
+
+        #endregion
 
         #region Convenience Methods
 
