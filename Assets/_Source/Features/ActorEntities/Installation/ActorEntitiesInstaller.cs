@@ -8,8 +8,11 @@ namespace _Source.Features.ActorEntities.Installation
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<AvatarStateFactory>().AsSingle();
-            Container.BindInterfacesAndSelfTo<NovatarStateFactory>().AsSingle();
+            Container.BindExecutionOrder<AvatarSpawner>(-1);
+            Container.BindInterfacesTo<AvatarSpawner>().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingle();
+            Container.BindInterfacesAndSelfTo<SpawningOrchestrator>().AsSingle().NonLazy();
         }
     }
 }

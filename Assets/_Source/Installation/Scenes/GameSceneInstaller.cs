@@ -29,7 +29,6 @@ namespace _Source.Installation.Scenes
             ActorEntitiesInstaller.Install(Container);
             ActorBehavioursInstaller.Install(Container);
             EntitiesInstaller.Install(Container);
-            SpawningInstaller.Install(Container);
             MovementInstaller.Install(Container);
 
             Container.BindPrefabFactory<HudView, HudView.Factory>();

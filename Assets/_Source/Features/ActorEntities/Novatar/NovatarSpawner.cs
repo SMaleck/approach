@@ -2,6 +2,7 @@
 using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours;
 using _Source.Features.ActorEntities.Novatar.Config;
+using _Source.Features.Actors.Creation;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using _Source.Util;
@@ -17,7 +18,7 @@ namespace _Source.Features.ActorEntities.Novatar
     {
         [Inject] private readonly NovatarFacade.Factory _novatarFacadeFactory;
         [Inject] private readonly NovatarEntity.Factory _novatarEntityFactory;
-        [Inject] private readonly NovatarStateFactory _novatarStateFactory;
+        [Inject] private readonly INovatarActorFactory _novatarActorActorFactory;
         [Inject] private readonly NovatarBehaviourTree.Factory _novatarBehaviourTreeFactory;
         [Inject] private readonly MovementModel.Factory _movementModelFactory;
         [Inject] private readonly MovementController.Factory _movementControllerFactory;
@@ -70,7 +71,7 @@ namespace _Source.Features.ActorEntities.Novatar
             var novatarEntity = _novatarEntityFactory.Create(
                 _novatarConfig.NovatarPrefab);
 
-            var actorStateModel = _novatarStateFactory.Create();
+            var actorStateModel = _novatarActorActorFactory.CreateNovatar();
 
             var novatarFacade = _novatarFacadeFactory.Create(
                     novatarEntity,

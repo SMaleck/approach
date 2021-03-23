@@ -8,11 +8,11 @@ using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Creation
 {
-    // ToDo V0 FRIENDS: Calm down
-    // ToDo V0 Increase Entity Health
-    // ToDo V0 FRIENDS: Leave when health is low, instead of disappearing
-    // ToDo V1 Move around on the playing field, increase leave time
-    // ToDo V1 Sometimes move towards player
+    // ToDo V1 BT FRIENDS: Calm down
+    // ToDo V1 BT Increase Entity Health
+    // ToDo V1 BT FRIENDS: Leave when health is low, instead of disappearing
+    // ToDo V1 BT Move around on the playing field, increase leave time
+    // ToDo V1 BT Sometimes move towards player
     public class NovatarBehaviourTreeFactory
     {
         [Inject] private readonly NodeGenerator.Factory _nodeGeneratorFactory;

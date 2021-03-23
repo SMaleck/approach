@@ -1,4 +1,5 @@
-﻿using _Source.Features.Actors.Data;
+﻿using _Source.Features.Actors.Creation;
+using _Source.Features.Actors.Data;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.Tokens;
 using Zenject;
@@ -13,6 +14,7 @@ namespace _Source.Features.Actors.Installation
                 .AsSingle()
                 .WithArguments("E");
 
+            Container.BindInterfacesTo<ActorFactory>().AsSingle();
             Container.BindFactory<ActorStateModel, ActorStateModel.Factory>().AsSingle();
 
             Container.BindFactory<BlackBoardDataComponent, BlackBoardDataComponent.Factory>().AsSingle();
