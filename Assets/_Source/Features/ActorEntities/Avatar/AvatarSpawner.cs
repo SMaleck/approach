@@ -12,7 +12,7 @@ namespace _Source.Features.ActorEntities.Avatar
     public class AvatarSpawner : AbstractDisposable, IInitializable, IAvatarLocator
     {
         [Inject] private readonly IAvatarActorFactory _avatarActorFactory;
-        [Inject] private readonly AvatarEntity.Factory _avatarEntityFactory;
+        [Inject] private readonly MonoEntity.Factory _entityFactory;
         [Inject] private readonly AvatarFacade.Factory _avatarFacadeFactory;
         [Inject] private readonly AvatarConfig _avatarConfig;
         [Inject] private readonly MovementModel.Factory _movementModelFactory;
@@ -26,7 +26,7 @@ namespace _Source.Features.ActorEntities.Avatar
         {
             AvatarActorStateModel = _avatarActorFactory.CreateAvatar();
 
-            var avatarEntity = _avatarEntityFactory
+            var avatarEntity = _entityFactory
                 .Create(_avatarConfig.AvatarPrefab);
 
             var avatarFacade = _avatarFacadeFactory

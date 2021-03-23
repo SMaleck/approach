@@ -1,6 +1,4 @@
-﻿using _Source.Entities;
-using _Source.Entities.Novatar;
-using _Source.Features.ActorBehaviours;
+﻿using _Source.Features.ActorBehaviours;
 using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Features.Actors.Creation;
 using _Source.Features.Movement;
@@ -16,9 +14,9 @@ namespace _Source.Features.ActorEntities.Novatar
 {
     public class NovatarSpawner : AbstractDisposable
     {
-        [Inject] private readonly NovatarFacade.Factory _novatarFacadeFactory;
-        [Inject] private readonly NovatarEntity.Factory _novatarEntityFactory;
         [Inject] private readonly INovatarActorFactory _novatarActorActorFactory;
+        [Inject] private readonly MonoEntity.Factory _entityFactory;
+        [Inject] private readonly NovatarFacade.Factory _novatarFacadeFactory;
         [Inject] private readonly NovatarBehaviourTree.Factory _novatarBehaviourTreeFactory;
         [Inject] private readonly MovementModel.Factory _movementModelFactory;
         [Inject] private readonly MovementController.Factory _movementControllerFactory;
@@ -68,7 +66,7 @@ namespace _Source.Features.ActorEntities.Novatar
 
         private IEntityPoolItem<IMonoEntity> CreateEntity()
         {
-            var novatarEntity = _novatarEntityFactory.Create(
+            var novatarEntity = _entityFactory.Create(
                 _novatarConfig.NovatarPrefab);
 
             var actorStateModel = _novatarActorActorFactory.CreateNovatar();

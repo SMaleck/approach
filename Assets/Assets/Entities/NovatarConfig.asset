@@ -12,20 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b35eb3305ad57e4d9c77e070e4d24e1, type: 3}
   m_Name: NovatarConfig
   m_EditorClassIdentifier: 
-  _novatarPrefab: {fileID: 7616588745787026386, guid: 27d4c0653fa67104687754e9db8d0d26,
+  _novatarPrefab: {fileID: 3601342783847393318, guid: 27d4c0653fa67104687754e9db8d0d26,
     type: 3}
-  _movementConfig:
-    _useDirectMovement: 0
-    _moveTargetReachedAccuracy: 0.1
-    _moveTargetTouchedAccuracy: 0.8
-    _movementSpeed: 2
-    _movementDeadZoneMagnitude: 0.01
-    _turnSpeed: 10
-    _turnDeadZoneAngle: 1
-  _rangeSensorConfig:
-    _followRange: 5
-    _interactionRange: 0
-    _touchRange: 0.8
   _relationshipVisualsConfigs:
   - _relationship: 0
     _lightColor: {r: 1, g: 1, b: 1, a: 1}

@@ -15,36 +15,36 @@ namespace _Source.Features.ActorEntities.Avatar
     // ToDo V0 Get IMovableEntity to not be implemented on this
     public class AvatarFacade : AbstractDisposableFeature, IMovableEntity
     {
-        public class Factory : PlaceholderFactory<AvatarEntity, IActorStateModel, AvatarFacade> { }
+        public class Factory : PlaceholderFactory<MonoEntity, IActorStateModel, AvatarFacade> { }
 
-        private readonly AvatarEntity _avatarEntity;
+        private readonly MonoEntity _entity;
         private readonly AvatarConfig _avatarConfig;
         private readonly ScreenSizeModel _screenSizeModel;
         private readonly IPauseStateModel _pauseStateModel;
 
-        public Transform LocomotionTarget => _avatarEntity.LocomotionTarget;
-        public Transform RotationTarget => _avatarEntity.RotationTarget;
+        public Transform LocomotionTarget => _entity.LocomotionTarget;
+        public Transform RotationTarget => _entity.RotationTarget;
 
-        public string Name => _avatarEntity.Name;
-        public Vector3 Position => _avatarEntity.Position;
-        public Quaternion Rotation => _avatarEntity.Rotation;
+        public string Name => _entity.Name;
+        public Vector3 Position => _entity.Position;
+        public Quaternion Rotation => _entity.Rotation;
 
         private readonly SurvivalDataComponent _survivalDataComponent;
         private readonly HealthDataComponent _healthDataComponent;
 
         public AvatarFacade(
-            AvatarEntity avatarEntity,
+            MonoEntity entity,
             IActorStateModel actorStateModel,
             AvatarConfig avatarConfig,
             ScreenSizeModel screenSizeModel,
             IPauseStateModel pauseStateModel)
         {
-            _avatarEntity = avatarEntity;
+            _entity = entity;
             _avatarConfig = avatarConfig;
             _screenSizeModel = screenSizeModel;
             _pauseStateModel = pauseStateModel;
 
-            avatarEntity.Setup(actorStateModel);
+            entity.Setup(actorStateModel);
 
             _survivalDataComponent = actorStateModel.Get<SurvivalDataComponent>();
             _healthDataComponent = actorStateModel.Get<HealthDataComponent>();
@@ -52,7 +52,7 @@ namespace _Source.Features.ActorEntities.Avatar
             _survivalDataComponent.SetStartedAt(DateTime.Now);
 
             actorStateModel.Get<TransformDataComponent>()
-                .SetMonoEntity(_avatarEntity);
+                .SetMonoEntity(_entity);
 
             Observable.Interval(TimeSpan.FromSeconds(1))
                 .Where(_ => !_pauseStateModel.IsPaused.Value)
@@ -68,7 +68,7 @@ namespace _Source.Features.ActorEntities.Avatar
                 .Subscribe(OnRelativeHealthChanged)
                 .AddTo(Disposer);
 
-            avatarEntity.StartEntity(this.Disposer);
+            entity.StartEntity(this.Disposer);
         }
 
         private void OnUpdate()
@@ -81,7 +81,7 @@ namespace _Source.Features.ActorEntities.Avatar
             var clampedX = Mathf.Clamp(Position.x, -_screenSizeModel.WidthExtendUnits, _screenSizeModel.WidthExtendUnits);
             var clampedY = Mathf.Clamp(Position.y, -_screenSizeModel.HeightExtendUnits, _screenSizeModel.HeightExtendUnits);
 
-            _avatarEntity.SetPosition(new Vector3(clampedX, clampedY, Position.z));
+            _entity.SetPosition(new Vector3(clampedX, clampedY, Position.z));
         }
 
         private void OnTimePassed()
@@ -92,7 +92,7 @@ namespace _Source.Features.ActorEntities.Avatar
 
         private void OnRelativeHealthChanged(double relativeHealth)
         {
-            _avatarEntity.HeadLight.intensity = _avatarConfig.MaxLightIntensity * (float)relativeHealth;
+            _entity.HeadLight.intensity = _avatarConfig.MaxLightIntensity * (float)relativeHealth;
         }
     }
 }

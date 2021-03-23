@@ -20,8 +20,8 @@ namespace _Source.Features.ActorEntities.Novatar.Config
             public Color LightColor => _lightColor;
         }
 
-        [SerializeField] private NovatarEntity _novatarPrefab;
-        public NovatarEntity NovatarPrefab => _novatarPrefab;
+        [SerializeField] private MonoEntity _novatarPrefab;
+        public MonoEntity NovatarPrefab => _novatarPrefab;
 
         [Header("Visuals")]
         [SerializeField] private List<RelationshipVisualsConfig> _relationshipVisualsConfigs;

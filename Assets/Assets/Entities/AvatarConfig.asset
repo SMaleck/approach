@@ -12,15 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caa811c5233dd85438b37ff05c57cb7b, type: 3}
   m_Name: AvatarConfig
   m_EditorClassIdentifier: 
-  _avatarPrefab: {fileID: 3166036521292648234, guid: abb01a1fe25f44646b2507ff9c4275c3,
+  _avatarPrefab: {fileID: 7326196847288731055, guid: abb01a1fe25f44646b2507ff9c4275c3,
     type: 3}
-  _movementConfig:
-    _useDirectMovement: 1
-    _moveTargetReachedAccuracy: 0
-    _moveTargetTouchedAccuracy: 0
-    _movementSpeed: 5
-    _movementDeadZoneMagnitude: 0.01
-    _turnSpeed: 5
-    _turnDeadZoneAngle: 5
-  _health: 3
   _maxLightIntensity: 3

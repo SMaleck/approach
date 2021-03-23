@@ -14,9 +14,9 @@ namespace _Source.Features.ActorEntities.Novatar
     // ToDo V0 Get IMovableEntity to not be implemented on this
     public class NovatarFacade : AbstractDisposable, IEntityPoolItem<IMonoEntity>, IMovableEntity
     {
-        public class Factory : PlaceholderFactory<NovatarEntity, IActorStateModel, NovatarFacade> { }
+        public class Factory : PlaceholderFactory<MonoEntity, IActorStateModel, NovatarFacade> { }
 
-        private readonly NovatarEntity _novatarEntity;
+        private readonly MonoEntity _entity;
         private readonly NovatarConfig _novatarConfig;
 
         private readonly IActorStateModel _actorStateModel;
@@ -28,29 +28,29 @@ namespace _Source.Features.ActorEntities.Novatar
         private readonly SerialDisposable _tweenDisposer;
         private readonly Tween _lightsOnTween;
 
-        public IMonoEntity Entity => _novatarEntity;
+        public IMonoEntity Entity => _entity;
 
-        public Transform LocomotionTarget => _novatarEntity.LocomotionTarget;
-        public Transform RotationTarget => _novatarEntity.RotationTarget;
+        public Transform LocomotionTarget => _entity.LocomotionTarget;
+        public Transform RotationTarget => _entity.RotationTarget;
 
         // ToDo V0 Most properties below should probably go into another data component
-        public string Name => _novatarEntity.Name;
-        public bool IsActive => _novatarEntity.IsActive;
-        public Vector3 Position => _novatarEntity.Position;
-        public Quaternion Rotation => _novatarEntity.Rotation;
+        public string Name => _entity.Name;
+        public bool IsActive => _entity.IsActive;
+        public Vector3 Position => _entity.Position;
+        public Quaternion Rotation => _entity.Rotation;
 
         public bool IsFree { get; private set; }
 
         public NovatarFacade(
-            NovatarEntity novatarEntity,
+            MonoEntity entity,
             IActorStateModel actorStateModel,
             NovatarConfig novatarConfig)
         {
-            _novatarEntity = novatarEntity;
+            _entity = entity;
             _actorStateModel = actorStateModel;
             _novatarConfig = novatarConfig;
 
-            _novatarEntity.Setup(_actorStateModel);
+            _entity.Setup(_actorStateModel);
 
             _healthDataComponent = _actorStateModel.Get<HealthDataComponent>();
             _originDataComponent = _actorStateModel.Get<OriginDataComponent>();
@@ -58,14 +58,14 @@ namespace _Source.Features.ActorEntities.Novatar
             _lightDataComponent = _actorStateModel.Get<LightDataComponent>();
 
             _actorStateModel.Get<TransformDataComponent>()
-                .SetMonoEntity(_novatarEntity);
+                .SetMonoEntity(_entity);
 
             _healthDataComponent.IsAlive
                 .Subscribe(OnIsAliveChanged)
                 .AddTo(Disposer);
 
             _originDataComponent.SpawnPosition
-                .Subscribe(_novatarEntity.SetPosition)
+                .Subscribe(_entity.SetPosition)
                 .AddTo(Disposer);
 
             _relationshipDataComponent.Relationship
@@ -94,12 +94,12 @@ namespace _Source.Features.ActorEntities.Novatar
 
         private void OnIsAliveChanged(bool isAlive)
         {
-            _novatarEntity.SetActive(isAlive);
+            _entity.SetActive(isAlive);
             IsFree = !isAlive;
 
             if (isAlive)
             {
-                _novatarEntity.StartEntity(new CompositeDisposable());
+                _entity.StartEntity(new CompositeDisposable());
             }
         }
 
@@ -141,9 +141,9 @@ namespace _Source.Features.ActorEntities.Novatar
 
         private Tween CreateLightIntensityTween()
         {
-            _novatarEntity.HeadLight.intensity = _novatarConfig.LightDefaultIntensity;
+            _entity.HeadLight.intensity = _novatarConfig.LightDefaultIntensity;
 
-            return _novatarEntity.HeadLight
+            return _entity.HeadLight
                 .DOIntensity(_novatarConfig.LightFlashIntensity, _novatarConfig.LightColorFadeSeconds / 2)
                 .SetLoops(2, LoopType.Yoyo)
                 .SetEase(Ease.InOutCubic);
@@ -151,16 +151,16 @@ namespace _Source.Features.ActorEntities.Novatar
 
         private Tween CreateLightColorTween(Color targetColor)
         {
-            return _novatarEntity.HeadLight
+            return _entity.HeadLight
                 .DOColor(targetColor, _novatarConfig.LightColorFadeSeconds)
                 .SetEase(Ease.InOutCubic);
         }
 
         private Tween CreateLightsOnTween()
         {
-            _novatarEntity.HeadLight.intensity = 0;
+            _entity.HeadLight.intensity = 0;
 
-            var tween = _novatarEntity.HeadLight
+            var tween = _entity.HeadLight
                 .DOIntensity(_novatarConfig.LightDefaultIntensity, _novatarConfig.LightColorFadeSeconds)
                 .SetEase(Ease.InOutCubic)
                 .SetAutoKill(false)
@@ -168,15 +168,15 @@ namespace _Source.Features.ActorEntities.Novatar
                 .AddTo(Disposer, TweenDisposalBehaviour.Rewind);
             tween.ForceInit();
 
-            _novatarEntity.HeadLight.intensity = 1;
+            _entity.HeadLight.intensity = 1;
 
             return tween;
         }
 
         private void SetLight(Color color, float intensity)
         {
-            _novatarEntity.HeadLight.color = color;
-            _novatarEntity.HeadLight.intensity = intensity;
+            _entity.HeadLight.color = color;
+            _entity.HeadLight.intensity = intensity;
         }
     }
 }

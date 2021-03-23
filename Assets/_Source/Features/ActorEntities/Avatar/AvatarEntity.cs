@@ -3,7 +3,7 @@ using Zenject;
 
 namespace _Source.Features.ActorEntities.Avatar
 {
-    public class AvatarEntity : AbstractMonoEntity
+    public class AvatarEntity : MonoEntity
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, AvatarEntity> { }
 

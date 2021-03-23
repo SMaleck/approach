@@ -1,15 +1,18 @@
-﻿using System.Linq;
-using _Source.Features.ActorEntities.Components;
+﻿using _Source.Features.ActorEntities.Components;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Util;
+using System.Linq;
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 namespace _Source.Features.ActorEntities
 {
-    public class AbstractMonoEntity : AbstractDisposableMonoBehaviour, IMonoEntity
+    public class MonoEntity : AbstractDisposableMonoBehaviour, IMonoEntity
     {
+        public class Factory : PlaceholderFactory<UnityEngine.Object, MonoEntity> { }
+
         // ToDo Implement Size correctly, this only works implicitly
         public Vector3 Size => Vector3.one;
 
@@ -18,6 +21,9 @@ namespace _Source.Features.ActorEntities
 
         [SerializeField] private Transform _rotationTarget;
         public Transform RotationTarget => _rotationTarget;
+
+        [SerializeField] private Light _headLight;
+        public Light HeadLight => _headLight;
 
         private SerialDisposable _serialDisposable;
         public CompositeDisposable EntityDisposer { get; private set; }

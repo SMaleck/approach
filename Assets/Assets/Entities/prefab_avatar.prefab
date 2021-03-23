@@ -151,6 +151,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!1 &4882216737615993221
@@ -240,6 +241,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -264,6 +266,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &9105761261365866947
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +276,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9105761261365866959}
-  - component: {fileID: 3166036521292648234}
+  - component: {fileID: 7326196847288731055}
   - component: {fileID: 4548400021035706685}
   - component: {fileID: 1051385710022505326}
   m_Layer: 9
@@ -299,7 +302,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3166036521292648234
+--- !u!114 &7326196847288731055
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -308,7 +311,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9105761261365866947}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce68cd7ed55515f49a9ddea23d2df2f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 7303d7c5fb4a0e547acf6aceb135fad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _locomotionTarget: {fileID: 9105761261365866959}
@@ -326,6 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2ff017e633a89846966996542fdaac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 0
   _distanceProbe: {fileID: 1051385710022505326}
 --- !u!135 &1051385710022505326
 SphereCollider:
