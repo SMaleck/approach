@@ -2,7 +2,7 @@
 using _Source.Features.Actors.DataComponents;
 using UnityEditor;
 
-namespace _Source.Entities.Components
+namespace _Source.Features.ActorEntities.Components
 {
     public class IdentificationComponent : AbstractMonoComponent
     {

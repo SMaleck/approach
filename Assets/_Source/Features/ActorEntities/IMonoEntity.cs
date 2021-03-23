@@ -2,7 +2,7 @@
 using UniRx;
 using UnityEngine;
 
-namespace _Source.Entities
+namespace _Source.Features.ActorEntities
 {
     public interface IMonoEntity
     {

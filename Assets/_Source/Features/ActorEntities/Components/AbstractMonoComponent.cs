@@ -2,7 +2,7 @@
 using UniRx;
 using UnityEngine;
 
-namespace _Source.Entities.Components
+namespace _Source.Features.ActorEntities.Components
 {
     public class AbstractMonoComponent : MonoBehaviour, IMonoComponent
     {

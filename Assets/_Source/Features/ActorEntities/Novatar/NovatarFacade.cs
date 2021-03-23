@@ -1,4 +1,5 @@
-﻿using _Source.Features.ActorEntities.Novatar.Config;
+﻿using _Source.Entities.Novatar;
+using _Source.Features.ActorEntities.Novatar.Config;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.Movement;
@@ -8,7 +9,7 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Entities.Novatar
+namespace _Source.Features.ActorEntities.Novatar
 {
     // ToDo V0 Get IMovableEntity to not be implemented on this
     public class NovatarFacade : AbstractDisposable, IEntityPoolItem<IMonoEntity>, IMovableEntity

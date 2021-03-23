@@ -1,13 +1,13 @@
-﻿using _Source.Debug;
+﻿using System;
+using _Source.Debug;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.Sensors;
-using System;
 using UniRx;
 using UniRx.Triggers;
 using UnityEditor;
 using UnityEngine;
 
-namespace _Source.Entities.Components
+namespace _Source.Features.ActorEntities.Components
 {
     public class RangeDetectionSensorComponent : AbstractMonoComponent
     {

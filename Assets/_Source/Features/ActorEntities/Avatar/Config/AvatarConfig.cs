@@ -1,5 +1,4 @@
 ﻿using _Source.App;
-using _Source.Entities.Avatar;
 using UnityEngine;
 
 namespace _Source.Features.ActorEntities.Avatar.Config

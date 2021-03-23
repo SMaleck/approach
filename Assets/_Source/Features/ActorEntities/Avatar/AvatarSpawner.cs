@@ -1,5 +1,4 @@
-﻿using _Source.Entities.Avatar;
-using _Source.Features.ActorEntities.Avatar.Config;
+﻿using _Source.Features.ActorEntities.Avatar.Config;
 using _Source.Features.Actors;
 using _Source.Features.Actors.Creation;
 using _Source.Features.Movement;

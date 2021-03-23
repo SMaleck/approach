@@ -1,16 +1,16 @@
-﻿using _Source.Features.ActorEntities.Avatar.Config;
+﻿using System;
+using _Source.Features.ActorEntities.Avatar.Config;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
 using _Source.Util;
-using System;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Entities.Avatar
+namespace _Source.Features.ActorEntities.Avatar
 {
     // ToDo V0 Get IMovableEntity to not be implemented on this
     public class AvatarFacade : AbstractDisposableFeature, IMovableEntity

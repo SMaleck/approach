@@ -1,5 +1,4 @@
 ﻿using System;
-using _Source.Entities.Avatar;
 using _Source.Features.Actors.Data;
 using UniRx;
 using Zenject;

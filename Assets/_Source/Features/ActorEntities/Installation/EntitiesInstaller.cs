@@ -1,10 +1,10 @@
-﻿using _Source.Entities.Avatar;
-using _Source.Entities.Novatar;
+﻿using _Source.Features.ActorEntities.Avatar;
+using _Source.Features.ActorEntities.Novatar;
 using _Source.Features.Actors;
 using _Source.Util;
 using Zenject;
 
-namespace _Source.Entities.Installation
+namespace _Source.Features.ActorEntities.Installation
 {
     public class EntitiesInstaller : Installer<EntitiesInstaller>
     {

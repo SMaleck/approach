@@ -1,12 +1,12 @@
-﻿using _Source.Entities.Components;
+﻿using System.Linq;
+using _Source.Features.ActorEntities.Components;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Util;
-using System.Linq;
 using UniRx;
 using UnityEngine;
 
-namespace _Source.Entities
+namespace _Source.Features.ActorEntities
 {
     public class AbstractMonoEntity : AbstractDisposableMonoBehaviour, IMonoEntity
     {

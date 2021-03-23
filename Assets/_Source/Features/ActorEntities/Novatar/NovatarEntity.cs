@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-namespace _Source.Entities.Novatar
+namespace _Source.Features.ActorEntities.Novatar
 {
     public class NovatarEntity : AbstractMonoEntity
     {

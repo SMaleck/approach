@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-namespace _Source.Entities.Avatar
+namespace _Source.Features.ActorEntities.Avatar
 {
     public class AvatarEntity : AbstractMonoEntity
     {

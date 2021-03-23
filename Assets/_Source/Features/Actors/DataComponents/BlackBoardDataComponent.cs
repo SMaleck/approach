@@ -1,5 +1,4 @@
-﻿using _Source.Entities.Avatar;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
