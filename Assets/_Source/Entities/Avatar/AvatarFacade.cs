@@ -12,7 +12,8 @@ using Zenject;
 
 namespace _Source.Entities.Avatar
 {
-    public class AvatarFacade : AbstractDisposableFeature, IDamageReceiver, IMovableEntity
+    // ToDo V0 Get IMovableEntity to not be implemented on this
+    public class AvatarFacade : AbstractDisposableFeature, IMovableEntity
     {
         public class Factory : PlaceholderFactory<AvatarEntity, IActorStateModel, AvatarFacade> { }
 
@@ -68,14 +69,6 @@ namespace _Source.Entities.Avatar
                 .AddTo(Disposer);
 
             avatarEntity.StartEntity(this.Disposer);
-        }
-
-        public void ReceiveDamage(int damageAmount)
-        {
-            var currentHealth = _healthDataComponent.Health.Value;
-            var newHealth = Math.Max(0, currentHealth - damageAmount);
-
-            _healthDataComponent.SetHealth(newHealth);
         }
 
         private void OnUpdate()

@@ -10,6 +10,7 @@ using Zenject;
 
 namespace _Source.Entities.Novatar
 {
+    // ToDo V0 Get IMovableEntity to not be implemented on this
     public class NovatarFacade : AbstractDisposable, IEntityPoolItem<IMonoEntity>, IMovableEntity
     {
         public class Factory : PlaceholderFactory<NovatarEntity, IActorStateModel, NovatarFacade> { }
