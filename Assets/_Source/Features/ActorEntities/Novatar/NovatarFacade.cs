@@ -12,9 +12,9 @@ namespace _Source.Features.ActorEntities.Novatar
     // ToDo V0 Get IMovableEntity to not be implemented on this
     public class NovatarFacade : AbstractDisposable, IEntityPoolItem<IMonoEntity>, IMovableEntity
     {
-        public class Factory : PlaceholderFactory<MonoEntity, IActorStateModel, NovatarFacade> { }
+        public class Factory : PlaceholderFactory<IMonoEntity, IActorStateModel, NovatarFacade> { }
 
-        private readonly MonoEntity _entity;
+        private readonly IMonoEntity _entity;
 
         private readonly IActorStateModel _actorStateModel;
         private readonly HealthDataComponent _healthDataComponent;
@@ -35,7 +35,7 @@ namespace _Source.Features.ActorEntities.Novatar
         public bool IsFree { get; private set; }
 
         public NovatarFacade(
-            MonoEntity entity,
+            IMonoEntity entity,
             IActorStateModel actorStateModel)
         {
             _entity = entity;

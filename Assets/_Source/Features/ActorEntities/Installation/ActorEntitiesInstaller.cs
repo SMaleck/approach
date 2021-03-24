@@ -16,7 +16,7 @@ namespace _Source.Features.ActorEntities.Installation
             Container.BindExecutionOrder<AvatarSpawner>(-1);
             Container.BindInterfacesTo<AvatarSpawner>().AsSingle();
 
-            Container.BindFactory<MonoEntity, IActorStateModel, NovatarFacade, NovatarFacade.Factory>().AsSingle();
+            Container.BindFactory<IMonoEntity, IActorStateModel, NovatarFacade, NovatarFacade.Factory>().AsSingle();
             Container.BindInterfacesAndSelfTo<NovatarSpawner>().AsSingle();
             Container.BindInterfacesAndSelfTo<SpawningOrchestrator>().AsSingle().NonLazy();
         }
