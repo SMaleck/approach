@@ -12,7 +12,7 @@ namespace _Source.Features.ActorEntities.Installation
         {
             Container.BindPrefabFactory<MonoEntity, MonoEntity.Factory>();
 
-            Container.BindFactory<MonoEntity, IActorStateModel, AvatarFacade, AvatarFacade.Factory>().AsSingle();
+            Container.BindFactory<IMonoEntity, IActorStateModel, AvatarFacade, AvatarFacade.Factory>().AsSingle();
             Container.BindExecutionOrder<AvatarSpawner>(-1);
             Container.BindInterfacesTo<AvatarSpawner>().AsSingle();
 

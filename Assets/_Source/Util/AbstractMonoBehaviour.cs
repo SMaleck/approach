@@ -2,7 +2,7 @@
 
 namespace _Source.Util
 {
-    public class AbstractMonoBehaviour : MonoBehaviour
+    public class AbstractMonoBehaviour : MonoBehaviour, IMonoBehaviour
     {
         public virtual string Name => gameObject.name;
         public virtual bool IsActive => isActiveAndEnabled;

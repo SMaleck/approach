@@ -18,9 +18,6 @@ namespace _Source.Features.ActorEntities
         [SerializeField] private Transform _rotationTarget;
         public Transform RotationTarget => _rotationTarget;
 
-        [SerializeField] private Light _headLight;
-        public Light HeadLight => _headLight;
-
         private bool _isSetup;
         private bool _isActive;
 

@@ -1,11 +1,9 @@
-﻿using System;
-using _Source.Features.ActorEntities.Avatar.Config;
-using _Source.Features.Actors;
+﻿using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
 using _Source.Features.Movement;
-using _Source.Features.ScreenSize;
 using _Source.Util;
+using System;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -18,11 +16,9 @@ namespace _Source.Features.ActorEntities.Avatar
     // ToDo V0 Position clamping can also be done in  MonoComponent
     public class AvatarFacade : AbstractDisposableFeature, IMovableEntity
     {
-        public class Factory : PlaceholderFactory<MonoEntity, IActorStateModel, AvatarFacade> { }
+        public class Factory : PlaceholderFactory<IMonoEntity, IActorStateModel, AvatarFacade> { }
 
-        private readonly MonoEntity _entity;
-        private readonly AvatarConfig _avatarConfig;
-        private readonly ScreenSizeModel _screenSizeModel;
+        private readonly IMonoEntity _entity;
         private readonly IPauseStateModel _pauseStateModel;
 
         public Transform LocomotionTarget => _entity.LocomotionTarget;
@@ -36,15 +32,11 @@ namespace _Source.Features.ActorEntities.Avatar
         private readonly HealthDataComponent _healthDataComponent;
 
         public AvatarFacade(
-            MonoEntity entity,
+            IMonoEntity entity,
             IActorStateModel actorStateModel,
-            AvatarConfig avatarConfig,
-            ScreenSizeModel screenSizeModel,
             IPauseStateModel pauseStateModel)
         {
             _entity = entity;
-            _avatarConfig = avatarConfig;
-            _screenSizeModel = screenSizeModel;
             _pauseStateModel = pauseStateModel;
 
             entity.Setup(actorStateModel);
@@ -62,30 +54,12 @@ namespace _Source.Features.ActorEntities.Avatar
                 .Subscribe(_ => OnTimePassed())
                 .AddTo(Disposer);
 
-            Observable.EveryUpdate()
-                .Where(_ => !_pauseStateModel.IsPaused.Value)
-                .Subscribe(_ => OnUpdate())
-                .AddTo(Disposer);
-
             entity.StartEntity(this.Disposer);
 
             _healthDataComponent.IsAlive
                 .IfFalse()
                 .Subscribe(_ => entity.StopEntity())
                 .AddTo(Disposer);
-        }
-
-        private void OnUpdate()
-        {
-            KeepWithinScreenBounds();
-        }
-
-        private void KeepWithinScreenBounds()
-        {
-            var clampedX = Mathf.Clamp(Position.x, -_screenSizeModel.WidthExtendUnits, _screenSizeModel.WidthExtendUnits);
-            var clampedY = Mathf.Clamp(Position.y, -_screenSizeModel.HeightExtendUnits, _screenSizeModel.HeightExtendUnits);
-
-            _entity.SetPosition(new Vector3(clampedX, clampedY, Position.z));
         }
 
         private void OnTimePassed()
