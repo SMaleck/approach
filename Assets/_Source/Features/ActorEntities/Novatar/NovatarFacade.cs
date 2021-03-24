@@ -1,5 +1,4 @@
-﻿using _Source.Entities.Novatar;
-using _Source.Features.Actors;
+﻿using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.Movement;
 using _Source.Util;
@@ -19,7 +18,6 @@ namespace _Source.Features.ActorEntities.Novatar
         private readonly IActorStateModel _actorStateModel;
         private readonly HealthDataComponent _healthDataComponent;
         private readonly OriginDataComponent _originDataComponent;
-        private readonly RelationshipDataComponent _relationshipDataComponent;
 
         public IMonoEntity Entity => _entity;
 
@@ -27,8 +25,6 @@ namespace _Source.Features.ActorEntities.Novatar
         public Transform RotationTarget => _entity.RotationTarget;
 
         // ToDo V0 Most properties below should probably go into another data component
-        public string Name => _entity.Name;
-        public bool IsActive => _entity.IsActive;
         public Vector3 Position => _entity.Position;
         public Quaternion Rotation => _entity.Rotation;
 
@@ -43,12 +39,11 @@ namespace _Source.Features.ActorEntities.Novatar
 
             _entity.Setup(_actorStateModel);
 
-            _healthDataComponent = _actorStateModel.Get<HealthDataComponent>();
-            _originDataComponent = _actorStateModel.Get<OriginDataComponent>();
-            _relationshipDataComponent = _actorStateModel.Get<RelationshipDataComponent>();
-
             _actorStateModel.Get<TransformDataComponent>()
                 .SetMonoEntity(_entity);
+
+            _healthDataComponent = _actorStateModel.Get<HealthDataComponent>();
+            _originDataComponent = _actorStateModel.Get<OriginDataComponent>();
 
             _healthDataComponent.IsAlive
                 .Subscribe(OnIsAliveChanged)
@@ -61,9 +56,7 @@ namespace _Source.Features.ActorEntities.Novatar
 
         public void Reset(Vector3 spawnPosition)
         {
-            _relationshipDataComponent.SetRelationship(EntityState.Spawning);
             _originDataComponent.SetSpawnPosition(spawnPosition);
-
             _actorStateModel.Reset();
         }
 

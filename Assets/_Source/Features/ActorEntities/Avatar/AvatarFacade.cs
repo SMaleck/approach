@@ -23,9 +23,6 @@ namespace _Source.Features.ActorEntities.Avatar
         public Transform LocomotionTarget => _entity.LocomotionTarget;
         public Transform RotationTarget => _entity.RotationTarget;
 
-        public string Name => _entity.Name;
-        
-
         public AvatarFacade(
             IMonoEntity entity,
             IActorStateModel actorStateModel)
