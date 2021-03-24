@@ -24,7 +24,6 @@ namespace _Source.Features.Actors.Installation
             Container.BindFactory<IMovementData, MovementDataComponent, MovementDataComponent.Factory>().AsSingle();
             Container.BindFactory<RelationshipDataComponent, RelationshipDataComponent.Factory>().AsSingle();
             Container.BindFactory<OriginDataComponent, OriginDataComponent.Factory>().AsSingle();
-            Container.BindFactory<SurvivalDataComponent, SurvivalDataComponent.Factory>().AsSingle();
             Container.BindFactory<LightDataComponent, LightDataComponent.Factory>().AsSingle();
             Container.BindFactory<TransformDataComponent, TransformDataComponent.Factory>().AsSingle();
             Container.BindFactory<SensorDataComponent, SensorDataComponent.Factory>().AsSingle();

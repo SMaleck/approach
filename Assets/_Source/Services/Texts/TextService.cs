@@ -1,5 +1,6 @@
 ﻿using _Source.App;
 using System;
+using System.Globalization;
 using UnityEngine;
 
 namespace _Source.Services.Texts
@@ -32,7 +33,8 @@ namespace _Source.Services.Texts
         public static string TimeFromSeconds(double seconds)
         {
             var flooredSeconds = Math.Floor(seconds);
-            return TimeSpan.FromSeconds(flooredSeconds).ToString("c");
+            return TimeSpan.FromSeconds(flooredSeconds)
+                .ToString(@"m\:ss", CultureInfo.InvariantCulture);
         }
 
         public static string HealthAmount(double amount)

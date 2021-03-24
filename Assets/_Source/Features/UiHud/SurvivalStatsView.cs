@@ -1,5 +1,6 @@
 ﻿using _Source.Features.ActorEntities.Avatar;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.GameRound;
 using _Source.Services.Texts;
 using _Source.Util;
 using TMPro;
@@ -17,22 +18,24 @@ namespace _Source.Features.UiHud
         [SerializeField] private TextMeshProUGUI _healthText;
 
         private IAvatarLocator _avatarLocator;
-        private SurvivalDataComponent _survivalDataComponent;
+        private IGameRoundStateModel _gameRoundStateModel;
         private HealthDataComponent _healthDataComponent;
 
         [Inject]
-        private void Inject(IAvatarLocator avatarLocator)
+        private void Inject(
+            IAvatarLocator avatarLocator,
+            IGameRoundStateModel gameRoundStateModel)
         {
             _avatarLocator = avatarLocator;
+            _gameRoundStateModel = gameRoundStateModel;
         }
 
         public void Initialize()
         {
-            _survivalDataComponent = _avatarLocator.AvatarActorStateModel.Get<SurvivalDataComponent>();
             _healthDataComponent = _avatarLocator.AvatarActorStateModel.Get<HealthDataComponent>();
 
-            _survivalDataComponent.SurvivalSeconds
-                .Subscribe(OnSurvivalSecondsChanged)
+            _gameRoundStateModel.RemainingSeconds
+                .Subscribe(OnRemainingSecondsChanged)
                 .AddTo(Disposer);
 
             _healthDataComponent.Health
@@ -40,7 +43,7 @@ namespace _Source.Features.UiHud
                 .AddTo(Disposer);
         }
 
-        private void OnSurvivalSecondsChanged(double seconds)
+        private void OnRemainingSecondsChanged(double seconds)
         {
             _survivalTimeText.text = TextService.TimeFromSeconds(seconds);
         }

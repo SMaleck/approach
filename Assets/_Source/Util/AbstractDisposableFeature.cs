@@ -7,7 +7,8 @@ namespace _Source.Util
         [Inject]
         private void Inject([InjectLocal] DisposableManager disposableManager)
         {
-            disposableManager.Add(this);
+            // ToDo V0 Is this really needed?
+            //disposableManager.Add(this);
         }
     }
 }

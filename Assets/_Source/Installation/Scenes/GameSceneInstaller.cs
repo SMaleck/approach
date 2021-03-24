@@ -3,9 +3,10 @@ using _Source.Features.ActorBehaviours.Installation;
 using _Source.Features.ActorEntities.Installation;
 using _Source.Features.Actors.Installation;
 using _Source.Features.AvatarRelationships;
-using _Source.Features.GameRound;
+using _Source.Features.GameRound.Installation;
 using _Source.Features.Movement;
 using _Source.Features.Movement.Installation;
+using _Source.Features.PlayerStatistics.Installation;
 using _Source.Features.ScreenSize;
 using _Source.Features.UiHud;
 using _Source.Features.UiScreens;
@@ -28,6 +29,8 @@ namespace _Source.Installation.Scenes
             ActorEntitiesInstaller.Install(Container);
             ActorBehavioursInstaller.Install(Container);
             MovementInstaller.Install(Container);
+            GameRoundInstaller.Install(Container);
+            PlayerStatisticsInstaller.Install(Container);
 
             Container.BindPrefabFactory<HudView, HudView.Factory>();
             Container.BindPrefabFactory<PauseView, PauseView.Factory>();
@@ -40,9 +43,6 @@ namespace _Source.Installation.Scenes
 
             Container.BindInterfacesAndSelfTo<VirtualJoystickModel>().AsSingleNonLazy();
             Container.BindFactory<MovementModel, UserInputController, UserInputController.Factory>();
-
-            Container.BindInterfacesAndSelfTo<GameRoundModel>().AsSingleNonLazy();
-            Container.BindInterfacesAndSelfTo<GameRoundController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<RelationshipStatsModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<RelationshipStatsController>().AsSingleNonLazy();

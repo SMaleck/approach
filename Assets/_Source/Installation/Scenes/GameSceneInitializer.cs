@@ -1,4 +1,5 @@
-﻿using _Source.Features.UiHud;
+﻿using _Source.Features.GameRound;
+using _Source.Features.UiHud;
 using _Source.Features.UiScreens;
 using _Source.Features.UserInput;
 using _Source.Features.ViewManagement;
@@ -11,6 +12,7 @@ namespace _Source.Installation.Scenes
     {
         [Inject] private ViewPrefabsConfig _viewPrefabsConfig;
         [Inject] private IViewManagementRegistrar _viewManagementRegistrar;
+        [Inject] private GameRoundController _gameRoundController;
 
         [Inject] private HudView.Factory _hudViewFactory;
         [Inject] private PauseView.Factory _pauseViewFactory;
@@ -47,6 +49,8 @@ namespace _Source.Installation.Scenes
             _virtualJoystickViewFactory
                 .Create(_viewPrefabsConfig.VirtualJoystickViewPrefab)
                 .Initialize();
+
+            _gameRoundController.StartRound();
         }
     }
 }

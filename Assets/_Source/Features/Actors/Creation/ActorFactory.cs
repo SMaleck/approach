@@ -16,7 +16,6 @@ namespace _Source.Features.Actors.Creation
         [Inject] protected readonly OriginDataComponent.Factory OriginDataComponentFactory;
         [Inject] protected readonly RelationshipDataComponent.Factory RelationshipDataComponentFactory;
         [Inject] protected readonly LightDataComponent.Factory LightDataComponentFactory;
-        [Inject] protected readonly SurvivalDataComponent.Factory SurvivalDataComponentFactory;
         [Inject] protected readonly TransformDataComponent.Factory TransformDataComponentFactory;
         [Inject] protected readonly SensorDataComponent.Factory SensorDataComponentFactory;
 
@@ -37,7 +36,6 @@ namespace _Source.Features.Actors.Creation
                 .Attach(EntityTypeDataComponentFactory.Create(EntityType.Avatar))
                 .Attach(HealthDataComponentFactory.Create(_avatarData))
                 .Attach(MovementDataComponentFactory.Create(_avatarData))
-                .Attach(SurvivalDataComponentFactory.Create())
                 .Attach(TransformDataComponentFactory.Create())
                 .Attach(SensorDataComponentFactory.Create());
         }
