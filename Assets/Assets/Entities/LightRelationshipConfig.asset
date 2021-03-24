@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 670316f04a0caee4b96918e3e30f79bd, type: 3}
+  m_Name: LightRelationshipConfig
+  m_EditorClassIdentifier: 
+  _colorFadeSeconds: 0.6
+  _relationshipVisualsConfigs:
+  - _relationship: 0
+    _lightColor: {r: 1, g: 1, b: 1, a: 1}
+  - _relationship: 1
+    _lightColor: {r: 1, g: 1, b: 1, a: 1}
+  - _relationship: 2
+    _lightColor: {r: 1, g: 1, b: 1, a: 1}
+  - _relationship: 3
+    _lightColor: {r: 1, g: 0.3254902, b: 0.2784314, a: 1}
+  - _relationship: 4
+    _lightColor: {r: 0.30980393, g: 1, b: 0.4627451, a: 1}

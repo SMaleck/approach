@@ -76,6 +76,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _headLight: {fileID: 7319393582979043941}
+  _relationshipConfig: {fileID: 11400000, guid: 9e98e171b4d8df741986589b09a7b5e9,
+    type: 2}
+  _intensityConfig: {fileID: 11400000, guid: 821cdc39e09a73544bbe47e181cbcc12, type: 2}
 --- !u!114 &4220120526230914207
 MonoBehaviour:
   m_ObjectHideFlags: 0

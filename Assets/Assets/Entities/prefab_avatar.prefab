@@ -277,6 +277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9105761261365866959}
   - component: {fileID: 7326196847288731055}
+  - component: {fileID: 8205960373798984502}
   m_Layer: 9
   m_Name: prefab_avatar
   m_TagString: Untagged
@@ -315,3 +316,17 @@ MonoBehaviour:
   _locomotionTarget: {fileID: 9105761261365866959}
   _rotationTarget: {fileID: 7361955057735304212}
   _headLight: {fileID: 8827866579564156490}
+--- !u!114 &8205960373798984502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9105761261365866947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec94fb59324717a439af9f9052891e67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _headLight: {fileID: 8827866579564156490}
+  _intensityConfig: {fileID: 11400000, guid: edf768deea9e91e44b22e4b78b0cbebc, type: 2}

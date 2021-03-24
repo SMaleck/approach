@@ -1,37 +1,31 @@
 ﻿using _Source.Entities.Novatar;
-using _Source.Features.ActorEntities.Novatar.Config;
+using _Source.Features.ActorEntities.Config;
 using _Source.Features.Actors.DataComponents;
 using _Source.Util;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
-using Zenject;
 
 namespace _Source.Features.ActorEntities.Components
 {
     public class HeadLightMonoComponent : AbstractMonoComponent
     {
         [SerializeField] private Light _headLight;
-
-        // ToDo V1 Replace with generic LightConfig
-        private NovatarConfig _novatarConfig;
+        [SerializeField] private LightRelationshipConfig _relationshipConfig;
+        [SerializeField] private LightIntensityConfig _intensityConfig;
 
         private RelationshipDataComponent _relationshipDataComponent;
         private LightDataComponent _lightDataComponent;
+        private HealthDataComponent _healthDataComponent;
 
         private SerialDisposable _tweenDisposer;
         private Tween _lightsOnTween;
-
-        [Inject]
-        private void Inject(NovatarConfig novatarConfig)
-        {
-            _novatarConfig = novatarConfig;
-        }
 
         protected override void OnSetup()
         {
             _relationshipDataComponent = Actor.Get<RelationshipDataComponent>();
             _lightDataComponent = Actor.Get<LightDataComponent>();
+            _healthDataComponent = Actor.Get<HealthDataComponent>();
         }
 
         protected override void OnStart()
@@ -47,6 +41,10 @@ namespace _Source.Features.ActorEntities.Components
 
             _lightDataComponent.OnLightsSwitchedOn
                 .Subscribe(_ => _lightsOnTween.Restart())
+                .AddTo(Disposer);
+
+            _healthDataComponent.RelativeHealth
+                .Subscribe(_ => UpdateHealthBasedLight())
                 .AddTo(Disposer);
 
             UpdateLightColor(true);
@@ -74,12 +72,12 @@ namespace _Source.Features.ActorEntities.Components
         private void UpdateLightColor(bool forceInstant = false)
         {
             var relationship = _relationshipDataComponent.Relationship.Value;
-            var lightColor = _novatarConfig.GetLightColor(relationship);
+            var lightColor = _relationshipConfig.GetLightColor(relationship);
 
             if (forceInstant)
             {
                 _tweenDisposer.Disposable?.Dispose();
-                SetLight(lightColor, _novatarConfig.LightDefaultIntensity);
+                SetLight(lightColor, _intensityConfig.DefaultIntensity);
                 return;
             }
 
@@ -87,17 +85,18 @@ namespace _Source.Features.ActorEntities.Components
 
             DOTween.Sequence()
                 .Join(CreateLightIntensityTween())
-                .Join(CreateLightColorTween(lightColor));
+                .Join(CreateLightColorTween(lightColor))
+                .OnComplete(UpdateHealthBasedLight);
 
             _tweenDisposer.Disposable = lightSequenceDisposer;
         }
 
         private Tween CreateLightIntensityTween()
         {
-            _headLight.intensity = _novatarConfig.LightDefaultIntensity;
+            _headLight.intensity = _intensityConfig.DefaultIntensity;
 
             return _headLight
-                .DOIntensity(_novatarConfig.LightFlashIntensity, _novatarConfig.LightColorFadeSeconds / 2)
+                .DOIntensity(_intensityConfig.FlashIntensity, _relationshipConfig.ColorFadeSeconds / 2)
                 .SetLoops(2, LoopType.Yoyo)
                 .SetEase(Ease.InOutCubic);
         }
@@ -105,7 +104,7 @@ namespace _Source.Features.ActorEntities.Components
         private Tween CreateLightColorTween(Color targetColor)
         {
             return _headLight
-                .DOColor(targetColor, _novatarConfig.LightColorFadeSeconds)
+                .DOColor(targetColor, _relationshipConfig.ColorFadeSeconds)
                 .SetEase(Ease.InOutCubic);
         }
 
@@ -114,7 +113,7 @@ namespace _Source.Features.ActorEntities.Components
             _headLight.intensity = 0;
 
             var tween = _headLight
-                .DOIntensity(_novatarConfig.LightDefaultIntensity, _novatarConfig.LightColorFadeSeconds)
+                .DOIntensity(_intensityConfig.DefaultIntensity, _relationshipConfig.ColorFadeSeconds)
                 .SetEase(Ease.InOutCubic)
                 .SetAutoKill(false)
                 .Pause();
@@ -129,6 +128,12 @@ namespace _Source.Features.ActorEntities.Components
         {
             _headLight.color = color;
             _headLight.intensity = intensity;
+        }
+
+        private void UpdateHealthBasedLight()
+        {
+            var intensity = _intensityConfig.DefaultIntensity * _healthDataComponent.RelativeHealth.Value;
+            SetLight(_headLight.color, (float)intensity);
         }
     }
 }

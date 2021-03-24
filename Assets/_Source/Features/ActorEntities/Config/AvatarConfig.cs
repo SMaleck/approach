@@ -8,8 +8,5 @@ namespace _Source.Features.ActorEntities.Avatar.Config
     {
         [SerializeField] private MonoEntity _avatarPrefab;
         public MonoEntity AvatarPrefab => _avatarPrefab;
-
-        [SerializeField] private float _maxLightIntensity;
-        public float MaxLightIntensity => _maxLightIntensity;
     }
 }
