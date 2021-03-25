@@ -19,21 +19,21 @@ namespace _Source.Features.ActorEntities.Avatar
         [Inject] private readonly MovementComponent.Factory _movementComponentFactory;
         [Inject] private readonly UserInputController.Factory _userInputControllerFactory;
 
-        // ToDo V0 This can probably be exposed cleaner
-        public IActorStateModel AvatarActorStateModel { get; private set; }
+        // ToDo V2 This can probably be exposed cleaner
+        public IActorStateModel AvatarActor { get; private set; }
 
         public void Initialize()
         {
-            AvatarActorStateModel = _avatarActorFactory.CreateAvatar();
+            AvatarActor = _avatarActorFactory.CreateAvatar();
 
             var avatarEntity = _entityFactory
                 .Create(_avatarConfig.AvatarPrefab);
 
             var avatarFacade = _avatarFacadeFactory
-                .Create(avatarEntity, AvatarActorStateModel);
+                .Create(avatarEntity, AvatarActor);
 
             var movementModel = _movementModelFactory
-                .Create(AvatarActorStateModel)
+                .Create(AvatarActor)
                 .AddTo(Disposer);
 
             _userInputControllerFactory

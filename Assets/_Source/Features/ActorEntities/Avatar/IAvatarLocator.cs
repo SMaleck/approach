@@ -4,6 +4,6 @@ namespace _Source.Features.ActorEntities.Avatar
 {
     public interface IAvatarLocator
     {
-        IActorStateModel AvatarActorStateModel { get; }
+        IActorStateModel AvatarActor { get; }
     }
 }

@@ -27,7 +27,7 @@ namespace _Source.Features.GameRound
 
         public void Initialize()
         {
-            var healthDataComponent = _avatarLocator.AvatarActorStateModel.Get<HealthDataComponent>();
+            var healthDataComponent = _avatarLocator.AvatarActor.Get<HealthDataComponent>();
             healthDataComponent.IsAlive
                 .Where(isAlive => !isAlive)
                 .Take(1)

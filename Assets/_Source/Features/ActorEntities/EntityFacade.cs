@@ -8,8 +8,7 @@ using Zenject;
 
 namespace _Source.Features.ActorEntities
 {
-    // ToDo V0 Get IMovableEntity to not be implemented on this
-    // ToDo V0 Create Movement MonoComponent to handle movement
+    // ToDo V2 Create Movement MonoComponent to handle movement, so IMovableEntity is not implemented here
     public class EntityFacade : AbstractDisposable, IMovableEntity
     {
         public class Factory : PlaceholderFactory<IMonoEntity, IActorStateModel, EntityFacade> { }
@@ -20,7 +19,6 @@ namespace _Source.Features.ActorEntities
         private readonly SerialDisposable _entityLifecycleDisposable;
         protected readonly HealthDataComponent HealthDataComponent;
 
-        // ToDo V0 Most properties below should probably go into another data component
         public Transform LocomotionTarget => Entity.LocomotionTarget;
         public Transform RotationTarget => Entity.RotationTarget;
         public Vector3 Position => Entity.Position;

@@ -8,7 +8,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class FollowAvatarNode : AbstractNode
     {
-        // ToDo V0 Rename to better reflect what it is doing
+        // ToDo V2 Rename to better reflect what it is doing
         public class Factory : PlaceholderFactory<IActorStateModel, FollowAvatarNode> { }
 
         private readonly IActorStateModel _actorStateModel;

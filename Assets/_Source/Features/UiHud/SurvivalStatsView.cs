@@ -32,7 +32,7 @@ namespace _Source.Features.UiHud
 
         public void Initialize()
         {
-            _healthDataComponent = _avatarLocator.AvatarActorStateModel.Get<HealthDataComponent>();
+            _healthDataComponent = _avatarLocator.AvatarActor.Get<HealthDataComponent>();
 
             _gameRoundStateModel.RemainingSeconds
                 .Subscribe(OnRemainingSecondsChanged)

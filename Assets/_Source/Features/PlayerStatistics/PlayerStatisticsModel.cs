@@ -18,7 +18,7 @@ namespace _Source.Features.PlayerStatistics
         private readonly IReactiveProperty<int> _friendsLost;
         public IReadOnlyReactiveProperty<int> FriendsLost => _friendsLost;
         
-        // ToDo V0 Show on round end
+        // ToDo V1 Show on round end
         public PlayerStatisticsModel()
         {
             _friends = new ReactiveProperty<int>().AddTo(Disposer);
