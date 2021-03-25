@@ -8,8 +8,6 @@ using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Creation
 {
-    // ToDo V1 BT FRIENDS: Calm down
-    // ToDo V1 BT FRIENDS: Leave when health is low, instead of disappearing
     // ToDo V1 BT Move around on the playing field, increase leave time
     // ToDo V1 BT Sometimes move towards player
     public class NovatarBehaviourTreeFactory
@@ -29,14 +27,12 @@ namespace _Source.Features.ActorBehaviours.Creation
 
             // @formatter:off
             var startNode = new BehaviourTreeBuilder()
-                .Parallel(100, 100)
-                    .Selector()
-                        .Splice(SpawningTree(model))
-                        .Splice(UnacquaintedTree(model))
-                        .Splice(NeutralTree(model))
-                        .Splice(FriendTree(model))
-                        .Splice(EnemyTree(model))
-                        .End()
+                .Selector()
+                    .Splice(SpawningTree(model))
+                    .Splice(UnacquaintedTree(model))
+                    .Splice(NeutralTree(model))
+                    .Splice(FriendTree(model))
+                    .Splice(EnemyTree(model))
                     .End()
                 .Build();
             // @formatter:on
@@ -101,6 +97,8 @@ namespace _Source.Features.ActorBehaviours.Creation
             // @formatter:on
         }
 
+        // ToDo V1 BT FRIENDS: Calm down
+        // ToDo V1 BT FRIENDS: Leave when health is low, instead of disappearing
         private IBehaviourTreeNode FriendTree(IActorStateModel model)
         {
             // @formatter:off
