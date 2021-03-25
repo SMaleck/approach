@@ -8,7 +8,6 @@ using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    // ToDo V0 all these components need to be disposed with the actor
     public class SensorDataComponent : AbstractDataComponent, IResettableDataComponent
     {
         public class Factory : PlaceholderFactory<SensorDataComponent> { }

@@ -11,6 +11,9 @@ namespace _Source.Installation.Scenes
         {
             Container.BindInterfacesAndSelfTo<CompositeDisposable>()
                 .AsSingleNonLazy();
+            
+            Container.BindInterfacesTo<Disposer>()
+                .AsSingleNonLazy();
 
             InstallSceneBindings();
             PostInstall();

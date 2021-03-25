@@ -5,10 +5,9 @@ namespace _Source.Util
     public abstract class AbstractDisposableFeature : AbstractDisposable
     {
         [Inject]
-        private void Inject([InjectLocal] DisposableManager disposableManager)
+        private void Inject([InjectLocal] IDisposer disposer)
         {
-            // ToDo V0 Is this really needed?
-            //disposableManager.Add(this);
+            disposer.Add(this);
         }
     }
 }
