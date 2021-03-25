@@ -29,7 +29,6 @@ namespace _Source.Features.ActorEntities
         // ToDo Implement Size correctly, this only works implicitly
         public Vector3 Size => Vector3.one;
 
-        // ToDo V2 Needed to get IDamageReceiver etc to other Actors via SensorySystem. Is that the best way? 
         public void Setup(IActorStateModel actorStateModel)
         {
             if (_isSetup) return;
