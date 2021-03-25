@@ -1,5 +1,6 @@
 ﻿using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.GameRound;
 using _Source.Util;
 using UniRx;
 using UnityEngine;
@@ -17,8 +18,9 @@ namespace _Source.Features.ActorEntities.Novatar
 
         public NovatarFacade(
             IMonoEntity entity,
-            IActorStateModel actor)
-            : base(entity, actor)
+            IActorStateModel actor,
+            IPauseStateModel pauseStateModel)
+            : base(entity, actor, pauseStateModel)
         {
             _originDataComponent = Actor.Get<OriginDataComponent>();
 

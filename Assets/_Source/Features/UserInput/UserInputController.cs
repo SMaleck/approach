@@ -1,5 +1,6 @@
-﻿using _Source.Features.GameRound;
-using _Source.Features.Movement;
+﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
+using _Source.Features.GameRound;
 using _Source.Features.UserInput.Data;
 using _Source.Util;
 using UniRx;
@@ -10,29 +11,29 @@ namespace _Source.Features.UserInput
 {
     public class UserInputController : AbstractDisposable
     {
-        public class Factory : PlaceholderFactory<MovementModel, UserInputController> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, UserInputController> { }
 
         private const string AxisNameHorizontal = "Horizontal";
         private const string AxisNameVertical = "Vertical";
 
-        private readonly MovementModel _movementModel;
         private readonly VirtualJoystickModel _virtualJoystickModel;
         private readonly UserInputConfig _userInputConfig;
         private readonly IPauseStateModel _pauseStateModel;
+        private readonly MovementDataComponent _movementDataComponent;
 
         private bool _isDraggingJoystick;
         private Vector2 _startTouchPosition;
 
         public UserInputController(
-            MovementModel movementModel,
+            IActorStateModel actorStateModel,
             VirtualJoystickModel virtualJoystickModel,
             UserInputConfig userInputConfig,
             IPauseStateModel pauseStateModel)
         {
-            _movementModel = movementModel;
             _virtualJoystickModel = virtualJoystickModel;
             _userInputConfig = userInputConfig;
             _pauseStateModel = pauseStateModel;
+            _movementDataComponent = actorStateModel.Get<MovementDataComponent>();
 
             Observable.EveryUpdate()
                 .Subscribe(_ => OnUpdate())
@@ -43,7 +44,7 @@ namespace _Source.Features.UserInput
         {
             if (_pauseStateModel.IsPaused.Value)
             {
-                _movementModel.ResetIntentions();
+                _movementDataComponent.ResetIntentions();
                 return;
             }
 
@@ -57,12 +58,12 @@ namespace _Source.Features.UserInput
             var verticalAxis = Input.GetAxisRaw(AxisNameVertical);
 
             var inputVector = new Vector2(horizontalAxis, verticalAxis);
-            _movementModel.SetMovementIntention(inputVector);
+            _movementDataComponent.SetMovementIntention(inputVector);
 
             // ToDo V1 Vector2.Zero is a quick hack, need the actual values of the entity
             var heading = inputVector - Vector2.zero;
             var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
-            _movementModel.SetTurnIntention(lookRotation);
+            _movementDataComponent.SetTurnIntention(lookRotation);
         }
 
         private void TrackPointerInput()
@@ -86,12 +87,12 @@ namespace _Source.Features.UserInput
                 var dragDirection = currentPointerPosition - _virtualJoystickModel.StartPointerPosition.Value;
                 var smoothedDragDirection = GetMagnitudeSmoothedVector(dragDirection);
 
-                _movementModel.SetMovementIntention(smoothedDragDirection);
+                _movementDataComponent.SetMovementIntention(smoothedDragDirection);
 
                 // ToDo V1 Vector2.Zero is a quick hack, need the actual values of the entity
                 var heading = smoothedDragDirection - Vector2.zero;
                 var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
-                _movementModel.SetTurnIntention(lookRotation);
+                _movementDataComponent.SetTurnIntention(lookRotation);
             }
         }
 

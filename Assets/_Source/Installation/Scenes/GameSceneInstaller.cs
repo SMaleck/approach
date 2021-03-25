@@ -1,6 +1,7 @@
 ﻿using _Source.Debug.Installation;
 using _Source.Features.ActorBehaviours.Installation;
 using _Source.Features.ActorEntities.Installation;
+using _Source.Features.Actors;
 using _Source.Features.Actors.Installation;
 using _Source.Features.AvatarRelationships;
 using _Source.Features.GameRound.Installation;
@@ -42,7 +43,7 @@ namespace _Source.Installation.Scenes
             Container.BindInterfacesAndSelfTo<ViewManagementController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<VirtualJoystickModel>().AsSingleNonLazy();
-            Container.BindFactory<MovementModel, UserInputController, UserInputController.Factory>();
+            Container.BindFactory<IActorStateModel, UserInputController, UserInputController.Factory>();
 
             Container.BindInterfacesAndSelfTo<RelationshipStatsModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<RelationshipStatsController>().AsSingleNonLazy();

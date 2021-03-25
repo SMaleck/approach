@@ -18,9 +18,7 @@ namespace _Source.Features.ActorEntities.Novatar
         [Inject] private readonly MonoEntity.Factory _entityFactory;
         [Inject] private readonly NovatarFacade.Factory _novatarFacadeFactory;
         [Inject] private readonly NovatarBehaviourTree.Factory _novatarBehaviourTreeFactory;
-        [Inject] private readonly MovementModel.Factory _movementModelFactory;
         [Inject] private readonly MovementController.Factory _movementControllerFactory;
-        [Inject] private readonly MovementComponent.Factory _movementComponentFactory;
 
         private readonly NovatarSpawnerConfig _novatarSpawnerConfig;
         private readonly NovatarConfig _novatarConfig;
@@ -76,16 +74,8 @@ namespace _Source.Features.ActorEntities.Novatar
                     actorStateModel)
                 .AddTo(Disposer);
 
-            var movementModel = _movementModelFactory
-                .Create(actorStateModel)
-                .AddTo(Disposer);
-
             var movementController = _movementControllerFactory
-                .Create(movementModel, novatarFacade)
-                .AddTo(Disposer);
-
-            _movementComponentFactory
-                .Create(novatarFacade, movementModel)
+                .Create(actorStateModel)
                 .AddTo(Disposer);
 
             _novatarBehaviourTreeFactory

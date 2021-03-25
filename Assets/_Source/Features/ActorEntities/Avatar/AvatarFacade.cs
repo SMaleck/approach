@@ -1,4 +1,5 @@
 ﻿using _Source.Features.Actors;
+using _Source.Features.GameRound;
 using Zenject;
 
 namespace _Source.Features.ActorEntities.Avatar
@@ -10,8 +11,9 @@ namespace _Source.Features.ActorEntities.Avatar
 
         public AvatarFacade(
             IMonoEntity entity,
-            IActorStateModel actor)
-            : base(entity, actor)
+            IActorStateModel actor,
+            IPauseStateModel pauseStateModel)
+            : base(entity, actor, pauseStateModel)
         {
         }
     }

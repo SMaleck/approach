@@ -279,6 +279,7 @@ GameObject:
   - component: {fileID: 7326196847288731055}
   - component: {fileID: 8205960373798984502}
   - component: {fileID: 2703048135817262449}
+  - component: {fileID: 4278872035448246118}
   m_Layer: 9
   m_Name: prefab_avatar
   m_TagString: Untagged
@@ -342,3 +343,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7545b1e841eedc4f82b0e840bd67ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4278872035448246118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9105761261365866947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669f02f505313d949a58d13b546d295a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entity: {fileID: 7326196847288731055}

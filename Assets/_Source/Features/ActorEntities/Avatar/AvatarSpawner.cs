@@ -15,8 +15,6 @@ namespace _Source.Features.ActorEntities.Avatar
         [Inject] private readonly MonoEntity.Factory _entityFactory;
         [Inject] private readonly AvatarFacade.Factory _avatarFacadeFactory;
         [Inject] private readonly AvatarConfig _avatarConfig;
-        [Inject] private readonly MovementModel.Factory _movementModelFactory;
-        [Inject] private readonly MovementComponent.Factory _movementComponentFactory;
         [Inject] private readonly UserInputController.Factory _userInputControllerFactory;
 
         // ToDo V2 This can probably be exposed cleaner
@@ -32,16 +30,8 @@ namespace _Source.Features.ActorEntities.Avatar
             var avatarFacade = _avatarFacadeFactory
                 .Create(avatarEntity, AvatarActor);
 
-            var movementModel = _movementModelFactory
-                .Create(AvatarActor)
-                .AddTo(Disposer);
-
             _userInputControllerFactory
-                .Create(movementModel)
-                .AddTo(Disposer);
-
-            _movementComponentFactory
-                .Create(avatarFacade, movementModel)
+                .Create(AvatarActor)
                 .AddTo(Disposer);
         }
     }

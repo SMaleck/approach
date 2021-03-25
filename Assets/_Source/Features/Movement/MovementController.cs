@@ -1,4 +1,5 @@
-﻿using _Source.Entities;
+﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using _Source.Util;
 using UnityEngine;
 using Zenject;
@@ -7,52 +8,51 @@ namespace _Source.Features.Movement
 {
     public class MovementController : AbstractDisposable
     {
-        public class Factory : PlaceholderFactory<MovementModel, IMovableEntity, MovementController> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, MovementController> { }
 
         private static readonly Vector3 V3Forward = new Vector3(0, 1, 0);
 
-        private readonly MovementModel _movementModel;
-        private readonly IMovableEntity _entity;
+        private readonly MovementDataComponent _movementDataComponent;
+        private readonly TransformDataComponent _transformDataComponent;
 
-        public MovementController(
-            MovementModel movementModel,
-            IMovableEntity entity)
+        public MovementController(IActorStateModel actorStateModel)
         {
-            _movementModel = movementModel;
-            _entity = entity;
+            _movementDataComponent = actorStateModel.Get<MovementDataComponent>();
+            _transformDataComponent = actorStateModel.Get<TransformDataComponent>();
         }
 
+        // ToDo V2 public methods below should probably just go to MovementDataComponent
         public void MoveToTarget(Vector3 targetPosition)
         {
             var turnIntention = GetTurnIntention(targetPosition);
-            _movementModel.SetTurnIntention(turnIntention);
+            _movementDataComponent.SetTurnIntention(turnIntention);
 
-            var moveIntention = _movementModel.UseDirectMovement
+            var moveIntention = _movementDataComponent.UseDirectMovement
                 ? targetPosition
                 : V3Forward;
 
-            _movementModel.SetMovementIntention(moveIntention);
+            _movementDataComponent.SetMovementIntention(moveIntention);
         }
 
         public bool IsTargetReached(Vector3 target)
         {
-            var sqrDistance = (_entity.Position - target).sqrMagnitude;
-            return sqrDistance <= Mathf.Pow(_movementModel.MoveTargetReachedAccuracy, 2);
+            var sqrDistance = (_transformDataComponent.Position - target).sqrMagnitude;
+            return sqrDistance <= Mathf.Pow(_movementDataComponent.MoveTargetReachedAccuracy, 2);
         }
 
         public void SetEulerAngles(Vector3 targetRotation)
         {
-            _entity.RotationTarget.eulerAngles = targetRotation;
+            _transformDataComponent.RotationTarget.eulerAngles = targetRotation;
         }
 
         private Quaternion GetTurnIntention(Vector3 targetPosition)
         {
-            var headingToTarget = targetPosition - _entity.Position;
+            var headingToTarget = targetPosition - _transformDataComponent.Position;
 
             return Quaternion.Slerp(
-                _entity.Rotation,
+                _transformDataComponent.Rotation,
                 Quaternion.LookRotation(Vector3.forward, headingToTarget),
-                _movementModel.TurnSpeed.AsTimeAdjusted());
+                _movementDataComponent.TurnSpeed.AsTimeAdjusted());
         }
     }
 }

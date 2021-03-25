@@ -4,6 +4,8 @@ using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
+    // ToDo V2 There is some confusing overlap between TransformDataComponent/MovementDataComponent/MovementMonoComponent and MonoEntity
+    // This is due to refactoring of legacy systems and could be improved
     public class TransformDataComponent : AbstractDataComponent
     {
         public class Factory : PlaceholderFactory<TransformDataComponent> { }
@@ -13,6 +15,9 @@ namespace _Source.Features.Actors.DataComponents
         public Vector3 Position => _monoEntity.Position;
         public Quaternion Rotation => _monoEntity.Rotation;
         public Vector3 Size => _monoEntity.Size;
+
+        public Transform LocomotionTarget => _monoEntity.LocomotionTarget;
+        public Transform RotationTarget => _monoEntity.RotationTarget;
 
         public void SetMonoEntity(IMonoEntity monoEntity)
         {

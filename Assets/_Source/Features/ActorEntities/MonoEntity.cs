@@ -19,8 +19,6 @@ namespace _Source.Features.ActorEntities
         public Transform RotationTarget => _rotationTarget;
 
         private bool _isSetup;
-        private bool _isActive;
-
         private IMonoComponent[] _components;
         private ITickableMonoComponent[] _tickableComponents;
 
@@ -46,22 +44,17 @@ namespace _Source.Features.ActorEntities
 
         public void StartEntity(CompositeDisposable disposer)
         {
-            _isActive = true;
             _components?.ForEach(e => e.StartComponent(disposer));
         }
 
         public void StopEntity()
         {
-            _isActive = false;
             _components?.ForEach(e => e.StopComponent());
         }
 
-        private void Update()
+        public void Tick()
         {
-            if (_isActive)
-            {
-                _tickableComponents?.ForEach(e => e.Tick());
-            }
+            _tickableComponents?.ForEach(e => e.Tick());
         }
     }
 }

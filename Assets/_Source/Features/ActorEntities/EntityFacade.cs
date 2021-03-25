@@ -1,5 +1,6 @@
 ﻿using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.GameRound;
 using _Source.Features.Movement;
 using _Source.Util;
 using UniRx;
@@ -15,6 +16,7 @@ namespace _Source.Features.ActorEntities
 
         public IMonoEntity Entity { get; }
         protected readonly IActorStateModel Actor;
+        private readonly IPauseStateModel _pauseStateModel;
 
         private readonly SerialDisposable _entityLifecycleDisposable;
         protected readonly HealthDataComponent HealthDataComponent;
@@ -24,12 +26,17 @@ namespace _Source.Features.ActorEntities
         public Vector3 Position => Entity.Position;
         public Quaternion Rotation => Entity.Rotation;
 
+        private bool CanTick => HealthDataComponent.IsAlive.Value &&
+                                !_pauseStateModel.IsPaused.Value;
+
         public EntityFacade(
             IMonoEntity entity,
-            IActorStateModel actor)
+            IActorStateModel actor,
+            IPauseStateModel pauseStateModel)
         {
             Entity = entity;
             Actor = actor;
+            _pauseStateModel = pauseStateModel;
             _entityLifecycleDisposable = new SerialDisposable().AddTo(Disposer);
 
             Entity.Setup(Actor);
@@ -41,6 +48,11 @@ namespace _Source.Features.ActorEntities
 
             HealthDataComponent.IsAlive
                 .Subscribe(OnIsAliveChanged)
+                .AddTo(Disposer);
+
+            Observable.EveryUpdate()
+                .Where(_ => CanTick)
+                .Subscribe(_ => Entity.Tick())
                 .AddTo(Disposer);
         }
 

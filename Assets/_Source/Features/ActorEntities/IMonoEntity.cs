@@ -17,5 +17,6 @@ namespace _Source.Features.ActorEntities
         void Setup(IActorStateModel actorStateModel);
         void StartEntity(CompositeDisposable disposer);
         void StopEntity();
+        void Tick();
     }
 }

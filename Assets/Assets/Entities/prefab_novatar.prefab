@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7896766263575267588}
   - component: {fileID: 6856558681594624683}
   - component: {fileID: 5099295660208934879}
+  - component: {fileID: 3038538097027901200}
   m_Layer: 9
   m_Name: prefab_novatar
   m_TagString: Untagged
@@ -62,7 +63,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _locomotionTarget: {fileID: 1362777207899459469}
   _rotationTarget: {fileID: 1362777207899459469}
-  _headLight: {fileID: 7319393582979043941}
 --- !u!114 &5276048615821638788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,6 +132,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 4
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3038538097027901200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362777207899459457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669f02f505313d949a58d13b546d295a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _entity: {fileID: 3601342783847393318}
 --- !u!1 &2443309513826751692
 GameObject:
   m_ObjectHideFlags: 0
