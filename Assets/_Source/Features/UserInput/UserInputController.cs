@@ -9,7 +9,7 @@ using Zenject;
 
 namespace _Source.Features.UserInput
 {
-    public class UserInputController : AbstractDisposable
+    public class UserInputController : AbstractDisposableFeature
     {
         public class Factory : PlaceholderFactory<IActorStateModel, UserInputController> { }
 

@@ -8,7 +8,7 @@ using Zenject;
 
 namespace _Source.Features.ActorEntities
 {
-    public class EntityFacade : AbstractDisposable
+    public class EntityFacade : AbstractDisposableFeature
     {
         public class Factory : PlaceholderFactory<IMonoEntity, IActorStateModel, EntityFacade> { }
 

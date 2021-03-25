@@ -6,7 +6,6 @@ using _Source.Features.ScreenSize;
 using _Source.Util;
 using System.Collections.Generic;
 using System.Linq;
-using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -70,17 +69,14 @@ namespace _Source.Features.ActorEntities.Novatar
             var actorStateModel = _novatarActorActorFactory.CreateNovatar();
 
             var novatarFacade = _novatarFacadeFactory.Create(
-                    novatarEntity,
-                    actorStateModel)
-                .AddTo(Disposer);
+                novatarEntity,
+                actorStateModel);
 
             var movementController = _movementControllerFactory
-                .Create(actorStateModel)
-                .AddTo(Disposer);
+                .Create(actorStateModel);
 
             _novatarBehaviourTreeFactory
                 .Create(actorStateModel, movementController)
-                .AddTo(Disposer)
                 .Initialize();
 
             _novatarPool.Add(novatarFacade);

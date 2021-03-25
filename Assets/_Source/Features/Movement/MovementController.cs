@@ -6,7 +6,7 @@ using Zenject;
 
 namespace _Source.Features.Movement
 {
-    public class MovementController : AbstractDisposable
+    public class MovementController : AbstractDisposableFeature
     {
         public class Factory : PlaceholderFactory<IActorStateModel, MovementController> { }
 

@@ -1,7 +1,6 @@
 ﻿using _Source.Features.ActorEntities.Avatar.Config;
 using _Source.Features.Actors;
 using _Source.Features.Actors.Creation;
-using _Source.Features.Movement;
 using _Source.Features.UserInput;
 using _Source.Util;
 using UniRx;
@@ -24,15 +23,15 @@ namespace _Source.Features.ActorEntities.Avatar
         {
             AvatarActor = _avatarActorFactory.CreateAvatar();
 
-            var avatarEntity = _entityFactory
-                .Create(_avatarConfig.AvatarPrefab);
+            var avatarEntity = _entityFactory.Create(
+                _avatarConfig.AvatarPrefab);
 
-            var avatarFacade = _avatarFacadeFactory
-                .Create(avatarEntity, AvatarActor);
+            _avatarFacadeFactory.Create(
+                avatarEntity,
+                AvatarActor);
 
             _userInputControllerFactory
-                .Create(AvatarActor)
-                .AddTo(Disposer);
+                .Create(AvatarActor);
         }
     }
 }

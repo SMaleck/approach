@@ -14,7 +14,7 @@ using Zenject;
 
 namespace _Source.Features.ActorBehaviours
 {
-    public class NovatarBehaviourTree : AbstractDisposable, IInitializable
+    public class NovatarBehaviourTree : AbstractDisposableFeature, IInitializable
     {
         public class Factory : PlaceholderFactory<IActorStateModel, MovementController, NovatarBehaviourTree> { }
 
