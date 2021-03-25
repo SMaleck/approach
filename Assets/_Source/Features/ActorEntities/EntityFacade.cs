@@ -1,30 +1,25 @@
 ﻿using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
-using _Source.Features.Movement;
 using _Source.Util;
+using System;
 using UniRx;
-using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.ActorEntities
 {
-    // ToDo V2 Create Movement MonoComponent to handle movement, so IMovableEntity is not implemented here
-    public class EntityFacade : AbstractDisposable, IMovableEntity
+    public class EntityFacade : AbstractDisposable
     {
         public class Factory : PlaceholderFactory<IMonoEntity, IActorStateModel, EntityFacade> { }
 
+        [Obsolete("Only public for pooling in NovatarSpawner, use TransformDataComponent instead")]
         public IMonoEntity Entity { get; }
+
         protected readonly IActorStateModel Actor;
         private readonly IPauseStateModel _pauseStateModel;
 
         private readonly SerialDisposable _entityLifecycleDisposable;
         protected readonly HealthDataComponent HealthDataComponent;
-
-        public Transform LocomotionTarget => Entity.LocomotionTarget;
-        public Transform RotationTarget => Entity.RotationTarget;
-        public Vector3 Position => Entity.Position;
-        public Quaternion Rotation => Entity.Rotation;
 
         private bool CanTick => HealthDataComponent.IsAlive.Value &&
                                 !_pauseStateModel.IsPaused.Value;
