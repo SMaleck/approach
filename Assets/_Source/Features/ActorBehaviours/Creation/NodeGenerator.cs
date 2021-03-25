@@ -25,6 +25,7 @@ namespace _Source.Features.ActorBehaviours.Creation
         [Inject] private readonly EnterScreenNode.Factory _enterScreenNodeFactory;
         [Inject] private readonly MovementNode.Factory _movementNodeFactory;
         [Inject] private readonly FindDamageReceiversNode.Factory _findDamageReceiversNodeFactory;
+        [Inject] private readonly NearDeathNode.Factory _nearDeathNodeFactory;
 
         private readonly IActorStateModel _actorStateModel;
         private readonly MovementController _movementController;
@@ -153,6 +154,15 @@ namespace _Source.Features.ActorBehaviours.Creation
         public FindDamageReceiversNode FindDamageReceiver()
         {
             var node = _findDamageReceiversNodeFactory.Create(
+                _actorStateModel);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public NearDeathNode NearDeath()
+        {
+            var node = _nearDeathNodeFactory.Create(
                 _actorStateModel);
             _generatedNodes.Add(node);
 

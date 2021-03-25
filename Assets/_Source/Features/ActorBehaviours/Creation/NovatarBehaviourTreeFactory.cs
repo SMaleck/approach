@@ -98,7 +98,6 @@ namespace _Source.Features.ActorBehaviours.Creation
         }
 
         // ToDo V1 BT FRIENDS: Calm down
-        // ToDo V1 BT FRIENDS: Leave when health is low, instead of disappearing
         private IBehaviourTreeNode FriendTree(IActorStateModel model)
         {
             // @formatter:off
@@ -106,6 +105,10 @@ namespace _Source.Features.ActorBehaviours.Creation
                 .Sequence()
                     .Condition(t => IsEntityState(model, EntityState.Friend))
                     .Selector()
+                        .Sequence()
+                            .Do(NearDeath())
+                            .Do(SwitchStateTo(EntityState.Neutral))
+                            .End()
                         .Sequence()
                             .Do(FollowAvatar())
                             .Do(Move())
@@ -223,6 +226,11 @@ namespace _Source.Features.ActorBehaviours.Creation
             return _nodeGenerator.IdleTimeoutRandom(
                 _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds,
                 _behaviourTreeConfig.UnacquaintedConfig.TimeBasedSwitchChance);
+        }
+        
+        private IBehaviourTreeNode NearDeath()
+        {
+            return _nodeGenerator.NearDeath();
         }
 
         #endregion
