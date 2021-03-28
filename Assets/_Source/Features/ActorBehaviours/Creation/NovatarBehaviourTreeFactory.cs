@@ -1,9 +1,11 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.ActorBehaviours.Data;
+using _Source.Features.ActorBehaviours.Nodes;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.Movement;
 using BehaviourTreeSystem;
+using System.Collections.Generic;
 using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Creation
@@ -12,44 +14,59 @@ namespace _Source.Features.ActorBehaviours.Creation
     // ToDo V1 BT Sometimes move towards player
     public class NovatarBehaviourTreeFactory
     {
-        [Inject] private readonly NodeGenerator.Factory _nodeGeneratorFactory;
         [Inject] private readonly BehaviourTreeConfig _behaviourTreeConfig;
 
-        private NodeGenerator _nodeGenerator;
+        #region Node Factories
+        [Inject] private readonly FollowAvatarNode.Factory _followAvatarNodeFactory;
+        [Inject] private readonly IdleTimeoutNode.Factory _idleTimeoutNodeFactory;
+        [Inject] private readonly IdleTimeoutRandomNode.Factory _idleTimeoutRandomNodeFactory;
+        [Inject] private readonly FirstTouchNode.Factory _firstTouchNodeFactory;
+        [Inject] private readonly SwitchEntityStateNode.Factory _switchEntityStateNodeFactory;
+        [Inject] private readonly DeactivateSelfNode.Factory _deactivateSelfNodeFactory;
+        [Inject] private readonly LeaveScreenNode.Factory _leaveScreenNodeFactory;
+        [Inject] private readonly DamageActorNode.Factory _damageActorNodeFactory;
+        [Inject] private readonly LightSwitchNode.Factory _lightSwitchNodeFactory;
+        [Inject] private readonly EnterScreenNode.Factory _enterScreenNodeFactory;
+        [Inject] private readonly MovementNode.Factory _movementNodeFactory;
+        [Inject] private readonly FindDamageReceiversNode.Factory _findDamageReceiversNodeFactory;
+        [Inject] private readonly NearDeathNode.Factory _nearDeathNodeFactory;
+        #endregion
+
+        private IActorStateModel _actorStateModel;
+        private MovementController _movementController;
+        private List<IBehaviourTreeNode> _generatedNodes;
 
         public BehaviourTree Create(
-            IActorStateModel model,
+            IActorStateModel actor,
             MovementController movementController)
         {
-            _nodeGenerator = _nodeGeneratorFactory.Create(
-                model,
-                movementController);
+            _actorStateModel = actor;
+            _movementController = movementController;
+            _generatedNodes = new List<IBehaviourTreeNode>();
 
             // @formatter:off
             var startNode = new BehaviourTreeBuilder()
                 .Selector()
-                    .Splice(SpawningTree(model))
-                    .Splice(UnacquaintedTree(model))
-                    .Splice(NeutralTree(model))
-                    .Splice(FriendTree(model))
-                    .Splice(EnemyTree(model))
+                    .Splice(SpawningTree(actor))
+                    .Splice(UnacquaintedTree(actor))
+                    .Splice(NeutralTree(actor))
+                    .Splice(FriendTree(actor))
+                    .Splice(EnemyTree(actor))
                     .End()
                 .Build();
             // @formatter:on
 
-            return new BehaviourTree(
-                startNode,
-                _nodeGenerator.GetGeneratedNodes());
+            return new BehaviourTree(startNode, _generatedNodes.ToArray());
         }
 
         #region SubTrees
 
-        private IBehaviourTreeNode SpawningTree(IActorStateModel model)
+        private IBehaviourTreeNode SpawningTree(IActorStateModel actor)
         {
             // @formatter:off
             return new BehaviourTreeBuilder()
                 .Sequence()
-                    .Condition(t => IsEntityState(model, EntityState.Spawning))
+                    .Condition(t => IsEntityState(actor, EntityState.Spawning))
                     .Sequence()
                         .Do(LightSwitch())
                         .Do(EnterScreen())
@@ -60,36 +77,37 @@ namespace _Source.Features.ActorBehaviours.Creation
             // @formatter:on
         }
 
-        private IBehaviourTreeNode UnacquaintedTree(IActorStateModel model)
+        private IBehaviourTreeNode UnacquaintedTree(IActorStateModel actor)
         {
             // @formatter:off
             return new BehaviourTreeBuilder()
                 .Sequence()
-                    .Condition(t => IsEntityState(model, EntityState.Unacquainted))
-                    .Selector()
-                        .Sequence()
-                            .Do(FollowAvatar())
-                            .Do(Move())
-                            .Do(FirstTouch())
-                            .End()
+                    .Condition(t => IsEntityState(actor, EntityState.Unacquainted))
+                    .Parallel(1, 1)
                         .Sequence()
                             .Do(UnacquaintedTimeout())
                             .Do(SwitchStateTo(EntityState.Neutral))
                             .End()
-                        .End()
-                    .End()
+                        .Selector()
+                            .Sequence()
+                                .Do(FollowAvatar())
+                                .Do(Move())
+                                .Do(FirstTouch())
+                                .End()
+                            .End() // END Top Selector
+                        .End() // END Parallel
+                    .End() // END Top Sequence
                 .Build();
             // @formatter:on
         }
 
-        private IBehaviourTreeNode NeutralTree(IActorStateModel model)
+        private IBehaviourTreeNode NeutralTree(IActorStateModel actor)
         {
             // @formatter:off
             return new BehaviourTreeBuilder()
                 .Sequence()
-                    .Condition(t => IsEntityState(model, EntityState.Neutral))
+                    .Condition(t => IsEntityState(actor, EntityState.Neutral))
                     .Sequence()
-                        .Do(Wait(1.0d))
                         .Do(LeaveScreen())
                         .Do(Deactivate())
                         .End()
@@ -99,12 +117,12 @@ namespace _Source.Features.ActorBehaviours.Creation
         }
 
         // ToDo V1 BT FRIENDS: Calm down
-        private IBehaviourTreeNode FriendTree(IActorStateModel model)
+        private IBehaviourTreeNode FriendTree(IActorStateModel actor)
         {
             // @formatter:off
             return new BehaviourTreeBuilder()
                 .Sequence()
-                    .Condition(t => IsEntityState(model, EntityState.Friend))
+                    .Condition(t => IsEntityState(actor, EntityState.Friend))
                     .Selector()
                         .Sequence()
                             .Do(NearDeath())
@@ -124,12 +142,12 @@ namespace _Source.Features.ActorBehaviours.Creation
             // @formatter:on
         }
 
-        private IBehaviourTreeNode EnemyTree(IActorStateModel model)
+        private IBehaviourTreeNode EnemyTree(IActorStateModel actor)
         {
             // @formatter:off
             return new BehaviourTreeBuilder()
                 .Sequence()
-                    .Condition(t => IsEntityState(model, EntityState.Enemy))
+                    .Condition(t => IsEntityState(actor, EntityState.Enemy))
                     .Selector()
                         .Sequence()
                             .Do(FindDamageReceiver())
@@ -155,88 +173,158 @@ namespace _Source.Features.ActorBehaviours.Creation
             return relationshipDataComponent.Relationship.Value == status;
         }
 
-        private IBehaviourTreeNode Deactivate()
+        private IBehaviourTreeNode UnacquaintedTimeout()
         {
-            return _nodeGenerator.DeactivateSelf();
-        }
-
-        private IBehaviourTreeNode EnterScreen()
-        {
-            return _nodeGenerator.EnterScreen();
-        }
-
-        private IBehaviourTreeNode LeaveScreen()
-        {
-            return _nodeGenerator.LeaveScreen();
-        }
-
-        private IBehaviourTreeNode FollowAvatar()
-        {
-            return _nodeGenerator.FollowAvatar();
-        }
-
-        private IBehaviourTreeNode Move()
-        {
-            return _nodeGenerator.Movement();
-        }
-
-        private IBehaviourTreeNode FindDamageReceiver()
-        {
-            return _nodeGenerator.FindDamageReceiver();
-        }
-
-        private IBehaviourTreeNode FirstTouch()
-        {
-            return _nodeGenerator.FirstTouch();
-        }
-
-        private IBehaviourTreeNode Damage()
-        {
-            return _nodeGenerator.Damage();
-        }
-
-        private IBehaviourTreeNode LightSwitch()
-        {
-            return _nodeGenerator.LightSwitch();
-        }
-
-        private IBehaviourTreeNode SwitchStateTo(EntityState entityState)
-        {
-            return _nodeGenerator.SwitchEntityState(entityState);
-        }
-
-        private IBehaviourTreeNode IdleTimeout(double timeout)
-        {
-            return _nodeGenerator.IdleTimeout(timeout);
+            return IdleTimeoutRandom(
+                _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds,
+                TimeoutDataComponent.Storage.IdleUnacquainted,
+                _behaviourTreeConfig.UnacquaintedConfig.TimeBasedSwitchChance);
         }
 
         private IBehaviourTreeNode EnemyTimeout()
         {
             return IdleTimeout(
-                _behaviourTreeConfig.EnemyLeavingTimeoutSeconds);
+                _behaviourTreeConfig.EnemyLeavingTimeoutSeconds,
+                TimeoutDataComponent.Storage.IdleEnemy);
         }
 
         private IBehaviourTreeNode FriendTimeout()
         {
             return IdleTimeout(
-                _behaviourTreeConfig.MaxSecondsToFallBehind);
+                _behaviourTreeConfig.MaxSecondsToFallBehind,
+                TimeoutDataComponent.Storage.IdleFriend);
         }
 
-        private IBehaviourTreeNode UnacquaintedTimeout()
+        #endregion
+
+        #region Node Creation
+
+        public IBehaviourTreeNode FollowAvatar()
         {
-            return _nodeGenerator.IdleTimeoutRandom(
-                _behaviourTreeConfig.UnacquaintedConfig.EvaluationTimeoutSeconds,
-                _behaviourTreeConfig.UnacquaintedConfig.TimeBasedSwitchChance);
+            var node = _followAvatarNodeFactory.Create(_actorStateModel);
+            _generatedNodes.Add(node);
+
+            return node;
         }
-        
-        private IBehaviourTreeNode NearDeath()
+
+        public IBehaviourTreeNode IdleTimeout(double timeout, TimeoutDataComponent.Storage storage)
         {
-            return _nodeGenerator.NearDeath();
+            var node = _idleTimeoutNodeFactory.Create(
+                _actorStateModel,
+                timeout,
+                storage);
+            _generatedNodes.Add(node);
+
+            return node;
         }
-        
-        private IBehaviourTreeNode Wait(double seconds)
+
+        public IBehaviourTreeNode IdleTimeoutRandom(
+            double timeout,
+            TimeoutDataComponent.Storage storage,
+            double randomChance)
         {
-            return _nodeGenerator.Wait(seconds);
+            var node = _idleTimeoutRandomNodeFactory.Create(
+                _actorStateModel,
+                timeout,
+                storage,
+                randomChance);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public IBehaviourTreeNode FirstTouch()
+        {
+            var node = _firstTouchNodeFactory.Create(
+                _actorStateModel);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public IBehaviourTreeNode SwitchStateTo(EntityState targetEntityState)
+        {
+            var node = _switchEntityStateNodeFactory.Create(
+                _actorStateModel,
+                targetEntityState);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public IBehaviourTreeNode Deactivate()
+        {
+            var node = _deactivateSelfNodeFactory.Create(
+                _actorStateModel);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public IBehaviourTreeNode LeaveScreen()
+        {
+            var node = _leaveScreenNodeFactory.Create(
+                _actorStateModel,
+                _movementController);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public IBehaviourTreeNode Damage()
+        {
+            var node = _damageActorNodeFactory.Create(
+                _actorStateModel);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public IBehaviourTreeNode LightSwitch()
+        {
+            var node = _lightSwitchNodeFactory.Create(
+                _actorStateModel);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public IBehaviourTreeNode EnterScreen()
+        {
+            var node = _enterScreenNodeFactory.Create(
+                _actorStateModel,
+                _movementController);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public IBehaviourTreeNode Move()
+        {
+            var node = _movementNodeFactory.Create(
+                _actorStateModel,
+                _movementController);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public IBehaviourTreeNode FindDamageReceiver()
+        {
+            var node = _findDamageReceiversNodeFactory.Create(
+                _actorStateModel);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public IBehaviourTreeNode NearDeath()
+        {
+            var node = _nearDeathNodeFactory.Create(
+                _actorStateModel);
+            _generatedNodes.Add(node);
+
+            return node;
         }
 
         #endregion

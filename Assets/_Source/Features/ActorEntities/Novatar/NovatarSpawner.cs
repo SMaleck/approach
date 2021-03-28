@@ -68,17 +68,18 @@ namespace _Source.Features.ActorEntities.Novatar
 
             var actorStateModel = _novatarActorActorFactory.CreateNovatar();
 
-            var novatarFacade = _novatarFacadeFactory.Create(
-                novatarEntity,
-                actorStateModel);
-
             var movementController = _movementControllerFactory
                 .Create(actorStateModel);
 
-            _novatarBehaviourTreeFactory
-                .Create(actorStateModel, movementController)
-                .Initialize();
+            var behaviourTree = _novatarBehaviourTreeFactory
+                .Create(actorStateModel, movementController);
+            behaviourTree.Initialize();
 
+            var novatarFacade = _novatarFacadeFactory.Create(
+                novatarEntity,
+                actorStateModel,
+                behaviourTree);
+            
             _novatarPool.Add(novatarFacade);
             novatarEntity.gameObject.name = $"{nameof(novatarEntity)} [{_novatarPool.Count - 1}]";
 

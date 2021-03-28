@@ -15,18 +15,10 @@ namespace _Source.Features.Actors
         private readonly Dictionary<Type, IDataComponent> _dataComponents;
         private readonly List<IResettableDataComponent> _resettableDataComponents;
 
-        private readonly Subject<Unit> _onReset;
-        public IObservable<Unit> OnReset => _onReset;
-
-        private readonly Subject<Unit> _onResetIdleTimeouts;
-        public IObservable<Unit> OnResetIdleTimeouts => _onResetIdleTimeouts;
-
         public ActorStateModel()
         {
             _dataComponents = new Dictionary<Type, IDataComponent>();
             _resettableDataComponents = new List<IResettableDataComponent>();
-            _onReset = new Subject<Unit>().AddTo(Disposer);
-            _onResetIdleTimeouts = new Subject<Unit>().AddTo(Disposer);
         }
 
         public ActorStateModel Attach(IDataComponent dataComponent)
@@ -61,12 +53,6 @@ namespace _Source.Features.Actors
         public void Reset()
         {
             _resettableDataComponents.ForEach(e => e.Reset());
-            _onReset.OnNext(Unit.Default);
-        }
-
-        public void ResetIdleTimeouts()
-        {
-            _onResetIdleTimeouts.OnNext(Unit.Default);
         }
     }
 }

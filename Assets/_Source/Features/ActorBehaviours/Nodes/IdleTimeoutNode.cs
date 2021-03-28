@@ -1,32 +1,35 @@
-﻿using BehaviourTreeSystem;
+﻿using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
+using BehaviourTreeSystem;
 using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Nodes
 {
-    public class IdleTimeoutNode : AbstractNode, IResettableNode
+    public class IdleTimeoutNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<double, IdleTimeoutNode> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, double, TimeoutDataComponent.Storage, IdleTimeoutNode> { }
 
+        private readonly TimeoutDataComponent _timeoutDataComponent;
         private readonly double _timeoutSeconds;
-        private float _timePassed;
+        private readonly TimeoutDataComponent.Storage _storage;
 
-        public IdleTimeoutNode(double timeoutSeconds)
+        public IdleTimeoutNode(
+            IActorStateModel actor,
+            double timeoutSeconds,
+            TimeoutDataComponent.Storage storage)
         {
+            _timeoutDataComponent = actor.Get<TimeoutDataComponent>();
             _timeoutSeconds = timeoutSeconds;
+            _storage = storage;
         }
 
         public override BehaviourTreeStatus Tick(TimeData time)
         {
-            _timePassed += time.DeltaTimeSeconds;
+            _timeoutDataComponent[_storage] += time.DeltaTimeSeconds;
 
-            return _timePassed > _timeoutSeconds
+            return _timeoutDataComponent[_storage] > _timeoutSeconds
                 ? BehaviourTreeStatus.Success
                 : BehaviourTreeStatus.Running;
-        }
-
-        public void Reset()
-        {
-            _timePassed = 0;
         }
     }
 }

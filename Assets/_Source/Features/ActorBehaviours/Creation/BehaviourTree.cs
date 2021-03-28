@@ -14,5 +14,10 @@ namespace _Source.Features.ActorBehaviours.Creation
             StartNode = startNode;
             Nodes = nodes;
         }
+
+        public void Tick(TimeData timeData)
+        {
+            StartNode.Tick(timeData);
+        }
     }
 }

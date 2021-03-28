@@ -15,6 +15,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
         private readonly BlackBoardDataComponent _blackBoard;
         private readonly SensorDataComponent _sensorDataComponent;
         private readonly TransformDataComponent _transformDataComponent;
+        private readonly TimeoutDataComponent _timeoutDataComponent;
 
         public FollowAvatarNode(IActorStateModel actorStateModel)
         {
@@ -22,6 +23,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
             _blackBoard = _actorStateModel.Get<BlackBoardDataComponent>();
             _sensorDataComponent = _actorStateModel.Get<SensorDataComponent>();
             _transformDataComponent = _actorStateModel.Get<TransformDataComponent>();
+            _timeoutDataComponent = _actorStateModel.Get<TimeoutDataComponent>();
         }
 
         public override BehaviourTreeStatus Tick(TimeData time)
@@ -38,7 +40,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
                 return BehaviourTreeStatus.Success;
             }
 
-            _actorStateModel.ResetIdleTimeouts();
+            _timeoutDataComponent.ResetIdleTimeouts();
 
             var avatarTransform = _sensorDataComponent.Avatar.Get<TransformDataComponent>();
             _blackBoard.MovementTarget.Store(avatarTransform.Position);

@@ -2,6 +2,7 @@
 using _Source.Features.ActorBehaviours.Creation;
 using _Source.Features.ActorBehaviours.Nodes;
 using _Source.Features.Actors;
+using _Source.Features.Actors.DataComponents;
 using _Source.Features.Movement;
 using Zenject;
 
@@ -12,13 +13,11 @@ namespace _Source.Features.ActorBehaviours.Installation
         public override void InstallBindings()
         {
             Container.BindFactory<IActorStateModel, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
-            Container.BindFactory<IActorStateModel, MovementController, NodeGenerator, NodeGenerator.Factory>().AsSingle();
             Container.BindInterfacesAndSelfTo<NovatarBehaviourTreeFactory>().AsSingle();
 
             // ------------------------------ NODE FACTORIES
             Container.BindFactory<IActorStateModel, FollowAvatarNode, FollowAvatarNode.Factory>().AsSingle();
-            Container.BindFactory<double, IdleTimeoutNode, IdleTimeoutNode.Factory>().AsSingle();
-            Container.BindFactory<double, double, IdleTimeoutRandomNode, IdleTimeoutRandomNode.Factory>().AsSingle();
+            Container.BindFactory<IActorStateModel, double, TimeoutDataComponent.Storage, IdleTimeoutNode, IdleTimeoutNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, FirstTouchNode, FirstTouchNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, EntityState, SwitchEntityStateNode, SwitchEntityStateNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, DeactivateSelfNode, DeactivateSelfNode.Factory>().AsSingle();
@@ -29,7 +28,14 @@ namespace _Source.Features.ActorBehaviours.Installation
             Container.BindFactory<IActorStateModel, MovementController, MovementNode, MovementNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, FindDamageReceiversNode, FindDamageReceiversNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, NearDeathNode, NearDeathNode.Factory>().AsSingle();
-            Container.BindFactory<double, WaitNode, WaitNode.Factory>().AsSingle();
+            Container.BindFactory<
+                    IActorStateModel,
+                    double,
+                    TimeoutDataComponent.Storage,
+                    double,
+                    IdleTimeoutRandomNode,
+                    IdleTimeoutRandomNode.Factory>()
+                .AsSingle();
         }
     }
 }

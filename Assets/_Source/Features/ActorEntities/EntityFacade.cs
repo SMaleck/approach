@@ -47,8 +47,13 @@ namespace _Source.Features.ActorEntities
 
             Observable.EveryUpdate()
                 .Where(_ => CanTick)
-                .Subscribe(_ => Entity.Tick())
+                .Subscribe(_ => OnTick())
                 .AddTo(Disposer);
+        }
+
+        protected virtual void OnTick()
+        {
+            Entity.Tick();
         }
 
         private void OnIsAliveChanged(bool isAlive)

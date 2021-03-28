@@ -7,17 +7,18 @@ namespace _Source.Features.Actors.Creation
 {
     public class ActorFactory : IAvatarActorFactory, INovatarActorFactory
     {
-        [Inject] protected readonly ActorStateModel.Factory ActorStateModelFactory;
-        [Inject] protected readonly BlackBoardDataComponent.Factory BlackBoardDataComponentFactory;
-        [Inject] protected readonly EntityTypeDataComponent.Factory EntityTypeDataComponentFactory;
-        [Inject] protected readonly HealthDataComponent.Factory HealthDataComponentFactory;
-        [Inject] protected readonly DamageDataComponent.Factory DamageDataComponentFactory;
-        [Inject] protected readonly MovementDataComponent.Factory MovementDataComponentFactory;
-        [Inject] protected readonly OriginDataComponent.Factory OriginDataComponentFactory;
-        [Inject] protected readonly RelationshipDataComponent.Factory RelationshipDataComponentFactory;
-        [Inject] protected readonly LightDataComponent.Factory LightDataComponentFactory;
-        [Inject] protected readonly TransformDataComponent.Factory TransformDataComponentFactory;
-        [Inject] protected readonly SensorDataComponent.Factory SensorDataComponentFactory;
+        [Inject] private readonly ActorStateModel.Factory _actorStateModelFactory;
+        [Inject] private readonly BlackBoardDataComponent.Factory _blackBoardDataComponentFactory;
+        [Inject] private readonly EntityTypeDataComponent.Factory _entityTypeDataComponentFactory;
+        [Inject] private readonly HealthDataComponent.Factory _healthDataComponentFactory;
+        [Inject] private readonly DamageDataComponent.Factory _damageDataComponentFactory;
+        [Inject] private readonly MovementDataComponent.Factory _movementDataComponentFactory;
+        [Inject] private readonly OriginDataComponent.Factory _originDataComponentFactory;
+        [Inject] private readonly RelationshipDataComponent.Factory _relationshipDataComponentFactory;
+        [Inject] private readonly LightDataComponent.Factory _lightDataComponentFactory;
+        [Inject] private readonly TransformDataComponent.Factory _transformDataComponentFactory;
+        [Inject] private readonly SensorDataComponent.Factory _sensorDataComponentFactory;
+        [Inject] private readonly TimeoutDataComponent.Factory _timeoutDataComponentFactory;
 
         private readonly AvatarData _avatarData;
         private readonly NovatarData _novatarData;
@@ -32,27 +33,28 @@ namespace _Source.Features.Actors.Creation
 
         public IActorStateModel CreateAvatar()
         {
-            return ActorStateModelFactory.Create()
-                .Attach(EntityTypeDataComponentFactory.Create(EntityType.Avatar))
-                .Attach(HealthDataComponentFactory.Create(_avatarData))
-                .Attach(MovementDataComponentFactory.Create(_avatarData))
-                .Attach(TransformDataComponentFactory.Create())
-                .Attach(SensorDataComponentFactory.Create());
+            return _actorStateModelFactory.Create()
+                .Attach(_entityTypeDataComponentFactory.Create(EntityType.Avatar))
+                .Attach(_healthDataComponentFactory.Create(_avatarData))
+                .Attach(_movementDataComponentFactory.Create(_avatarData))
+                .Attach(_transformDataComponentFactory.Create())
+                .Attach(_sensorDataComponentFactory.Create());
         }
 
         public IActorStateModel CreateNovatar()
         {
-            return ActorStateModelFactory.Create()
-                .Attach(BlackBoardDataComponentFactory.Create())
-                .Attach(EntityTypeDataComponentFactory.Create(EntityType.NPC))
-                .Attach(HealthDataComponentFactory.Create(_novatarData))
-                .Attach(DamageDataComponentFactory.Create(_novatarData))
-                .Attach(MovementDataComponentFactory.Create(_novatarData))
-                .Attach(OriginDataComponentFactory.Create())
-                .Attach(LightDataComponentFactory.Create())
-                .Attach(RelationshipDataComponentFactory.Create())
-                .Attach(TransformDataComponentFactory.Create())
-                .Attach(SensorDataComponentFactory.Create());
+            return _actorStateModelFactory.Create()
+                .Attach(_blackBoardDataComponentFactory.Create())
+                .Attach(_entityTypeDataComponentFactory.Create(EntityType.NPC))
+                .Attach(_healthDataComponentFactory.Create(_novatarData))
+                .Attach(_damageDataComponentFactory.Create(_novatarData))
+                .Attach(_movementDataComponentFactory.Create(_novatarData))
+                .Attach(_originDataComponentFactory.Create())
+                .Attach(_lightDataComponentFactory.Create())
+                .Attach(_relationshipDataComponentFactory.Create())
+                .Attach(_transformDataComponentFactory.Create())
+                .Attach(_sensorDataComponentFactory.Create())
+                .Attach(_timeoutDataComponentFactory.Create());
         }
     }
 }
