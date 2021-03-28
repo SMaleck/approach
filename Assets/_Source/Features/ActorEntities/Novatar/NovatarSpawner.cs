@@ -6,6 +6,7 @@ using _Source.Features.ScreenSize;
 using _Source.Util;
 using System.Collections.Generic;
 using System.Linq;
+using _Source.Features.ActorBehaviours.Creation;
 using UnityEngine;
 using Zenject;
 
@@ -15,9 +16,9 @@ namespace _Source.Features.ActorEntities.Novatar
     {
         [Inject] private readonly INovatarActorFactory _novatarActorActorFactory;
         [Inject] private readonly MonoEntity.Factory _entityFactory;
-        [Inject] private readonly NovatarFacade.Factory _novatarFacadeFactory;
-        [Inject] private readonly NovatarBehaviourTree.Factory _novatarBehaviourTreeFactory;
         [Inject] private readonly MovementController.Factory _movementControllerFactory;
+        [Inject] private readonly NovatarBehaviourTreeFactory _novatarBehaviourTreeFactory;
+        [Inject] private readonly NovatarFacade.Factory _novatarFacadeFactory;
 
         private readonly NovatarSpawnerConfig _novatarSpawnerConfig;
         private readonly ActorEntitiesConfig _actorEntitiesConfig;
@@ -73,7 +74,6 @@ namespace _Source.Features.ActorEntities.Novatar
 
             var behaviourTree = _novatarBehaviourTreeFactory
                 .Create(actorStateModel, movementController);
-            behaviourTree.Initialize();
 
             var novatarFacade = _novatarFacadeFactory.Create(
                 novatarEntity,

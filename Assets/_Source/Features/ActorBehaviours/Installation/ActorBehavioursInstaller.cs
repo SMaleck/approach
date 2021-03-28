@@ -12,7 +12,6 @@ namespace _Source.Features.ActorBehaviours.Installation
     {
         public override void InstallBindings()
         {
-            Container.BindFactory<IActorStateModel, MovementController, NovatarBehaviourTree, NovatarBehaviourTree.Factory>();
             Container.BindInterfacesAndSelfTo<NovatarBehaviourTreeFactory>().AsSingle();
 
             // ------------------------------ NODE FACTORIES
