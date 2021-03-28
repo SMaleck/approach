@@ -1,7 +1,7 @@
 ﻿using _Source.App;
 using UnityEngine;
 
-namespace _Source.Features.ActorEntities.Novatar.Config
+namespace _Source.Features.ActorEntities.Config
 {
     [CreateAssetMenu(fileName = nameof(NovatarSpawnerConfig), menuName = Constants.ConfigMenu + nameof(NovatarSpawnerConfig))]
     public class NovatarSpawnerConfig : ScriptableObject

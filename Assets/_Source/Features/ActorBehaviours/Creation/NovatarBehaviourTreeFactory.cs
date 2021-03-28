@@ -89,6 +89,7 @@ namespace _Source.Features.ActorBehaviours.Creation
                 .Sequence()
                     .Condition(t => IsEntityState(model, EntityState.Neutral))
                     .Sequence()
+                        .Do(Wait(1.0d))
                         .Do(LeaveScreen())
                         .Do(Deactivate())
                         .End()
@@ -231,6 +232,11 @@ namespace _Source.Features.ActorBehaviours.Creation
         private IBehaviourTreeNode NearDeath()
         {
             return _nodeGenerator.NearDeath();
+        }
+        
+        private IBehaviourTreeNode Wait(double seconds)
+        {
+            return _nodeGenerator.Wait(seconds);
         }
 
         #endregion

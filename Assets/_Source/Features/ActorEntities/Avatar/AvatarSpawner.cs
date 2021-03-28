@@ -1,4 +1,4 @@
-﻿using _Source.Features.ActorEntities.Avatar.Config;
+﻿using _Source.Features.ActorEntities.Config;
 using _Source.Features.Actors;
 using _Source.Features.Actors.Creation;
 using _Source.Features.UserInput;
@@ -13,7 +13,7 @@ namespace _Source.Features.ActorEntities.Avatar
         [Inject] private readonly IAvatarActorFactory _avatarActorFactory;
         [Inject] private readonly MonoEntity.Factory _entityFactory;
         [Inject] private readonly AvatarFacade.Factory _avatarFacadeFactory;
-        [Inject] private readonly AvatarConfig _avatarConfig;
+        [Inject] private readonly ActorEntitiesConfig _actorEntitiesConfig;
         [Inject] private readonly UserInputController.Factory _userInputControllerFactory;
 
         // ToDo V2 This can probably be exposed cleaner
@@ -24,7 +24,7 @@ namespace _Source.Features.ActorEntities.Avatar
             AvatarActor = _avatarActorFactory.CreateAvatar();
 
             var avatarEntity = _entityFactory.Create(
-                _avatarConfig.AvatarPrefab);
+                _actorEntitiesConfig.AvatarPrefab);
 
             _avatarFacadeFactory.Create(
                 avatarEntity,

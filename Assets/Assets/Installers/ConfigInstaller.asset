@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915cb8c17082e8e4d8ee0916fab526b3, type: 3}
   m_Name: ConfigInstaller
   m_EditorClassIdentifier: 
-  _avatarConfig: {fileID: 11400000, guid: 2c17190c0fb7f4e4f8a2fc6ea3fef41a, type: 2}
-  _novatarConfig: {fileID: 11400000, guid: dd0da5b255c6e734aa63bbaaea9af21b, type: 2}
+  _actorEntitiesConfig: {fileID: 11400000, guid: 2c17190c0fb7f4e4f8a2fc6ea3fef41a,
+    type: 2}
+  _novatarConfig: {fileID: 0}
   _viewPrefabsConfig: {fileID: 11400000, guid: e8ceef6b704ae09489c169c4f91abe71, type: 2}
   _novatarSpawnerConfig: {fileID: 11400000, guid: 156184735fd8c6a4bbf8da7c79b5e9ca,
     type: 2}

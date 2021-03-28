@@ -1,5 +1,5 @@
 ﻿using _Source.Features.ActorBehaviours;
-using _Source.Features.ActorEntities.Novatar.Config;
+using _Source.Features.ActorEntities.Config;
 using _Source.Features.Actors.Creation;
 using _Source.Features.Movement;
 using _Source.Features.ScreenSize;
@@ -20,18 +20,18 @@ namespace _Source.Features.ActorEntities.Novatar
         [Inject] private readonly MovementController.Factory _movementControllerFactory;
 
         private readonly NovatarSpawnerConfig _novatarSpawnerConfig;
-        private readonly NovatarConfig _novatarConfig;
+        private readonly ActorEntitiesConfig _actorEntitiesConfig;
         private readonly ScreenSizeController _screenSizeController;
 
         private readonly List<IEntityPoolItem<IMonoEntity>> _novatarPool;
 
         public NovatarSpawner(
             NovatarSpawnerConfig novatarSpawnerConfig,
-            NovatarConfig novatarConfig,
+            ActorEntitiesConfig actorEntitiesConfig,
             ScreenSizeController screenSizeController)
         {
             _novatarSpawnerConfig = novatarSpawnerConfig;
-            _novatarConfig = novatarConfig;
+            _actorEntitiesConfig = actorEntitiesConfig;
             _screenSizeController = screenSizeController;
 
             _novatarPool = new List<IEntityPoolItem<IMonoEntity>>();
@@ -64,7 +64,7 @@ namespace _Source.Features.ActorEntities.Novatar
         private IEntityPoolItem<IMonoEntity> CreateEntity()
         {
             var novatarEntity = _entityFactory.Create(
-                _novatarConfig.NovatarPrefab);
+                _actorEntitiesConfig.NovatarPrefab);
 
             var actorStateModel = _novatarActorActorFactory.CreateNovatar();
 

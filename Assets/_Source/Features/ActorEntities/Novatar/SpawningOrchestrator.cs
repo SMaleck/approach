@@ -1,6 +1,6 @@
-﻿using _Source.Features.ActorEntities.Novatar.Config;
-using _Source.Util;
+﻿using _Source.Util;
 using System;
+using _Source.Features.ActorEntities.Config;
 using UniRx;
 using Zenject;
 

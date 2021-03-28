@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: caa811c5233dd85438b37ff05c57cb7b, type: 3}
-  m_Name: AvatarConfig
+  m_Name: ActorEntitiesConfig
   m_EditorClassIdentifier: 
   _avatarPrefab: {fileID: 7326196847288731055, guid: abb01a1fe25f44646b2507ff9c4275c3,
     type: 3}
-  _maxLightIntensity: 3
+  _novatarPrefab: {fileID: 3601342783847393318, guid: 27d4c0653fa67104687754e9db8d0d26,
+    type: 3}
