@@ -15,6 +15,7 @@ namespace _Source.Features.ActorBehaviours.Installation
             Container.BindInterfacesAndSelfTo<NovatarBehaviourTreeFactory>().AsSingle();
 
             // ------------------------------ NODE FACTORIES
+            Container.BindFactory<IActorStateModel, FollowAvatarBoidNode, FollowAvatarBoidNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, FollowAvatarNode, FollowAvatarNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, double, TimeoutDataComponent.Storage, IdleTimeoutNode, IdleTimeoutNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, FirstTouchNode, FirstTouchNode.Factory>().AsSingle();
@@ -24,7 +25,7 @@ namespace _Source.Features.ActorBehaviours.Installation
             Container.BindFactory<IActorStateModel, DamageActorNode, DamageActorNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, LightSwitchNode, LightSwitchNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, MovementController, EnterScreenNode, EnterScreenNode.Factory>().AsSingle();
-            Container.BindFactory<IActorStateModel, MovementController, MovementNode, MovementNode.Factory>().AsSingle();
+            Container.BindFactory<IActorStateModel, MovementController, MoveNode, MoveNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, FindDamageReceiversNode, FindDamageReceiversNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, NearDeathNode, NearDeathNode.Factory>().AsSingle();
             Container.BindFactory<

@@ -6,14 +6,14 @@ using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Nodes
 {
-    public class MovementNode : AbstractNode
+    public class MoveNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<IActorStateModel, MovementController, MovementNode> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, MovementController, MoveNode> { }
 
         private readonly MovementController _movementController;
         private readonly BlackBoardDataComponent _blackBoard;
 
-        public MovementNode(
+        public MoveNode(
             IActorStateModel actorStateModel,
             MovementController movementController)
         {
@@ -23,10 +23,9 @@ namespace _Source.Features.ActorBehaviours.Nodes
 
         public override BehaviourTreeStatus Tick(TimeData time)
         {
-            // ToDo V0 Should this fail instead?
             if (!_blackBoard.MovementTarget.HasValue)
             {
-                return BehaviourTreeStatus.Success;
+                return BehaviourTreeStatus.Failure;
             }
 
             var target = _blackBoard.MovementTarget.Consume();

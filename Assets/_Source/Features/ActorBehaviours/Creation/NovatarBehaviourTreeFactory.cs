@@ -18,6 +18,7 @@ namespace _Source.Features.ActorBehaviours.Creation
 
         #region Node Factories
         [Inject] private readonly FollowAvatarNode.Factory _followAvatarNodeFactory;
+        [Inject] private readonly FollowAvatarBoidNode.Factory _followAvatarBoidNodeFactory;
         [Inject] private readonly IdleTimeoutNode.Factory _idleTimeoutNodeFactory;
         [Inject] private readonly IdleTimeoutRandomNode.Factory _idleTimeoutRandomNodeFactory;
         [Inject] private readonly FirstTouchNode.Factory _firstTouchNodeFactory;
@@ -27,7 +28,7 @@ namespace _Source.Features.ActorBehaviours.Creation
         [Inject] private readonly DamageActorNode.Factory _damageActorNodeFactory;
         [Inject] private readonly LightSwitchNode.Factory _lightSwitchNodeFactory;
         [Inject] private readonly EnterScreenNode.Factory _enterScreenNodeFactory;
-        [Inject] private readonly MovementNode.Factory _movementNodeFactory;
+        [Inject] private readonly MoveNode.Factory _movementNodeFactory;
         [Inject] private readonly FindDamageReceiversNode.Factory _findDamageReceiversNodeFactory;
         [Inject] private readonly NearDeathNode.Factory _nearDeathNodeFactory;
         #endregion
@@ -116,7 +117,6 @@ namespace _Source.Features.ActorBehaviours.Creation
             // @formatter:on
         }
 
-        // ToDo V1 BT FRIENDS: Calm down
         private IBehaviourTreeNode FriendTree(IActorStateModel actor)
         {
             // @formatter:off
@@ -129,7 +129,7 @@ namespace _Source.Features.ActorBehaviours.Creation
                             .Do(SwitchStateTo(EntityState.Neutral))
                             .End()
                         .Sequence()
-                            .Do(FollowAvatar())
+                            .Do(FollowAvatarBoid())
                             .Do(Move())
                             .End()
                         .Sequence()
@@ -202,6 +202,14 @@ namespace _Source.Features.ActorBehaviours.Creation
         public IBehaviourTreeNode FollowAvatar()
         {
             var node = _followAvatarNodeFactory.Create(_actorStateModel);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+        
+        public IBehaviourTreeNode FollowAvatarBoid()
+        {
+            var node = _followAvatarBoidNodeFactory.Create(_actorStateModel);
             _generatedNodes.Add(node);
 
             return node;

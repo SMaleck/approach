@@ -19,6 +19,7 @@ namespace _Source.Features.Actors.Creation
         [Inject] private readonly TransformDataComponent.Factory _transformDataComponentFactory;
         [Inject] private readonly SensorDataComponent.Factory _sensorDataComponentFactory;
         [Inject] private readonly TimeoutDataComponent.Factory _timeoutDataComponentFactory;
+        [Inject] private readonly WanderDataComponent.Factory _wanderDataComponentFactory;
 
         private readonly AvatarData _avatarData;
         private readonly NovatarData _novatarData;
@@ -54,7 +55,8 @@ namespace _Source.Features.Actors.Creation
                 .Attach(_relationshipDataComponentFactory.Create())
                 .Attach(_transformDataComponentFactory.Create())
                 .Attach(_sensorDataComponentFactory.Create())
-                .Attach(_timeoutDataComponentFactory.Create());
+                .Attach(_timeoutDataComponentFactory.Create())
+                .Attach(_wanderDataComponentFactory.Create(_novatarData));
         }
     }
 }

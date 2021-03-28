@@ -2,7 +2,7 @@
 
 namespace _Source.Features.ActorEntities.Novatar.Data
 {
-    public class NovatarData : IHealthData, IDamageData, IMovementData
+    public class NovatarData : IHealthData, IDamageData, IMovementData, IWanderData
     {
         private readonly NovatarDataSource _dataSource;
 
@@ -19,6 +19,10 @@ namespace _Source.Features.ActorEntities.Novatar.Data
         public float MovementDeadZoneMagnitude => _dataSource.MovementDataSource.MovementDeadZoneMagnitude;
         public float TurnSpeed => _dataSource.MovementDataSource.TurnSpeed;
         public float TurnDeadZoneAngle => _dataSource.MovementDataSource.TurnDeadZoneAngle;
+
+        // ----------------------------- IWanderData
+        public float WanderMinDistance => _dataSource.MovementDataSource.TurnDeadZoneAngle;
+        public float WanderMaxDistance => _dataSource.MovementDataSource.TurnDeadZoneAngle;
 
         public NovatarData(NovatarDataSource dataSource)
         {
