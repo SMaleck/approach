@@ -40,5 +40,26 @@ namespace _Source.Features.ScreenSize
             HeightUnits = 2.0f * distance * Mathf.Tan(_sceneCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
             WidthUnits = HeightUnits * _sceneCamera.aspect;
         }
+
+        /// <summary>
+        /// Gets the ScreenEdge for a Vector that is outside of the Screen size
+        /// </summary>
+        public ScreenEdge OutsideVectorToScreenEdge(Vector2 spawnPosition)
+        {
+            if (spawnPosition.x < -WidthExtendUnits)
+            {
+                return ScreenEdge.Left;
+            }
+            else if (spawnPosition.x > WidthExtendUnits)
+            {
+                return ScreenEdge.Right;
+            }
+            else if (spawnPosition.y > HeightExtendUnits)
+            {
+                return ScreenEdge.Top;
+            }
+
+            return ScreenEdge.Bottom;
+        }
     }
 }
