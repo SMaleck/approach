@@ -1,4 +1,5 @@
-﻿using _Source.Debug;
+﻿using System.Net.Mime;
+using _Source.Debug;
 using _Source.Features.Actors.DataComponents;
 using UnityEditor;
 
@@ -15,6 +16,14 @@ namespace _Source.Features.ActorEntities.Components
 
 #if UNITY_EDITOR
         private void OnDrawGizmos()
+        {
+            if (UnityEngine.Application.IsPlaying(this))
+            {
+                OnDrawGizmosPlayMode();
+            }
+        }
+
+        private void OnDrawGizmosPlayMode()
         {
             Handles.Label(
                 transform.position + DebugConstants.IdLabelOffset,
