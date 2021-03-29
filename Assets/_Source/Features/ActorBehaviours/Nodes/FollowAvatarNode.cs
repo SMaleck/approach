@@ -32,7 +32,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
                 return BehaviourTreeStatus.Failure;
             }
 
-            // ToDo V0 This should then not move. Works because the following MovementNode just moves to where we are
+            // ToDo V2 This should then not move. Works because the following MovementNode just moves to where we are
             if (_sensorDataComponent.IsAvatarInRange(SensorType.Touch))
             {
                 _blackBoard.MovementTarget.Store(_transformDataComponent.Position);
