@@ -31,6 +31,7 @@ namespace _Source.Features.ActorBehaviours.Creation
         [Inject] private readonly MoveNode.Factory _movementNodeFactory;
         [Inject] private readonly FindDamageReceiversNode.Factory _findDamageReceiversNodeFactory;
         [Inject] private readonly NearDeathNode.Factory _nearDeathNodeFactory;
+        [Inject] private readonly WanderNode.Factory _wanderNodeFactory;
         #endregion
 
         private IActorStateModel _actorStateModel;
@@ -330,6 +331,16 @@ namespace _Source.Features.ActorBehaviours.Creation
         {
             var node = _nearDeathNodeFactory.Create(
                 _actorStateModel);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+        
+        public IBehaviourTreeNode Wander()
+        {
+            var node = _wanderNodeFactory.Create(
+                _actorStateModel,
+                _movementController);
             _generatedNodes.Add(node);
 
             return node;

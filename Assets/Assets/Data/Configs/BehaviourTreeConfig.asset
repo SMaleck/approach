@@ -19,8 +19,8 @@ MonoBehaviour:
     - _switchToRelationship: 2
       _weightedChance: 0.25
     - _switchToRelationship: 3
-      _weightedChance: 0.25
+      _weightedChance: 0.15
     - _switchToRelationship: 4
-      _weightedChance: 0.25
-  _maxSecondsToFallBehind: 2
+      _weightedChance: 0.3
+  _maxSecondsToFallBehind: 3.5
   _enemyLeavingTimeoutSeconds: 1

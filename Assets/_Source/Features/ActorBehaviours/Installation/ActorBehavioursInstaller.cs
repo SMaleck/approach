@@ -28,6 +28,7 @@ namespace _Source.Features.ActorBehaviours.Installation
             Container.BindFactory<IActorStateModel, MovementController, MoveNode, MoveNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, FindDamageReceiversNode, FindDamageReceiversNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, NearDeathNode, NearDeathNode.Factory>().AsSingle();
+            Container.BindFactory<IActorStateModel, MovementController, WanderNode, WanderNode.Factory>().AsSingle();
             Container.BindFactory<
                     IActorStateModel,
                     double,

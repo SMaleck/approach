@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea46cebee65f375458a743757e0e6c65, type: 3}
   m_Name: AvatarDataSource
   m_EditorClassIdentifier: 
-  _maxHealth: 3
+  _maxHealth: 5
   _movementDataSource:
     _useDirectMovement: 1
     _moveTargetReachedAccuracy: 0

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
@@ -18,6 +19,9 @@ namespace _Source.Features.Actors.DataComponents
         // Visual is always a greater range than touch, so we can guarantee this to be correct for both cases
         public bool KnowsAvatar => _storages[SensorType.Visual].KnowsAvatar;
         public IActorStateModel Avatar => _storages[SensorType.Visual].Avatar;
+
+        public float ComfortRangeUnits { get; private set; }
+        public float ComfortRangeUnitsSquared { get; private set; }
 
         public SensorDataComponent()
         {
@@ -58,6 +62,13 @@ namespace _Source.Features.Actors.DataComponents
             return _storages[sensor].KnownEntities;
         }
 
+        public IReadOnlyList<IActorStateModel> GetInRangeExceptAvatar(SensorType sensor)
+        {
+            return _storages[sensor].KnownEntities
+                .Where(e => e != Avatar)
+                .ToArray();
+        }
+
         public bool IsAvatarInRange(SensorType sensor)
         {
             return _storages[sensor].KnowsAvatar;
@@ -71,6 +82,21 @@ namespace _Source.Features.Actors.DataComponents
             _lifetimeSubscriptions.Values.ToArray()
                 .ForEach(e => e.Dispose());
             _lifetimeSubscriptions.Clear();
+        }
+
+        public void SetRangeUnits(SensorType sensor, float units)
+        {
+            _storages[sensor].SetRangeUnits(units);
+            if (sensor == SensorType.Touch)
+            {
+                SetComfortRangeUnits(units);
+            }
+        }
+
+        private void SetComfortRangeUnits(float units)
+        {
+            ComfortRangeUnits = (units * 2.0f) * 1.1f;
+            ComfortRangeUnitsSquared = Mathf.Pow(ComfortRangeUnits, 2);
         }
     }
 }

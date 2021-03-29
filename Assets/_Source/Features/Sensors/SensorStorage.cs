@@ -14,10 +14,17 @@ namespace _Source.Features.Sensors
         public bool KnowsAvatar => Avatar != null;
         public IActorStateModel Avatar { get; private set; }
 
+        public float RangeUnits { get; private set; }
+
         public SensorStorage(SensorType sensoryType)
         {
             SensoryType = sensoryType;
             _knownEntities = new List<IActorStateModel>();
+        }
+
+        public void SetRangeUnits(float units)
+        {
+            RangeUnits = units;
         }
 
         public void Add(IActorStateModel actor)

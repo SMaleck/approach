@@ -19,6 +19,7 @@ namespace _Source.Features.ActorEntities.Components
         protected override void OnSetup()
         {
             _sensorDataComponent = Actor.Get<SensorDataComponent>();
+            _sensorDataComponent.SetRangeUnits(_type, _distanceProbe.bounds.extents.x);
         }
 
         protected override void OnStart()

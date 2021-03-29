@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9294b089bd2e9d4439252b0eb49c317e, type: 3}
   m_Name: NovatarDataSource
   m_EditorClassIdentifier: 
-  _maxHealth: 2
+  _maxHealth: 3
   _touchDamage: 1
   _movementDataSource:
     _useDirectMovement: 0
@@ -22,7 +22,6 @@ MonoBehaviour:
     _movementDeadZoneMagnitude: 0.01
     _turnSpeed: 30
     _turnDeadZoneAngle: 1
-  _rangeSensorDataSource:
-    _followRange: 5
-    _interactionRange: 0
-    _touchRange: 0.8
+  _wanderDataSource:
+    _wanderMinDistance: 0
+    _wanderMaxDistance: 0
