@@ -3,6 +3,8 @@ using _Source.Features.Actors.DataComponents;
 using _Source.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using _Source.Features.Actors.DataSystems;
 using UniRx;
 using Zenject;
 
@@ -21,7 +23,7 @@ namespace _Source.Features.Actors
             _resettableDataComponents = new List<IResettableDataComponent>();
         }
 
-        public ActorStateModel Attach(IDataComponent dataComponent)
+        public IActorStateModel Attach(IDataComponent dataComponent)
         {
             _dataComponents.Add(dataComponent.GetType(), dataComponent);
             dataComponent.AddTo(Disposer);
@@ -34,6 +36,12 @@ namespace _Source.Features.Actors
             return this;
         }
 
+        public IActorStateModel AttachSystem(IDataSystem dataSystem)
+        {
+            dataSystem.AddTo(Disposer);
+            return this;
+        }
+
         public T Get<T>() where T : class, IDataComponent
         {
             if (TryGet<T>(out var component))
@@ -43,6 +51,13 @@ namespace _Source.Features.Actors
 
             Logger.Warn($"No DataComponent of type [{(typeof(T).Name)}] found");
             return null;
+        }
+
+        public T[] GetAll<T>() where T : class, IDataComponent
+        {
+            return _dataComponents.Values
+                .OfType<T>()
+                .ToArray();
         }
 
         public bool TryGet<T>(out IDataComponent component) where T : class, IDataComponent

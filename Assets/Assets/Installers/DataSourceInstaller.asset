@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: DataSourceInstaller
   m_EditorClassIdentifier: 
   _avatarDataSource: {fileID: 11400000, guid: 0b54558104e924244bd2dff577004946, type: 2}
+  _avatarMovementDataSource: {fileID: 11400000, guid: ccea47c541ec4ee4395f4184c51d08da,
+    type: 2}
   _novatarDataSource: {fileID: 11400000, guid: 3ba2cfff5e2739d4e88d4629cd1869f0, type: 2}
+  _novatarMovementDataSource: {fileID: 11400000, guid: 8aa7151477839354a817d0f81177bee7,
+    type: 2}

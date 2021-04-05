@@ -1,22 +1,25 @@
-﻿using _Source.Features.Actors.Data;
+﻿using _Source.Entities.Novatar;
+using _Source.Features.Actors.Data;
 using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    // ToDo V1 Friends Need  greater MoveSpeed
-    public class MovementDataComponent : AbstractDataComponent
+    public class MovementDataComponent : AbstractDataComponent, IEntityStateSensitiveDataComponent
     {
         public class Factory : PlaceholderFactory<IMovementData, MovementDataComponent> { }
 
         private readonly IMovementData _data;
 
-        public bool UseDirectMovement => _data.UseDirectMovement;
-        public float MoveTargetReachedAccuracy => _data.MoveTargetReachedAccuracy;
-        public float MovementSpeed => _data.MovementSpeed;
-        public float MovementDeadZoneMagnitude => _data.MovementDeadZoneMagnitude;
+        public float MovementSpeed { get; private set; }
+        private float _movementSpeedFactor;
+
         public float TurnSpeed => _data.TurnSpeed;
         public float TurnDeadZoneAngle => _data.TurnDeadZoneAngle;
+        public float MovementDeadZoneMagnitude => _data.MovementDeadZoneMagnitude;
+
+        public bool UseDirectMovement => _data.UseDirectMovement;
+        public float MoveTargetReachedAccuracy => _data.MoveTargetReachedAccuracy;
 
         public bool HasMoveIntention => MoveIntention.magnitude > MovementDeadZoneMagnitude;
         public Vector2 MoveIntention { get; private set; }
@@ -27,6 +30,9 @@ namespace _Source.Features.Actors.DataComponents
         public MovementDataComponent(IMovementData data)
         {
             _data = data;
+            _movementSpeedFactor = 1.0f;
+
+            UpdateMovementSpeed();
         }
 
         public void ResetIntentions()
@@ -49,6 +55,19 @@ namespace _Source.Features.Actors.DataComponents
             rotation = isAboveDeadZone ? rotation : Quaternion.identity;
 
             TurnIntention = rotation;
+        }
+
+        public void OnRelationshipChanged(EntityState entityState)
+        {
+            _movementSpeedFactor = _data.GetSpeedFactor(entityState);
+            
+            UpdateMovementSpeed();
+        }
+
+        private void UpdateMovementSpeed()
+        {
+            MovementSpeed = _data.MovementSpeed * 
+                            _movementSpeedFactor;
         }
     }
 }

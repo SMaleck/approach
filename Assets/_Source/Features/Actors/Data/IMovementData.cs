@@ -1,4 +1,6 @@
-﻿namespace _Source.Features.Actors.Data
+﻿using _Source.Entities.Novatar;
+
+namespace _Source.Features.Actors.Data
 {
     public interface IMovementData
     {
@@ -10,5 +12,7 @@
 
         float TurnSpeed { get; }
         float TurnDeadZoneAngle { get; }
+
+        float GetSpeedFactor(EntityState state);
     }
 }

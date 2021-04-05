@@ -3,6 +3,6 @@
     public enum EntityType
     {
         Avatar = 0,
-        NPC = 1
+        Novatar = 1
     }
 }

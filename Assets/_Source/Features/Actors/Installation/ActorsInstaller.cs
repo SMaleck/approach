@@ -1,6 +1,7 @@
 ﻿using _Source.Features.Actors.Creation;
 using _Source.Features.Actors.Data;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.Actors.DataSystems;
 using _Source.Features.Tokens;
 using Zenject;
 
@@ -17,6 +18,7 @@ namespace _Source.Features.Actors.Installation
             Container.BindInterfacesTo<ActorFactory>().AsSingle();
             Container.BindFactory<ActorStateModel, ActorStateModel.Factory>().AsSingle();
 
+            // ----------------------------- DATA COMPONENTS
             Container.BindFactory<BlackBoardDataComponent, BlackBoardDataComponent.Factory>().AsSingle();
             Container.BindFactory<EntityType, EntityTypeDataComponent, EntityTypeDataComponent.Factory>().AsSingle();
             Container.BindFactory<IHealthData, HealthDataComponent, HealthDataComponent.Factory>().AsSingle();
@@ -29,6 +31,9 @@ namespace _Source.Features.Actors.Installation
             Container.BindFactory<SensorDataComponent, SensorDataComponent.Factory>().AsSingle();
             Container.BindFactory<TimeoutDataComponent, TimeoutDataComponent.Factory>().AsSingle();
             Container.BindFactory<IWanderData, WanderDataComponent, WanderDataComponent.Factory>().AsSingle();
+
+            // ----------------------------- DATA SYSTEMS
+            Container.BindFactory<IActorStateModel, EntityStateNotificationSystem, EntityStateNotificationSystem.Factory>().AsSingle();
         }
     }
 }

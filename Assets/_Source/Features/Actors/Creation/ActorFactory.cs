@@ -1,12 +1,15 @@
 ﻿using _Source.Features.ActorEntities.Avatar.Data;
 using _Source.Features.ActorEntities.Novatar.Data;
 using _Source.Features.Actors.DataComponents;
+using _Source.Features.Actors.DataSystems;
+using _Source.Features.Movement.Data;
 using Zenject;
 
 namespace _Source.Features.Actors.Creation
 {
     public class ActorFactory : IAvatarActorFactory, INovatarActorFactory
     {
+        // ----------------------------- DATA COMPONENTS
         [Inject] private readonly ActorStateModel.Factory _actorStateModelFactory;
         [Inject] private readonly BlackBoardDataComponent.Factory _blackBoardDataComponentFactory;
         [Inject] private readonly EntityTypeDataComponent.Factory _entityTypeDataComponentFactory;
@@ -21,6 +24,12 @@ namespace _Source.Features.Actors.Creation
         [Inject] private readonly TimeoutDataComponent.Factory _timeoutDataComponentFactory;
         [Inject] private readonly WanderDataComponent.Factory _wanderDataComponentFactory;
 
+        // ----------------------------- DATA SYSTEMS
+        [Inject] private readonly EntityStateNotificationSystem.Factory _movementScaleSystemFactory;
+
+        // ----------------------------- DATA
+        [Inject] private readonly IMovementDataRepository _movementDataRepository;
+
         private readonly AvatarData _avatarData;
         private readonly NovatarData _novatarData;
 
@@ -34,22 +43,24 @@ namespace _Source.Features.Actors.Creation
 
         public IActorStateModel CreateAvatar()
         {
-            return _actorStateModelFactory.Create()
+            var model = _actorStateModelFactory.Create()
                 .Attach(_entityTypeDataComponentFactory.Create(EntityType.Avatar))
                 .Attach(_healthDataComponentFactory.Create(_avatarData))
-                .Attach(_movementDataComponentFactory.Create(_avatarData))
+                .Attach(_movementDataComponentFactory.Create(_movementDataRepository[EntityType.Avatar]))
                 .Attach(_transformDataComponentFactory.Create())
                 .Attach(_sensorDataComponentFactory.Create());
+
+            return model;
         }
 
         public IActorStateModel CreateNovatar()
         {
-            return _actorStateModelFactory.Create()
+            var model = _actorStateModelFactory.Create()
                 .Attach(_blackBoardDataComponentFactory.Create())
-                .Attach(_entityTypeDataComponentFactory.Create(EntityType.NPC))
+                .Attach(_entityTypeDataComponentFactory.Create(EntityType.Novatar))
                 .Attach(_healthDataComponentFactory.Create(_novatarData))
                 .Attach(_damageDataComponentFactory.Create(_novatarData))
-                .Attach(_movementDataComponentFactory.Create(_novatarData))
+                .Attach(_movementDataComponentFactory.Create(_movementDataRepository[EntityType.Novatar]))
                 .Attach(_originDataComponentFactory.Create())
                 .Attach(_lightDataComponentFactory.Create())
                 .Attach(_relationshipDataComponentFactory.Create())
@@ -57,6 +68,10 @@ namespace _Source.Features.Actors.Creation
                 .Attach(_sensorDataComponentFactory.Create())
                 .Attach(_timeoutDataComponentFactory.Create())
                 .Attach(_wanderDataComponentFactory.Create(_novatarData));
+
+            _movementScaleSystemFactory.Create(model);
+
+            return model;
         }
     }
 }

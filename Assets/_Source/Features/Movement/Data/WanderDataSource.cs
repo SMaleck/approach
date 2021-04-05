@@ -7,8 +7,8 @@ namespace _Source.Features.Movement.Data
     public class WanderDataSource
     {
         [Range(-50, 50)]
-        [SerializeField] private bool _wanderMinDistance;
-        public bool WanderMinDistance => _wanderMinDistance;
+        [SerializeField] private float _wanderMinDistance;
+        public float WanderMinDistance => _wanderMinDistance;
 
         [Range(-50, 50)]
         [SerializeField] private float _wanderMaxDistance;

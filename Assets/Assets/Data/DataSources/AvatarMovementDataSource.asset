@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaeff4468ec9e3f459734f98ef09698c, type: 3}
+  m_Name: AvatarMovementDataSource
+  m_EditorClassIdentifier: 
+  _entity: 0
+  _useDirectMovement: 1
+  _moveTargetReachedAccuracy: 0
+  _moveTargetTouchedAccuracy: 0
+  _movementSpeed: 5
+  _movementDeadZoneMagnitude: 0.01
+  _turnSpeed: 5
+  _turnDeadZoneAngle: 5
