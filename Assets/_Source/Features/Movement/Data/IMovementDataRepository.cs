@@ -1,5 +1,4 @@
 ﻿using _Source.Features.Actors;
-using _Source.Features.Actors.Data;
 
 namespace _Source.Features.Movement.Data
 {

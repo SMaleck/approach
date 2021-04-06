@@ -12,7 +12,7 @@ namespace _Source.Features.ActorEntities.Components
     public class RangeDetectionSensorComponent : AbstractMonoComponent
     {
         [SerializeField] private SensorType _type;
-        [SerializeField] private Collider _distanceProbe;
+        [SerializeField] private SphereCollider _distanceProbe;
 
         private SensorDataComponent _sensorDataComponent;
 
@@ -30,6 +30,11 @@ namespace _Source.Features.ActorEntities.Components
 
             _distanceProbe.OnTriggerExitAsObservable()
                 .Subscribe(OnExit)
+                .AddTo(Disposer);
+
+            _sensorDataComponent.VisualRangeSize
+                .Where(_ => _type == SensorType.Visual)
+                .Subscribe(size => _distanceProbe.radius = size)
                 .AddTo(Disposer);
         }
 

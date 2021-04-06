@@ -1,9 +1,10 @@
-﻿using _Source.Features.Sensors;
+﻿using _Source.Entities.Novatar;
+using _Source.Features.Sensors;
+using _Source.Features.Sensors.Data;
 using _Source.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Source.Entities.Novatar;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -14,6 +15,7 @@ namespace _Source.Features.Actors.DataComponents
     {
         public class Factory : PlaceholderFactory<SensorDataComponent> { }
 
+        private readonly IRangeSensorData _rangeSensorData;
         private readonly IReadOnlyDictionary<SensorType, SensorStorage> _storages;
         private readonly Dictionary<IActorStateModel, IDisposable> _lifetimeSubscriptions;
 
@@ -24,9 +26,14 @@ namespace _Source.Features.Actors.DataComponents
         public float ComfortRangeUnits { get; private set; }
         public float ComfortRangeUnitsSquared { get; private set; }
 
-        public SensorDataComponent()
+        private readonly IReactiveProperty<float> _visualRangeSize;
+        public IReadOnlyReactiveProperty<float> VisualRangeSize => _visualRangeSize;
+
+        public SensorDataComponent(IRangeSensorData rangeSensorData)
         {
+            _rangeSensorData = rangeSensorData;
             _lifetimeSubscriptions = new Dictionary<IActorStateModel, IDisposable>();
+            _visualRangeSize = new ReactiveProperty<float>().AddTo(Disposer);
 
             _storages = EnumHelper<SensorType>.Iterator
                 .ToDictionary(e => e, e => new SensorStorage(e));
@@ -34,7 +41,7 @@ namespace _Source.Features.Actors.DataComponents
 
         public void OnRelationshipChanged(EntityState entityState)
         {
-
+            _visualRangeSize.Value = _rangeSensorData.GetVisualRangeSize(entityState);
         }
 
         public void Add(IActorStateModel actor, SensorType sensor)
