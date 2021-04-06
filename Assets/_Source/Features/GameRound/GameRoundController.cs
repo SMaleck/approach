@@ -1,13 +1,12 @@
-﻿using System;
-using _Source.Features.ActorEntities.Avatar;
+﻿using _Source.Features.ActorEntities.Avatar;
 using _Source.Features.Actors.DataComponents;
 using _Source.Util;
+using System;
 using UniRx;
 using Zenject;
 
 namespace _Source.Features.GameRound
 {
-    // ToDo V1 Make this depend on a max time as well
     // ToDo V1 Track amount of Relationships and show result
     public class GameRoundController : AbstractDisposable, IInitializable
     {
@@ -56,7 +55,7 @@ namespace _Source.Features.GameRound
         {
             var seconds = _gameRoundModel.RemainingSeconds.Value - 1;
             _gameRoundModel.SetRemainingSeconds(seconds);
-            
+
             if (_gameRoundModel.RemainingSeconds.Value <= 0)
             {
                 EndRound();

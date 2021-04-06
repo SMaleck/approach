@@ -10,8 +10,7 @@ using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Creation
 {
-    // ToDo V1 BT Move around on the playing field, increase leave time
-    // ToDo V1 BT Sometimes move towards player
+    // ToDo V2 BT Sometimes move towards player
     public class NovatarBehaviourTreeFactory
     {
         [Inject] private readonly BehaviourTreeConfig _behaviourTreeConfig;
