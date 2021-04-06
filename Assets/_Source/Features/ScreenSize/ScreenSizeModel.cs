@@ -13,11 +13,11 @@ namespace _Source.Features.ScreenSize
         public float WidthExtendUnits => WidthUnits / 2;
         public float HeightExtendUnits => HeightUnits / 2;
 
-        private float _xMin => -WidthExtendUnits;
-        private float _xMax => WidthExtendUnits;
+        private float XMin => -WidthExtendUnits;
+        private float XMax => WidthExtendUnits;
 
-        private float _yMin => -HeightExtendUnits;
-        private float _yMax => HeightExtendUnits;
+        private float YMin => -HeightExtendUnits;
+        private float YMax => HeightExtendUnits;
 
         public ScreenSizeModel(UnityEngine.Camera sceneCamera)
         {
@@ -70,8 +70,8 @@ namespace _Source.Features.ScreenSize
 
         public Vector3 GetClampedPosition(Vector3 position)
         {
-            var clampedX = Mathf.Clamp(position.x, _xMin, _xMax);
-            var clampedY = Mathf.Clamp(position.y, _yMin, _yMax);
+            var clampedX = Mathf.Clamp(position.x, XMin, XMax);
+            var clampedY = Mathf.Clamp(position.y, YMin, YMax);
 
             return new Vector3(clampedX, clampedY, position.z);
         }
