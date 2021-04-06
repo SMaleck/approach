@@ -13,6 +13,12 @@ namespace _Source.Features.ScreenSize
         public float WidthExtendUnits => WidthUnits / 2;
         public float HeightExtendUnits => HeightUnits / 2;
 
+        private float _xMin => -WidthExtendUnits;
+        private float _xMax => WidthExtendUnits;
+
+        private float _yMin => -HeightExtendUnits;
+        private float _yMax => HeightExtendUnits;
+
         public ScreenSizeModel(UnityEngine.Camera sceneCamera)
         {
             _sceneCamera = sceneCamera;
@@ -60,6 +66,14 @@ namespace _Source.Features.ScreenSize
             }
 
             return ScreenEdge.Bottom;
+        }
+
+        public Vector3 GetClampedPosition(Vector3 position)
+        {
+            var clampedX = Mathf.Clamp(position.x, _xMin, _xMax);
+            var clampedY = Mathf.Clamp(position.y, _yMin, _yMax);
+
+            return new Vector3(clampedX, clampedY, position.z);
         }
     }
 }

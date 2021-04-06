@@ -25,5 +25,7 @@
         /// <param name="maxInclusive"></param>
         /// <returns></returns>
         double Range(double minInclusive, double maxInclusive);
+
+        T FromSet<T>(T[] set);
     }
 }

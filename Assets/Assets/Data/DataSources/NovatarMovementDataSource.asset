@@ -24,10 +24,10 @@ MonoBehaviour:
   - _state: 0
     _speedFactor: 1
   - _state: 1
-    _speedFactor: 1
+    _speedFactor: 0.8
   - _state: 2
     _speedFactor: 1
   - _state: 3
     _speedFactor: 1
   - _state: 4
-    _speedFactor: 1.5
+    _speedFactor: 1.6

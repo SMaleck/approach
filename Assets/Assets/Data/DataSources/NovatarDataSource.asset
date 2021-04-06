@@ -14,14 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 3
   _touchDamage: 1
-  _movementDataSource:
-    _useDirectMovement: 0
-    _moveTargetReachedAccuracy: 0.1
-    _moveTargetTouchedAccuracy: 0.8
-    _movementSpeed: 2.5
-    _movementDeadZoneMagnitude: 0.01
-    _turnSpeed: 30
-    _turnDeadZoneAngle: 1
   _wanderDataSource:
-    _wanderMinDistance: 0
-    _wanderMaxDistance: 0
+    _wanderMinDistance: 1
+    _wanderMaxDistance: 3

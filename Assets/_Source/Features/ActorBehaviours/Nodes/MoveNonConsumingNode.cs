@@ -6,14 +6,14 @@ using Zenject;
 
 namespace _Source.Features.ActorBehaviours.Nodes
 {
-    public class MoveNode : AbstractNode
+    public class MoveNonConsumingNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<IActorStateModel, MovementController, MoveNode> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, MovementController, MoveNonConsumingNode> { }
 
         private readonly MovementController _movementController;
         private readonly BlackBoardDataComponent _blackBoard;
 
-        public MoveNode(
+        public MoveNonConsumingNode(
             IActorStateModel actorStateModel,
             MovementController movementController)
         {
@@ -27,15 +27,16 @@ namespace _Source.Features.ActorBehaviours.Nodes
             {
                 return BehaviourTreeStatus.Failure;
             }
-
+            
             var target = _blackBoard.MovementTarget.View();
-            if (_movementController.IsTargetReached(target))
+            if (!_movementController.IsTargetReached(target))
             {
                 _blackBoard.MovementTarget.Consume();
                 return BehaviourTreeStatus.Success;
             }
 
             _movementController.MoveToTarget(target);
+
             return BehaviourTreeStatus.Running;
         }
     }

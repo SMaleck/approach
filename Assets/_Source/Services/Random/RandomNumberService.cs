@@ -34,5 +34,11 @@
         {
             return UnityEngine.Random.Range((float)minInclusive, (float)maxInclusive);
         }
+
+        public T FromSet<T>(T[] set)
+        {
+            var index = Range(0, set.Length);
+            return set[index];
+        }
     }
 }

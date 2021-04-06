@@ -16,6 +16,10 @@ namespace _Source.Features.ActorBehaviours.Data
             [SerializeField] private double _evaluationTimeoutSeconds;
             public double EvaluationTimeoutSeconds => _evaluationTimeoutSeconds;
 
+            [Range(0, 600)]
+            [SerializeField] private float _wanderIdleSeconds;
+            public float WanderIdleSeconds => _wanderIdleSeconds;
+
             [Range(0, 1)]
             [SerializeField] private float _timeBasedSwitchChance;
             public float TimeBasedSwitchChance => _timeBasedSwitchChance;

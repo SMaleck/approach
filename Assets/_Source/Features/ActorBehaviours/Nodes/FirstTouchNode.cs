@@ -30,6 +30,10 @@ namespace _Source.Features.ActorBehaviours.Nodes
 
         public override BehaviourTreeStatus Tick(TimeData time)
         {
+            if (_relationshipDataComponent.Relationship.Value != EntityState.Unacquainted)
+            {
+                return BehaviourTreeStatus.Failure;
+            }
             if (HasTouchedValidActor())
             {
                 RollRelationShip();

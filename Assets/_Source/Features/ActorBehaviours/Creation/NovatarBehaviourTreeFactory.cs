@@ -32,6 +32,7 @@ namespace _Source.Features.ActorBehaviours.Creation
         [Inject] private readonly FindDamageReceiversNode.Factory _findDamageReceiversNodeFactory;
         [Inject] private readonly NearDeathNode.Factory _nearDeathNodeFactory;
         [Inject] private readonly WanderNode.Factory _wanderNodeFactory;
+        [Inject] private readonly ResetTimeoutNode.Factory _resetTimeoutNodeFactory;
         #endregion
 
         private IActorStateModel _actorStateModel;
@@ -92,9 +93,17 @@ namespace _Source.Features.ActorBehaviours.Creation
                             .End()
                         .Selector()
                             .Sequence()
+                                .Do(FirstTouch())
+                                .End()
+                            .Sequence()
                                 .Do(FollowAvatar())
                                 .Do(Move())
-                                .Do(FirstTouch())
+                                .End()
+                            .Sequence()
+                                .Do(WanderTimeout())
+                                .Do(Wander())
+                                .Do(Move())
+                                .Do(ResetTimeout(TimeoutDataComponent.Storage.WanderTimeout))
                                 .End()
                             .End() // END Top Selector
                         .End() // END Parallel
@@ -194,6 +203,13 @@ namespace _Source.Features.ActorBehaviours.Creation
             return IdleTimeout(
                 _behaviourTreeConfig.MaxSecondsToFallBehind,
                 TimeoutDataComponent.Storage.IdleFriend);
+        }
+
+        private IBehaviourTreeNode WanderTimeout()
+        {
+            return IdleTimeout(
+                _behaviourTreeConfig.UnacquaintedConfig.WanderIdleSeconds,
+                TimeoutDataComponent.Storage.WanderTimeout);
         }
 
         #endregion
@@ -339,8 +355,17 @@ namespace _Source.Features.ActorBehaviours.Creation
         public IBehaviourTreeNode Wander()
         {
             var node = _wanderNodeFactory.Create(
+                _actorStateModel);
+            _generatedNodes.Add(node);
+
+            return node;
+        }
+
+        public IBehaviourTreeNode ResetTimeout(TimeoutDataComponent.Storage storage)
+        {
+            var node = _resetTimeoutNodeFactory.Create(
                 _actorStateModel,
-                _movementController);
+                storage);
             _generatedNodes.Add(node);
 
             return node;

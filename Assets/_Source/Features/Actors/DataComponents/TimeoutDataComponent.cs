@@ -14,7 +14,8 @@ namespace _Source.Features.Actors.DataComponents
             Default = 0,
             IdleUnacquainted = 1,
             IdleFriend = 2,
-            IdleEnemy = 3
+            IdleEnemy = 3,
+            WanderTimeout = 4
         }
 
         private readonly Dictionary<Storage, double> _timesPassed;
@@ -33,8 +34,14 @@ namespace _Source.Features.Actors.DataComponents
 
         public void Reset()
         {
-            _timesPassed.Keys.ToArray()
-                .ForEach(key => _timesPassed[key] = 0d);
+            _timesPassed.Keys
+                .ToArray()
+                .ForEach(ResetTimeout);
+        }
+
+        public void ResetTimeout(Storage storage)
+        {
+            _timesPassed[storage] = 0d;
         }
 
         public void ResetIdleTimeouts()

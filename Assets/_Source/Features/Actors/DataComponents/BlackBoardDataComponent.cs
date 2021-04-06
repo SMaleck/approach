@@ -9,6 +9,7 @@ namespace _Source.Features.Actors.DataComponents
 
         public readonly BlackboardItem<IDamageReceiver> DamageReceiver;
         public readonly BlackboardItem<Vector3> MovementTarget;
+        public bool HasWanderedOnce = false;
 
         public BlackBoardDataComponent()
         {
@@ -19,6 +20,8 @@ namespace _Source.Features.Actors.DataComponents
         public void Reset()
         {
             DamageReceiver.Consume();
+            MovementTarget.Consume();
+            HasWanderedOnce = false;
         }
     }
 }
