@@ -2,7 +2,7 @@
 
 namespace _Source.Features.ActorEntities.Novatar.Data
 {
-    public class NovatarData : IHealthData, IDamageData, IWanderData
+    public class NovatarData : IHealthData, IDamageData
     {
         private readonly NovatarDataSource _dataSource;
 
@@ -11,10 +11,6 @@ namespace _Source.Features.ActorEntities.Novatar.Data
 
         // ----------------------------- IDamageData
         public int TouchDamage => _dataSource.TouchDamage;
-
-        // ----------------------------- IWanderData
-        public float WanderMinDistance => _dataSource.WanderDataSource.WanderMinDistance;
-        public float WanderMaxDistance => _dataSource.WanderDataSource.WanderMaxDistance;
 
         public NovatarData(NovatarDataSource dataSource)
         {

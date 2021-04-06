@@ -1,6 +1,6 @@
 ﻿using _Source.Entities.Novatar;
 
-namespace _Source.Features.Actors.Data
+namespace _Source.Features.Movement.Data
 {
     public interface IMovementData
     {

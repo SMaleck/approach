@@ -1,17 +1,24 @@
-﻿using System;
+﻿using _Source.App;
+using _Source.Data;
+using System;
 using UnityEngine;
 
 namespace _Source.Features.Movement.Data
 {
     [Serializable]
-    public class WanderDataSource
+    public class WanderDataEntry
     {
-        [Range(-50, 50)]
-        [SerializeField] private float _wanderMinDistance;
-        public float WanderMinDistance => _wanderMinDistance;
+        [Range(0, 15)]
+        [SerializeField] private float _minDistance;
+        public float MinDistance => _minDistance;
 
-        [Range(-50, 50)]
-        [SerializeField] private float _wanderMaxDistance;
-        public float WanderMaxDistance => _wanderMaxDistance;
+        [Range(0, 15)]
+        [SerializeField] private float _maxDistance;
+        public float MaxDistance => _maxDistance;
+    }
+
+    [CreateAssetMenu(menuName = Constants.DataMenu + nameof(WanderDataSource), fileName = nameof(WanderDataSource))]
+    public class WanderDataSource : AbstractDataSource<WanderDataEntry>
+    {
     }
 }

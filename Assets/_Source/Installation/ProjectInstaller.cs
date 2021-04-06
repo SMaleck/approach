@@ -17,7 +17,7 @@ namespace _Source.Installation
             Container.BindInterfacesAndSelfTo<SceneManagementController>().AsSingleNonLazy();
 
             // ---------------------------------- INSTALLERS
-            DataInstaller.Install(Container);
+            DataRepositoryInstaller.Install(Container);
             ProjectDebugInstaller.Install(Container);
 
             // ---------------------------------- SERVICES

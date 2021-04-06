@@ -1,5 +1,6 @@
 ﻿using _Source.Entities.Novatar;
 using _Source.Features.Actors.Data;
+using _Source.Features.Movement.Data;
 using UnityEngine;
 using Zenject;
 

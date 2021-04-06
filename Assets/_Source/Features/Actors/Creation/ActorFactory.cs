@@ -3,6 +3,7 @@ using _Source.Features.ActorEntities.Novatar.Data;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.Actors.DataSystems;
 using _Source.Features.Movement.Data;
+using _Source.Features.Sensors.Data;
 using Zenject;
 
 namespace _Source.Features.Actors.Creation
@@ -29,6 +30,8 @@ namespace _Source.Features.Actors.Creation
 
         // ----------------------------- DATA
         [Inject] private readonly IMovementDataRepository _movementDataRepository;
+        [Inject] private readonly IRangeSensorData _rangeSensorData;
+        [Inject] private readonly IWanderData _wanderData;
 
         private readonly AvatarData _avatarData;
         private readonly NovatarData _novatarData;
@@ -67,7 +70,7 @@ namespace _Source.Features.Actors.Creation
                 .Attach(_transformDataComponentFactory.Create())
                 .Attach(_sensorDataComponentFactory.Create())
                 .Attach(_timeoutDataComponentFactory.Create())
-                .Attach(_wanderDataComponentFactory.Create(_novatarData));
+                .Attach(_wanderDataComponentFactory.Create(_wanderData));
 
             _movementScaleSystemFactory.Create(model);
 

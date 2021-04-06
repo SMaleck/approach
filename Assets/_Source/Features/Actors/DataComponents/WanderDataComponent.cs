@@ -1,4 +1,5 @@
 ﻿using _Source.Features.Actors.Data;
+using _Source.Features.Movement.Data;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
@@ -9,8 +10,8 @@ namespace _Source.Features.Actors.DataComponents
 
         private readonly IWanderData _wanderData;
 
-        public float WanderMinDistance => _wanderData.WanderMinDistance;
-        public float WanderMaxDistance => _wanderData.WanderMaxDistance;
+        public float WanderMinDistance => _wanderData.MinDistance;
+        public float WanderMaxDistance => _wanderData.MaxDistance;
 
         public WanderDataComponent(IWanderData wanderData)
         {

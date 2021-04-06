@@ -3,13 +3,14 @@ using _Source.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using _Source.Entities.Novatar;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
-    public class SensorDataComponent : AbstractDataComponent, IResettableDataComponent
+    public class SensorDataComponent : AbstractDataComponent, IResettableDataComponent, IEntityStateSensitiveDataComponent
     {
         public class Factory : PlaceholderFactory<SensorDataComponent> { }
 
@@ -29,6 +30,11 @@ namespace _Source.Features.Actors.DataComponents
 
             _storages = EnumHelper<SensorType>.Iterator
                 .ToDictionary(e => e, e => new SensorStorage(e));
+        }
+
+        public void OnRelationshipChanged(EntityState entityState)
+        {
+
         }
 
         public void Add(IActorStateModel actor, SensorType sensor)

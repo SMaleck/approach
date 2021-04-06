@@ -1,18 +1,23 @@
-﻿using System;
+﻿using _Source.App;
+using _Source.Data;
+using _Source.Entities.Novatar;
+using System;
 using UnityEngine;
 
 namespace _Source.Features.Sensors.Data
 {
     [Serializable]
-    public class RangeSensorDataSource
+    public class RangeSensorDataEntry
     {
-        [SerializeField] private float _followRange;
-        public float FollowRange => _followRange;
+        [SerializeField] private EntityState _state;
+        public EntityState State => _state;
 
-        [SerializeField] private float _interactionRange;
-        public float InteractionRange => _interactionRange;
+        [SerializeField] private float _visualRangeColliderSize;
+        public float VisualRangeColliderSize => _visualRangeColliderSize;
+    }
 
-        [SerializeField] private float _touchRange;
-        public float TouchRange => _touchRange;
+    [CreateAssetMenu(menuName = Constants.DataMenu + nameof(RangeSensorDataSource), fileName = nameof(RangeSensorDataSource))]
+    public class RangeSensorDataSource : AbstractDataSource<RangeSensorDataEntry>
+    {
     }
 }

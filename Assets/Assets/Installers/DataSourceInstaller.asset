@@ -18,3 +18,6 @@ MonoBehaviour:
   _novatarDataSource: {fileID: 11400000, guid: 3ba2cfff5e2739d4e88d4629cd1869f0, type: 2}
   _novatarMovementDataSource: {fileID: 11400000, guid: 8aa7151477839354a817d0f81177bee7,
     type: 2}
+  _rangeSensorDataSource: {fileID: 11400000, guid: 17477aa0aa371e646a2c2a0bb332e132,
+    type: 2}
+  _wanderDataSource: {fileID: 11400000, guid: b618965a64411844891628e18e65741e, type: 2}
