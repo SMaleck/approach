@@ -16,6 +16,7 @@ namespace _Source.Features.ActorBehaviours.Data
             [SerializeField] private double _evaluationTimeoutSeconds;
             public double EvaluationTimeoutSeconds => _evaluationTimeoutSeconds;
 
+            // ToDo V2 Should this be in WanderDataEntry?
             [Range(0, 600)]
             [SerializeField] private float _wanderIdleSeconds;
             public float WanderIdleSeconds => _wanderIdleSeconds;
