@@ -15,7 +15,7 @@ MonoBehaviour:
   _entity: 1
   _movementSpeed: 2.5
   _movementDeadZoneMagnitude: 0.01
-  _turnSpeed: 30
+  _turnSpeed: 6
   _turnDeadZoneAngle: 1
   _useDirectMovement: 0
   _moveTargetReachedAccuracy: 0.1

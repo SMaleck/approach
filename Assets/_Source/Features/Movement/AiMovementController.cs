@@ -1,53 +1,47 @@
 ﻿using _Source.Features.Actors;
-using _Source.Features.Actors.DataComponents;
-using _Source.Util;
 using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.Movement
 {
-    public class AiMovementController : AbstractDisposableFeature
+    public class AiMovementController : AbstractMovementController
     {
         public class Factory : PlaceholderFactory<IActorStateModel, AiMovementController> { }
 
         private static readonly Vector3 V3Forward = new Vector3(0, 1, 0);
 
-        private readonly MovementDataComponent _movementDataComponent;
-        private readonly TransformDataComponent _transformDataComponent;
-
         public AiMovementController(IActorStateModel actorStateModel)
+            : base(actorStateModel)
         {
-            _movementDataComponent = actorStateModel.Get<MovementDataComponent>();
-            _transformDataComponent = actorStateModel.Get<TransformDataComponent>();
         }
 
         // ToDo V2 public methods below should probably just go to MovementDataComponent
-        public void MoveToTarget(Vector3 targetPosition)
+        public void MoveToTarget(Vector3 target)
         {
-            var turnIntention = GetTurnIntention(targetPosition);
-            _movementDataComponent.SetTurnIntention(turnIntention);
+            var turnIntention = GetTurnIntention(target);
+            MovementDataComponent.SetTurnIntention(turnIntention);
 
-            var moveIntention = _movementDataComponent.UseDirectMovement
-                ? targetPosition
-                : V3Forward;
-
-            _movementDataComponent.SetMovementIntention(moveIntention);
+            var moveIntention = GetMoveIntention(target);
+            MovementDataComponent.SetMovementIntention(moveIntention);
         }
 
         public bool IsTargetReached(Vector3 target)
         {
-            var sqrDistance = (_transformDataComponent.Position - target).sqrMagnitude;
-            return sqrDistance <= Mathf.Pow(_movementDataComponent.MoveTargetReachedAccuracy, 2);
+            var sqrDistance = (TransformDataComponent.Position - target).sqrMagnitude;
+            return sqrDistance <= Mathf.Pow(MovementDataComponent.MoveTargetReachedAccuracy, 2);
         }
 
-        private Quaternion GetTurnIntention(Vector3 targetPosition)
+        private Quaternion GetTurnIntention(Vector3 target)
         {
-            var headingToTarget = targetPosition - _transformDataComponent.Position;
+            var heading = target - TransformDataComponent.Position;
+            return Quaternion.LookRotation(Vector3.forward, heading);
+        }
 
-            return Quaternion.Slerp(
-                _transformDataComponent.Rotation,
-                Quaternion.LookRotation(Vector3.forward, headingToTarget),
-                _movementDataComponent.TurnSpeed.AsTimeAdjusted());
+        private Vector3 GetMoveIntention(Vector3 target)
+        {
+            return MovementDataComponent.UseDirectMovement
+                ? target
+                : V3Forward;
         }
     }
 }

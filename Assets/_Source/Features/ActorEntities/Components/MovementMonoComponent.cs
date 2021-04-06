@@ -14,9 +14,8 @@ namespace _Source.Features.ActorEntities.Components
 
         private MovementDataComponent _movementDataComponent;
 
-        public float MoveSpeed => _movementDataComponent.MovementSpeed;
-        public float TurnSpeed => _movementDataComponent.TurnSpeed;
-        public float MoveTargetReachedAccuracy => _movementDataComponent.MoveTargetReachedAccuracy;
+        private float MoveSpeed => _movementDataComponent.MovementSpeed;
+        private float TurnSpeed => _movementDataComponent.TurnSpeed;
 
         protected override void OnSetup()
         {
@@ -52,12 +51,14 @@ namespace _Source.Features.ActorEntities.Components
             }
 
             var turnRotation = _movementDataComponent.TurnIntention;
-
+            
+            // ToDo V2 TurnSpeed is applied in a wrong way, as it will be clamped here to [0, 1]
+            // Currently looks ok, but higher values will not have the desired effect
             var rotation = Quaternion.Slerp(
                 _rotationTarget.rotation,
                 turnRotation,
                 TurnSpeed.AsTimeAdjusted());
-
+            
             _rotationTarget.rotation = rotation;
         }
     }

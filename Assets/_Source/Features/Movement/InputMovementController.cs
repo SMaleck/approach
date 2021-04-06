@@ -11,7 +11,7 @@ using Zenject;
 namespace _Source.Features.Movement
 {
     // ToDo V1 Fix drifting
-    public class InputMovementController : AbstractDisposableFeature
+    public class InputMovementController : AbstractMovementController
     {
         public class Factory : PlaceholderFactory<IActorStateModel, InputMovementController> { }
 
@@ -21,7 +21,6 @@ namespace _Source.Features.Movement
         private readonly VirtualJoystickModel _virtualJoystickModel;
         private readonly UserInputConfig _userInputConfig;
         private readonly IPauseStateModel _pauseStateModel;
-        private readonly MovementDataComponent _movementDataComponent;
 
         private bool _isDraggingJoystick;
         private Vector2 _startTouchPosition;
@@ -31,11 +30,11 @@ namespace _Source.Features.Movement
             VirtualJoystickModel virtualJoystickModel,
             UserInputConfig userInputConfig,
             IPauseStateModel pauseStateModel)
+            : base(actorStateModel)
         {
             _virtualJoystickModel = virtualJoystickModel;
             _userInputConfig = userInputConfig;
             _pauseStateModel = pauseStateModel;
-            _movementDataComponent = actorStateModel.Get<MovementDataComponent>();
 
             Observable.EveryUpdate()
                 .Subscribe(_ => OnUpdate())
@@ -46,7 +45,7 @@ namespace _Source.Features.Movement
         {
             if (_pauseStateModel.IsPaused.Value)
             {
-                _movementDataComponent.ResetIntentions();
+                MovementDataComponent.ResetIntentions();
                 return;
             }
 
@@ -89,16 +88,6 @@ namespace _Source.Features.Movement
             }
         }
 
-        private void ProcessInputVector(Vector2 input)
-        {
-            _movementDataComponent.SetMovementIntention(input);
-
-            // ToDo V1 Vector2.Zero is a quick hack, need the actual values of the entity
-            var heading = input - Vector2.zero;
-            var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
-            _movementDataComponent.SetTurnIntention(lookRotation);
-        }
-
         private bool IsPointer()
         {
             return Input.GetMouseButton(0);
@@ -120,6 +109,21 @@ namespace _Source.Features.Movement
             var relativeMagnitude = vector.magnitude / maxMagnitude;
 
             return Vector2.ClampMagnitude(vector, relativeMagnitude);
+        }
+
+        private void ProcessInputVector(Vector3 input)
+        {
+            MovementDataComponent.SetMovementIntention(input);
+
+            if (input.magnitude > 0)
+            {
+                UnityEngine.Debug.LogWarning($"I {input} | P {TransformDataComponent.Position}");
+            }
+
+            // ToDo V1 Vector2.Zero is a quick hack, need the actual values of the entity
+            var turnIntention = Quaternion.LookRotation(Vector3.forward, input);
+
+            MovementDataComponent.SetTurnIntention(turnIntention);
         }
     }
 }
