@@ -21,11 +21,11 @@ namespace _Source.Features.ActorBehaviours.Installation
             Container.BindFactory<IActorStateModel, FirstTouchNode, FirstTouchNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, EntityState, SwitchEntityStateNode, SwitchEntityStateNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, DeactivateSelfNode, DeactivateSelfNode.Factory>().AsSingle();
-            Container.BindFactory<IActorStateModel, MovementController, LeaveScreenNode, LeaveScreenNode.Factory>().AsSingle();
+            Container.BindFactory<IActorStateModel, AiMovementController, LeaveScreenNode, LeaveScreenNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, DamageActorNode, DamageActorNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, LightSwitchNode, LightSwitchNode.Factory>().AsSingle();
-            Container.BindFactory<IActorStateModel, MovementController, EnterScreenNode, EnterScreenNode.Factory>().AsSingle();
-            Container.BindFactory<IActorStateModel, MovementController, MoveNode, MoveNode.Factory>().AsSingle();
+            Container.BindFactory<IActorStateModel, AiMovementController, EnterScreenNode, EnterScreenNode.Factory>().AsSingle();
+            Container.BindFactory<IActorStateModel, AiMovementController, MoveNode, MoveNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, FindDamageReceiversNode, FindDamageReceiversNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, NearDeathNode, NearDeathNode.Factory>().AsSingle();
             Container.BindFactory<IActorStateModel, WanderNode, WanderNode.Factory>().AsSingle();

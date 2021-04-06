@@ -9,9 +9,9 @@ namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class LeaveScreenNode : AbstractNode
     {
-        public class Factory : PlaceholderFactory<IActorStateModel, MovementController, LeaveScreenNode> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, AiMovementController, LeaveScreenNode> { }
 
-        private readonly MovementController _movementController;
+        private readonly AiMovementController _aiMovementController;
         private readonly ScreenSizeController _screenSizeController;
 
         private readonly OriginDataComponent _originDataComponent;
@@ -19,10 +19,10 @@ namespace _Source.Features.ActorBehaviours.Nodes
 
         public LeaveScreenNode(
             IActorStateModel actorStateModel,
-            MovementController movementController,
+            AiMovementController aiMovementController,
             ScreenSizeController screenSizeController)
         {
-            _movementController = movementController;
+            _aiMovementController = aiMovementController;
             _screenSizeController = screenSizeController;
 
             _originDataComponent = actorStateModel.Get<OriginDataComponent>();
@@ -36,7 +36,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
                 return BehaviourTreeStatus.Success;
             }
 
-            _movementController.MoveToTarget(_originDataComponent.SpawnPosition.Value);
+            _aiMovementController.MoveToTarget(_originDataComponent.SpawnPosition.Value);
             return BehaviourTreeStatus.Running;
         }
 

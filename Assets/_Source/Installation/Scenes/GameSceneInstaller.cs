@@ -43,7 +43,7 @@ namespace _Source.Installation.Scenes
             Container.BindInterfacesAndSelfTo<ViewManagementController>().AsSingleNonLazy();
 
             Container.BindInterfacesAndSelfTo<VirtualJoystickModel>().AsSingleNonLazy();
-            Container.BindFactory<IActorStateModel, UserInputController, UserInputController.Factory>();
+            Container.BindFactory<IActorStateModel, InputMovementController, InputMovementController.Factory>();
 
             Container.BindInterfacesAndSelfTo<RelationshipStatsModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<RelationshipStatsController>().AsSingleNonLazy();

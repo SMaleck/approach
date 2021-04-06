@@ -35,15 +35,15 @@ namespace _Source.Features.ActorBehaviours.Creation
         #endregion
 
         private IActorStateModel _actorStateModel;
-        private MovementController _movementController;
+        private AiMovementController _aiMovementController;
         private List<IBehaviourTreeNode> _generatedNodes;
 
         public BehaviourTree Create(
             IActorStateModel actor,
-            MovementController movementController)
+            AiMovementController aiMovementController)
         {
             _actorStateModel = actor;
-            _movementController = movementController;
+            _aiMovementController = aiMovementController;
             _generatedNodes = new List<IBehaviourTreeNode>();
 
             // @formatter:off
@@ -289,7 +289,7 @@ namespace _Source.Features.ActorBehaviours.Creation
         {
             var node = _leaveScreenNodeFactory.Create(
                 _actorStateModel,
-                _movementController);
+                _aiMovementController);
             _generatedNodes.Add(node);
 
             return node;
@@ -317,7 +317,7 @@ namespace _Source.Features.ActorBehaviours.Creation
         {
             var node = _enterScreenNodeFactory.Create(
                 _actorStateModel,
-                _movementController);
+                _aiMovementController);
             _generatedNodes.Add(node);
 
             return node;
@@ -327,7 +327,7 @@ namespace _Source.Features.ActorBehaviours.Creation
         {
             var node = _movementNodeFactory.Create(
                 _actorStateModel,
-                _movementController);
+                _aiMovementController);
             _generatedNodes.Add(node);
 
             return node;

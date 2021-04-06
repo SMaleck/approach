@@ -7,7 +7,7 @@ namespace _Source.Features.Movement.Installation
     {
         public override void InstallBindings()
         {
-            Container.BindFactory<IActorStateModel, MovementController, MovementController.Factory>();
+            Container.BindFactory<IActorStateModel, AiMovementController, AiMovementController.Factory>();
         }
     }
 }

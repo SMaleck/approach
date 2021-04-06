@@ -10,9 +10,9 @@ namespace _Source.Features.ActorBehaviours.Nodes
 {
     public class EnterScreenNode : AbstractNode, IResettableNode
     {
-        public class Factory : PlaceholderFactory<IActorStateModel, MovementController, EnterScreenNode> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, AiMovementController, EnterScreenNode> { }
 
-        private readonly MovementController _movementController;
+        private readonly AiMovementController _aiMovementController;
         private readonly ScreenSizeModel _screenSizeModel;
 
         private readonly OriginDataComponent _originDataComponent;
@@ -21,10 +21,10 @@ namespace _Source.Features.ActorBehaviours.Nodes
 
         public EnterScreenNode(
             IActorStateModel actorStateModel,
-            MovementController movementController,
+            AiMovementController aiMovementController,
             ScreenSizeModel screenSizeModel)
         {
-            _movementController = movementController;
+            _aiMovementController = aiMovementController;
             _screenSizeModel = screenSizeModel;
 
             _originDataComponent = actorStateModel.Get<OriginDataComponent>();
@@ -33,12 +33,12 @@ namespace _Source.Features.ActorBehaviours.Nodes
 
         public override BehaviourTreeStatus Tick(TimeData time)
         {
-            if (_movementController.IsTargetReached(_movementTarget))
+            if (_aiMovementController.IsTargetReached(_movementTarget))
             {
                 return BehaviourTreeStatus.Success;
             }
 
-            _movementController.MoveToTarget(_movementTarget);
+            _aiMovementController.MoveToTarget(_movementTarget);
             return BehaviourTreeStatus.Running;
         }
 

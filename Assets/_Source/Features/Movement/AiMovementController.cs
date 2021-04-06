@@ -6,16 +6,16 @@ using Zenject;
 
 namespace _Source.Features.Movement
 {
-    public class MovementController : AbstractDisposableFeature
+    public class AiMovementController : AbstractDisposableFeature
     {
-        public class Factory : PlaceholderFactory<IActorStateModel, MovementController> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, AiMovementController> { }
 
         private static readonly Vector3 V3Forward = new Vector3(0, 1, 0);
 
         private readonly MovementDataComponent _movementDataComponent;
         private readonly TransformDataComponent _transformDataComponent;
 
-        public MovementController(IActorStateModel actorStateModel)
+        public AiMovementController(IActorStateModel actorStateModel)
         {
             _movementDataComponent = actorStateModel.Get<MovementDataComponent>();
             _transformDataComponent = actorStateModel.Get<TransformDataComponent>();

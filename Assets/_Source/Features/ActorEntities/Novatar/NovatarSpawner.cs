@@ -16,7 +16,7 @@ namespace _Source.Features.ActorEntities.Novatar
     {
         [Inject] private readonly INovatarActorFactory _novatarActorActorFactory;
         [Inject] private readonly MonoEntity.Factory _entityFactory;
-        [Inject] private readonly MovementController.Factory _movementControllerFactory;
+        [Inject] private readonly AiMovementController.Factory _movementControllerFactory;
         [Inject] private readonly NovatarBehaviourTreeFactory _novatarBehaviourTreeFactory;
         [Inject] private readonly NovatarFacade.Factory _novatarFacadeFactory;
 

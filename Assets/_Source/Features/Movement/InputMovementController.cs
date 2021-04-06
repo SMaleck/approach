@@ -1,18 +1,19 @@
 ﻿using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
+using _Source.Features.UserInput;
 using _Source.Features.UserInput.Data;
 using _Source.Util;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace _Source.Features.UserInput
+namespace _Source.Features.Movement
 {
     // ToDo V1 Fix drifting
-    public class UserInputController : AbstractDisposableFeature
+    public class InputMovementController : AbstractDisposableFeature
     {
-        public class Factory : PlaceholderFactory<IActorStateModel, UserInputController> { }
+        public class Factory : PlaceholderFactory<IActorStateModel, InputMovementController> { }
 
         private const string AxisNameHorizontal = "Horizontal";
         private const string AxisNameVertical = "Vertical";
@@ -25,7 +26,7 @@ namespace _Source.Features.UserInput
         private bool _isDraggingJoystick;
         private Vector2 _startTouchPosition;
 
-        public UserInputController(
+        public InputMovementController(
             IActorStateModel actorStateModel,
             VirtualJoystickModel virtualJoystickModel,
             UserInputConfig userInputConfig,
@@ -59,12 +60,8 @@ namespace _Source.Features.UserInput
             var verticalAxis = Input.GetAxisRaw(AxisNameVertical);
 
             var inputVector = new Vector2(horizontalAxis, verticalAxis);
-            _movementDataComponent.SetMovementIntention(inputVector);
-
-            // ToDo V1 Vector2.Zero is a quick hack, need the actual values of the entity
-            var heading = inputVector - Vector2.zero;
-            var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
-            _movementDataComponent.SetTurnIntention(lookRotation);
+            
+            ProcessInputVector(inputVector);
         }
 
         private void TrackPointerInput()
@@ -88,13 +85,18 @@ namespace _Source.Features.UserInput
                 var dragDirection = currentPointerPosition - _virtualJoystickModel.StartPointerPosition.Value;
                 var smoothedDragDirection = GetMagnitudeSmoothedVector(dragDirection);
 
-                _movementDataComponent.SetMovementIntention(smoothedDragDirection);
-
-                // ToDo V1 Vector2.Zero is a quick hack, need the actual values of the entity
-                var heading = smoothedDragDirection - Vector2.zero;
-                var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
-                _movementDataComponent.SetTurnIntention(lookRotation);
+                ProcessInputVector(smoothedDragDirection);
             }
+        }
+
+        private void ProcessInputVector(Vector2 input)
+        {
+            _movementDataComponent.SetMovementIntention(input);
+
+            // ToDo V1 Vector2.Zero is a quick hack, need the actual values of the entity
+            var heading = input - Vector2.zero;
+            var lookRotation = Quaternion.LookRotation(Vector3.forward, heading);
+            _movementDataComponent.SetTurnIntention(lookRotation);
         }
 
         private bool IsPointer()
