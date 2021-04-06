@@ -40,11 +40,6 @@ namespace _Source.Features.Movement
             return sqrDistance <= Mathf.Pow(_movementDataComponent.MoveTargetReachedAccuracy, 2);
         }
 
-        public void SetEulerAngles(Vector3 targetRotation)
-        {
-            _transformDataComponent.RotationTarget.eulerAngles = targetRotation;
-        }
-
         private Quaternion GetTurnIntention(Vector3 targetPosition)
         {
             var headingToTarget = targetPosition - _transformDataComponent.Position;

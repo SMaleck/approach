@@ -67,7 +67,7 @@ namespace _Source.Features.ActorBehaviours.Nodes
                 _movementTarget = spawnPosition - new Vector3(0, moveDistance, 0);
             }
 
-            _movementController.SetEulerAngles(new Vector3(0, 0, lookRotation));
+            _transformDataComponent.SetEulerAngles(new Vector3(0, 0, lookRotation));
         }
     }
 }

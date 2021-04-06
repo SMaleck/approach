@@ -12,26 +12,26 @@ namespace _Source.Features.Actors.DataComponents
 
         private IMonoEntity _monoEntity;
 
-        public Vector3 Position => _monoEntity.Position;
-        public Quaternion Rotation => _monoEntity.Rotation;
+        public Vector3 Position => LocomotionTarget.position;
+        public Quaternion Rotation => RotationTarget.rotation;
         public Vector3 Size => _monoEntity.Size;
 
-        public Transform LocomotionTarget => _monoEntity.LocomotionTarget;
-        public Transform RotationTarget => _monoEntity.RotationTarget;
+        private Transform LocomotionTarget => _monoEntity.LocomotionTarget;
+        private Transform RotationTarget => _monoEntity.RotationTarget;
 
         public void SetMonoEntity(IMonoEntity monoEntity)
         {
             _monoEntity = monoEntity;
         }
 
-        public void SetPositionSafe(Vector2 position)
+        public void SetPositionSafe(Vector3 position)
         {
             _monoEntity.SetPosition(new Vector3(position.x, position.y, Position.z));
         }
 
-        public void SetPositionSafe(Vector3 position)
+        public void SetEulerAngles(Vector3 targetRotation)
         {
-            _monoEntity.SetPosition(new Vector3(position.x, position.y, Position.z));
+            RotationTarget.eulerAngles = targetRotation;
         }
     }
 }
