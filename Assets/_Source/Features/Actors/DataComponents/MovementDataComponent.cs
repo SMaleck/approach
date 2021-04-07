@@ -25,7 +25,9 @@ namespace _Source.Features.Actors.DataComponents
         public bool HasMoveIntention => MoveIntention.magnitude > MovementDeadZoneMagnitude;
         public Vector2 MoveIntention { get; private set; }
 
-        public bool HasTurnIntention => TurnIntention.eulerAngles.z > TurnDeadZoneAngle;
+        public bool HasTurnIntention => _data.UseDirectMovement || 
+                                        TurnIntention.eulerAngles.z > TurnDeadZoneAngle;
+
         public Quaternion TurnIntention { get; private set; }
 
         public MovementDataComponent(IMovementData data)

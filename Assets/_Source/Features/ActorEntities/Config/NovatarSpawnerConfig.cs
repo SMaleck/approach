@@ -10,7 +10,7 @@ namespace _Source.Features.ActorEntities.Config
         [SerializeField] private float _spawnIntervalSeconds;
         public float SpawnIntervalSeconds => _spawnIntervalSeconds;
 
-        [Range(1, 100)]
+        [Range(0, 100)]
         [SerializeField] private int _maxActiveSpawns;
         public float MaxActiveSpawns => _maxActiveSpawns;
 

@@ -1,16 +1,13 @@
 ﻿using _Source.Features.Actors;
-using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
 using _Source.Features.UserInput;
 using _Source.Features.UserInput.Data;
-using _Source.Util;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
 namespace _Source.Features.Movement
 {
-    // ToDo V1 Fix drifting
     public class InputMovementController : AbstractMovementController
     {
         public class Factory : PlaceholderFactory<IActorStateModel, InputMovementController> { }
@@ -59,7 +56,7 @@ namespace _Source.Features.Movement
             var verticalAxis = Input.GetAxisRaw(AxisNameVertical);
 
             var inputVector = new Vector2(horizontalAxis, verticalAxis);
-            
+
             ProcessInputVector(inputVector);
         }
 
@@ -115,14 +112,7 @@ namespace _Source.Features.Movement
         {
             MovementDataComponent.SetMovementIntention(input);
 
-            if (input.magnitude > 0)
-            {
-                UnityEngine.Debug.LogWarning($"I {input} | P {TransformDataComponent.Position}");
-            }
-
-            // ToDo V1 Vector2.Zero is a quick hack, need the actual values of the entity
             var turnIntention = Quaternion.LookRotation(Vector3.forward, input);
-
             MovementDataComponent.SetTurnIntention(turnIntention);
         }
     }
