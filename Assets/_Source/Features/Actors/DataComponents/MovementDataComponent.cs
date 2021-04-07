@@ -38,9 +38,13 @@ namespace _Source.Features.Actors.DataComponents
             UpdateMovementSpeed();
         }
 
-        public void ResetIntentions()
+        public void ResetMoveIntention()
         {
             MoveIntention = Vector2.zero;
+        }
+
+        public void ResetTurnIntention()
+        {
             TurnIntention = Quaternion.identity;
         }
 

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: UserInputConfig
   m_EditorClassIdentifier: 
   _virtualJoystickMaxMagnitude: 115
+  _deadZone: 0.2

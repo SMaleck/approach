@@ -1,4 +1,5 @@
-﻿using _Source.Features.Actors;
+﻿using System;
+using _Source.Features.Actors;
 using _Source.Features.GameRound;
 using _Source.Features.UserInput;
 using _Source.Features.UserInput.Data;
@@ -33,7 +34,7 @@ namespace _Source.Features.Movement
             _userInputConfig = userInputConfig;
             _pauseStateModel = pauseStateModel;
 
-            Observable.EveryUpdate()
+            Observable.EveryFixedUpdate()
                 .Subscribe(_ => OnUpdate())
                 .AddTo(Disposer);
         }
@@ -42,7 +43,7 @@ namespace _Source.Features.Movement
         {
             if (_pauseStateModel.IsPaused.Value)
             {
-                MovementDataComponent.ResetIntentions();
+                MovementDataComponent.ResetMoveIntention();
                 return;
             }
 
@@ -52,10 +53,9 @@ namespace _Source.Features.Movement
 
         private void TrackKeyInput()
         {
-            var horizontalAxis = Input.GetAxisRaw(AxisNameHorizontal);
-            var verticalAxis = Input.GetAxisRaw(AxisNameVertical);
-
-            var inputVector = new Vector2(horizontalAxis, verticalAxis);
+            var inputVector = new Vector2(
+                Input.GetAxisRaw(AxisNameHorizontal), 
+                Input.GetAxisRaw(AxisNameVertical));
 
             ProcessInputVector(inputVector);
         }
@@ -110,10 +110,21 @@ namespace _Source.Features.Movement
 
         private void ProcessInputVector(Vector3 input)
         {
+            if (!IsProcessable(input))
+            {
+                return;
+            }
+
             MovementDataComponent.SetMovementIntention(input);
 
             var turnIntention = Quaternion.LookRotation(Vector3.forward, input);
             MovementDataComponent.SetTurnIntention(turnIntention);
+        }
+
+        private bool IsProcessable(Vector2 input)
+        {
+            return Math.Abs(input.x) <= _userInputConfig.DeadZone &&
+                   Math.Abs(input.y) <= _userInputConfig.DeadZone;
         }
     }
 }

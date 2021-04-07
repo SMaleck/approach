@@ -27,7 +27,7 @@ namespace _Source.Features.ActorEntities.Components
             HandleMoveIntention();
             HandleTurnIntention();
 
-            _movementDataComponent.ResetIntentions();
+            _movementDataComponent.ResetMoveIntention();
         }
 
         private void HandleMoveIntention()
@@ -51,7 +51,7 @@ namespace _Source.Features.ActorEntities.Components
             }
 
             var turnRotation = _movementDataComponent.TurnIntention;
-            
+
             // ToDo V2 TurnSpeed is applied in a wrong way, as it will be clamped here to [0, 1]
             // Currently looks ok, but higher values may not have the desired effect
             var rotation = Quaternion.Slerp(

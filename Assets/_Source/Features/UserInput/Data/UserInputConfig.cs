@@ -8,5 +8,8 @@ namespace _Source.Features.UserInput.Data
     {
         [SerializeField] private float _virtualJoystickMaxMagnitude;
         public float VirtualJoystickMaxMagnitude => _virtualJoystickMaxMagnitude;
+
+        [SerializeField] private float _deadZone;
+        public float DeadZone => _deadZone;
     }
 }
