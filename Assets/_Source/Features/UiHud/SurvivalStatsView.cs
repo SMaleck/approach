@@ -1,6 +1,6 @@
 ﻿using _Source.Features.ActorEntities.Avatar;
 using _Source.Features.Actors.DataComponents;
-using _Source.Features.GameRound;
+using _Source.Features.GameRound.Duration;
 using _Source.Services.Texts;
 using _Source.Util;
 using TMPro;
@@ -17,24 +17,16 @@ namespace _Source.Features.UiHud
         [SerializeField] private TextMeshProUGUI _survivalTimeText;
         [SerializeField] private TextMeshProUGUI _healthText;
 
-        private IAvatarLocator _avatarLocator;
-        private IGameRoundStateModel _gameRoundStateModel;
-        private HealthDataComponent _healthDataComponent;
+        [Inject] private IAvatarLocator _avatarLocator;
+        [Inject] private IGameRoundDurationModel _gameRoundDurationModel;
 
-        [Inject]
-        private void Inject(
-            IAvatarLocator avatarLocator,
-            IGameRoundStateModel gameRoundStateModel)
-        {
-            _avatarLocator = avatarLocator;
-            _gameRoundStateModel = gameRoundStateModel;
-        }
+        private HealthDataComponent _healthDataComponent;
 
         public void Initialize()
         {
             _healthDataComponent = _avatarLocator.AvatarActor.Get<HealthDataComponent>();
 
-            _gameRoundStateModel.RemainingSeconds
+            _gameRoundDurationModel.RemainingSeconds
                 .Subscribe(OnRemainingSecondsChanged)
                 .AddTo(Disposer);
 

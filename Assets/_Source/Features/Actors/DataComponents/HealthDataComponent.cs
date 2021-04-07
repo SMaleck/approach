@@ -1,5 +1,5 @@
-﻿using System;
-using _Source.Features.Actors.Data;
+﻿using _Source.Features.Actors.Data;
+using System;
 using UniRx;
 using Zenject;
 
@@ -11,23 +11,26 @@ namespace _Source.Features.Actors.DataComponents
 
         private readonly IHealthData _healthData;
 
+        public int MaxHealth => _healthData.MaxHealth;
+
         private readonly ReactiveProperty<int> _health;
         public IReadOnlyReactiveProperty<int> Health => _health;
 
         public IReadOnlyReactiveProperty<double> RelativeHealth { get; }
-
         public IReadOnlyReactiveProperty<bool> IsAlive { get; }
 
         public HealthDataComponent(IHealthData healthData)
         {
             _healthData = healthData;
-            _health = new ReactiveProperty<int>(healthData.MaxHealth).AddTo(Disposer);
+            _health = new ReactiveProperty<int>(MaxHealth).AddTo(Disposer);
 
-            RelativeHealth = _health.Select(health => (double)health / (double)_healthData.MaxHealth)
+            RelativeHealth = _health
+                .Select(health => (double)health / (double)MaxHealth)
                 .ToReadOnlyReactiveProperty()
                 .AddTo(Disposer);
 
-            IsAlive = _health.Select(health => health > 0)
+            IsAlive = _health
+                .Select(health => health > 0)
                 .ToReadOnlyReactiveProperty()
                 .AddTo(Disposer);
         }
@@ -51,7 +54,7 @@ namespace _Source.Features.Actors.DataComponents
 
         public void Reset()
         {
-            SetHealth(_healthData.MaxHealth);
+            SetHealth(MaxHealth);
         }
 
         public void ReceiveDamage(int damageAmount)

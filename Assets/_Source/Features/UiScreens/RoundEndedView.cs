@@ -20,17 +20,17 @@ namespace _Source.Features.UiScreens
         [SerializeField] private Button _goToMenuButton;
         [SerializeField] private TextMeshProUGUI _goToMenuButtonText;
 
-        private GameRoundController _gameRoundController;
+        private GameRoundStateController _gameRoundStateController;
         private IGameRoundStateModel _gameRoundStateModel;
         private ISceneManagementController _sceneManagementController;
 
         [Inject]
         private void Inject(
-            GameRoundController gameRoundController,
+            GameRoundStateController gameRoundStateController,
             IGameRoundStateModel gameRoundStateModel,
             ISceneManagementController sceneManagementController)
         {
-            _gameRoundController = gameRoundController;
+            _gameRoundStateController = gameRoundStateController;
             _gameRoundStateModel = gameRoundStateModel;
             _sceneManagementController = sceneManagementController;
         }
@@ -42,7 +42,7 @@ namespace _Source.Features.UiScreens
                 .AddTo(Disposer);
 
             OnOpened
-                .Subscribe(_ => _gameRoundController.PauseRound(true))
+                .Subscribe(_ => _gameRoundStateController.PauseRound(true))
                 .AddTo(Disposer);
 
             _restartButton.OnClickAsObservable()

@@ -2,7 +2,6 @@
 using _Source.Features.Actors;
 using _Source.Features.Actors.Creation;
 using _Source.Features.Movement;
-using _Source.Features.UserInput;
 using _Source.Util;
 using UniRx;
 using Zenject;
@@ -19,6 +18,14 @@ namespace _Source.Features.ActorEntities.Avatar
 
         // ToDo V2 This can probably be exposed cleaner
         public IActorStateModel AvatarActor { get; private set; }
+        
+        private readonly IReactiveProperty<bool> _isAvatarSpawned;
+        public IReadOnlyReactiveProperty<bool> IsAvatarSpawned => _isAvatarSpawned;
+
+        public AvatarSpawner()
+        {
+            _isAvatarSpawned = new ReactiveProperty<bool>().AddTo(Disposer);
+        }
 
         public void Initialize()
         {
@@ -33,6 +40,8 @@ namespace _Source.Features.ActorEntities.Avatar
 
             _userInputControllerFactory
                 .Create(AvatarActor);
+
+            _isAvatarSpawned.Value = true;
         }
     }
 }

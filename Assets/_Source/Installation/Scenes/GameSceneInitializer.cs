@@ -12,7 +12,7 @@ namespace _Source.Installation.Scenes
     {
         [Inject] private ViewPrefabsConfig _viewPrefabsConfig;
         [Inject] private IViewManagementRegistrar _viewManagementRegistrar;
-        [Inject] private GameRoundController _gameRoundController;
+        [Inject] private GameRoundStateController _gameRoundStateController;
 
         [Inject] private HudView.Factory _hudViewFactory;
         [Inject] private PauseView.Factory _pauseViewFactory;
@@ -50,7 +50,7 @@ namespace _Source.Installation.Scenes
                 .Create(_viewPrefabsConfig.VirtualJoystickViewPrefab)
                 .Initialize();
 
-            _gameRoundController.StartRound();
+            _gameRoundStateController.StartRound();
         }
     }
 }

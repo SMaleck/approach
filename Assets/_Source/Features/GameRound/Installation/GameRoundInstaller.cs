@@ -1,4 +1,5 @@
-﻿using _Source.Util;
+﻿using _Source.Features.GameRound.Duration;
+using _Source.Util;
 using Zenject;
 
 namespace _Source.Features.GameRound.Installation
@@ -7,8 +8,13 @@ namespace _Source.Features.GameRound.Installation
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<GameRoundModel>().AsSingleNonLazy();
-            Container.BindInterfacesAndSelfTo<GameRoundController>().AsSingleNonLazy();
+            Container.BindInterfacesAndSelfTo<GameRoundStateModel>().AsSingleNonLazy();
+            Container.BindInterfacesAndSelfTo<GameRoundStateController>().AsSingleNonLazy();
+
+            Container.BindInterfacesAndSelfTo<GameRoundDurationModel>().AsSingleNonLazy();
+            Container.BindInterfacesAndSelfTo<GameRoundDurationController>().AsSingleNonLazy();
+            
+            Container.BindInterfacesAndSelfTo<GameRoundEndController>().AsSingleNonLazy();
         }
     }
 }

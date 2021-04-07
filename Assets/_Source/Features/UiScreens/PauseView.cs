@@ -28,17 +28,17 @@ namespace _Source.Features.UiScreens
         [SerializeField] private Button _goToTitleButton;
         [SerializeField] private TextMeshProUGUI _goToTitleButtonText;
 
-        private GameRoundController _gameRoundController;
+        private GameRoundStateController _gameRoundStateController;
         private ISceneManagementController _sceneManagementController;
         private IViewManagementController _viewManagementController;
 
         [Inject]
         private void Inject(
-            GameRoundController gameRoundController,
+            GameRoundStateController gameRoundStateController,
             ISceneManagementController sceneManagementController,
             IViewManagementController viewManagementController)
         {
-            _gameRoundController = gameRoundController;
+            _gameRoundStateController = gameRoundStateController;
             _sceneManagementController = sceneManagementController;
             _viewManagementController = viewManagementController;
         }
@@ -58,11 +58,11 @@ namespace _Source.Features.UiScreens
                 .AddTo(Disposer);
 
             OnOpened
-                .Subscribe(_ => _gameRoundController.PauseRound(true))
+                .Subscribe(_ => _gameRoundStateController.PauseRound(true))
                 .AddTo(Disposer);
 
             OnClosed
-                .Subscribe(_ => _gameRoundController.PauseRound(false))
+                .Subscribe(_ => _gameRoundStateController.PauseRound(false))
                 .AddTo(Disposer);
 
             Localize();            

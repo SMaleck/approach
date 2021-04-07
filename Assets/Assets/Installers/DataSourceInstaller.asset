@@ -21,3 +21,5 @@ MonoBehaviour:
   _rangeSensorDataSource: {fileID: 11400000, guid: 17477aa0aa371e646a2c2a0bb332e132,
     type: 2}
   _wanderDataSource: {fileID: 11400000, guid: b618965a64411844891628e18e65741e, type: 2}
+  _gameRoundDataSource: {fileID: 11400000, guid: 2075c7caaaf4298478cdcab89c49c292,
+    type: 2}
