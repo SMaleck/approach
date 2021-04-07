@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actorEntitiesConfig: {fileID: 11400000, guid: 2c17190c0fb7f4e4f8a2fc6ea3fef41a,
     type: 2}
-  _novatarConfig: {fileID: 0}
   _viewPrefabsConfig: {fileID: 11400000, guid: e8ceef6b704ae09489c169c4f91abe71, type: 2}
   _novatarSpawnerConfig: {fileID: 11400000, guid: 156184735fd8c6a4bbf8da7c79b5e9ca,
     type: 2}
   _behaviourTreeConfig: {fileID: 11400000, guid: 1ba9013501aafb448a8766299ae7541d,
     type: 2}
   _userInputConfig: {fileID: 11400000, guid: e5492b1ed7d406a4ba58e669b8c9cd8f, type: 2}
+  _savegamesConfig: {fileID: 11400000, guid: 396771e0d07356a45b8291ec66b38ce0, type: 2}

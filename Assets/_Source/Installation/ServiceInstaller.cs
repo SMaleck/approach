@@ -12,6 +12,7 @@ namespace _Source.Installation
             Container.BindInterfacesTo<RandomNumberService>().AsSingleNonLazy();
 
             SavegameServiceInstaller.Install(Container);
+            SavegameInstaller.Install(Container);
         }
     }
 }

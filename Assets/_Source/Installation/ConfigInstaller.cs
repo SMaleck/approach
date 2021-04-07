@@ -3,6 +3,7 @@ using _Source.Features.ActorBehaviours.Data;
 using _Source.Features.ActorEntities.Config;
 using _Source.Features.UserInput.Data;
 using _Source.Installation.Data;
+using Packages.SavegameSystem.Config;
 using UnityEngine;
 using Zenject;
 
@@ -16,6 +17,7 @@ namespace _Source.Installation
         [SerializeField] private NovatarSpawnerConfig _novatarSpawnerConfig;
         [SerializeField] private BehaviourTreeConfig _behaviourTreeConfig;
         [SerializeField] private UserInputConfig _userInputConfig;
+        [SerializeField] private SavegamesConfig _savegamesConfig;
 
         public override void InstallBindings()
         {
@@ -24,6 +26,7 @@ namespace _Source.Installation
             Container.BindInstance(_novatarSpawnerConfig);
             Container.BindInstance(_behaviourTreeConfig);
             Container.BindInstance(_userInputConfig);
+            Container.BindInterfacesTo<SavegamesConfig>().FromInstance(_savegamesConfig);
         }
     }
 }

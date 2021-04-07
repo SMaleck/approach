@@ -5,15 +5,14 @@ using UniRx;
 
 namespace _Source.Services.SavegameSystem.Models
 {
-    public class AbstractSavegame : AbstractDisposable, ISavegame
+    public abstract class AbstractSavegame : AbstractDisposable, ISavegame
     {
-        protected static ReactiveProperty<T> CreateBoundProperty<T>(
+        protected IReactiveProperty<T> CreateBoundProperty<T>(
             T initialValue,
-            Action<T> setter,
-            CompositeDisposable disposer)
+            Action<T> setter)
         {
-            var rxProperty = new ReactiveProperty<T>(initialValue).AddTo(disposer);
-            rxProperty.Subscribe(setter).AddTo(disposer);
+            var rxProperty = new ReactiveProperty<T>(initialValue).AddTo(Disposer);
+            rxProperty.Subscribe(setter).AddTo(Disposer);
 
             return rxProperty;
         }

@@ -6,5 +6,6 @@ namespace _Source.Features.PlayerStatistics.Savegame
     [Serializable]
     public class PlayerStatisticsSavegameData : ISavegameData
     {
+        public int RoundsPlayed;
     }
 }

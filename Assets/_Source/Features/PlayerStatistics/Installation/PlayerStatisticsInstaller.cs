@@ -8,6 +8,9 @@ namespace _Source.Features.PlayerStatistics.Installation
         {
             Container.BindInterfacesAndSelfTo<GameRoundStatisticsModel>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameRoundStatisticsController>().AsSingle().NonLazy();
+
+            Container.BindInterfacesTo<PlayerStatisticsModel>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<PlayerStatisticsController>().AsSingle().NonLazy();
         }
     }
 }
