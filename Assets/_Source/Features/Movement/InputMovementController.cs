@@ -34,7 +34,7 @@ namespace _Source.Features.Movement
             _userInputConfig = userInputConfig;
             _pauseStateModel = pauseStateModel;
 
-            Observable.EveryFixedUpdate()
+            Observable.EveryUpdate()
                 .Subscribe(_ => OnUpdate())
                 .AddTo(Disposer);
         }
@@ -110,7 +110,7 @@ namespace _Source.Features.Movement
 
         private void ProcessInputVector(Vector3 input)
         {
-            if (!IsProcessable(input))
+            if (IsBelowDeadZone(input))
             {
                 return;
             }
@@ -121,7 +121,7 @@ namespace _Source.Features.Movement
             MovementDataComponent.SetTurnIntention(turnIntention);
         }
 
-        private bool IsProcessable(Vector2 input)
+        private bool IsBelowDeadZone(Vector2 input)
         {
             return Math.Abs(input.x) <= _userInputConfig.DeadZone &&
                    Math.Abs(input.y) <= _userInputConfig.DeadZone;
