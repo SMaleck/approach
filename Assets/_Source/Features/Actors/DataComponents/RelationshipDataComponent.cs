@@ -9,14 +9,14 @@ namespace _Source.Features.Actors.DataComponents
     {
         public class Factory : PlaceholderFactory<RelationshipDataComponent> { }
 
-        private readonly PlayerStatisticsController _playerStatisticsController;
+        private readonly GameRoundStatisticsController _gameRoundStatisticsController;
 
         private readonly ReactiveProperty<EntityState> _relationship;
         public IReadOnlyReactiveProperty<EntityState> Relationship => _relationship;
 
-        public RelationshipDataComponent(PlayerStatisticsController playerStatisticsController)
+        public RelationshipDataComponent(GameRoundStatisticsController gameRoundStatisticsController)
         {
-            _playerStatisticsController = playerStatisticsController;
+            _gameRoundStatisticsController = gameRoundStatisticsController;
             _relationship = new ReactiveProperty<EntityState>()
                 .AddTo(Disposer);
 
@@ -25,7 +25,7 @@ namespace _Source.Features.Actors.DataComponents
 
         public void SetRelationship(EntityState value)
         {
-            _playerStatisticsController.RegisterRelationshipSwitch(
+            _gameRoundStatisticsController.RegisterRelationshipSwitch(
                 _relationship.Value, 
                 value);
 

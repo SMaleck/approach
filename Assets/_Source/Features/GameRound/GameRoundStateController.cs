@@ -1,6 +1,7 @@
 ﻿using _Source.Features.ActorEntities.Avatar;
 using _Source.Features.Actors.DataComponents;
 using _Source.Util;
+using Packages.SavegameSystem;
 using UniRx;
 using Zenject;
 
@@ -11,13 +12,16 @@ namespace _Source.Features.GameRound
     {
         private readonly GameRoundStateModel _gameRoundStateModel;
         private readonly IAvatarLocator _avatarLocator;
+        private readonly ISavegameService _savegameService;
 
         public GameRoundStateController(
             GameRoundStateModel gameRoundStateModel,
-            IAvatarLocator avatarLocator)
+            IAvatarLocator avatarLocator,
+            ISavegameService savegameService)
         {
             _gameRoundStateModel = gameRoundStateModel;
             _avatarLocator = avatarLocator;
+            _savegameService = savegameService;
 
             PauseRound(true);
         }
@@ -47,6 +51,8 @@ namespace _Source.Features.GameRound
         {
             PauseRound(false);
             _gameRoundStateModel.PublishOnRoundEnded();
+
+            _savegameService.Save();
         }
     }
 }

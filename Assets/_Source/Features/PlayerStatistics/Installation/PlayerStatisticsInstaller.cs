@@ -6,8 +6,8 @@ namespace _Source.Features.PlayerStatistics.Installation
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<PlayerStatisticsModel>().AsSingle();
-            Container.BindInterfacesAndSelfTo<PlayerStatisticsController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<GameRoundStatisticsModel>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameRoundStatisticsController>().AsSingle().NonLazy();
         }
     }
 }

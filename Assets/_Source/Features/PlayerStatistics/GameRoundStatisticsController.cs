@@ -3,13 +3,13 @@ using _Source.Util;
 
 namespace _Source.Features.PlayerStatistics
 {
-    public class PlayerStatisticsController : AbstractDisposable
+    public class GameRoundStatisticsController : AbstractDisposable
     {
-        private readonly PlayerStatisticsModel _playerStatisticsModel;
+        private readonly IGameRoundStatisticsModel _gameRoundStatisticsModel;
 
-        public PlayerStatisticsController(PlayerStatisticsModel playerStatisticsModel)
+        public GameRoundStatisticsController(IGameRoundStatisticsModel gameRoundStatisticsModel)
         {
-            _playerStatisticsModel = playerStatisticsModel;
+            _gameRoundStatisticsModel = gameRoundStatisticsModel;
         }
 
         public void RegisterRelationshipSwitch(EntityState from, EntityState to)
@@ -17,19 +17,19 @@ namespace _Source.Features.PlayerStatistics
             switch (to)
             {
                 case EntityState.Neutral:
-                    _playerStatisticsModel.IncrementNeutral();
+                    _gameRoundStatisticsModel.IncrementNeutral();
                     if (from == EntityState.Friend)
                     {
-                        _playerStatisticsModel.IncrementFriendsLost();
+                        _gameRoundStatisticsModel.IncrementFriendsLost();
                     }
                     break;
 
                 case EntityState.Enemy:
-                    _playerStatisticsModel.IncrementEnemies();
+                    _gameRoundStatisticsModel.IncrementEnemies();
                     break;
 
                 case EntityState.Friend:
-                    _playerStatisticsModel.IncrementFriends();
+                    _gameRoundStatisticsModel.IncrementFriends();
                     break;
             }
         }
