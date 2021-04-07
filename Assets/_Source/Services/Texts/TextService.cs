@@ -1,6 +1,7 @@
 ﻿using _Source.App;
 using System;
 using System.Globalization;
+using _Source.Services.Texts.Utility;
 using UnityEngine;
 
 namespace _Source.Services.Texts
@@ -62,14 +63,28 @@ namespace _Source.Services.Texts
             return TextData.GetLanguageText(language);
         }
 
-        public static string TutorialStepOne()
+        public static string HowToControls()
         {
-            return TextData.GetText(TextKey.TutorialStepOne);
+            return TextData.GetText(TextKey.HowToPlayControls)
+                .ReplaceTags();
         }
 
-        public static string TutorialStepTwo()
+        public static string HowToStep1()
         {
-            return TextData.GetText(TextKey.TutorialStepTwo);
+            return TextData.GetText(TextKey.HowToPlayStep1)
+                .ReplaceTags();
+        }
+
+        public static string HowToStep2()
+        {
+            return TextData.GetText(TextKey.HowToPlayStep2)
+                .ReplaceTags();
+        }
+        
+        public static string HowToStep3()
+        {
+            return TextData.GetText(TextKey.HowToPlayStep3)
+                .ReplaceTags();
         }
 
         public static string Pause()

@@ -15,12 +15,16 @@ namespace _Source.Features.UiScreens
 
         [Header("Texts")]
         [SerializeField] private TextMeshProUGUI _titleText;
-        [SerializeField] private TextMeshProUGUI _tutorialStepOne;
-        [SerializeField] private TextMeshProUGUI _tutorialStepTwo;
+        [SerializeField] private TextMeshProUGUI _howToControls;
+        [SerializeField] private TextMeshProUGUI _howToStep1;
+        [SerializeField] private TextMeshProUGUI _howToStep2;
+        [SerializeField] private TextMeshProUGUI _howToStep3;
 
         [Header("Parents")]
-        [SerializeField] private CanvasGroup _tutorialStepOneParent;
-        [SerializeField] private CanvasGroup _tutorialStepTwoParent;
+        [SerializeField] private CanvasGroup _howToControlsParent;
+        [SerializeField] private CanvasGroup _howToStep1Parent;
+        [SerializeField] private CanvasGroup _howToStep2Parent;
+        [SerializeField] private CanvasGroup _howToStep3Parent;
 
         [Header("Fading")]
         [SerializeField] private float _stepFadeInSeconds;
@@ -41,13 +45,19 @@ namespace _Source.Features.UiScreens
 
         private Tween CreateTutorialTween()
         {
-            _tutorialStepOneParent.alpha = 0;
-            _tutorialStepTwoParent.alpha = 0;
+            _howToControlsParent.alpha = 0;
+            _howToStep1Parent.alpha = 0;
+            _howToStep2Parent.alpha = 0;
+            _howToStep3Parent.alpha = 0;
 
             var tween = DOTween.Sequence()
-                .Append(_tutorialStepOneParent.DOFade(1, _stepFadeInSeconds))
+                .Append(_howToStep1Parent.DOFade(1, _stepFadeInSeconds))
                 .AppendInterval(_stepFadeInDelaySeconds)
-                .Append(_tutorialStepTwoParent.DOFade(1, _stepFadeInSeconds))
+                .Append(_howToControlsParent.DOFade(1, _stepFadeInSeconds))
+                .AppendInterval(_stepFadeInDelaySeconds)
+                .Append(_howToStep2Parent.DOFade(1, _stepFadeInSeconds))
+                .AppendInterval(_stepFadeInDelaySeconds)
+                .Append(_howToStep3Parent.DOFade(1, _stepFadeInSeconds))
                 .Pause()
                 .SetAutoKill(false);
 
@@ -59,12 +69,13 @@ namespace _Source.Features.UiScreens
             _tutorialTween.Restart();
         }
 
-        // ToDo v1 Add Controls explanation
         public void Localize()
         {
             _titleText.text = TextService.HowToPlay();
-            _tutorialStepOne.text = TextService.TutorialStepOne();
-            _tutorialStepTwo.text = TextService.TutorialStepTwo();
+            _howToControls.text = TextService.HowToControls();
+            _howToStep1.text = TextService.HowToStep1();
+            _howToStep2.text = TextService.HowToStep2();
+            _howToStep3.text = TextService.HowToStep3();
         }
     }
 }
