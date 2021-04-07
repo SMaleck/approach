@@ -1,0 +1,18 @@
+{
+    "name": "SavegameSystem",
+    "rootNamespace": "",
+    "references": [
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:2d3e4b5ca16660e4cb1a253a229fc8f7",
+        "GUID:937786f3e2df9d94fb3ca178f4c29c50"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

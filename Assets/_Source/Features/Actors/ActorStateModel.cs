@@ -1,10 +1,10 @@
-﻿using _Source.App;
-using _Source.Features.Actors.DataComponents;
+﻿using _Source.Features.Actors.DataComponents;
+using _Source.Features.Actors.DataSystems;
 using _Source.Util;
+using Packages.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using _Source.Features.Actors.DataSystems;
 using UniRx;
 using Zenject;
 
@@ -49,7 +49,7 @@ namespace _Source.Features.Actors
                 return component as T;
             }
 
-            Logger.Warn($"No DataComponent of type [{(typeof(T).Name)}] found");
+            StaticLogger.Warn($"No DataComponent of type [{(typeof(T).Name)}] found");
             return null;
         }
 

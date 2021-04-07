@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace _Source.App
+namespace Packages.Logging
 {
-    public static class Logger
+    public static class StaticLogger
     {
         private static string BuildMessage(object payload = null, string sourceFilePath = "")
         {

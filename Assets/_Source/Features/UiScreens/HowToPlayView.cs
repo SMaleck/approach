@@ -59,6 +59,7 @@ namespace _Source.Features.UiScreens
             _tutorialTween.Restart();
         }
 
+        // ToDo v1 Add Controls explanation
         public void Localize()
         {
             _titleText.text = TextService.HowToPlay();
