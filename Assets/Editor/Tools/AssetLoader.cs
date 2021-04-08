@@ -5,7 +5,7 @@ namespace Assets.Editor.Tools
 {
     public static class AssetLoader
     {
-        public static T LoadAsset<T>() where T : UnityEngine.Object
+        public static T LoadByType<T>() where T : UnityEngine.Object
         {
             var path = GetAssetPath<T>();
             return AssetDatabase.LoadAssetAtPath<T>(path);

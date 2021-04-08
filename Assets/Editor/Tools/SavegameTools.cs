@@ -12,7 +12,7 @@ namespace Assets.Editor.Tools
         [MenuItem(Menu + "Clear")]
         private static void Clear()
         {
-            var savegameConfig = AssetLoader.LoadAsset<SavegamesConfig>();
+            var savegameConfig = AssetLoader.LoadByType<SavegamesConfig>();
 
             var filePath = Path.Combine(
                 UnityEngine.Application.persistentDataPath,
