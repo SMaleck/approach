@@ -18,7 +18,6 @@ namespace _Source.Installation.Scenes
         [Inject] private HudView.Factory _hudViewFactory;
         [Inject] private PauseView.Factory _pauseViewFactory;
         [Inject] private SettingsView.Factory _settingsViewFactory;
-        [Inject] private SurvivalStatsView.Factory _survivalStatsViewFactory;
         [Inject] private RoundEndedView.Factory _roundEndedViewFactory;
         [Inject] private VirtualJoystickView.Factory _virtualJoystickViewFactory;
         [Inject] private TutorialView.Factory _tutorialViewFactory;
@@ -38,10 +37,6 @@ namespace _Source.Installation.Scenes
                 .Create(_viewPrefabsConfig.SettingsViewPrefab);
             settingsView.Initialize();
             _viewManagementRegistrar.RegisterView(ViewType.Settings, settingsView);
-
-            _survivalStatsViewFactory
-                .Create(_viewPrefabsConfig.SurvivalStatsViewPrefab)
-                .Initialize();
 
             var roundEndView = _roundEndedViewFactory
                 .Create(_viewPrefabsConfig.RoundEndedViewPrefab);

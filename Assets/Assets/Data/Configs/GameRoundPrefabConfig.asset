@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68f36ff0b0d5832439e78d989aa78e7f, type: 3}
+  m_Name: GameRoundPrefabConfig
+  m_EditorClassIdentifier: 
+  _gameRoundDurationViewPrefab: {fileID: 1977730218519973123, guid: ece5b05dc5658214581a0eba4887f2c3,
+    type: 3}

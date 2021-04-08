@@ -12,6 +12,7 @@ namespace _Source.Features.Tutorials
         private readonly ITutorialSavegame _savegame;
 
         public TutorialId Id => _savegame.Id;
+        public bool IsCompleted => State.Value == TutorialState.Completed;
         public IReadOnlyReactiveProperty<TutorialState> State => _savegame.State;
 
         public TutorialModel(ITutorialSavegame savegame)

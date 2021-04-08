@@ -23,3 +23,5 @@ MonoBehaviour:
   _savegamesConfig: {fileID: 11400000, guid: 396771e0d07356a45b8291ec66b38ce0, type: 2}
   _tutorialsPrefabConfig: {fileID: 11400000, guid: 281ca9053416bcb4880723b5508763d1,
     type: 2}
+  _gameRoundPrefabConfig: {fileID: 11400000, guid: 38151ddfdf7dd1143a9b65dee81b5b4d,
+    type: 2}

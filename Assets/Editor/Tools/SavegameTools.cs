@@ -12,16 +12,28 @@ namespace Assets.Editor.Tools
         [MenuItem(Menu + "Clear")]
         private static void Clear()
         {
-            var savegameConfig = AssetLoader.LoadByType<SavegamesConfig>();
-
-            var filePath = Path.Combine(
-                UnityEngine.Application.persistentDataPath,
-                savegameConfig.Filename);
+            var filePath = GetFilePath();
 
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
             }
+        }
+
+        [MenuItem(Menu + "Open Folder")]
+        private static void GoTo()
+        {
+            var filePath = GetFilePath();
+            EditorUtility.RevealInFinder(filePath);
+        }
+
+        private static string GetFilePath()
+        {
+            var savegameConfig = AssetLoader.LoadByType<SavegamesConfig>();
+
+            return Path.Combine(
+                UnityEngine.Application.persistentDataPath,
+                savegameConfig.Filename);
         }
     }
 }

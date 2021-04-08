@@ -116,10 +116,12 @@ namespace _Source.Services.Texts
                     return HowToControls();
 
                 case TutorialId.Life:
-                    return TextData.GetText(TextKey.TutorialLife);
+                    return TextData.GetText(TextKey.TutorialLife)
+                        .ReplaceTags();
 
                 case TutorialId.Novatars:
-                    return TextData.GetText(TextKey.TutorialNovatars);
+                    return TextData.GetText(TextKey.TutorialNovatars)
+                        .ReplaceTags();
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(id), id, null);

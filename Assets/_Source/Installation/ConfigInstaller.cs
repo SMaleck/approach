@@ -1,6 +1,7 @@
 ﻿using _Source.App;
 using _Source.Features.ActorBehaviours.Data;
 using _Source.Features.ActorEntities.Config;
+using _Source.Features.GameRound.Config;
 using _Source.Features.Tutorials.Config;
 using _Source.Features.UserInput.Data;
 using _Source.Installation.Data;
@@ -20,6 +21,7 @@ namespace _Source.Installation
         [SerializeField] private UserInputConfig _userInputConfig;
         [SerializeField] private SavegamesConfig _savegamesConfig;
         [SerializeField] private TutorialsPrefabConfig _tutorialsPrefabConfig;
+        [SerializeField] private GameRoundPrefabConfig _gameRoundPrefabConfig;
 
         public override void InstallBindings()
         {
@@ -30,6 +32,7 @@ namespace _Source.Installation
             Container.BindInstance(_userInputConfig);
             Container.BindInterfacesTo<SavegamesConfig>().FromInstance(_savegamesConfig);
             Container.BindInstance(_tutorialsPrefabConfig);
+            Container.BindInstance(_gameRoundPrefabConfig);
         }
     }
 }

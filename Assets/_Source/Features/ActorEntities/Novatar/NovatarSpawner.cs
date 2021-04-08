@@ -1,4 +1,4 @@
-﻿using _Source.Features.ActorBehaviours;
+﻿using _Source.Features.ActorBehaviours.Creation;
 using _Source.Features.ActorEntities.Config;
 using _Source.Features.Actors.Creation;
 using _Source.Features.Movement;
@@ -6,7 +6,6 @@ using _Source.Features.ScreenSize;
 using _Source.Util;
 using System.Collections.Generic;
 using System.Linq;
-using _Source.Features.ActorBehaviours.Creation;
 using UnityEngine;
 using Zenject;
 
@@ -79,7 +78,7 @@ namespace _Source.Features.ActorEntities.Novatar
                 novatarEntity,
                 actorStateModel,
                 behaviourTree);
-            
+
             _novatarPool.Add(novatarFacade);
             novatarEntity.gameObject.name = $"{nameof(novatarEntity)} [{_novatarPool.Count - 1}]";
 

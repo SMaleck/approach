@@ -28,9 +28,6 @@ namespace _Source.Installation.Data
         [SerializeField] private HudView _hudViewPrefab;
         public HudView HudViewPrefab => _hudViewPrefab;
 
-        [SerializeField] private SurvivalStatsView _survivalStatsViewPrefab;
-        public SurvivalStatsView SurvivalStatsViewPrefab => _survivalStatsViewPrefab;
-
         [SerializeField] private PauseView _pauseViewPrefab;
         public PauseView PauseViewPrefab => _pauseViewPrefab;
 

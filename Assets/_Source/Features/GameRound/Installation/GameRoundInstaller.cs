@@ -13,8 +13,11 @@ namespace _Source.Features.GameRound.Installation
 
             Container.BindInterfacesAndSelfTo<GameRoundDurationModel>().AsSingleNonLazy();
             Container.BindInterfacesAndSelfTo<GameRoundDurationController>().AsSingleNonLazy();
-            
+            Container.BindPrefabFactory<GameRoundDurationView, GameRoundDurationView.Factory>();
+
             Container.BindInterfacesAndSelfTo<GameRoundEndController>().AsSingleNonLazy();
+
+            Container.BindInterfacesAndSelfTo<GameRoundInitializer>().AsSingleNonLazy();
         }
     }
 }

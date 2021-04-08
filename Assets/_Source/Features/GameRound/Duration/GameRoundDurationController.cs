@@ -39,7 +39,8 @@ namespace _Source.Features.GameRound.Duration
         private void Start()
         {
             Observable.Interval(TimeSpan.FromSeconds(1))
-                .Where(_ => !_pauseStateModel.IsPaused.Value)
+                .Where(_ => !_pauseStateModel.IsPaused.Value &&
+                            _gameRoundDurationModel.IsEnabled.Value)
                 .Subscribe(_ => OnTick())
                 .AddTo(Disposer);
 
@@ -52,7 +53,6 @@ namespace _Source.Features.GameRound.Duration
 
         private void OnTick()
         {
-            var seconds = _gameRoundDurationModel.RemainingSeconds.Value - 1;
             _gameRoundDurationModel.Tick();
         }
 

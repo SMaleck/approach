@@ -1,5 +1,4 @@
 ﻿using _Source.Entities.Novatar;
-using _Source.Features.Actors.Data;
 using _Source.Features.Movement.Data;
 using UnityEngine;
 using Zenject;
@@ -25,7 +24,7 @@ namespace _Source.Features.Actors.DataComponents
         public bool HasMoveIntention => MoveIntention.magnitude > MovementDeadZoneMagnitude;
         public Vector2 MoveIntention { get; private set; }
 
-        public bool HasTurnIntention => _data.UseDirectMovement || 
+        public bool HasTurnIntention => _data.UseDirectMovement ||
                                         TurnIntention.eulerAngles.z > TurnDeadZoneAngle;
 
         public Quaternion TurnIntention { get; private set; }
@@ -67,13 +66,13 @@ namespace _Source.Features.Actors.DataComponents
         public void OnRelationshipChanged(EntityState entityState)
         {
             _movementSpeedFactor = _data.GetSpeedFactor(entityState);
-            
+
             UpdateMovementSpeed();
         }
 
         private void UpdateMovementSpeed()
         {
-            MovementSpeed = _data.MovementSpeed * 
+            MovementSpeed = _data.MovementSpeed *
                             _movementSpeedFactor;
         }
     }

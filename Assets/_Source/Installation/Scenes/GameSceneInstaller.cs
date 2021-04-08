@@ -4,6 +4,7 @@ using _Source.Features.ActorEntities.Installation;
 using _Source.Features.Actors;
 using _Source.Features.Actors.Installation;
 using _Source.Features.AvatarRelationships;
+using _Source.Features.FeatureToggles.Installation;
 using _Source.Features.GameRound.Installation;
 using _Source.Features.Movement;
 using _Source.Features.Movement.Installation;
@@ -34,10 +35,10 @@ namespace _Source.Installation.Scenes
             GameRoundInstaller.Install(Container);
             PlayerStatisticsInstaller.Install(Container);
             TutorialsInstaller.Install(Container);
+            FeatureTogglesInstaller.Install(Container);
 
             Container.BindPrefabFactory<HudView, HudView.Factory>();
             Container.BindPrefabFactory<PauseView, PauseView.Factory>();
-            Container.BindPrefabFactory<SurvivalStatsView, SurvivalStatsView.Factory>();
             Container.BindPrefabFactory<RoundEndedView, RoundEndedView.Factory>();
             Container.BindPrefabFactory<VirtualJoystickView, VirtualJoystickView.Factory>();
             Container.BindPrefabFactory<SettingsView, SettingsView.Factory>();

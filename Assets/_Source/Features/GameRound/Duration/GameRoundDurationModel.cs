@@ -1,6 +1,7 @@
 ﻿using _Source.Features.GameRound.Data;
 using _Source.Util;
 using System;
+using _Source.Features.FeatureToggles;
 using UniRx;
 
 namespace _Source.Features.GameRound.Duration
@@ -14,14 +15,26 @@ namespace _Source.Features.GameRound.Duration
         public IReadOnlyReactiveProperty<double> RemainingSeconds => _remainingSeconds;
 
         public IReadOnlyReactiveProperty<bool> IsRunning { get; }
+        public IReadOnlyReactiveProperty<double> Progress { get; }
+
+        public FeatureId FeatureId => FeatureId.GameRoundTime;
+
+        private readonly IReactiveProperty<bool> _isEnabled;
+        public IReadOnlyReactiveProperty<bool> IsEnabled => _isEnabled;
 
         public GameRoundDurationModel(IGameRoundData data)
         {
             _data = data;
             _remainingSeconds = new ReactiveProperty<double>(DurationSeconds).AddTo(Disposer);
+            _isEnabled = new ReactiveProperty<bool>(true).AddTo(Disposer);
 
             IsRunning = _remainingSeconds
                 .Select(seconds => seconds > 0)
+                .ToReadOnlyReactiveProperty()
+                .AddTo(Disposer);
+
+            Progress = _remainingSeconds
+                .Select(seconds => seconds / DurationSeconds)
                 .ToReadOnlyReactiveProperty()
                 .AddTo(Disposer);
         }
@@ -40,6 +53,11 @@ namespace _Source.Features.GameRound.Duration
         {
             var deduction = _data.SecondsPerHP * health;
             SetRemainingSeconds(_remainingSeconds.Value - deduction);
+        }
+
+        public void SetIsEnabled(bool isEnabled)
+        {
+            _isEnabled.Value = isEnabled;
         }
     }
 }

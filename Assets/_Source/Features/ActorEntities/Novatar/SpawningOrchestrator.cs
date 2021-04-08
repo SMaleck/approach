@@ -1,17 +1,21 @@
-﻿using _Source.Util;
+﻿using _Source.Features.ActorEntities.Config;
+using _Source.Features.FeatureToggles;
+using _Source.Util;
 using System;
-using _Source.Features.ActorEntities.Config;
 using UniRx;
 using Zenject;
 
 namespace _Source.Features.ActorEntities.Novatar
 {
-    public class SpawningOrchestrator : AbstractDisposable, IInitializable, IDebugNovatarSpawner
+    public class SpawningOrchestrator : AbstractDisposable, IInitializable, IDebugNovatarSpawner, ITogglableFeature
     {
+        public FeatureId FeatureId => FeatureId.NovatarSpawning;
+
         private readonly NovatarSpawnerConfig _novatarSpawnerConfig;
         private readonly NovatarSpawner _novatarSpawner;
 
-        private bool _isEnabled = true;
+        private readonly IReactiveProperty<bool> _isEnabled;
+        public IReadOnlyReactiveProperty<bool> IsEnabled => _isEnabled;
 
         public SpawningOrchestrator(
             NovatarSpawnerConfig novatarSpawnerConfig,
@@ -19,6 +23,8 @@ namespace _Source.Features.ActorEntities.Novatar
         {
             _novatarSpawnerConfig = novatarSpawnerConfig;
             _novatarSpawner = novatarSpawner;
+
+            _isEnabled = new ReactiveProperty<bool>(true).AddTo(Disposer);
         }
 
         public void Initialize()
@@ -33,7 +39,7 @@ namespace _Source.Features.ActorEntities.Novatar
         {
             var activeCount = _novatarSpawner.GetActiveNovatarCount();
 
-            return _isEnabled &&
+            return IsEnabled.Value &&
                    activeCount < _novatarSpawnerConfig.MaxActiveSpawns;
         }
 
@@ -44,12 +50,17 @@ namespace _Source.Features.ActorEntities.Novatar
 
         void IDebugNovatarSpawner.Pause()
         {
-            _isEnabled = false;
+            SetIsEnabled(false);
         }
 
         void IDebugNovatarSpawner.Resume()
         {
-            _isEnabled = true;
+            SetIsEnabled(true);
+        }
+
+        public void SetIsEnabled(bool isEnabled)
+        {
+            _isEnabled.Value = isEnabled;
         }
     }
 }
