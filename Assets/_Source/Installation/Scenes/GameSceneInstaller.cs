@@ -9,6 +9,7 @@ using _Source.Features.Movement;
 using _Source.Features.Movement.Installation;
 using _Source.Features.PlayerStatistics.Installation;
 using _Source.Features.ScreenSize;
+using _Source.Features.Tutorials.Installation;
 using _Source.Features.UiHud;
 using _Source.Features.UiScreens;
 using _Source.Features.UserInput;
@@ -32,6 +33,7 @@ namespace _Source.Installation.Scenes
             MovementInstaller.Install(Container);
             GameRoundInstaller.Install(Container);
             PlayerStatisticsInstaller.Install(Container);
+            TutorialsInstaller.Install(Container);
 
             Container.BindPrefabFactory<HudView, HudView.Factory>();
             Container.BindPrefabFactory<PauseView, PauseView.Factory>();

@@ -7,7 +7,6 @@ using Zenject;
 
 namespace _Source.Features.GameRound
 {
-    // ToDo V1 Track amount of Relationships and show result
     public class GameRoundStateController : AbstractDisposable, IInitializable
     {
         private readonly GameRoundStateModel _gameRoundStateModel;

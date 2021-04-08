@@ -1,0 +1,17 @@
+{
+    "name": "GameCode.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:bd3e4f9ce8a5d924dabeff3f8fe8f7ba",
+        "GUID:d0b74f71b2af747418bb2e8c57630513"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

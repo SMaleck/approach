@@ -1,4 +1,5 @@
 ﻿using _Source.Features.PlayerStatistics.Savegame;
+using _Source.Features.Tutorials.Savegame;
 using _Source.Services.SavegameSystem.Models;
 using _Source.Util;
 using Packages.SavegameSystem;
@@ -14,8 +15,19 @@ namespace _Source.Services.SavegameSystem.Installation
         {
             var savegameData = _savegameService.Load() as SavegameData;
 
+            BindSavegameFactories();
+
             Container.BindSingleSavegame<PlayerStatisticsSavegame, PlayerStatisticsSavegameData>(
                 savegameData.PlayerStatisticsSavegameData);
+            
+            Container.BindSingleSavegame<TutorialsCollectionSavegame, TutorialsCollectionSavegameData>(
+                savegameData.TutorialsCollectionSavegameData);
+        }
+
+        private void BindSavegameFactories()
+        {
+            Container.BindFactory<TutorialSavegameData, TutorialSavegame, TutorialSavegame.Factory>()
+                .AsSingle();
         }
     }
 }
