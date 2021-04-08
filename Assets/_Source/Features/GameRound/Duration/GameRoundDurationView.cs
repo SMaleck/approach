@@ -1,4 +1,5 @@
 ﻿using _Source.Util;
+using DG.Tweening;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -9,12 +10,16 @@ namespace _Source.Features.GameRound.Duration
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, GameRoundDurationView> { }
 
-        [SerializeField] private Transform _lifeBarParent;
+        [SerializeField] private GameObject _lifeBarParent;
 
         [Inject] private readonly IGameRoundDurationModel _gameRoundDurationModel;
 
         public void Initialize()
         {
+            _gameRoundDurationModel.IsEnabled
+                .Subscribe(_lifeBarParent.SetActive)
+                .AddTo(Disposer);
+
             _gameRoundDurationModel.Progress
                 .Subscribe(OnProgressChanged)
                 .AddTo(Disposer);
@@ -22,7 +27,8 @@ namespace _Source.Features.GameRound.Duration
 
         private void OnProgressChanged(double progress)
         {
-            _lifeBarParent.localScale = new Vector3((float)progress, 1, 1);
+            _lifeBarParent.transform
+                .DOScaleX((float)progress, 0.5f);
         }
     }
 }

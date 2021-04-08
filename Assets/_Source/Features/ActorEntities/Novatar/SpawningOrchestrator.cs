@@ -39,6 +39,7 @@ namespace _Source.Features.ActorEntities.Novatar
         {
             var activeCount = _novatarSpawner.GetActiveNovatarCount();
 
+            // ToDo V1 Only count non-friendly into this
             return IsEnabled.Value &&
                    activeCount < _novatarSpawnerConfig.MaxActiveSpawns;
         }

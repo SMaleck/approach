@@ -255,4 +255,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ba6fbe5b11602439ac01fcbb897ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lifeBarParent: {fileID: 4395092810532182870}
+  _lifeBarParent: {fileID: 2076638322263653216}
