@@ -42,7 +42,7 @@ namespace _Source.Services.SavegameSystem
             return new TutorialSavegameData
             {
                 Id = id,
-                IsCompleted = false
+                State = TutorialState.None
             };
         }
     }

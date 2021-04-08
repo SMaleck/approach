@@ -1,6 +1,7 @@
 ﻿using _Source.App;
 using System;
 using System.Globalization;
+using _Source.Features.Tutorials;
 using _Source.Services.Texts.Utility;
 using UnityEngine;
 
@@ -105,6 +106,24 @@ namespace _Source.Services.Texts
         public static string End()
         {
             return TextData.GetText(TextKey.End);
+        }
+        
+        public static string TutorialDescription(TutorialId id)
+        {
+            switch(id)
+            {
+                case TutorialId.Controls:
+                    return HowToControls();
+
+                case TutorialId.Life:
+                    return TextData.GetText(TextKey.TutorialLife);
+
+                case TutorialId.Novatars:
+                    return TextData.GetText(TextKey.TutorialNovatars);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(id), id, null);
+            }
         }
     }
 }

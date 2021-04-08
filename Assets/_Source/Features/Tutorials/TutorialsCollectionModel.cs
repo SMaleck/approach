@@ -11,7 +11,7 @@ namespace _Source.Features.Tutorials
         public ITutorialModel this[TutorialId id] => _models[id];
 
         public TutorialsCollectionModel(
-            TutorialsCollectionSavegame savegame,
+            ITutorialsCollectionSavegame savegame,
             TutorialModel.Factory modelFactory)
         {
             _models = savegame.Savegames.ToDictionary(

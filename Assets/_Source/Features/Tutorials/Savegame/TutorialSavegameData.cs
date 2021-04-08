@@ -7,6 +7,6 @@ namespace _Source.Features.Tutorials.Savegame
     public class TutorialSavegameData : ISavegameData
     {
         public TutorialId Id;
-        public bool IsCompleted;
+        public TutorialState State;
     }
 }

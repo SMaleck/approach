@@ -1,4 +1,5 @@
 ﻿using _Source.Features.GameRound;
+using _Source.Features.Tutorials.Views;
 using _Source.Features.UiHud;
 using _Source.Features.UiScreens;
 using _Source.Features.UserInput;
@@ -20,6 +21,7 @@ namespace _Source.Installation.Scenes
         [Inject] private SurvivalStatsView.Factory _survivalStatsViewFactory;
         [Inject] private RoundEndedView.Factory _roundEndedViewFactory;
         [Inject] private VirtualJoystickView.Factory _virtualJoystickViewFactory;
+        [Inject] private TutorialView.Factory _tutorialViewFactory;
 
         public void Initialize()
         {

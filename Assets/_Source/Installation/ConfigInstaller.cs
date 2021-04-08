@@ -1,6 +1,7 @@
 ﻿using _Source.App;
 using _Source.Features.ActorBehaviours.Data;
 using _Source.Features.ActorEntities.Config;
+using _Source.Features.Tutorials.Config;
 using _Source.Features.UserInput.Data;
 using _Source.Installation.Data;
 using Packages.SavegameSystem.Config;
@@ -18,6 +19,7 @@ namespace _Source.Installation
         [SerializeField] private BehaviourTreeConfig _behaviourTreeConfig;
         [SerializeField] private UserInputConfig _userInputConfig;
         [SerializeField] private SavegamesConfig _savegamesConfig;
+        [SerializeField] private TutorialsPrefabConfig _tutorialsPrefabConfig;
 
         public override void InstallBindings()
         {
@@ -27,6 +29,7 @@ namespace _Source.Installation
             Container.BindInstance(_behaviourTreeConfig);
             Container.BindInstance(_userInputConfig);
             Container.BindInterfacesTo<SavegamesConfig>().FromInstance(_savegamesConfig);
+            Container.BindInstance(_tutorialsPrefabConfig);
         }
     }
 }

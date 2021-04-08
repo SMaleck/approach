@@ -4,9 +4,9 @@ using _Source.Services.SavegameSystem.Models;
 
 namespace _Source.Features.Tutorials.Savegame
 {
-    public class TutorialsCollectionSavegame : AbstractSavegame
+    public class TutorialsCollectionSavegame : AbstractSavegame, ITutorialsCollectionSavegame
     {
-        public IReadOnlyDictionary<TutorialId, TutorialSavegame> Savegames;
+        public IReadOnlyDictionary<TutorialId, ITutorialSavegame> Savegames { get; }
 
         public TutorialsCollectionSavegame(
             TutorialsCollectionSavegameData savegameData,
@@ -14,7 +14,7 @@ namespace _Source.Features.Tutorials.Savegame
         {
             Savegames = savegameData.TutorialSavegames.ToDictionary(
                 e => e.Id,
-                savegameFactory.Create);
+                e => (ITutorialSavegame)savegameFactory.Create(e));
         }
     }
 }

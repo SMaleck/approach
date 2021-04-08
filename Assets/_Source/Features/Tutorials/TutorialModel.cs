@@ -7,21 +7,34 @@ namespace _Source.Features.Tutorials
 {
     public class TutorialModel : AbstractDisposableFeature, ITutorialModel
     {
-        public class Factory : PlaceholderFactory<TutorialSavegame, TutorialModel> { }
+        public class Factory : PlaceholderFactory<ITutorialSavegame, TutorialModel> { }
 
-        private readonly TutorialSavegame _savegame;
+        private readonly ITutorialSavegame _savegame;
 
         public TutorialId Id => _savegame.Id;
-        public IReadOnlyReactiveProperty<bool> IsCompleted => _savegame.IsCompleted;
+        public IReadOnlyReactiveProperty<TutorialState> State => _savegame.State;
 
-        public TutorialModel(TutorialSavegame savegame)
+        public TutorialModel(ITutorialSavegame savegame)
         {
             _savegame = savegame;
         }
 
+        public void Start()
+        {
+            SetState(TutorialState.Running);
+        }
+
         public void Complete()
         {
-            _savegame.IsCompleted.Value = true;
+            SetState(TutorialState.Completed);
+        }
+
+        private void SetState(TutorialState state)
+        {
+            if (State.Value < state)
+            {
+                _savegame.State.Value = state;
+            }
         }
     }
 }

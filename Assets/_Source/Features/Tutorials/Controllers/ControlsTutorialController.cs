@@ -1,4 +1,5 @@
-﻿using _Source.Util;
+﻿using _Source.Features.Tutorials.Views;
+using _Source.Util;
 
 namespace _Source.Features.Tutorials.Controllers
 {
@@ -7,7 +8,8 @@ namespace _Source.Features.Tutorials.Controllers
         private TutorialId Id => TutorialId.Controls;
         private readonly ITutorialModel _model;
 
-        public ControlsTutorialController(ITutorialsCollectionModel collectionModel)
+        public ControlsTutorialController(
+            ITutorialsCollectionModel collectionModel)
         {
             _model = collectionModel[Id];
         }

@@ -14,7 +14,9 @@
             Pause,
             Restart,
             ExitToMenu,
-            End
+            End,
+            TutorialLife,
+            TutorialNovatars,
         }
     }
 }

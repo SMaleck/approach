@@ -45,7 +45,9 @@ namespace _Source.Services.Texts
                 { TextKey.Pause, "Pause"},
                 { TextKey.Restart, "Restart"},
                 { TextKey.ExitToMenu, "Exit to Menu"},
-                { TextKey.End, "The End"}
+                { TextKey.End, "The End"},
+                { TextKey.TutorialLife, "This is your <C_BLUE>life<C>. It depletes over time and goes down more, whenever you meet <C_RED>enemies<C>."},
+                { TextKey.TutorialNovatars, "This is one of many others. You can <C_BLUE>approach<C> them, or not, it is up to you. They might be <C_GREEN>friendly<C>, or <C_RED>maybe not<C>."}
             };
 
             private static Dictionary<TextKey, string> _textsDE = new Dictionary<TextKey, string>
@@ -60,7 +62,9 @@ namespace _Source.Services.Texts
                 { TextKey.Pause, "Pause"},
                 { TextKey.Restart, "Neustarten"},
                 { TextKey.ExitToMenu, "Zurück zum Menü"},
-                { TextKey.End, "Ende"}
+                { TextKey.End, "Ende"},
+                { TextKey.TutorialLife, "Das ist dein <C_BLUE>Leben<C>. Es vergeht mit der Zeit und sinkt schneller, wenn du auf <C_RED>Feinde<C> triffst."},
+                { TextKey.TutorialNovatars, "Dies ist einer von vielen anderen. Du bestimmst ob du dich ihnen <C_BLUE>näherst<C>, oder nicht. Sie können <C_GREEN>freundlich<C> sein, oder auch <C_RED>nicht<C>."}
             };
         }
     }

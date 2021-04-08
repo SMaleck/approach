@@ -21,3 +21,5 @@ MonoBehaviour:
     type: 2}
   _userInputConfig: {fileID: 11400000, guid: e5492b1ed7d406a4ba58e669b8c9cd8f, type: 2}
   _savegamesConfig: {fileID: 11400000, guid: 396771e0d07356a45b8291ec66b38ce0, type: 2}
+  _tutorialsPrefabConfig: {fileID: 11400000, guid: 281ca9053416bcb4880723b5508763d1,
+    type: 2}

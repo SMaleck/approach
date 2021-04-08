@@ -4,22 +4,22 @@ using Zenject;
 
 namespace _Source.Features.Tutorials.Savegame
 {
-    public class TutorialSavegame : AbstractSavegame
+    public class TutorialSavegame : AbstractSavegame, ITutorialSavegame
     {
         public class Factory : PlaceholderFactory<TutorialSavegameData, TutorialSavegame> { }
 
         private readonly TutorialSavegameData _savegameData;
 
         public TutorialId Id => _savegameData.Id;
-        public IReactiveProperty<bool> IsCompleted { get; }
+        public IReactiveProperty<TutorialState> State { get; }
 
         public TutorialSavegame(TutorialSavegameData savegameData)
         {
             _savegameData = savegameData;
 
-            IsCompleted = CreateBoundProperty(
-                savegameData.IsCompleted,
-                value => savegameData.IsCompleted = value);
+            State = CreateBoundProperty(
+                savegameData.State,
+                value => savegameData.State = value);
         }
     }
 }
