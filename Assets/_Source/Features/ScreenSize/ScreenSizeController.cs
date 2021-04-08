@@ -13,7 +13,7 @@ namespace _Source.Features.ScreenSize
             _screenSizeModel = screenSizeModel;
         }
 
-        // ToDo V1 This needs to respect the offset as well
+        // ToDo V2 This needs to respect the offset as well
         public bool IsOutOfScreenBounds(Vector3 position, Vector2 size)
         {
             var screenSides = EnumHelper<ScreenSide>.Iterator;
