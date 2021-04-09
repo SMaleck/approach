@@ -28,6 +28,7 @@ namespace _Source.Features.ActorEntities.Components
             _enemyTweenDisposer = new CompositeDisposable().AddTo(Disposer);
 
             _relationshipDataComponent.Relationship
+                .Skip(1)
                 .Subscribe(OnRelationshipSwitched)
                 .AddTo(Disposer);
         }

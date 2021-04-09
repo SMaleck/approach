@@ -42,6 +42,7 @@ namespace _Source.Features.ActorEntities
             HealthDataComponent = Actor.Get<HealthDataComponent>();
 
             HealthDataComponent.IsAlive
+                .DelayFrame(1)
                 .Subscribe(OnIsAliveChanged)
                 .AddTo(Disposer);
 
@@ -71,10 +72,7 @@ namespace _Source.Features.ActorEntities
                 _entityLifecycleDisposable.Disposable?.Dispose();
 
                 Entity.StopEntity();
-
-                Observable.NextFrame()
-                    .Subscribe(_ => Entity.SetActive(isAlive))
-                    .AddTo(Disposer);
+                Entity.SetActive(isAlive);
             }
         }
     }
