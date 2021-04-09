@@ -58,13 +58,12 @@ namespace _Source.Features.ActorEntities
 
         private void OnIsAliveChanged(bool isAlive)
         {
-            Entity.SetActive(isAlive);
-
             if (isAlive)
             {
                 var disposer = new CompositeDisposable();
                 _entityLifecycleDisposable.Disposable = disposer;
 
+                Entity.SetActive(isAlive);
                 Entity.StartEntity(disposer);
             }
             else
@@ -72,6 +71,10 @@ namespace _Source.Features.ActorEntities
                 _entityLifecycleDisposable.Disposable?.Dispose();
 
                 Entity.StopEntity();
+
+                Observable.NextFrame()
+                    .Subscribe(_ => Entity.SetActive(isAlive))
+                    .AddTo(Disposer);
             }
         }
     }

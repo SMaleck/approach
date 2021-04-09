@@ -4,6 +4,7 @@ using Zenject;
 
 namespace _Source.Features.Actors.DataComponents
 {
+    // ToDo V2 LightDataComponent and LightSwitchNode are probably obsolete
     public class LightDataComponent : AbstractDataComponent, IResettableDataComponent
     {
         public class Factory : PlaceholderFactory<LightDataComponent> { }

@@ -4,6 +4,7 @@ using _Source.Features.ActorBehaviours.Nodes;
 using _Source.Features.Actors;
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.Movement;
+using _Source.Features.Movement.Data;
 using BehaviourTreeSystem;
 using System.Collections.Generic;
 using Zenject;
@@ -14,6 +15,8 @@ namespace _Source.Features.ActorBehaviours.Creation
     public class NovatarBehaviourTreeFactory
     {
         [Inject] private readonly BehaviourTreeConfig _behaviourTreeConfig;
+        [Inject] private readonly IWanderData _wanderData;
+        [Inject] private readonly IStateDelaysData _stateDelaysData;
 
         #region Node Factories
         [Inject] private readonly FollowAvatarNode.Factory _followAvatarNodeFactory;
@@ -118,6 +121,7 @@ namespace _Source.Features.ActorBehaviours.Creation
                 .Sequence()
                     .Condition(t => IsEntityState(actor, EntityState.Neutral))
                     .Sequence()
+                        .Do(NeutralTimeout())
                         .Do(LeaveScreen())
                         .Do(Deactivate())
                         .End()
@@ -164,7 +168,8 @@ namespace _Source.Features.ActorBehaviours.Creation
                             .End()
                         .Sequence()
                             .Do(EnemyTimeout())
-                            .Do(SwitchStateTo(EntityState.Neutral))
+                            .Do(LeaveScreen())
+                            .Do(Deactivate())
                             .End()
                         .End()
                     .End()
@@ -193,21 +198,28 @@ namespace _Source.Features.ActorBehaviours.Creation
         private IBehaviourTreeNode EnemyTimeout()
         {
             return IdleTimeout(
-                _behaviourTreeConfig.EnemyLeavingTimeoutSeconds,
+                _stateDelaysData.EnemyStaySeconds,
                 TimeoutDataComponent.Storage.IdleEnemy);
         }
 
         private IBehaviourTreeNode FriendTimeout()
         {
             return IdleTimeout(
-                _behaviourTreeConfig.MaxSecondsToFallBehind,
+                _stateDelaysData.FriendPatienceSeconds,
                 TimeoutDataComponent.Storage.IdleFriend);
+        }
+
+        private IBehaviourTreeNode NeutralTimeout()
+        {
+            return IdleTimeout(
+                _stateDelaysData.NeutralStaySeconds,
+                TimeoutDataComponent.Storage.NeutralDelay);
         }
 
         private IBehaviourTreeNode WanderTimeout()
         {
             return IdleTimeout(
-                _behaviourTreeConfig.UnacquaintedConfig.WanderIdleSeconds,
+                _wanderData.IdleSeconds,
                 TimeoutDataComponent.Storage.WanderTimeout);
         }
 
@@ -222,7 +234,7 @@ namespace _Source.Features.ActorBehaviours.Creation
 
             return node;
         }
-        
+
         public IBehaviourTreeNode FollowAvatarBoid()
         {
             var node = _followAvatarBoidNodeFactory.Create(_actorStateModel);
@@ -350,7 +362,7 @@ namespace _Source.Features.ActorBehaviours.Creation
 
             return node;
         }
-        
+
         public IBehaviourTreeNode Wander()
         {
             var node = _wanderNodeFactory.Create(

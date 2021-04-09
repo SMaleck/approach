@@ -15,7 +15,8 @@ namespace _Source.Features.Actors.DataComponents
             IdleUnacquainted = 1,
             IdleFriend = 2,
             IdleEnemy = 3,
-            WanderTimeout = 4
+            WanderTimeout = 4,
+            NeutralDelay = 5
         }
 
         private readonly Dictionary<Storage, double> _timesPassed;
@@ -46,7 +47,9 @@ namespace _Source.Features.Actors.DataComponents
 
         public void ResetIdleTimeouts()
         {
-            Reset();
+            ResetTimeout(Storage.IdleUnacquainted);
+            ResetTimeout(Storage.IdleFriend);
+            ResetTimeout(Storage.IdleEnemy);
         }
     }
 }

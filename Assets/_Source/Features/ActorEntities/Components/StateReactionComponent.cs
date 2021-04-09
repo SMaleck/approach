@@ -26,7 +26,6 @@ namespace _Source.Features.ActorEntities.Components
             _tweenDisposer = new SerialDisposable().AddTo(Disposer);
 
             _relationshipDataComponent.Relationship
-                .Pairwise()
                 .Subscribe(OnRelationshipSwitched)
                 .AddTo(Disposer);
         }
@@ -36,7 +35,17 @@ namespace _Source.Features.ActorEntities.Components
             _tweenDisposer?.Dispose();
         }
 
-        private void OnRelationshipSwitched(Pair<EntityState> relationshipPair)
+        private void OnRelationshipSwitched(EntityState state)
+        {
+
+        }
+
+        private void ToEnemy()
+        {
+
+        }
+
+        private void ToFriend()
         {
 
         }

@@ -23,3 +23,5 @@ MonoBehaviour:
   _wanderDataSource: {fileID: 11400000, guid: b618965a64411844891628e18e65741e, type: 2}
   _gameRoundDataSource: {fileID: 11400000, guid: 2075c7caaaf4298478cdcab89c49c292,
     type: 2}
+  _stateDelaysDataSource: {fileID: 11400000, guid: 1cef1d92087653148956109fc67f6def,
+    type: 2}

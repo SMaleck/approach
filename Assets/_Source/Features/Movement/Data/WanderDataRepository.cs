@@ -1,5 +1,4 @@
 ﻿using _Source.Data;
-using _Source.Features.Actors.Data;
 
 namespace _Source.Features.Movement.Data
 {
@@ -7,6 +6,7 @@ namespace _Source.Features.Movement.Data
     {
         private readonly WanderDataEntry _data;
 
+        public double IdleSeconds => _data.IdleSeconds;
         public float MinDistance => _data.MinDistance;
         public float MaxDistance => _data.MaxDistance;
 

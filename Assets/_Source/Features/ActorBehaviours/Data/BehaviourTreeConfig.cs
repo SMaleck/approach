@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace _Source.Features.ActorBehaviours.Data
 {
+    // ToDo V2 Refactor to use data pattern
     [CreateAssetMenu(fileName = nameof(BehaviourTreeConfig), menuName = Constants.ConfigMenu + nameof(BehaviourTreeConfig))]
     public class BehaviourTreeConfig : ScriptableObject
     {
@@ -15,11 +16,6 @@ namespace _Source.Features.ActorBehaviours.Data
             [Range(0, 600)]
             [SerializeField] private double _evaluationTimeoutSeconds;
             public double EvaluationTimeoutSeconds => _evaluationTimeoutSeconds;
-
-            // ToDo V2 Should this be in WanderDataEntry?
-            [Range(0, 600)]
-            [SerializeField] private float _wanderIdleSeconds;
-            public float WanderIdleSeconds => _wanderIdleSeconds;
 
             [Range(0, 1)]
             [SerializeField] private float _timeBasedSwitchChance;
@@ -43,15 +39,5 @@ namespace _Source.Features.ActorBehaviours.Data
         [Header("Unacquainted Config")]
         [SerializeField] private UnacquaintedRelationshipConfig _unacquaintedConfig;
         public UnacquaintedRelationshipConfig UnacquaintedConfig => _unacquaintedConfig;
-
-        [Header("Friend Behaviour Settings")]
-        [Range(0, 600)]
-        [SerializeField] private double _maxSecondsToFallBehind;
-        public double MaxSecondsToFallBehind => _maxSecondsToFallBehind;
-
-        [Header("Enemy Behaviour Settings")]
-        [Range(0, 600)]
-        [SerializeField] private double _enemyLeavingTimeoutSeconds;
-        public double EnemyLeavingTimeoutSeconds => _enemyLeavingTimeoutSeconds;
     }
 }

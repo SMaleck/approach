@@ -1,4 +1,5 @@
 ﻿using _Source.App;
+using _Source.Features.ActorBehaviours.Data;
 using _Source.Features.ActorEntities.Avatar.Data;
 using _Source.Features.ActorEntities.Novatar.Data;
 using _Source.Features.GameRound.Data;
@@ -21,6 +22,7 @@ namespace _Source.Installation
         [SerializeField] private RangeSensorDataSource _rangeSensorDataSource;
         [SerializeField] private WanderDataSource _wanderDataSource;
         [SerializeField] private GameRoundDataSource _gameRoundDataSource;
+        [SerializeField] private StateDelaysDataSource _stateDelaysDataSource;
 
         public override void InstallBindings()
         {
@@ -31,6 +33,7 @@ namespace _Source.Installation
             Container.BindInstance(_rangeSensorDataSource);
             Container.BindInstance(_wanderDataSource);
             Container.BindInstance(_gameRoundDataSource);
+            Container.BindInstance(_stateDelaysDataSource);
         }
     }
 }
