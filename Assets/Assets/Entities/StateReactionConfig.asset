@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e696c5662e9ef439c45dca51b46f1f, type: 3}
-  m_Name: StateDelaysDataSource
+  m_Script: {fileID: 11500000, guid: 309caed52588ce449bb65480c1bb5e39, type: 3}
+  m_Name: StateReactionConfig
   m_EditorClassIdentifier: 
-  _dataEntries:
-  - _enemyStaySeconds: 1
-    _friendPatienceSeconds: 4
-    _neutralStaySeconds: 0.5
+  _friendGrowScale: 1.5
+  _friendGrowSeconds: 0.6
+  _enemyShakeStrength: 0.5
+  _enemyShakeSeconds: 0.6
+  _enemyShakeVibration: 30

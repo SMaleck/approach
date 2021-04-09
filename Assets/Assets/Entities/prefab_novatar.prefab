@@ -158,7 +158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45bbbc28e54bd6d44b7c24f2a86a3215, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scaleParent: {fileID: 1362777207899459469}
+  _reactionParent: {fileID: 1362777207899459469}
+  _config: {fileID: 11400000, guid: 4fd3b16fe8d81f74ebe637659b324c9f, type: 2}
 --- !u!1 &2443309513826751692
 GameObject:
   m_ObjectHideFlags: 0
