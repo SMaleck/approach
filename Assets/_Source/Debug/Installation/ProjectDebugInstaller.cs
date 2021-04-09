@@ -1,10 +1,15 @@
-﻿using _Source.Util.Debug;
+﻿using _Source.App;
+using _Source.Util.Debug;
+using UnityEngine;
 using Zenject;
 
 namespace _Source.Debug.Installation
 {
-    public class ProjectDebugInstaller : Installer<ProjectDebugInstaller>
+    [CreateAssetMenu(fileName = nameof(ProjectDebugInstaller), menuName = Constants.InstallersMenu + nameof(ProjectDebugInstaller))]
+    public class ProjectDebugInstaller : ScriptableObjectInstaller<ProjectDebugInstaller>
     {
+        [SerializeField] private FpsProfilerView _fpoFpsProfilerView;
+
         public override void InstallBindings()
         {
             if (!UnityEngine.Debug.isDebugBuild)
@@ -13,6 +18,10 @@ namespace _Source.Debug.Installation
             }
 
             Container.BindInterfacesAndSelfTo<FpsProfiler>().AsSingle();
+            Container.Bind<FpsProfilerView>()
+                .FromComponentInNewPrefab(_fpoFpsProfilerView)
+                .AsSingle()
+                .NonLazy();
         }
     }
 }

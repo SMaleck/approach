@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿#if UNITY_EDITOR
+using System.Linq;
 using UnityEditor;
 
 namespace Assets.Editor.Tools
@@ -19,3 +20,4 @@ namespace Assets.Editor.Tools
         }
     }
 }
+#endif

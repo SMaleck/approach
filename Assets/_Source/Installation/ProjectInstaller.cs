@@ -1,5 +1,4 @@
-﻿using _Source.Debug.Installation;
-using _Source.Features.SceneManagement;
+﻿using _Source.Features.SceneManagement;
 using _Source.Util;
 using Packages.Logging;
 using UnityEngine;
@@ -24,7 +23,6 @@ namespace _Source.Installation
             // ---------------------------------- INSTALLERS
             DataRepositoryInstaller.Install(Container);
             ServiceInstaller.Install(Container);
-            ProjectDebugInstaller.Install(Container);
 
             // ---------------------------------- INIT
             Container.BindExecutionOrder<ProjectInitializer>(998);

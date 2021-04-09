@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1167844b7da0485468bbaf5e00d75830, type: 3}
+  m_Name: ProjectDebugInstaller
+  m_EditorClassIdentifier: 
+  _fpoFpsProfilerView: {fileID: 9021359906397375213, guid: 3a682327aecfbeb4ab22cb8508d3dea3,
+    type: 3}

@@ -402,7 +402,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6172013491317949377}
   - component: {fileID: 2257090153801255521}
-  - component: {fileID: 9021359906397375213}
   m_Layer: 13
   m_Name: prefab_hud_view
   m_TagString: Untagged
@@ -438,15 +437,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pauseButton: {fileID: 461187527326112079}
---- !u!114 &9021359906397375213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6172013491317949379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be1656576812c6146bb6434446f2bed9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

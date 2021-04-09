@@ -1,4 +1,5 @@
-﻿using _Source.App;
+﻿#if UNITY_EDITOR
+using _Source.App;
 using Packages.SavegameSystem.Config;
 using System.IO;
 using UnityEditor;
@@ -37,3 +38,4 @@ namespace Assets.Editor.Tools
         }
     }
 }
+#endif

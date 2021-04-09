@@ -10,6 +10,11 @@ namespace _Source.Util.Debug
         private GUIStyle _style;
         private GUIStyle Style => _style ?? (_style = CreateGUIStyle());
 
+        private void Start()
+        {
+            DontDestroyOnLoad(this);
+        }
+
         private static GUIStyle CreateGUIStyle()
         {
             var style = new GUIStyle
