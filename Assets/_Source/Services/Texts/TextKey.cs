@@ -17,6 +17,13 @@
             End,
             TutorialLife,
             TutorialNovatars,
+            ResultFriendsAndEnemies,
+            ResultOnlyFriends,
+            ResultOnlyEnemies,
+            ResultOnlyNeutral,
+            ResultNobody,
+            ResultFriendsLost,
+            ResultNeutral,
         }
     }
 }

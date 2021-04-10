@@ -1,7 +1,10 @@
-﻿using _Source.Features.GameRound;
+﻿using System;
+using _Source.Features.GameRound;
+using _Source.Features.PlayerStatistics;
 using _Source.Features.SceneManagement;
 using _Source.Services.Texts;
 using _Source.Util;
+using System.Text;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -26,25 +29,15 @@ namespace _Source.Features.UiScreens
         [SerializeField] private Button _goToMenuButton;
         [SerializeField] private TextMeshProUGUI _goToMenuButtonText;
 
-        private GameRoundStateController _gameRoundStateController;
-        private IGameRoundStateModel _gameRoundStateModel;
-        private ISceneManagementController _sceneManagementController;
-
-        [Inject]
-        private void Inject(
-            GameRoundStateController gameRoundStateController,
-            IGameRoundStateModel gameRoundStateModel,
-            ISceneManagementController sceneManagementController)
-        {
-            _gameRoundStateController = gameRoundStateController;
-            _gameRoundStateModel = gameRoundStateModel;
-            _sceneManagementController = sceneManagementController;
-        }
+        [Inject] private readonly GameRoundStateController _gameRoundStateController;
+        [Inject] private readonly IGameRoundStateModel _gameRoundStateModel;
+        [Inject] private readonly IGameRoundStatisticsModel _gameRoundStatisticsModel;
+        [Inject] private readonly ISceneManagementController _sceneManagementController;
 
         public void Initialize()
         {
             _gameRoundStateModel.OnRoundEnded
-                .Subscribe(_ => Open())
+                .Subscribe(_ => OnRoundEnded())
                 .AddTo(Disposer);
 
             OnOpened
@@ -67,6 +60,65 @@ namespace _Source.Features.UiScreens
             _titleText.text = TextService.End();
             _restartButtonText.text = TextService.Restart();
             _goToMenuButtonText.text = TextService.ExitToMenu();
+        }
+
+        protected void OnRoundEnded()
+        {
+            _resultText.text = BuildResultMessage();
+            Open();
+        }
+
+        private string BuildResultMessage()
+        {
+            var sb = new StringBuilder();
+
+            var friendCount = _gameRoundStatisticsModel.Friends.Value;
+            var enemyCount = _gameRoundStatisticsModel.Enemies.Value;
+            var friendLostCount = _gameRoundStatisticsModel.FriendsLost.Value;
+            var neutralCount = _gameRoundStatisticsModel.Neutral.Value;
+
+            // Ignore other cases if there is no stats
+            if (friendCount <= 0 && enemyCount <= 0 && neutralCount <= 0)
+            {
+                sb.AppendLine(TextService.ResultNobody());
+                return sb.ToString();
+            }
+
+            if (friendCount > 0 && enemyCount > 0)
+            {
+                sb.AppendLine(TextService.ResultFriendsAndEnemies(friendCount, enemyCount));
+                sb.AppendLine(Environment.NewLine);
+            }
+            else if (friendCount > 0 && enemyCount <= 0)
+            {
+                sb.AppendLine(TextService.ResultOnlyFriends(friendCount));
+                sb.AppendLine(Environment.NewLine);
+            }
+            else if (friendCount <= 0 && enemyCount > 0)
+            {
+                sb.AppendLine(TextService.ResultOnlyEnemies(enemyCount));
+                sb.AppendLine(Environment.NewLine);
+            }
+            else if (friendCount <= 0 && enemyCount <= 0 && neutralCount > 0)
+            {
+                sb.AppendLine(TextService.ResultOnlyNeutral());
+                sb.AppendLine(Environment.NewLine);
+            }
+
+            if (friendLostCount > 0)
+            {
+                sb.AppendLine(TextService.ResultFriendsLost(friendLostCount));
+                sb.AppendLine(Environment.NewLine);
+            }
+
+            if ((friendCount > 0 || enemyCount > 0) && 
+                neutralCount > 0)
+            {
+                sb.AppendLine(TextService.ResultNeutral());
+                sb.AppendLine(Environment.NewLine);
+            }
+
+            return sb.ToString();
         }
     }
 }

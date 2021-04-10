@@ -63,7 +63,7 @@ namespace _Source.Features.Actors.DataComponents
         {
             _storages[sensor].Remove(actor);
 
-            if (!_lifetimeSubscriptions.ContainsKey(actor))
+            if (_lifetimeSubscriptions.ContainsKey(actor))
             {
                 _lifetimeSubscriptions[actor].Dispose();
                 _lifetimeSubscriptions.Remove(actor);

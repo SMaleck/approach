@@ -8,6 +8,7 @@ namespace _Source.Features.PlayerStatistics
         IReadOnlyReactiveProperty<int> Enemies { get; }
         IReadOnlyReactiveProperty<int> Neutral { get; }
         IReadOnlyReactiveProperty<int> FriendsLost { get; }
+
         void IncrementFriends();
         void IncrementEnemies();
         void IncrementNeutral();

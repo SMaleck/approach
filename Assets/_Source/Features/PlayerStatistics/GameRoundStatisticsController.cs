@@ -12,6 +12,8 @@ namespace _Source.Features.PlayerStatistics
             _gameRoundStatisticsModel = gameRoundStatisticsModel;
         }
 
+
+        // ToDo V1 Make safer
         public void RegisterRelationshipSwitch(EntityState from, EntityState to)
         {
             switch (to)
