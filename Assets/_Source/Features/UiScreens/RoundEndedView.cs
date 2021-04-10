@@ -14,9 +14,15 @@ namespace _Source.Features.UiScreens
     {
         public class Factory : PlaceholderFactory<UnityEngine.Object, RoundEndedView> { }
 
+        [Header("Texts")]
         [SerializeField] private TextMeshProUGUI _titleText;
+        [SerializeField] private TextMeshProUGUI _resultText;
+
+        [Header("Restart Button")]
         [SerializeField] private Button _restartButton;
         [SerializeField] private TextMeshProUGUI _restartButtonText;
+
+        [Header("GoToMenu Button")]
         [SerializeField] private Button _goToMenuButton;
         [SerializeField] private TextMeshProUGUI _goToMenuButtonText;
 
