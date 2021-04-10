@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 064e91b5fdb97ee439b41df72ad18aaf, type: 3}
+  m_Name: FeatureDebugInstaller
+  m_EditorClassIdentifier: 
+  _roundStatsDebugView: {fileID: 7881103740066090529, guid: d29fdb6cec08df84e97670c165d6e123,
+    type: 3}
