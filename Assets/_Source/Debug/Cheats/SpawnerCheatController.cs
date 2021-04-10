@@ -2,7 +2,7 @@
 using UniRx;
 using Zenject;
 
-namespace _Source.Debug
+namespace _Source.Debug.Cheats
 {
     public class SpawnerCheatController : AbstractCheatController, IInitializable
     {

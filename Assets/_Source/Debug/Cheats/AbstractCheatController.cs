@@ -1,8 +1,8 @@
-﻿using _Source.Util;
-using System;
+﻿using System;
+using _Source.Util;
 using UnityEngine;
 
-namespace _Source.Debug
+namespace _Source.Debug.Cheats
 {
     public class AbstractCheatController : AbstractDisposableFeature
     {

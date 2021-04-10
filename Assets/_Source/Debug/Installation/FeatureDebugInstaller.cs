@@ -18,6 +18,7 @@ namespace _Source.Debug.Installation
             }
 
             Container.BindInterfacesTo<SpawnerCheatController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<RoundCheatController>().AsSingle().NonLazy();
 
             Container.Bind<RoundStatsDebugView>()
                 .FromComponentInNewPrefab(_roundStatsDebugView)
