@@ -23,7 +23,8 @@ namespace _Source.Features.ActorEntities.Novatar
         private readonly ActorEntitiesConfig _actorEntitiesConfig;
         private readonly ScreenSizeController _screenSizeController;
 
-        private readonly List<IEntityPoolItem<IMonoEntity>> _novatarPool;
+        private readonly List<INovatarPoolItem> _novatarPool;
+        public IReadOnlyList<INovatarPoolItem> Pool => _novatarPool;
 
         public NovatarSpawner(
             NovatarSpawnerConfig novatarSpawnerConfig,
@@ -34,23 +35,18 @@ namespace _Source.Features.ActorEntities.Novatar
             _actorEntitiesConfig = actorEntitiesConfig;
             _screenSizeController = screenSizeController;
 
-            _novatarPool = new List<IEntityPoolItem<IMonoEntity>>();
+            _novatarPool = new List<INovatarPoolItem>();
         }
 
         public void Spawn()
         {
             var novatarPoolItem = GetFreeEntity();
 
-            var spawnPosition = GetSpawnPosition(novatarPoolItem.Entity);
+            var spawnPosition = GetSpawnPosition(novatarPoolItem);
             novatarPoolItem.Reset(spawnPosition);
         }
 
-        public int GetActiveNovatarCount()
-        {
-            return _novatarPool.Count(item => !item.IsFree);
-        }
-
-        private IEntityPoolItem<IMonoEntity> GetFreeEntity()
+        private INovatarPoolItem GetFreeEntity()
         {
             var freeItem = _novatarPool.FirstOrDefault(item => item.IsFree);
             if (freeItem != null)
@@ -61,7 +57,7 @@ namespace _Source.Features.ActorEntities.Novatar
             return CreateEntity();
         }
 
-        private IEntityPoolItem<IMonoEntity> CreateEntity()
+        private INovatarPoolItem CreateEntity()
         {
             var novatarEntity = _entityFactory.Create(
                 _actorEntitiesConfig.NovatarPrefab);
@@ -85,14 +81,14 @@ namespace _Source.Features.ActorEntities.Novatar
             return novatarFacade;
         }
 
-        private Vector3 GetSpawnPosition(IMonoEntity entity)
+        private Vector3 GetSpawnPosition(INovatarPoolItem poolItem)
         {
             var spawnSideInt = UnityEngine.Random.Range(0, 4);
             var spawnSide = (ScreenSide)spawnSideInt;
 
             return _screenSizeController.GetRandomizedOutOfBoundsPosition(
                 spawnSide,
-                entity.Size,
+                poolItem.Size,
                 _novatarSpawnerConfig.SpawnPositionOffset);
         }
     }

@@ -2,6 +2,7 @@
 using _Source.Features.FeatureToggles;
 using _Source.Util;
 using System;
+using System.Linq;
 using UniRx;
 using Zenject;
 
@@ -37,9 +38,11 @@ namespace _Source.Features.ActorEntities.Novatar
 
         private bool CanSpawn()
         {
-            var activeCount = _novatarSpawner.GetActiveNovatarCount();
+            // Only count active non-friends towards spawn limit
+            var activeCount = _novatarSpawner.Pool
+                .Count(e => !e.IsFree && 
+                            !e.IsFriend);
 
-            // ToDo V1 Only count non-friendly into this
             return IsEnabled.Value &&
                    activeCount < _novatarSpawnerConfig.MaxActiveSpawns;
         }

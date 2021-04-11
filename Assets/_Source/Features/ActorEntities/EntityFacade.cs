@@ -2,7 +2,6 @@
 using _Source.Features.Actors.DataComponents;
 using _Source.Features.GameRound;
 using _Source.Util;
-using System;
 using UniRx;
 using Zenject;
 
@@ -12,9 +11,7 @@ namespace _Source.Features.ActorEntities
     {
         public class Factory : PlaceholderFactory<IMonoEntity, IActorStateModel, EntityFacade> { }
 
-        [Obsolete("Only public for pooling in NovatarSpawner, use TransformDataComponent instead")]
-        public IMonoEntity Entity { get; }
-
+        protected readonly IMonoEntity Entity;
         protected readonly IActorStateModel Actor;
         private readonly IPauseStateModel _pauseStateModel;
 

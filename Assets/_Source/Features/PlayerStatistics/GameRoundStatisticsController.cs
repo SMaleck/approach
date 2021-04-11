@@ -12,14 +12,15 @@ namespace _Source.Features.PlayerStatistics
             _gameRoundStatisticsModel = gameRoundStatisticsModel;
         }
 
-
-        // ToDo V1 Make safer
         public void RegisterRelationshipSwitch(EntityState from, EntityState to)
         {
             switch (to)
             {
                 case EntityState.Neutral:
-                    _gameRoundStatisticsModel.IncrementNeutral();
+                    if (from == EntityState.Unacquainted)
+                    {
+                        _gameRoundStatisticsModel.IncrementNeutral();
+                    }
                     if (from == EntityState.Friend)
                     {
                         _gameRoundStatisticsModel.IncrementFriendsLost();
