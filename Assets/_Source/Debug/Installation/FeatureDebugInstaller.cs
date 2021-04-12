@@ -1,5 +1,6 @@
 ﻿using _Source.App;
 using _Source.Debug.Cheats;
+using _Source.Services.Environment;
 using UnityEngine;
 using Zenject;
 
@@ -10,9 +11,11 @@ namespace _Source.Debug.Installation
     {
         [SerializeField] private RoundStatsDebugView _roundStatsDebugView;
 
+        [Inject] private readonly IEnvironmentService _environmentService;
+
         public override void InstallBindings()
         {
-            if (!UnityEngine.Debug.isDebugBuild)
+            if (!_environmentService.IsDebug)
             {
                 return;
             }

@@ -1,4 +1,5 @@
 ﻿using _Source.App;
+using _Source.Services.Environment;
 using _Source.Util.Debug;
 using UnityEngine;
 using Zenject;
@@ -12,7 +13,7 @@ namespace _Source.Debug.Installation
 
         public override void InstallBindings()
         {
-            if (!UnityEngine.Debug.isDebugBuild)
+            if (!EnvironmentService.IsDebugStatic)
             {
                 return;
             }

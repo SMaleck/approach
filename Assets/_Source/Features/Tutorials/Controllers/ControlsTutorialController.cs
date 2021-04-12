@@ -16,9 +16,12 @@ namespace _Source.Features.Tutorials.Controllers
         private readonly IAvatarLocator _avatarLocator;
         private readonly IFeatureToggleCollectionModel _featureToggleCollectionModel;
         private readonly ITutorialModel _model;
-
+        
         private const double MinElapsedSeconds = 5;
         private const double DelaySeconds = 2;
+
+        private TransformDataComponent _transformDataComponent;
+        private Vector3 _originalPosition;
         private bool _hasMoved;
         private double _elapsedSeconds;
 
@@ -51,13 +54,15 @@ namespace _Source.Features.Tutorials.Controllers
         private void Start()
         {
             _model.Start();
+            _transformDataComponent = _avatarLocator.AvatarActor.Get<TransformDataComponent>();
+            _originalPosition = _transformDataComponent.Position;
 
             Observable.EveryUpdate()
                 .Subscribe(_ =>
                 {
                     _elapsedSeconds += Time.deltaTime;
                     _hasMoved = _hasMoved || GetHasMoved();
-
+                    
                     TryComplete();
                 })
                 .AddTo(Disposer);
@@ -65,8 +70,7 @@ namespace _Source.Features.Tutorials.Controllers
 
         private bool GetHasMoved()
         {
-            var movementDataComponent = _avatarLocator.AvatarActor?.Get<MovementDataComponent>();
-            return movementDataComponent?.HasMoveIntention ?? false; 
+            return (_originalPosition - _transformDataComponent.Position).sqrMagnitude > 0.1f;
         }
 
         private void TryComplete()
